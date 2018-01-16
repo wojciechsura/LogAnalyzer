@@ -1,5 +1,7 @@
 ﻿using Fluent;
-using LogAnalyzer.Viewmodels.Interfaces;
+using LogAnalyzer.BusinessLogic.ViewModels;
+using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
+using Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Unity.Resolution;
 
 namespace LogAnalyzer.Windows
 {
@@ -22,9 +25,20 @@ namespace LogAnalyzer.Windows
     /// </summary>
     public partial class MainWindow : RibbonWindow, IMainWindowAccess
     {
+        private MainWindowViewModel viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            viewModel = Dependencies.Container.Instance.Resolve<MainWindowViewModel>(new ParameterOverride("access", this));
+            DataContext = viewModel;
+        }
+
+        public void ShowOpenDialog(Func<IOpenWindowAccess, OpenWindowViewModel> openWindowViewModelFactory)
+        {
+            OpenWindow openWindow = new OpenWindow(openWindowViewModelFactory);
+            openWindow.ShowDialog();
         }
     }
 }

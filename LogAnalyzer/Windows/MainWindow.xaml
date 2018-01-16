@@ -11,13 +11,17 @@
         <f:Ribbon>
             <f:Ribbon.Menu>
                 <f:Backstage>
-
+                    <f:BackstageTabControl>
+                        <f:BackstageTabItem Header="Open" />
+                    </f:BackstageTabControl>
                 </f:Backstage>
             </f:Ribbon.Menu>
-
             <f:RibbonTabItem Header="Home">
                 <f:RibbonGroupBox Header="File">
-                    
+                    <f:Button Header="Open" 
+                              LargeIcon="/Resources/Images/Open32.png" 
+                              Icon="/Resources/Images/Open16.png" 
+                              Command="{Binding OpenCommand}"/>
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>

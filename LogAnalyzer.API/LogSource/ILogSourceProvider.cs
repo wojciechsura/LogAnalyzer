@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Viewmodels.Interfaces
+namespace LogAnalyzer.API.LogSource
 {
-    public interface IMainWindowAccess
+    public interface ILogSourceProvider
     {
+
     }
 }

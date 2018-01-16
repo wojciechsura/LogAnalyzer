@@ -112,6 +112,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Windows\OpenWindow.xaml.cs">
+      <DependentUpon>OpenWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -121,12 +124,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dependencies\Configuration.cs" />
-    <Compile Include="Viewmodels\Interfaces\IMainWindowAccess.cs" />
-    <Compile Include="Viewmodels\MainWindowViewModel.cs" />
     <Compile Include="Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\OpenWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -568,6 +573,8 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\Open16.png" />
+    <Resource Include="Resources\Images\Open32.png" />
     <Resource Include="Lib\site-packages\README.txt" />
     <Content Include="Lib\site.py" />
     <Content Include="Lib\smtpd.py" />
@@ -672,10 +679,15 @@
     <Content Include="Lib\__phello__.foo.py" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LogAnalyzer.BusinessLogic\LogAnalyzer.BusinessLogic.csproj">
+      <Project>{ED8AF742-2431-40D8-A8CC-295A8BDA2423}</Project>
+      <Name>LogAnalyzer.BusinessLogic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
       <Name>LogAnalyzer.Dependencies</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

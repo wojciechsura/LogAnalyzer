@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer", "LogAnalyzer\LogAnalyzer.csproj", "{77BA0984-FD8F-4BD1-AE31-4DEC3459D73C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Dependencies", "LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj", "{13923F4E-ADF0-46DC-84CA-965F25245A9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.BusinessLogic", "LogAnalyzer.BusinessLogic\LogAnalyzer.BusinessLogic.csproj", "{ED8AF742-2431-40D8-A8CC-295A8BDA2423}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.API", "LogAnalyzer.API\LogAnalyzer.API.csproj", "{5CFD58BC-167E-4BD1-8C9B-93F04175601C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{13923F4E-ADF0-46DC-84CA-965F25245A9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13923F4E-ADF0-46DC-84CA-965F25245A9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13923F4E-ADF0-46DC-84CA-965F25245A9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED8AF742-2431-40D8-A8CC-295A8BDA2423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED8AF742-2431-40D8-A8CC-295A8BDA2423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED8AF742-2431-40D8-A8CC-295A8BDA2423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED8AF742-2431-40D8-A8CC-295A8BDA2423}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CFD58BC-167E-4BD1-8C9B-93F04175601C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CFD58BC-167E-4BD1-8C9B-93F04175601C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CFD58BC-167E-4BD1-8C9B-93F04175601C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CFD58BC-167E-4BD1-8C9B-93F04175601C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
