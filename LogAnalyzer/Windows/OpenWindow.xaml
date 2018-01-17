@@ -13,7 +13,6 @@
             <StackPanel Orientation="Vertical">
                 <Label>Log source</Label>
                 <ComboBox Width="100" HorizontalAlignment="Left" />
-                <ContentControl Content="{Binding ExposedControl}" />
                 <Separator HorizontalAlignment="Stretch" Margin="0,4" />
                 <Label>Parser profile</Label>
                 <ComboBox Width="100" HorizontalAlignment="Left" />

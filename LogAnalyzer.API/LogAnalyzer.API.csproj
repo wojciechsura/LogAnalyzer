@@ -41,8 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LogSource\ILogEditor.cs" />
-    <Compile Include="LogSource\ILogEditorViewModel.cs" />
     <Compile Include="LogSource\ILogSourceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -20,7 +20,5 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.access = access;
             this.result = result;
         }
-
-        public Control ExposedControl { get; } = new Label { Content = "Test" };
     }
 }
