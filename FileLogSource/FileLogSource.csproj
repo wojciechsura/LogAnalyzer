@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Editor\FileSourceEditorViewModel.cs" />
+    <Compile Include="FileLogSourceConfiguration.cs" />
     <Compile Include="FileLogSourceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,6 +60,9 @@
       <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
       <Name>LogAnalyzer.API</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Open16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

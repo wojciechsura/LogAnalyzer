@@ -12,6 +12,12 @@ namespace FileLogSource.Editor
         private const string DISPLAY_NAME = "Single file";
         private const string EDITOR_RESOURCE = "FileLogEditorDataTemplate";
 
+        public ILogSourceConfiguration BuildConfiguration()
+        {
+            return new FileLogSourceConfiguration();
+        }
+
+
         public string DisplayName => DISPLAY_NAME;
 
         public string EditorResource => EDITOR_RESOURCE;
