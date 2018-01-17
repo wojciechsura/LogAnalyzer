@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:LogAnalyzer.LogSources.FileLogSource"
+                    xmlns:editor="clr-namespace:FileLogSource.Editor">
+
+    <DataTemplate x:Key="FileLogEditorDataTemplate">
+        <Label>Works!</Label>
+    </DataTemplate>
+</ResourceDictionary>

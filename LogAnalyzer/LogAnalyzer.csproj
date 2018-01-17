@@ -112,6 +112,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Infrastructure\LogSourceTemplateSelector.cs" />
     <Compile Include="Windows\OpenWindow.xaml.cs">
       <DependentUpon>OpenWindow.xaml</DependentUpon>
     </Compile>
@@ -679,6 +680,14 @@
     <Content Include="Lib\__phello__.foo.py" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
+      <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
+      <Name>FileLogSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
+      <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
+      <Name>LogAnalyzer.API</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.BusinessLogic\LogAnalyzer.BusinessLogic.csproj">
       <Project>{ED8AF742-2431-40D8-A8CC-295A8BDA2423}</Project>
       <Name>LogAnalyzer.BusinessLogic</Name>

@@ -8,5 +8,7 @@ namespace LogAnalyzer.API.LogSource
 {
     public interface ILogSourceEditorViewModel
     {
+        string DisplayName { get; }
+        string EditorResource { get; }
     }
 }

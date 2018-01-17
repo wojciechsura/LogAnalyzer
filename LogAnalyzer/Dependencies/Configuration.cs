@@ -11,7 +11,7 @@ namespace LogAnalyzer.Dependencies
     {
         public static void Configure(IUnityContainer container)
         {
-
+            BusinessLogic.Dependencies.Configuration.Configure(container);
         }
     }
 }

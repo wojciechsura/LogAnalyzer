@@ -1,4 +1,6 @@
-﻿using LogAnalyzer.BusinessLogic.ViewModels;
+﻿using FileLogSource.Editor;
+using LogAnalyzer.API.LogSource;
+using LogAnalyzer.BusinessLogic.ViewModels;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using System;
 using System.Collections.Generic;

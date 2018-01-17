@@ -4,21 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
         xmlns:local="clr-namespace:LogAnalyzer.Windows"
+        xmlns:i="clr-namespace:LogAnalyzer.Infrastructure"
         mc:Ignorable="d"
         ShowInTaskbar="False"
-        
-        Title="OpenWindow" SizeToContent="WidthAndHeight">
+        Title="OpenWindow" SizeToContent="Height" Width="400">
+    <Window.Resources>
+        <i:LogSourceTemplateSelector x:Key="LogSourceTemplateSelector" />
+    </Window.Resources>
     <StackPanel Orientation="Vertical">
         <GroupBox Header="Open log" Padding="4">
             <StackPanel Orientation="Vertical">
                 <Label>Log source</Label>
-                <ComboBox Width="100" HorizontalAlignment="Left" />
+                <ComboBox Width="150" HorizontalAlignment="Left" ItemsSource="{Binding LogSources}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedLogSource}"/>
+                <ContentControl Content="{Binding SelectedLogSource}" ContentTemplateSelector="{StaticResource LogSourceTemplateSelector}">
+                    <ContentControl.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceDictionary Source="pack://application:,,,/FileLogSource;component/Editor/FileLogSourceEditorTemplate.xaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </ContentControl.Resources>
+                </ContentControl>
                 <Separator HorizontalAlignment="Stretch" Margin="0,4" />
                 <Label>Parser profile</Label>
-                <ComboBox Width="100" HorizontalAlignment="Left" />
+                <ComboBox Width="150" HorizontalAlignment="Left" />
                 <Separator HorizontalAlignment="Stretch" Margin="0,4" />
                 <Label>Processing profile</Label>
-                <ComboBox Width="100" HorizontalAlignment="Left" />
+                <ComboBox Width="150" HorizontalAlignment="Left" />
             </StackPanel>
         </GroupBox>
     </StackPanel>
