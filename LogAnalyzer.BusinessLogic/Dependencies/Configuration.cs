@@ -1,4 +1,6 @@
-﻿using LogAnalyzer.BusinessLogic.ViewModels;
+﻿using LogAnalyzer.BusinessLogic.Services;
+using LogAnalyzer.BusinessLogic.Services.Interfaces;
+using LogAnalyzer.BusinessLogic.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,8 @@ namespace LogAnalyzer.BusinessLogic.Dependencies
         public static void Configure(IUnityContainer container)
         {
             container.RegisterType<MainWindowViewModel>();
+
+            container.RegisterType<ILogSourceRepository, LogSourceRepository>();
         }
     }
 }

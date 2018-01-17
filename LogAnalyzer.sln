@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.BusinessLogic",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.API", "LogAnalyzer.API\LogAnalyzer.API.csproj", "{5CFD58BC-167E-4BD1-8C9B-93F04175601C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LogSources", "LogSources", "{F34EB931-8299-4882-BCF9-05F05183926E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLogSource", "FileLogSource\FileLogSource.csproj", "{F26A204C-101F-4C8E-864F-3331BF0AF48F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{5CFD58BC-167E-4BD1-8C9B-93F04175601C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CFD58BC-167E-4BD1-8C9B-93F04175601C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CFD58BC-167E-4BD1-8C9B-93F04175601C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F26A204C-101F-4C8E-864F-3331BF0AF48F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F26A204C-101F-4C8E-864F-3331BF0AF48F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F26A204C-101F-4C8E-864F-3331BF0AF48F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F26A204C-101F-4C8E-864F-3331BF0AF48F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F26A204C-101F-4C8E-864F-3331BF0AF48F} = {F34EB931-8299-4882-BCF9-05F05183926E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8A01F61-35D1-4F28-9DDC-4593A57402D7}

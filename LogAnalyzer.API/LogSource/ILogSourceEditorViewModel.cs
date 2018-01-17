@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.LogSource
 {
-    public interface ILogSourceProvider
+    public interface ILogSourceEditorViewModel
     {
-        ILogSourceEditorViewModel CreateEditorViewModel();
     }
 }
