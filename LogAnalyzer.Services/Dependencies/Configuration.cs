@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Unity;
 
-namespace LogAnalyzer.Dependencies
+namespace LogAnalyzer.Services.Dependencies
 {
     public static class Configuration
     {
@@ -16,7 +16,7 @@ namespace LogAnalyzer.Dependencies
             if (isConfigured)
                 return;
 
-            LogAnalyzer.BusinessLogic.Dependencies.Configuration.Configure(container);
+            // Configure
 
             isConfigured = true;
         }

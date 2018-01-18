@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileLogSource", "FileLogSou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Wpf", "LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj", "{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Services", "LogAnalyzer.Services\LogAnalyzer.Services.csproj", "{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
