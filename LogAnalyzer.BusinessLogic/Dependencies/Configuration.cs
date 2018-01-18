@@ -1,6 +1,6 @@
 ﻿using LogAnalyzer.BusinessLogic.Services;
-using LogAnalyzer.BusinessLogic.Services.Interfaces;
 using LogAnalyzer.BusinessLogic.ViewModels;
+using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

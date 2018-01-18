@@ -1,8 +1,8 @@
 ﻿using LogAnalyzer.API.LogSource;
 using LogAnalyzer.BusinessLogic.Infrastructure;
 using LogAnalyzer.BusinessLogic.Models;
-using LogAnalyzer.BusinessLogic.Services.Interfaces;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
+using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

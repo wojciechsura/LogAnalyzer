@@ -39,7 +39,7 @@
                 </Grid>
                 <Separator HorizontalAlignment="Stretch" Margin="0,4" />
                 <Label>Processing profile</Label>
-                <ComboBox HorizontalAlignment="Stretch" />
+                <ComboBox HorizontalAlignment="Stretch" Margin="4" />
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">

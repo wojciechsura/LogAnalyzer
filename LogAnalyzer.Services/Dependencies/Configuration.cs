@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogAnalyzer.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,9 @@ namespace LogAnalyzer.Services.Dependencies
                 return;
 
             // Configure
+
+            container.RegisterType<IWinApiService, WinApiService>();
+            container.RegisterType<IConfigurationService, ConfigurationService>();
 
             isConfigured = true;
         }

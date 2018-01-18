@@ -1,6 +1,6 @@
 ﻿using FileLogSource;
 using LogAnalyzer.API.LogSource;
-using LogAnalyzer.BusinessLogic.Services.Interfaces;
+using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.BusinessLogic.Services
 {
-    public class LogSourceRepository : ILogSourceRepository
+    class LogSourceRepository : ILogSourceRepository
     {
         private List<ILogSourceProvider> logSourceProviders;
 
@@ -20,6 +20,10 @@ namespace LogAnalyzer.BusinessLogic.Services
             {
                 new FileLogSourceProvider()
             };
+
+            // Verifying uniqueness of names
+            if (logSourceProviders.Any(p => logSourceProviders.Any(q => q.UniqueName == p.UniqueName && p != q)))
+                throw new InvalidOperationException("Not all log source providers names are unique!");
         }
 
         public ObservableCollection<ILogSourceEditorViewModel> CreateLogSourceViewModels()

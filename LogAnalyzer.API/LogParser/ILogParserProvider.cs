@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.API.LogSource
+namespace LogAnalyzer.API.LogParser
 {
-    public interface ILogSourceProvider
+    public interface ILogParserProvider
     {
-        ILogSourceEditorViewModel CreateEditorViewModel();
+        ILogParserEditorViewModel CreateEditorViewModel();
         string UniqueName { get; }
     }
 }

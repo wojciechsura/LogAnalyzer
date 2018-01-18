@@ -1,4 +1,4 @@
-﻿using LogAnalyzer.Services.Models;
+﻿using LogAnalyzer.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Services.Interfaces
 {
-    public interface IWinApiService
+    public interface IConfigurationService
     {
-        String OpenFile(IEnumerable<FilterDefinition> filter);
+        ConfigurationRoot Configuration { get; }
     }
 }

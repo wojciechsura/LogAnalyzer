@@ -69,7 +69,7 @@
     <Compile Include="Infrastructure\ModalDialogResult.cs" />
     <Compile Include="Models\OpenResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Interfaces\ILogSourceRepository.cs" />
+    <Compile Include="Services\LogParserRepository.cs" />
     <Compile Include="Services\LogSourceRepository.cs" />
     <Compile Include="ViewModels\Interfaces\IMainWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IOpenWindowAccess.cs" />
@@ -84,6 +84,10 @@
     <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
       <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
       <Name>FileLogSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LineLogParser\LineLogParser.csproj">
+      <Project>{897C5F60-27CC-43CC-8E66-8718B8822D60}</Project>
+      <Name>LineLogParser</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
       <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>

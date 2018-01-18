@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer", "LogAnalyzer\LogAnalyzer.csproj", "{77BA0984-FD8F-4BD1-AE31-4DEC3459D73C}"
 EndProject
@@ -18,6 +18,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Wpf", "LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj", "{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Services", "LogAnalyzer.Services\LogAnalyzer.Services.csproj", "{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Common", "LogAnalyzer.Common\LogAnalyzer.Common.csproj", "{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LogParsers", "LogParsers", "{51820161-F76F-4C86-9A98-F81A97CAD616}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineLogParser", "LineLogParser\LineLogParser.csproj", "{897C5F60-27CC-43CC-8E66-8718B8822D60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Configuration", "LogAnalyzer.Configuration\LogAnalyzer.Configuration.csproj", "{CA47417B-1C22-4513-A654-B78805A120F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,12 +61,25 @@ Global
 		{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{897C5F60-27CC-43CC-8E66-8718B8822D60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{897C5F60-27CC-43CC-8E66-8718B8822D60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{897C5F60-27CC-43CC-8E66-8718B8822D60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{897C5F60-27CC-43CC-8E66-8718B8822D60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA47417B-1C22-4513-A654-B78805A120F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA47417B-1C22-4513-A654-B78805A120F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA47417B-1C22-4513-A654-B78805A120F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA47417B-1C22-4513-A654-B78805A120F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F26A204C-101F-4C8E-864F-3331BF0AF48F} = {F34EB931-8299-4882-BCF9-05F05183926E}
+		{897C5F60-27CC-43CC-8E66-8718B8822D60} = {51820161-F76F-4C86-9A98-F81A97CAD616}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8A01F61-35D1-4F28-9DDC-4593A57402D7}
