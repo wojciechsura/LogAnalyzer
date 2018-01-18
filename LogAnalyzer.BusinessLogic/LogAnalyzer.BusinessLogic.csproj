@@ -65,7 +65,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\SimpleCommand.cs" />
     <Compile Include="Dependencies\Configuration.cs" />
     <Compile Include="Infrastructure\ModalDialogResult.cs" />
     <Compile Include="Models\OpenResult.cs" />
@@ -93,6 +92,10 @@
     <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
       <Name>LogAnalyzer.Dependencies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
+      <Project>{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}</Project>
+      <Name>LogAnalyzer.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

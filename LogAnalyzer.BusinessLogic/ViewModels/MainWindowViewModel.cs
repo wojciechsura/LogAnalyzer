@@ -1,6 +1,4 @@
-﻿using LogAnalyzer.BusinessLogic.Common;
-using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
-using LogAnalyzer.BusinessLogic.ViewModels;
+﻿using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Unity;
-using LogAnalyzer.Dependencies;
 using Unity.Resolution;
+using LogAnalyzer.Dependencies;
 using LogAnalyzer.BusinessLogic.Infrastructure;
 using LogAnalyzer.BusinessLogic.Models;
+using LogAnalyzer.Wpf.Input;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {

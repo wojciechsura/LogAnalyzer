@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace LogAnalyzer.BusinessLogic.Common
+namespace LogAnalyzer.Wpf.Input
 {
     public class SimpleCommand : ICommand
     {

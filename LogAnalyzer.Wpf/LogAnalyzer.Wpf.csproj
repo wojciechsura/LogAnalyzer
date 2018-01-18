@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F26A204C-101F-4C8E-864F-3331BF0AF48F}</ProjectGuid>
+    <ProjectGuid>{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileLogSource</RootNamespace>
-    <AssemblyName>FileLogSource</AssemblyName>
+    <RootNamespace>LogAnalyzer.Wpf</RootNamespace>
+    <AssemblyName>LogAnalyzer.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,43 +30,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Editor\FileSourceEditorViewModel.cs" />
-    <Compile Include="FileLogSourceConfiguration.cs" />
-    <Compile Include="FileLogSourceProvider.cs" />
+    <Compile Include="Input\SimpleCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Editor\FileLogSourceEditorTemplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
-      <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
-      <Name>LogAnalyzer.API</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
-      <Project>{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}</Project>
-      <Name>LogAnalyzer.Wpf</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\Images\Open16.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
