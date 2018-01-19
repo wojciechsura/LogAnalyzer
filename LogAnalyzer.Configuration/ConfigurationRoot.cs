@@ -10,6 +10,7 @@ namespace LogAnalyzer.Configuration
     [XmlRoot("Config")]
     public class ConfigurationRoot
     {
-
+        [XmlArray("LogParserProfiles"), XmlArrayItem(typeof(LogParserProfile), ElementName = "LogParserProfile")]
+        public List<LogParserProfile> LogParserProfiles { get; set; }
     }
 }
