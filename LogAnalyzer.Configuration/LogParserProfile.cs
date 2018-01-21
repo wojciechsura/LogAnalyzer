@@ -4,6 +4,8 @@ namespace LogAnalyzer.Configuration
 {
     public class LogParserProfile
     {
+        [XmlElement("Name")]
+        public string Name { get; set; }
         [XmlElement("ParserUniqueName")]
         public string ParserUniqueName { get; set; }
         [XmlElement("SerializedProfile")]
