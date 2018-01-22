@@ -92,6 +92,10 @@
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
       <Name>LogAnalyzer.Dependencies</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
+      <Project>{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}</Project>
+      <Name>LogAnalyzer.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
       <Project>{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}</Project>
       <Name>LogAnalyzer.Services</Name>

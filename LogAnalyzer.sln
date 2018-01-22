@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer", "LogAnalyzer\LogAnalyzer.csproj", "{77BA0984-FD8F-4BD1-AE31-4DEC3459D73C}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineLogParser", "LineLogParser\LineLogParser.csproj", "{897C5F60-27CC-43CC-8E66-8718B8822D60}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Configuration", "LogAnalyzer.Configuration\LogAnalyzer.Configuration.csproj", "{CA47417B-1C22-4513-A654-B78805A120F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Models", "LogAnalyzer.Models\LogAnalyzer.Models.csproj", "{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{CA47417B-1C22-4513-A654-B78805A120F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA47417B-1C22-4513-A654-B78805A120F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA47417B-1C22-4513-A654-B78805A120F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,12 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"        
         xmlns:local="clr-namespace:LogAnalyzer.Windows"
         xmlns:i="clr-namespace:LogAnalyzer.Infrastructure"
+        xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
         mc:Ignorable="d"
         ShowInTaskbar="False"
         Title="Open log" SizeToContent="Height" Width="400" ResizeMode="NoResize"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow">
     <Window.Resources>
         <i:LogSourceTemplateSelector x:Key="LogSourceTemplateSelector" />
+        <c:NullToBooleanConverter x:Key="NullToBooleanConverter" />
     </Window.Resources>
     <StackPanel Orientation="Vertical">
         <GroupBox Header="Open log" Padding="4" Margin="4">
@@ -32,10 +35,12 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <ComboBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" ItemsSource="{Binding LogParserProfiles}" SelectedItem="{Binding SelectedLogParserProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" />
-                    <Button Width="24" Height="24" Grid.Column="1" Margin="4"/>
+                    <Button Width="24" Height="24" Grid.Column="1" Margin="4" IsEnabled="{Binding SelectedLogParserProfile, Converter={StaticResource NullToBooleanConverter}}">Edit</Button>
+                    <Button Width="24" Height="24" Grid.Column="2" Margin="4">New</Button>
                 </Grid>
                 <Separator HorizontalAlignment="Stretch" Margin="0,4" />
                 <Label>Processing profile</Label>

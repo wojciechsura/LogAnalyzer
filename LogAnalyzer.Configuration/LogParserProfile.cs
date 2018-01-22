@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace LogAnalyzer.Configuration
 {
@@ -6,6 +7,8 @@ namespace LogAnalyzer.Configuration
     {
         [XmlElement("Name")]
         public string Name { get; set; }
+        [XmlElement("Guid")]
+        public Guid Guid { get; set; }
         [XmlElement("ParserUniqueName")]
         public string ParserUniqueName { get; set; }
         [XmlElement("SerializedProfile")]

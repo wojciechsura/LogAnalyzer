@@ -1,4 +1,4 @@
-﻿using LogAnalyzer.Services.Models;
+﻿using LogAnalyzer.Models.Services.WinApiService;
 using System;
 using System.Collections.Generic;
 using System.Linq;

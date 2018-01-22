@@ -72,9 +72,7 @@
     <Compile Include="Interfaces\ILogParserRepository.cs" />
     <Compile Include="Interfaces\ILogSourceRepository.cs" />
     <Compile Include="Interfaces\IWinApiService.cs" />
-    <Compile Include="Models\FilterDefinition.cs" />
-    <Compile Include="Models\ModalDialogResult.cs" />
-    <Compile Include="Models\OpenResult.cs" />
+    <Compile Include="Common\ModalDialogResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinApiService.cs" />
   </ItemGroup>
@@ -90,6 +88,10 @@
     <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
       <Name>LogAnalyzer.Dependencies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
+      <Project>{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}</Project>
+      <Name>LogAnalyzer.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -13,17 +13,23 @@ namespace LogAnalyzer.Configuration
         [XmlArray("LogParserProfiles"), XmlArrayItem(typeof(LogParserProfile), ElementName = "LogParserProfile")]
         public List<LogParserProfile> LogParserProfiles { get; set; }
 
-        public ConfigurationRoot()
+        private void Defaults()
         {
             LogParserProfiles = new List<LogParserProfile>
             {
                 new LogParserProfile
                 {
                     Name = "Parse whole line as message",
+                    Guid = new Guid(),
                     ParserUniqueName = "LogParser.Line",
                     SerializedProfile = ""
                 }
             };
+        }
+
+        public ConfigurationRoot()
+        {
+            Defaults();
         }
     }
 }

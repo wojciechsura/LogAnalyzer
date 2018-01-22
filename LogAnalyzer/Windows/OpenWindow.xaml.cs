@@ -18,6 +18,8 @@ using System.Windows.Shapes;
 using Unity;
 using Unity.Resolution;
 using LogAnalyzer.Services.Models;
+using LogAnalyzer.Services.Models.DialogResults;
+using LogAnalyzer.Services.Common;
 
 namespace LogAnalyzer.Windows
 {
