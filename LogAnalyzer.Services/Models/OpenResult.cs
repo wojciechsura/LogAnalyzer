@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.BusinessLogic.Models
+namespace LogAnalyzer.Services.Models
 {
     public class OpenResult
     {

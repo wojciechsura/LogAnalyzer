@@ -24,6 +24,7 @@ namespace LogAnalyzer.BusinessLogic.Dependencies
             container.RegisterType<MainWindowViewModel>();
 
             container.RegisterType<ILogSourceRepository, LogSourceRepository>();
+            container.RegisterType<ILogParserRepository, LogParserRepository>();
 
             isConfigured = true;
         }

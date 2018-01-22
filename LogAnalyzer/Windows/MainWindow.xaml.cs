@@ -34,11 +34,5 @@ namespace LogAnalyzer.Windows
             viewModel = Dependencies.Container.Instance.Resolve<MainWindowViewModel>(new ParameterOverride("access", this));
             DataContext = viewModel;
         }
-
-        public void ShowOpenDialog(Func<IOpenWindowAccess, OpenWindowViewModel> openWindowViewModelFactory)
-        {
-            OpenWindow openWindow = new OpenWindow(openWindowViewModelFactory);
-            openWindow.ShowDialog();
-        }
     }
 }

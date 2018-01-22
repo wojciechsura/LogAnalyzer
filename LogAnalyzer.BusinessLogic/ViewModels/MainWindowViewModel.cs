@@ -8,9 +8,8 @@ using System.Windows.Input;
 using Unity;
 using Unity.Resolution;
 using LogAnalyzer.Dependencies;
-using LogAnalyzer.BusinessLogic.Infrastructure;
-using LogAnalyzer.BusinessLogic.Models;
 using LogAnalyzer.Wpf.Input;
+using LogAnalyzer.Services.Interfaces;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -19,16 +18,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         // Private fields -----------------------------------------------------
 
         private readonly IMainWindowAccess access;
+        private readonly IDialogService dialogService;
 
         // Private methods ----------------------------------------------------
 
         private void DoOpen()
         {
-            var result = new ModalDialogResult<OpenResult>();
-            Func<IOpenWindowAccess, OpenWindowViewModel> factory = (access) => Container.Instance.Resolve<OpenWindowViewModel>(
-                new ParameterOverride("access", access), 
-                new ParameterOverride("result", result));
-            access.ShowOpenDialog(factory);
+            var result = dialogService.OpenLog();
 
             if (result.DialogResult)
             {
@@ -38,9 +34,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         // Public methods -----------------------------------------------------
 
-        public MainWindowViewModel(IMainWindowAccess access)
+        public MainWindowViewModel(IMainWindowAccess access, IDialogService dialogService)
         {
             this.access = access;
+            this.dialogService = dialogService;
 
             OpenCommand = new SimpleCommand((obj) => DoOpen());
         }

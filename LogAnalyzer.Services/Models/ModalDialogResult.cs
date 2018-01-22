@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.BusinessLogic.Infrastructure
+namespace LogAnalyzer.Services.Models
 {
     public class ModalDialogResult<T>
         where T : class

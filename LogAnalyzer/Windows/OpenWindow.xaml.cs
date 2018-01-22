@@ -15,6 +15,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Unity;
+using Unity.Resolution;
+using LogAnalyzer.Services.Models;
 
 namespace LogAnalyzer.Windows
 {
@@ -25,12 +28,14 @@ namespace LogAnalyzer.Windows
     {
         private OpenWindowViewModel viewModel;
 
-        public OpenWindow(Func<IOpenWindowAccess, OpenWindowViewModel> viewModelFactory)
+        public OpenWindow()
         {
             InitializeComponent();
 
-            this.viewModel = viewModelFactory(this);
+            this.viewModel = Dependencies.Container.Instance.Resolve<OpenWindowViewModel>(new ParameterOverride("access", this));
             DataContext = viewModel;
         }
+
+        public ModalDialogResult<OpenResult> DataResult => viewModel.Result;
     }
 }

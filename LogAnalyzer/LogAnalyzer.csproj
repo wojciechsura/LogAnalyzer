@@ -113,6 +113,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Infrastructure\LogSourceTemplateSelector.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Windows\OpenWindow.xaml.cs">
       <DependentUpon>OpenWindow.xaml</DependentUpon>
     </Compile>
@@ -695,6 +696,10 @@
     <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
       <Name>LogAnalyzer.Dependencies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
+      <Project>{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}</Project>
+      <Name>LogAnalyzer.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LogAnalyzer.Services;
+using LogAnalyzer.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +19,8 @@ namespace LogAnalyzer.Dependencies
                 return;
 
             LogAnalyzer.BusinessLogic.Dependencies.Configuration.Configure(container);
+
+            container.RegisterType<IDialogService, DialogService>();
 
             isConfigured = true;
         }

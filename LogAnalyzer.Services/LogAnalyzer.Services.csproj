@@ -68,10 +68,13 @@
     <Compile Include="ConfigurationService.cs" />
     <Compile Include="Dependencies\Configuration.cs" />
     <Compile Include="Interfaces\IConfigurationService.cs" />
+    <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Interfaces\ILogParserRepository.cs" />
     <Compile Include="Interfaces\ILogSourceRepository.cs" />
     <Compile Include="Interfaces\IWinApiService.cs" />
     <Compile Include="Models\FilterDefinition.cs" />
+    <Compile Include="Models\ModalDialogResult.cs" />
+    <Compile Include="Models\OpenResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinApiService.cs" />
   </ItemGroup>

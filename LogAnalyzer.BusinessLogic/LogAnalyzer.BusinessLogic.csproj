@@ -66,8 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dependencies\Configuration.cs" />
-    <Compile Include="Infrastructure\ModalDialogResult.cs" />
-    <Compile Include="Models\OpenResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\LogParserRepository.cs" />
     <Compile Include="Services\LogSourceRepository.cs" />
@@ -92,6 +90,10 @@
     <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
       <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
       <Name>LogAnalyzer.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Configuration\LogAnalyzer.Configuration.csproj">
+      <Project>{CA47417B-1C22-4513-A654-B78805A120F3}</Project>
+      <Name>LogAnalyzer.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
