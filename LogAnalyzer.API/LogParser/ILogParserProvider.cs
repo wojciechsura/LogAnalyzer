@@ -9,8 +9,10 @@ namespace LogAnalyzer.API.LogParser
     public interface ILogParserProvider
     {
         ILogParserEditorViewModel CreateEditorViewModel();
-        string UniqueName { get; }
-
         ILogParserConfiguration DeserializeConfiguration(string serializedProfile);
+        string SerializeConfiguration(ILogParserConfiguration configuration);
+        ILogParser CreateParser(ILogParserConfiguration configuration);
+
+        string UniqueName { get; }
     }
 }

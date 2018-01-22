@@ -22,6 +22,11 @@ namespace LineLogParser
             return new LineLogParserConfiguration();
         }
 
+        public string SerializeConfiguration(ILogParserConfiguration configuration)
+        {
+            return String.Empty;
+        }
+
         public string UniqueName => Common.Consts.UNIQUE_NAME;
     }
 }

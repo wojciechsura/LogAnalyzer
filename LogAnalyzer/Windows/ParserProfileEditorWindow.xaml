@@ -4,11 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogAnalyzer.Windows"
+        xmlns:i="clr-namespace:LogAnalyzer.Infrastructure"
         mc:Ignorable="d"
-        Title="ParserProfileEditorWindow" Width="400"
+        Title="Parser profile editor" Width="400"
         SizeToContent="Height" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         WindowStyle="ToolWindow">
+    <Window.Resources>
+        <i:LogParserTemplateSelector x:Key="LogParserTemplateSelector" />
+    </Window.Resources>
     <StackPanel Orientation="Vertical" Margin="4" Grid.IsSharedSizeScope="True">
         <DockPanel>
             <Label DockPanel.Dock="Left">Profile</Label>
@@ -41,6 +45,14 @@
                       SelectedItem="{Binding SelectedLogParserViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       DisplayMemberPath="DisplayName"/>
         </Grid>
-        <ContentControl HorizontalAlignment="Stretch" />
+        <ContentControl Content="{Binding SelectedLogParserViewModel}" ContentTemplateSelector="{StaticResource LogParserTemplateSelector}">
+            <ContentControl.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/LineLogParser;component/Editor/LineLogParserEditorTemplate.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </ContentControl.Resources>
+        </ContentControl>
     </StackPanel>
 </Window>

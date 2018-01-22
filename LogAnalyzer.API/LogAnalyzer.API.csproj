@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogParser\ILogParser.cs" />
     <Compile Include="LogParser\ILogParserConfiguration.cs" />
     <Compile Include="LogParser\ILogParserEditorViewModel.cs" />
     <Compile Include="LogParser\ILogParserProvider.cs" />
@@ -49,6 +50,11 @@
     <Compile Include="LogSource\ILogSourceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
+      <Project>{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}</Project>
+      <Name>LogAnalyzer.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
