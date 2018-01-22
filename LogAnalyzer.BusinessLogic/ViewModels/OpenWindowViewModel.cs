@@ -112,7 +112,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             result = new ModalDialogResult<OpenResult>();
 
-            logSourceViewModels = logSourceRepository.CreateLogSourceViewModels();
+            logSourceViewModels = new ObservableCollection<ILogSourceEditorViewModel>();
+
+            logSourceRepository.LogSourceProviders
+                .Select(provider => provider.CreateEditorViewModel())
+                .ToList()
+                .ForEach(vm => logSourceViewModels.Add(vm));
             selectedLogSource = logSourceViewModels.FirstOrDefault();
 
             logParserProfiles = new ObservableCollection<LogParserProfileInfo>();

@@ -10,6 +10,6 @@ namespace LogAnalyzer.Services.Interfaces
 {
     public interface ILogSourceRepository
     {
-        ObservableCollection<ILogSourceEditorViewModel> CreateLogSourceViewModels();
+        IEnumerable<ILogSourceProvider> LogSourceProviders { get; }
     }
 }

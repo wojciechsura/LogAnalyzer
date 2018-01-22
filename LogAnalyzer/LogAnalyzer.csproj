@@ -117,6 +117,9 @@
     <Compile Include="Windows\OpenWindow.xaml.cs">
       <DependentUpon>OpenWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ParserProfileEditorWindow.xaml.cs">
+      <DependentUpon>ParserProfileEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -131,6 +134,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Windows\OpenWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ParserProfileEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

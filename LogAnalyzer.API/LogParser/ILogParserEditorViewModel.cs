@@ -8,5 +8,12 @@ namespace LogAnalyzer.API.LogParser
 {
     public interface ILogParserEditorViewModel
     {
+        void SetConfiguration(ILogParserConfiguration configuration);
+        ILogParserConfiguration GetConfiguration();
+
+        string DisplayName { get; }
+        string EditorResource { get; }
+
+        ILogParserProvider Provider { get; }
     }
 }

@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LogParser\ILogParserConfiguration.cs" />
     <Compile Include="LogParser\ILogParserEditorViewModel.cs" />
     <Compile Include="LogParser\ILogParserProvider.cs" />
     <Compile Include="LogSource\ILogSourceConfiguration.cs" />

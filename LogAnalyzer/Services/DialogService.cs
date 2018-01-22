@@ -16,12 +16,16 @@ namespace LogAnalyzer.Services
     {
         public ModalDialogResult<LogParserProfileEditorResult> EditLogParserProfile(Guid guid)
         {
-            throw new NotImplementedException();
+            ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(guid);
+            editorWindow.ShowDialog();
+            return editorWindow.DataResult;
         }
 
         public ModalDialogResult<LogParserProfileEditorResult> NewLogParserProfile()
         {
-            throw new NotImplementedException();
+            ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(null);
+            editorWindow.ShowDialog();
+            return editorWindow.DataResult;
         }
 
         public ModalDialogResult<OpenResult> OpenLog()

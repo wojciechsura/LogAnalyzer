@@ -7,7 +7,6 @@
         xmlns:i="clr-namespace:LogAnalyzer.Infrastructure"
         xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
         mc:Ignorable="d"
-        ShowInTaskbar="False"
         Title="Open log" SizeToContent="Height" Width="400" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         WindowStyle="ToolWindow">
@@ -39,8 +38,8 @@
                     </Grid.ColumnDefinitions>
 
                     <ComboBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" ItemsSource="{Binding LogParserProfiles}" SelectedItem="{Binding SelectedLogParserProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" />
-                    <Button Width="24" Height="24" Grid.Column="1" Margin="4" IsEnabled="{Binding SelectedLogParserProfile, Converter={StaticResource NullToBooleanConverter}}">Edit</Button>
-                    <Button Width="24" Height="24" Grid.Column="2" Margin="4">New</Button>
+                    <Button Width="24" Height="24" Grid.Column="1" Margin="4" Command="{Binding EditParserProfileCommand}" IsEnabled="{Binding SelectedLogParserProfile, Converter={StaticResource NullToBooleanConverter}}">Edit</Button>
+                    <Button Width="24" Height="24" Grid.Column="2" Margin="4" Command="{Binding NewParserProfileCommand}">New</Button>
                 </Grid>
                 <Separator HorizontalAlignment="Stretch" Margin="0,4" />
                 <Label>Processing profile</Label>

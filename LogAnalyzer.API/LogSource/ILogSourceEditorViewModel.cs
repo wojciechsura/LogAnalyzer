@@ -13,5 +13,7 @@ namespace LogAnalyzer.API.LogSource
 
         string DisplayName { get; }
         string EditorResource { get; }
+
+        ILogSourceProvider Provider { get; }
     }
 }

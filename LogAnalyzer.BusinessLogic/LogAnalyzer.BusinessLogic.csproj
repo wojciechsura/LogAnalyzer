@@ -71,8 +71,10 @@
     <Compile Include="Services\LogSourceRepository.cs" />
     <Compile Include="ViewModels\Interfaces\IMainWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IOpenWindowAccess.cs" />
+    <Compile Include="ViewModels\Interfaces\IParserProfileEditorWindowAccess.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\OpenWindowViewModel.cs" />
+    <Compile Include="ViewModels\ParserProfileEditorWindowViewModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

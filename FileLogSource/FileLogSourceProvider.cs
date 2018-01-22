@@ -6,18 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Resolution;
 
 namespace FileLogSource
 {
     public class FileLogSourceProvider : ILogSourceProvider
     {
-        private readonly string UNIQUE_NAME = "LogSource.File";
-
         public ILogSourceEditorViewModel CreateEditorViewModel()
         {
-            return LogAnalyzer.Dependencies.Container.Instance.Resolve<FileSourceEditorViewModel>();
+            return LogAnalyzer.Dependencies.Container.Instance.Resolve<FileSourceEditorViewModel>(new ParameterOverride("provider", this));
         }
 
-        public string UniqueName => UNIQUE_NAME;
+        public string UniqueName => Common.Consts.UNIQUE_NAME;
     }
 }

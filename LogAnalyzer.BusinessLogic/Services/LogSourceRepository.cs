@@ -26,15 +26,6 @@ namespace LogAnalyzer.BusinessLogic.Services
                 throw new InvalidOperationException("Not all log source providers names are unique!");
         }
 
-        public ObservableCollection<ILogSourceEditorViewModel> CreateLogSourceViewModels()
-        {
-            var result = new ObservableCollection<ILogSourceEditorViewModel>();
-
-            logSourceProviders.Select(lsp => lsp.CreateEditorViewModel())
-                .ToList()
-                .ForEach(vm => result.Add(vm));
-
-            return result;
-        }
+        public IEnumerable<ILogSourceProvider> LogSourceProviders => logSourceProviders;
     }
 }

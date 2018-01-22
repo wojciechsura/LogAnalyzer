@@ -56,8 +56,9 @@ namespace FileLogSource.Editor
 
         // Public methods -----------------------------------------------------
 
-        public FileSourceEditorViewModel(IWinApiService winApiService)
+        public FileSourceEditorViewModel(ILogSourceProvider provider, IWinApiService winApiService)
         {
+            this.Provider = provider;
             this.winApiService = winApiService;
 
             OpenFileCommand = new SimpleCommand((obj) => DoOpenFile());
@@ -82,6 +83,8 @@ namespace FileLogSource.Editor
                 filename = value;
             }
         }
+
+        public ILogSourceProvider Provider { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

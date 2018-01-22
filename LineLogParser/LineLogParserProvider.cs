@@ -6,18 +6,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Resolution;
 
 namespace LineLogParser
 {
     public class LineLogParserProvider : ILogParserProvider
     {
-        private readonly string UNIQUE_NAME = "LogParser.Line";
-
         public ILogParserEditorViewModel CreateEditorViewModel()
         {
-            return LogAnalyzer.Dependencies.Container.Instance.Resolve<LineLogParserEditorViewModel>();
+            return LogAnalyzer.Dependencies.Container.Instance.Resolve<LineLogParserEditorViewModel>(new ParameterOverride("provider", this));
         }
 
-        public string UniqueName => UNIQUE_NAME;
+        public ILogParserConfiguration DeserializeConfiguration(string serializedProfile)
+        {
+            return new LineLogParserConfiguration();
+        }
+
+        public string UniqueName => Common.Consts.UNIQUE_NAME;
     }
 }
