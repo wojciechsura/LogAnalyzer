@@ -72,8 +72,11 @@
     <Compile Include="Dependencies\Configuration.cs" />
     <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
+    <Compile Include="Interfaces\IEngine.cs" />
+    <Compile Include="Interfaces\IEngineFactory.cs" />
     <Compile Include="Interfaces\ILogParserRepository.cs" />
     <Compile Include="Interfaces\ILogSourceRepository.cs" />
+    <Compile Include="Interfaces\IMessagingService.cs" />
     <Compile Include="Interfaces\IPathProviderService.cs" />
     <Compile Include="Interfaces\IWinApiService.cs" />
     <Compile Include="Common\ModalDialogResult.cs" />

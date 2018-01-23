@@ -70,6 +70,7 @@
   <ItemGroup>
     <Compile Include="Common\Consts.cs" />
     <Compile Include="Editor\FileSourceEditorViewModel.cs" />
+    <Compile Include="FileLogSource.cs" />
     <Compile Include="FileLogSourceConfiguration.cs" />
     <Compile Include="FileLogSourceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

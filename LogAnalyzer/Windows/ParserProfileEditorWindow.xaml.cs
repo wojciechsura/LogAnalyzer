@@ -37,5 +37,10 @@ namespace LogAnalyzer.Windows
         }
 
         public ModalDialogResult<LogParserProfileEditorResult> DataResult => viewModel.Result;
+
+        public void Close(bool dialogResult)
+        {
+            DialogResult = dialogResult;
+        }
     }
 }

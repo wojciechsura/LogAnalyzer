@@ -8,5 +8,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Interfaces
 {
     public interface IParserProfileEditorWindowAccess
     {
+        void Close(bool dialogResult);
     }
 }

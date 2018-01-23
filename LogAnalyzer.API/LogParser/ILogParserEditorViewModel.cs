@@ -13,6 +13,7 @@ namespace LogAnalyzer.API.LogParser
 
         string DisplayName { get; }
         string EditorResource { get; }
+        bool Validate();
 
         ILogParserProvider Provider { get; }
     }

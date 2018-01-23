@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogAnalyzer.API.LogParser;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace LogAnalyzer.API.LogSource
     public interface ILogSourceProvider
     {
         ILogSourceEditorViewModel CreateEditorViewModel();
+        ILogSource CreateLogSource(ILogSourceConfiguration configuration, ILogParser logParser);
         string UniqueName { get; }
     }
 }

@@ -45,6 +45,7 @@
     <Compile Include="LogParser\ILogParserConfiguration.cs" />
     <Compile Include="LogParser\ILogParserEditorViewModel.cs" />
     <Compile Include="LogParser\ILogParserProvider.cs" />
+    <Compile Include="LogSource\ILogSource.cs" />
     <Compile Include="LogSource\ILogSourceConfiguration.cs" />
     <Compile Include="LogSource\ILogSourceEditorViewModel.cs" />
     <Compile Include="LogSource\ILogSourceProvider.cs" />

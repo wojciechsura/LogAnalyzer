@@ -27,6 +27,11 @@ namespace LineLogParser.Editor
             return new LineLogParserConfiguration();
         }
 
+        public bool Validate()
+        {
+            return true;
+        }
+
         public string DisplayName => DISPLAY_NAME;
         public string EditorResource => EDITOR_RESOURCE;
         public ILogParserProvider Provider { get; }

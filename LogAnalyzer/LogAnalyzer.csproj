@@ -115,6 +115,7 @@
     <Compile Include="Infrastructure\LogParserTemplateSelector.cs" />
     <Compile Include="Infrastructure\LogSourceTemplateSelector.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\MessagingService.cs" />
     <Compile Include="Windows\OpenWindow.xaml.cs">
       <DependentUpon>OpenWindow.xaml</DependentUpon>
     </Compile>
