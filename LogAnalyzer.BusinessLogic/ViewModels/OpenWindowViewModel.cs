@@ -45,8 +45,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             configurationService.Configuration.LogParserProfiles
                 .Select(pp => new LogParserProfileInfo
                 {
-                    Name = pp.Name,
-                    Guid = pp.Guid
+                    Name = pp.Name.Value,
+                    Guid = pp.Guid.Value
                 })
                 .ToList()
                 .ForEach(pp => logParserProfiles.Add(pp));

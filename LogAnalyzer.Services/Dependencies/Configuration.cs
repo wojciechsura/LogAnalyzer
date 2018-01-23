@@ -21,6 +21,7 @@ namespace LogAnalyzer.Services.Dependencies
 
             container.RegisterType<IWinApiService, WinApiService>();
             container.RegisterType<IConfigurationService, ConfigurationService>();
+            container.RegisterType<IPathProviderService, PathProviderService>();
 
             isConfigured = true;
         }

@@ -65,7 +65,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             LogParserProfile editedProfile = GetEditedProfile(editedProfileGuid, configurationService);
 
             // Name
-            ProfileName = editedProfile?.Name ?? "New profile";
+            ProfileName = editedProfile?.Name.Value ?? "New profile";
 
             logParserEditorViewModels = new ObservableCollection<ILogParserEditorViewModel>();
             SelectedLogParserViewModel = null;
@@ -74,9 +74,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 var vm = provider.CreateEditorViewModel();
                 logParserEditorViewModels.Add(vm);
 
-                if (editedProfile != null && provider.UniqueName == editedProfile.ParserUniqueName)
+                if (editedProfile != null && provider.UniqueName == editedProfile.ParserUniqueName.Value)
                 {
-                    ILogParserConfiguration configuration = provider.DeserializeConfiguration(editedProfile.SerializedProfile);
+                    ILogParserConfiguration configuration = provider.DeserializeConfiguration(editedProfile.SerializedProfile.Value);
                     vm.SetConfiguration(configuration);
                     SelectedLogParserViewModel = vm;
                 }

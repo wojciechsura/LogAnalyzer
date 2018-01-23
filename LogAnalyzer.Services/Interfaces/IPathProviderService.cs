@@ -1,5 +1,4 @@
-﻿using LogAnalyzer.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Services.Interfaces
 {
-    public interface IConfigurationService
+    public interface IPathProviderService
     {
-        AppConfiguration Configuration { get; }
+        string GetUserPath();
+        string GetConfigurationFilePath();
     }
 }
