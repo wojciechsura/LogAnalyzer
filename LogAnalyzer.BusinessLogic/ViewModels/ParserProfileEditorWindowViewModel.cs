@@ -132,7 +132,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             result = new ModalDialogResult<LogParserProfileEditorResult>();
 
-            LogParserProfile editedProfile = GetEditedProfile(editedProfileGuid, configurationService);
+            LogParserProfile editedProfile = GetEditedProfile(editedProfileGuid);
 
             // Name
             ProfileName = editedProfile?.Name.Value ?? "New profile";
@@ -157,7 +157,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             CancelCommand = new SimpleCommand((obj) => DoCancel());
         }
 
-        private static LogParserProfile GetEditedProfile(Guid? editedProfileGuid)
+        private LogParserProfile GetEditedProfile(Guid? editedProfileGuid)
         {
             LogParserProfile profile = null;
             if (editedProfileGuid != null)

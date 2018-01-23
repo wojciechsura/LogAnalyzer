@@ -6,18 +6,33 @@ using System.Text;
 using System.Threading.Tasks;
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
+using LogAnalyzer.Models.Engine;
+using System.Collections.Concurrent;
+using System.ComponentModel;
 
 namespace LogAnalyzer.Engine
 {
     class Engine : IEngine
     {
-        private ILogSource logSource;
-        private ILogParser logParser;
+        private readonly ILogSource logSource;
+        private readonly ILogParser logParser;
+        private readonly BaseDocument document;
 
-        public Engine(ILogSource logSource, ILogParser logParser)
+        private BackgroundWorker ParserThread;
+
+        private void StartParsing()
+        {
+            ParserThread = new BackgroundWorker();
+            // TODO
+        }
+
+        public Engine(ILogSource logSource, ILogParser logParser, BaseDocument document)
         {
             this.logSource = logSource;
             this.logParser = logParser;
+            this.document = document;
+
+            StartParsing();
         }
     }
 }

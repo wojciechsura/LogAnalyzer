@@ -1,5 +1,6 @@
 ﻿using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
+using LogAnalyzer.Models.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace LogAnalyzer.Services.Interfaces
 {
     public interface IEngineFactory
     {
-        IEngine CreateEngine(ILogSource logSource, ILogParser logParser);
+        IEngine CreateEngine(ILogSource logSource, ILogParser logParser, BaseDocument document);
     }
 }
