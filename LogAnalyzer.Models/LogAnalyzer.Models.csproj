@@ -51,5 +51,6 @@
     <Compile Include="Services\WinApiService\FilterDefinition.cs" />
     <Compile Include="Views\OpenWindow\LogParserProfileInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -18,21 +18,13 @@ namespace LogAnalyzer.Engine
         private readonly ILogParser logParser;
         private readonly BaseDocument document;
 
-        private BackgroundWorker ParserThread;
-
-        private void StartParsing()
-        {
-            ParserThread = new BackgroundWorker();
-            // TODO
-        }
+        private bool isThreadRunning = false;
 
         public Engine(ILogSource logSource, ILogParser logParser, BaseDocument document)
         {
             this.logSource = logSource;
             this.logParser = logParser;
             this.document = document;
-
-            StartParsing();
         }
     }
 }
