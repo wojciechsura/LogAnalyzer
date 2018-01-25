@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ED8AF742-2431-40D8-A8CC-295A8BDA2423}</ProjectGuid>
+    <ProjectGuid>{677955A9-5CD0-491B-8EBC-70F0597C1427}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LogAnalyzer.BusinessLogic</RootNamespace>
-    <AssemblyName>LogAnalyzer.BusinessLogic</AssemblyName>
+    <RootNamespace>LogAnalyzer.Mapper</RootNamespace>
+    <AssemblyName>LogAnalyzer.Mapper</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,15 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.5.6\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="ConfigurationBase">
-      <HintPath>..\Libraries\ConfigurationBase.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -69,57 +70,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dependencies\Configuration.cs" />
+    <Compile Include="Profiles\LogEntryProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\LogParserRepository.cs" />
-    <Compile Include="Services\LogSourceRepository.cs" />
-    <Compile Include="ViewModels\Interfaces\IMainWindowAccess.cs" />
-    <Compile Include="ViewModels\Interfaces\IOpenWindowAccess.cs" />
-    <Compile Include="ViewModels\Interfaces\IParserProfileEditorWindowAccess.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\OpenWindowViewModel.cs" />
-    <Compile Include="ViewModels\ParserProfileEditorWindowViewModel.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
-      <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
-      <Name>FileLogSource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LineLogParser\LineLogParser.csproj">
-      <Project>{897C5F60-27CC-43CC-8E66-8718B8822D60}</Project>
-      <Name>LineLogParser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
       <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
       <Name>LogAnalyzer.API</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Configuration\LogAnalyzer.Configuration.csproj">
-      <Project>{CA47417B-1C22-4513-A654-B78805A120F3}</Project>
-      <Name>LogAnalyzer.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
-      <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
-      <Name>LogAnalyzer.Dependencies</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Mapper\LogAnalyzer.Mapper.csproj">
-      <Project>{677955a9-5cd0-491b-8ebc-70f0597c1427}</Project>
-      <Name>LogAnalyzer.Mapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
-      <Project>{5B2CEEC9-3261-400F-B198-831743AE86CC}</Project>
+      <Project>{5b2ceec9-3261-400f-b198-831743ae86cc}</Project>
       <Name>LogAnalyzer.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
-      <Project>{3bb6cdc4-0642-4a68-9557-9ef4d81eb0f9}</Project>
-      <Name>LogAnalyzer.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
-      <Project>{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}</Project>
-      <Name>LogAnalyzer.Wpf</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

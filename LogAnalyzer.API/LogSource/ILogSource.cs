@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.LogSource
 {
-    public interface ILogSource
+    public interface ILogSource : IDisposable
     {
+        string GetLine();
     }
 }

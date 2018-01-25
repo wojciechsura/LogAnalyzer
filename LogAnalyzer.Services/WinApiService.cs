@@ -1,6 +1,5 @@
 ﻿using LogAnalyzer.Models.Services.WinApiService;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Services.Models;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;

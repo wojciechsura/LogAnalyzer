@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Services.Models.DialogResults
+namespace LogAnalyzer.Engine.Infrastructure.Events
 {
-    public class OpenResult
+    class LastParsedEntriesItemReplacedEvent : BaseEvent
     {
+        
     }
 }

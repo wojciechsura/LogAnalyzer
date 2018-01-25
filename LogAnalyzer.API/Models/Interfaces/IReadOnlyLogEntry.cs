@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Models.Engine.Interfaces
+namespace LogAnalyzer.API.Models.Interfaces
 {
-    interface IReadOnlyLogEntry
+    public interface IReadOnlyLogEntry
     {
         DateTime Date { get; }
         string Severity { get; }

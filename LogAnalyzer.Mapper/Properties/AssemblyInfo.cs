@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("LogAnalyzer.Models")]
+[assembly: AssemblyTitle("LogAnalyzer.Mapper")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("LogAnalyzer.Models")]
+[assembly: AssemblyProduct("LogAnalyzer.Mapper")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5b2ceec9-3261-400f-b198-831743ae86cc")]
+[assembly: Guid("677955a9-5cd0-491b-8ebc-70f0597c1427")]
 
 // Version information for an assembly consists of the following four values:
 //

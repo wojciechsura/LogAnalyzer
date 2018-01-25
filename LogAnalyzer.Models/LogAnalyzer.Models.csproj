@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}</ProjectGuid>
+    <ProjectGuid>{5B2CEEC9-3261-400F-B198-831743AE86CC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LogAnalyzer.Models</RootNamespace>
     <AssemblyName>LogAnalyzer.Models</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,17 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DialolgResults\LogParserProfileEditorResult.cs" />
-    <Compile Include="DialolgResults\OpenResult.cs" />
+    <Compile Include="DialogResults\LogParserProfileEditorResult.cs" />
+    <Compile Include="DialogResults\OpenResult.cs" />
     <Compile Include="Engine\BaseDocument.cs" />
-    <Compile Include="Engine\Interfaces\IReadOnlyLogEntry.cs" />
-    <Compile Include="Engine\LogEntry.cs" />
     <Compile Include="Engine\LogHighlighting.cs" />
     <Compile Include="Engine\LogRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WinApiService\FilterDefinition.cs" />
     <Compile Include="Views\OpenWindow\LogParserProfileInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
+      <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
+      <Name>LogAnalyzer.API</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

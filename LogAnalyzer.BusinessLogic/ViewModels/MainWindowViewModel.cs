@@ -20,6 +20,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IMainWindowAccess access;
         private readonly IDialogService dialogService;
 
+        private readonly IEngineFactory engineFactory;
+
+        private IEngine engine;
+
         // Private methods ----------------------------------------------------
 
         private void DoOpen()
@@ -28,16 +32,17 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             if (result.DialogResult)
             {
-                // Create new document
+                // TODO      
             }
         }
 
         // Public methods -----------------------------------------------------
 
-        public MainWindowViewModel(IMainWindowAccess access, IDialogService dialogService)
+        public MainWindowViewModel(IMainWindowAccess access, IDialogService dialogService, IEngineFactory engineFactory)
         {
             this.access = access;
             this.dialogService = dialogService;
+            this.engineFactory = engineFactory;
 
             OpenCommand = new SimpleCommand((obj) => DoOpen());
         }

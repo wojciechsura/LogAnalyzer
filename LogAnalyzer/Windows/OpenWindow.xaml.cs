@@ -17,9 +17,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Unity;
 using Unity.Resolution;
-using LogAnalyzer.Services.Models;
-using LogAnalyzer.Services.Models.DialogResults;
 using LogAnalyzer.Services.Common;
+using LogAnalyzer.Models.DialogResults;
 
 namespace LogAnalyzer.Windows
 {
@@ -39,5 +38,10 @@ namespace LogAnalyzer.Windows
         }
 
         public ModalDialogResult<OpenResult> DataResult => viewModel.Result;
+
+        public void Close(bool dialogResult)
+        {
+            DialogResult = dialogResult;
+        }
     }
 }

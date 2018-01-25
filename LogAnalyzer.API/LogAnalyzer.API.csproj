@@ -49,13 +49,9 @@
     <Compile Include="LogSource\ILogSourceConfiguration.cs" />
     <Compile Include="LogSource\ILogSourceEditorViewModel.cs" />
     <Compile Include="LogSource\ILogSourceProvider.cs" />
+    <Compile Include="Models\Interfaces\IReadOnlyLogEntry.cs" />
+    <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
-      <Project>{DF89A679-E855-42C9-9B8B-EDD30FF63EDA}</Project>
-      <Name>LogAnalyzer.Models</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

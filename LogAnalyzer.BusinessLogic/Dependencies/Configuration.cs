@@ -20,6 +20,7 @@ namespace LogAnalyzer.BusinessLogic.Dependencies
                 return;
 
             LogAnalyzer.Services.Dependencies.Configuration.Configure(container);
+            LogAnalyzer.Mapper.Dependencies.Configuration.Configure(container);
 
             container.RegisterType<MainWindowViewModel>();
 

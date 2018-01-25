@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Services.Models.DialolgResults
+namespace LogAnalyzer.Models.DialogResults
 {
     public class LogParserProfileEditorResult
     {

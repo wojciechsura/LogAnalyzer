@@ -4,11 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LogAnalyzer.Services.Models;
 using LogAnalyzer.Windows;
 using LogAnalyzer.Services.Common;
-using LogAnalyzer.Services.Models.DialogResults;
-using LogAnalyzer.Services.Models.DialolgResults;
+using LogAnalyzer.Models.DialogResults;
 
 namespace LogAnalyzer.Services
 {

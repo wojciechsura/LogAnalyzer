@@ -1,11 +1,11 @@
-﻿using LogAnalyzer.Models.Engine.Interfaces;
+﻿using LogAnalyzer.API.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Models.Engine
+namespace LogAnalyzer.API.Models
 {
     public class LogEntry : IReadOnlyLogEntry
     {

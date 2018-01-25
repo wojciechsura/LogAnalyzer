@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LogAnalyzer.Services.Common;
-using LogAnalyzer.Services.Models.DialolgResults;
 using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Configuration;
 using System.ComponentModel;
@@ -13,6 +12,7 @@ using System.Collections.ObjectModel;
 using LogAnalyzer.API.LogParser;
 using System.Windows.Input;
 using LogAnalyzer.Wpf.Input;
+using LogAnalyzer.Models.DialogResults;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
