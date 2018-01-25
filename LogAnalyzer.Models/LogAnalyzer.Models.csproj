@@ -44,6 +44,7 @@
     <Compile Include="DialolgResults\LogParserProfileEditorResult.cs" />
     <Compile Include="DialolgResults\OpenResult.cs" />
     <Compile Include="Engine\BaseDocument.cs" />
+    <Compile Include="Engine\Interfaces\IReadOnlyLogEntry.cs" />
     <Compile Include="Engine\LogEntry.cs" />
     <Compile Include="Engine\LogHighlighting.cs" />
     <Compile Include="Engine\LogRecord.cs" />

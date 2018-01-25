@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Engine.Thread.Results
+namespace LogAnalyzer.Engine.Infrastructure.Events
 {
-    class BaseThreadResult
+    class BaseEvent
     {
+
     }
 }
