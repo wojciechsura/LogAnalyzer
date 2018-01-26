@@ -9,13 +9,6 @@ namespace LogAnalyzer.Models.Engine
 {
     public class BaseDocument
     {
-        private readonly ObservableCollection<LogRecord> logRecords;
-
-        public BaseDocument()
-        {
-            logRecords = new ObservableCollection<LogRecord>();
-        }
-
-        public ObservableCollection<LogRecord> LogRecords => logRecords;
+        // HighlightedLogEntries
     }
 }

@@ -19,6 +19,7 @@ namespace LogAnalyzer.Engine
     {
         private readonly EventBus eventBus;
         private readonly LogReader logReader;
+        private readonly LogFilter logFilter;
         private readonly IMapper mapper;
         private readonly EngineData data;
 
@@ -26,8 +27,9 @@ namespace LogAnalyzer.Engine
         {
             this.mapper = mapper;
             eventBus = new EventBus();
-            data = new EngineData();
+            data = new EngineData(mapper);
             logReader = new LogReader(logSource, logParser, eventBus, mapper, data);
+            logFilter = new LogFilter(eventBus, mapper, data);
         }
 
         public void NotifySourceReady()

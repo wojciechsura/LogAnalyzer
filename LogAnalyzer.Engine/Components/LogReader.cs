@@ -111,7 +111,7 @@ namespace LogAnalyzer.Engine.Components
             {
                 if (e.Cancelled)
                 {
-                    // TODO
+                    // TODO - disposing
                 }
                 else
                 {

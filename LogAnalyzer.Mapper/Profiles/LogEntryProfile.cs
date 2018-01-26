@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.API.Models.Interfaces;
+using LogAnalyzer.Models.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace LogAnalyzer.Mapper.Profiles
         {
             CreateMap<LogEntry, LogEntry>();
             CreateMap<IReadOnlyLogEntry, LogEntry>();
+            CreateMap<LogEntry, FilteredLogEntry>();
         }
     }
 }

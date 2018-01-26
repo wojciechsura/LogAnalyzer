@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LogAnalyzer.API.Models;
+using LogAnalyzer.Models.Engine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +10,9 @@ namespace LogAnalyzer.Engine.Infrastructure.Data.Interfaces
 {
     interface ILogFilterEngineDataView
     {
+        int GetLogEntryCount();
+        List<LogEntry> GetLogEntries(int start, int count);
+
+        List<FilteredLogEntry> FilteredLogEntries { get; }
     }
 }

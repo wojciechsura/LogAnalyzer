@@ -77,9 +77,12 @@
     <Compile Include="Infrastructure\Data\EngineData.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogFilterEngineDataView.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogReaderEngineDataView.cs" />
+    <Compile Include="Infrastructure\Events\AddedNewFilteredEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\AddedNewParsedEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\BaseEvent.cs" />
+    <Compile Include="Infrastructure\Events\ClearedFilteredEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\LastParsedEntriesItemReplacedEvent.cs" />
+    <Compile Include="Infrastructure\Events\RemovedLastFilteredLogEntryEvent.cs" />
     <Compile Include="Interfaces\IEventListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
