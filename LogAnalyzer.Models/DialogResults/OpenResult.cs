@@ -9,15 +9,15 @@ namespace LogAnalyzer.Models.DialogResults
 {
     public class OpenResult
     {
-        public OpenResult(ILogSourceConfiguration logSourceConfiguration, ILogSourceProvider logSourceProvider, Guid parserProfileGuid)
+        public OpenResult(ILogSourceConfiguration logSourceConfiguration, string logSourceProviderName, Guid parserProfileGuid)
         {
             LogSourceConfiguration = logSourceConfiguration;
-            LogSourceProvider = logSourceProvider;
+            LogSourceProviderName = logSourceProviderName;
             ParserProfileGuid = parserProfileGuid;
         }
 
         public ILogSourceConfiguration LogSourceConfiguration { get; }
-        public ILogSourceProvider LogSourceProvider { get; }
+        public string LogSourceProviderName { get; }
         public Guid ParserProfileGuid { get; }
     }
 }

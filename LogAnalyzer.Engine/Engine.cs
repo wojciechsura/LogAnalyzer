@@ -18,5 +18,10 @@ namespace LogAnalyzer.Engine
         {
 
         }
+
+        public void NotifySourceReady()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

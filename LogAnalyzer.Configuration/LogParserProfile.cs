@@ -14,7 +14,7 @@ namespace LogAnalyzer.Configuration
             Name = new SimpleValue<string>("Name", this);
             Guid = new GuidValue("Guid", this);
             ParserUniqueName = new SimpleValue<string>("ParserUniqueName", this);
-            SerializedProfile = new SimpleValue<string>("SerializedProfile", this);
+            SerializedParserConfiguration = new SimpleValue<string>("SerializedParserConfiguration", this);
         }
 
         public LogParserProfile(string name, Guid guid, string parserUniqueName, string serializedProfile)
@@ -23,12 +23,12 @@ namespace LogAnalyzer.Configuration
             Name.Value = name;
             Guid.Value = guid;
             ParserUniqueName.Value = parserUniqueName;
-            SerializedProfile.Value = serializedProfile;
+            SerializedParserConfiguration.Value = serializedProfile;
         }
 
         public SimpleValue<string> Name { get; private set; }
         public GuidValue Guid { get; private set; }
         public SimpleValue<string> ParserUniqueName { get; private set; }
-        public SimpleValue<string> SerializedProfile { get; private set; }        
+        public SimpleValue<string> SerializedParserConfiguration { get; private set; }        
     }
 }

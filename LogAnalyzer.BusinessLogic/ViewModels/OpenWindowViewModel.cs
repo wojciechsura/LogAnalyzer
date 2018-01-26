@@ -100,7 +100,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
 
             result.DialogResult = true;
-            result.Result = new OpenResult(selectedLogSource.BuildConfiguration(), selectedLogSource.Provider, selectedParserProfile.Guid);
+            result.Result = new OpenResult(selectedLogSource.BuildConfiguration(), selectedLogSource.Provider.UniqueName, selectedParserProfile.Guid);
 
             access.Close(true);
         }

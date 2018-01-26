@@ -38,7 +38,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             profile.Name.Value = profileName;
             profile.ParserUniqueName.Value = selectedLogParserViewModel.Provider.UniqueName;
-            profile.SerializedProfile.Value = selectedLogParserViewModel.Provider.SerializeConfiguration(selectedLogParserViewModel.GetConfiguration());
+            profile.SerializedParserConfiguration.Value = selectedLogParserViewModel.Provider.SerializeConfiguration(selectedLogParserViewModel.GetConfiguration());
         }
 
         private void Save()
@@ -147,7 +147,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
                 if (editedProfile != null && provider.UniqueName == editedProfile.ParserUniqueName.Value)
                 {
-                    ILogParserConfiguration configuration = provider.DeserializeConfiguration(editedProfile.SerializedProfile.Value);
+                    ILogParserConfiguration configuration = provider.DeserializeConfiguration(editedProfile.SerializedParserConfiguration.Value);
                     vm.SetConfiguration(configuration);
                     SelectedLogParserViewModel = vm;
                 }

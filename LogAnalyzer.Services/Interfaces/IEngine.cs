@@ -8,5 +8,6 @@ namespace LogAnalyzer.Services.Interfaces
 {
     public interface IEngine
     {
+        void NotifySourceReady();
     }
 }
