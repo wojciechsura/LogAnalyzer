@@ -47,64 +47,6 @@ namespace LogAnalyzer.Engine.Components
 
         // Private methods ----------------------------------------------------
 
-        private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            try
-            {
-                if (e.Cancelled)
-                {
-                    // TODO
-                }
-                else
-                {
-                    ProcessingResult result = e.Result as ProcessingResult;
-                    if (result == null)
-                        throw new InvalidOperationException("Invalid processing result!");
-
-                    if (result.ReplaceLast)
-                    {
-                        if (data.ResultLogEntries.Count == 0)
-                            throw new InvalidOperationException("Cannot replace last item!");
-
-                        data.ResultLogEntries[data.ResultLogEntries.Count - 1] = result.ParsedEntries[0];
-                        result.ParsedEntries.RemoveAt(0);
-
-                        // Only last item of parsed entries may be updated, because
-                        // lines following this entry may contain eg. exception details
-                        // or callstack lines, which are appended to last entry's message.
-                        eventBus.Send(new LastParsedEntriesItemReplacedEvent());
-                    }
-
-                    if (result.ParsedEntries.Count > 0)
-                    {
-                        int start = data.ResultLogEntries.Count;
-                        int count = result.ParsedEntries.Count;
-
-                        data.ResultLogEntries.AddRange(result.ParsedEntries);
-
-                        eventBus.Send(new AddedNewParsedEntriesEvent(start, count));
-                    }
-
-                    if (result.ParsedEntries.Count == MAX_PROCESSED_LINES)
-                    {
-                        StartWorker();
-                        return;
-                    }
-
-                    if (restart)
-                    {
-                        restart = false;
-                        StartWorker();
-                        return;
-                    }
-                }
-            }
-            finally
-            {
-                workerRunning = false;
-            }
-        }
-
         private void DoWork(object sender, DoWorkEventArgs e)
         {
             var argument = e.Argument as ProcessingArgument;
@@ -133,6 +75,8 @@ namespace LogAnalyzer.Engine.Components
                     LogEntry newEntry = logParser.Parse(line, lastEntry);
                     if (newEntry != null)
                         lastEntry = newEntry;
+
+                    processedItems.Add(newEntry);
                 }
             }
             while (line != null && linesProcessed < MAX_PROCESSED_LINES);
@@ -150,6 +94,71 @@ namespace LogAnalyzer.Engine.Components
                 ProcessingResult result = new ProcessingResult();
                 result.ParsedEntries = processedItems;
                 result.ReplaceLast = replaceFirst;
+                e.Result = result;
+                return;
+            }
+        }
+
+        private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            bool runAgain = false;
+
+            try
+            {
+                if (e.Cancelled)
+                {
+                    // TODO
+                }
+                else
+                {
+                    ProcessingResult result = e.Result as ProcessingResult;
+                    if (result == null)
+                        throw new InvalidOperationException("Invalid processing result!");
+
+                    if (result.ReplaceLast)
+                    {
+                        if (data.ResultLogEntries.Count == 0)
+                            throw new InvalidOperationException("Cannot replace last item!");
+
+                        data.ResultLogEntries[data.ResultLogEntries.Count - 1] = result.ParsedEntries[0];
+                        result.ParsedEntries.RemoveAt(0);
+
+                        // Only last item of parsed entries may be updated, because
+                        // lines following this entry may contain eg. exception details
+                        // or callstack lines, which are appended to last entry's message.
+                        eventBus.Send(new LastParsedEntriesItemReplacedEvent(data.ResultLogEntries.Count - 1));
+                    }
+
+                    if (result.ParsedEntries.Count > 0)
+                    {
+                        int start = data.ResultLogEntries.Count;
+                        int count = result.ParsedEntries.Count;
+
+                        data.ResultLogEntries.AddRange(result.ParsedEntries);
+
+                        eventBus.Send(new AddedNewParsedEntriesEvent(start, count));
+                    }
+
+                    if (result.ParsedEntries.Count == MAX_PROCESSED_LINES)
+                    {
+                        runAgain = true;
+                        return;
+                    }
+
+                    if (restart)
+                    {
+                        restart = false;
+                        runAgain = true;
+                        return;
+                    }
+                }
+            }
+            finally
+            {
+                workerRunning = false;
+
+                if (runAgain)
+                    StartWorker();
             }
         }
 

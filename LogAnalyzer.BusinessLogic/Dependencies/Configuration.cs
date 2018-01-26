@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Lifetime;
 
 namespace LogAnalyzer.BusinessLogic.Dependencies
 {
@@ -21,11 +22,12 @@ namespace LogAnalyzer.BusinessLogic.Dependencies
 
             LogAnalyzer.Services.Dependencies.Configuration.Configure(container);
             LogAnalyzer.Mapper.Dependencies.Configuration.Configure(container);
+            LogAnalyzer.Engine.Dependencies.Configuration.Configure(container);
 
             container.RegisterType<MainWindowViewModel>();
 
-            container.RegisterType<ILogSourceRepository, LogSourceRepository>();
-            container.RegisterType<ILogParserRepository, LogParserRepository>();
+            container.RegisterType<ILogSourceRepository, LogSourceRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<ILogParserRepository, LogParserRepository>(new ContainerControlledLifetimeManager());
 
             isConfigured = true;
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Lifetime;
 
 namespace LogAnalyzer.Dependencies
 {
@@ -20,7 +21,8 @@ namespace LogAnalyzer.Dependencies
 
             LogAnalyzer.BusinessLogic.Dependencies.Configuration.Configure(container);
 
-            container.RegisterType<IDialogService, DialogService>();
+            container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IMessagingService, MessagingService>(new ContainerControlledLifetimeManager());
 
             isConfigured = true;
         }

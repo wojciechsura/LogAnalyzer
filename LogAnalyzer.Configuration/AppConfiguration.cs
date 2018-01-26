@@ -19,12 +19,12 @@ namespace LogAnalyzer.Configuration
             logParserProfiles = new SimpleCollection<LogParserProfile>("LogParserProfiles", this, LogParserProfile.XML_NAME);
         }
 
-        private void Defaults()
+        public void Defaults()
         {
             this.SetDefaults();
             logParserProfiles.Add(new LogParserProfile("Parse whole line as message", Guid.NewGuid(), "LogParser.Line", ""));
         }
 
-        public List<LogParserProfile> LogParserProfiles { get; set; }
+        public SimpleCollection<LogParserProfile> LogParserProfiles => logParserProfiles;
     }
 }

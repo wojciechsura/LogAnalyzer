@@ -29,7 +29,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private ObservableCollection<ILogParserEditorViewModel> logParserEditorViewModels;
         private ILogParserEditorViewModel selectedLogParserViewModel;
 
-        private Guid? editedProfileGuid;
+        private Guid editedProfileGuid;
         private string profileName;
 
         // Private methods ----------------------------------------------------
@@ -43,7 +43,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void Save()
         {
-            if (editedProfileGuid != null)
+            if (!editedProfileGuid.Equals(Guid.Empty))
             {
                 var editedProfile = GetEditedProfile(editedProfileGuid);
 
@@ -58,7 +58,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 }
 
                 result.DialogResult = true;
-                result.Result = new LogParserProfileEditorResult(editedProfileGuid.Value);
+                result.Result = new LogParserProfileEditorResult(editedProfileGuid);
             }
             else
             {
@@ -77,7 +77,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 }
 
                 result.DialogResult = true;
-                result.Result = new LogParserProfileEditorResult(editedProfileGuid.Value);
+                result.Result = new LogParserProfileEditorResult(editedProfileGuid);
             }
         }
 
@@ -118,11 +118,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         // Public methods -----------------------------------------------------
 
-        public ParserProfileEditorWindowViewModel(IParserProfileEditorWindowAccess access, 
-            Guid? editedProfileGuid, 
+        public ParserProfileEditorWindowViewModel(IParserProfileEditorWindowAccess access,            
             ILogParserRepository logParserRepository,
             IConfigurationService configurationService,
-            IMessagingService messagingService)
+            IMessagingService messagingService,
+            Guid editedProfileGuid)
         {
             this.access = access;
             this.editedProfileGuid = editedProfileGuid;

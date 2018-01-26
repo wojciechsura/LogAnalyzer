@@ -25,7 +25,14 @@ namespace LogAnalyzer.Services
 
         public void LoadConfiguration()
         {
-            configuration.Load(pathProviderService.GetConfigurationFilePath());
+            try
+            {
+                configuration.Load(pathProviderService.GetConfigurationFilePath());
+            }
+            catch (Exception e)
+            {
+                configuration.Defaults();
+            }
         }
 
         public void SaveConfiguration()

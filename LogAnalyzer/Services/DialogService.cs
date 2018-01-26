@@ -21,7 +21,7 @@ namespace LogAnalyzer.Services
 
         public ModalDialogResult<LogParserProfileEditorResult> NewLogParserProfile()
         {
-            ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(null);
+            ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(Guid.Empty);
             editorWindow.ShowDialog();
             return editorWindow.DataResult;
         }

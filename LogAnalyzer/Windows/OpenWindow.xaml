@@ -47,8 +47,8 @@
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
-            <Button Width="120" Margin="4" Content="Cancel" />
-            <Button Width="120" Margin="4" Content="OK" />
+            <Button Width="120" Margin="4" Content="Cancel" Command="{Binding CancelCommand}" />
+            <Button Width="120" Margin="4" Content="OK" Command="{Binding OkCommand}" />
         </StackPanel>
     </StackPanel>
 </Window>

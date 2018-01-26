@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Lifetime;
 
 namespace LogAnalyzer.Engine.Dependencies
 {
@@ -17,7 +18,7 @@ namespace LogAnalyzer.Engine.Dependencies
             if (isConfigured)
                 return;
 
-            container.RegisterType<IEngineFactory, EngineFactory>();
+            container.RegisterType<IEngineFactory, EngineFactory>(new ContainerControlledLifetimeManager());
 
             isConfigured = true;
         }

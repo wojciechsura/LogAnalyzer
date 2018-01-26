@@ -12,6 +12,11 @@ namespace LogAnalyzer.Engine.Infrastructure.Data
     {
         private List<LogEntry> parsedEntries;
 
+        public EngineData()
+        {
+            parsedEntries = new List<LogEntry>();
+        }
+
         public List<LogEntry> ResultLogEntries => parsedEntries;
     }
 }

@@ -43,7 +43,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 // TODO finish
 
                 // Build log parser
-                LogParserProfile profile = configurationService.Configuration.LogParserProfiles.Single(p => p.Guid.Equals(result.Result.ParserProfileGuid));
+                LogParserProfile profile = configurationService.Configuration.LogParserProfiles.Single(p => p.Guid.Value.Equals(result.Result.ParserProfileGuid));
                 ILogParserProvider logParserProvider = logParserRepository.LogParserProviders.Single(p => p.UniqueName == profile.ParserUniqueName.Value);
                 ILogParser parser = logParserProvider.CreateParser(logParserProvider.DeserializeConfiguration(profile.SerializedParserConfiguration.Value));
 

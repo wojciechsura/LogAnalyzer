@@ -29,7 +29,7 @@ namespace LineLogParser
 
         public ILogParser CreateParser(ILogParserConfiguration configuration)
         {
-            throw new NotImplementedException();
+            return new LineLogParser();
         }
 
         public string UniqueName => Common.Consts.UNIQUE_NAME;

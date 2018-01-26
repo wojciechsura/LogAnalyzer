@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Lifetime;
 
 namespace LogAnalyzer.Services.Dependencies
 {
@@ -19,9 +20,9 @@ namespace LogAnalyzer.Services.Dependencies
 
             // Configure
 
-            container.RegisterType<IWinApiService, WinApiService>();
-            container.RegisterType<IConfigurationService, ConfigurationService>();
-            container.RegisterType<IPathProviderService, PathProviderService>();
+            container.RegisterType<IWinApiService, WinApiService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IConfigurationService, ConfigurationService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IPathProviderService, PathProviderService>(new ContainerControlledLifetimeManager());
 
             isConfigured = true;
         }

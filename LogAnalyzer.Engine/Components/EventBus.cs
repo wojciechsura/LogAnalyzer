@@ -60,6 +60,10 @@ namespace LogAnalyzer.Engine.Components
 
         public void Send<T>(T @event) where T : BaseEvent
         {
+            #if DEBUG
+            System.Diagnostics.Debug.WriteLine($"Sending event: " + @event.ToString());
+            #endif
+
             Type t = typeof(T);
             if (listeners.ContainsKey(t))
             {
