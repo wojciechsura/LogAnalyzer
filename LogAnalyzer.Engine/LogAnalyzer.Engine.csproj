@@ -69,11 +69,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\EventBus.cs" />
+    <Compile Include="Components\LogFilter.cs" />
     <Compile Include="Components\LogReader.cs" />
     <Compile Include="Dependencies\Configuration.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="EngineFactory.cs" />
     <Compile Include="Infrastructure\Data\EngineData.cs" />
+    <Compile Include="Infrastructure\Data\Interfaces\ILogFilterEngineDataView.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogReaderEngineDataView.cs" />
     <Compile Include="Infrastructure\Events\AddedNewParsedEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\BaseEvent.cs" />

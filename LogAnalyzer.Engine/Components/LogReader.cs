@@ -83,17 +83,21 @@ namespace LogAnalyzer.Engine.Components
 
             if (linesProcessed == 0)
             {
-                ProcessingResult result = new ProcessingResult();
-                result.ParsedEntries = null;
-                result.ReplaceLast = false;
+                ProcessingResult result = new ProcessingResult
+                {
+                    ParsedEntries = null,
+                    ReplaceLast = false
+                };
                 e.Result = result;
                 return;
             }
             else
             {
-                ProcessingResult result = new ProcessingResult();
-                result.ParsedEntries = processedItems;
-                result.ReplaceLast = replaceFirst;
+                ProcessingResult result = new ProcessingResult
+                {
+                    ParsedEntries = processedItems,
+                    ReplaceLast = replaceFirst
+                };
                 e.Result = result;
                 return;
             }

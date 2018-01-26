@@ -13,6 +13,7 @@ namespace LogAnalyzer.Mapper.Profiles
     {
         public LogEntryProfile()
         {
+            CreateMap<LogEntry, LogEntry>();
             CreateMap<IReadOnlyLogEntry, LogEntry>();
         }
     }
