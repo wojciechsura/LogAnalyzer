@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LogAnalyzer.Models.Engine;
+using LogAnalyzer.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +11,6 @@ namespace LogAnalyzer.Services.Interfaces
     public interface IEngine
     {
         void NotifySourceReady();
+        ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; }
     }
 }

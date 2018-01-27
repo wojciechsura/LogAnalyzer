@@ -101,6 +101,10 @@
       <Project>{5B2CEEC9-3261-400F-B198-831743AE86CC}</Project>
       <Name>LogAnalyzer.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Types\LogAnalyzer.Types.csproj">
+      <Project>{1C717240-85A8-455C-992D-7546AE7526AD}</Project>
+      <Name>LogAnalyzer.Types</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

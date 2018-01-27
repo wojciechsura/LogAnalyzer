@@ -14,10 +14,12 @@ using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
 using LogAnalyzer.Configuration;
 using LogAnalyzer.Models.Engine;
+using LogAnalyzer.Types;
+using System.ComponentModel;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : INotifyPropertyChanged
     {
         // Private fields -----------------------------------------------------
 
@@ -53,7 +55,17 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
                 engine = engineFactory.CreateEngine(source, parser);
                 engine.NotifySourceReady();
+
+                LogEntries = engine.LogEntries;
+                OnPropertyChanged(nameof(LogEntries));                
             }
+        }
+
+        // Protected methods --------------------------------------------------
+
+        private void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         // Public methods -----------------------------------------------------
@@ -78,5 +90,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         // Public properties --------------------------------------------------
 
         public ICommand OpenCommand { get; private set; }
+
+        public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

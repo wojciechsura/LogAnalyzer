@@ -1,14 +1,18 @@
 ﻿<f:RibbonWindow x:Class="LogAnalyzer.Windows.MainWindow"
-                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                     xmlns:local="clr-namespace:LogAnalyzer"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:local="clr-namespace:LogAnalyzer"
+                xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
                      xmlns:f="urn:fluent-ribbon"
                      mc:Ignorable="d"
                      Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <f:Ribbon>
+    <f:RibbonWindow.Resources>
+        <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+    </f:RibbonWindow.Resources>
+    <DockPanel>
+        <f:Ribbon DockPanel.Dock="Top">
             <f:Ribbon.Menu>
                 <f:Backstage>
                     <f:BackstageTabControl>
@@ -25,5 +29,23 @@
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>
-    </Grid>
+        <ListView ItemsSource="{Binding LogEntries}" SelectionMode="Multiple">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="" DisplayMemberBinding="{Binding LogEntry.LogEntryIndex}" />
+                    <GridViewColumn Header="Date" DisplayMemberBinding="{Binding LogEntry.Date}" />
+                    <GridViewColumn Header="Verbosity" DisplayMemberBinding="{Binding LogEntry.Verbosity}" />
+                    <GridViewColumn Header="Message">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock FontFamily="Consolas" FontSize="11" Text="{Binding LogEntry.Message}" 
+                                           Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" 
+                                           Background="{Binding Highlight.Background, Converter={StaticResource ColorToBrushConverter}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
 </f:RibbonWindow>
