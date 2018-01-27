@@ -1,5 +1,4 @@
-﻿using LogAnalyzer.API.Models.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +6,18 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.Models
 {
-    public class LogEntry : IReadOnlyLogEntry
+    // For thread-safety this object must stay read-only
+    public class LogEntry
     {
-        public DateTime Date { get; set; }
-        public string Severity { get; set; }
-        public string Message { get; set; }
+        public LogEntry(DateTime date, string severity, string message)
+        {
+            Date = date;
+            Severity = severity;
+            Message = message;
+        }
+
+        public DateTime Date { get; }
+        public string Severity { get; }
+        public string Message { get; }
     }
 }

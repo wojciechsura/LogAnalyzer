@@ -36,6 +36,7 @@
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.5.6\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -70,19 +71,24 @@
   <ItemGroup>
     <Compile Include="Components\EventBus.cs" />
     <Compile Include="Components\LogFilter.cs" />
+    <Compile Include="Components\LogHighlighter.cs" />
     <Compile Include="Components\LogReader.cs" />
     <Compile Include="Dependencies\Configuration.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="EngineFactory.cs" />
     <Compile Include="Infrastructure\Data\EngineData.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogFilterEngineDataView.cs" />
+    <Compile Include="Infrastructure\Data\Interfaces\ILogHighlighterEngineDataView.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogReaderEngineDataView.cs" />
     <Compile Include="Infrastructure\Events\AddedNewFilteredEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\AddedNewParsedEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\BaseEvent.cs" />
     <Compile Include="Infrastructure\Events\ClearedFilteredEntriesEvent.cs" />
+    <Compile Include="Infrastructure\Events\EntriesHighlightedEvent.cs" />
+    <Compile Include="Infrastructure\Events\HighlightedItemsClearedEvent.cs" />
     <Compile Include="Infrastructure\Events\LastParsedEntriesItemReplacedEvent.cs" />
     <Compile Include="Infrastructure\Events\RemovedLastFilteredLogEntryEvent.cs" />
+    <Compile Include="Infrastructure\Events\ReplacedLastHighlightedLogEntryEvent.cs" />
     <Compile Include="Interfaces\IEventListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -98,6 +104,10 @@
     <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
       <Project>{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}</Project>
       <Name>LogAnalyzer.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Types\LogAnalyzer.Types.csproj">
+      <Project>{1C717240-85A8-455C-992D-7546AE7526AD}</Project>
+      <Name>LogAnalyzer.Types</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -13,16 +13,14 @@ namespace LogAnalyzer.Engine
 {
     class EngineFactory : IEngineFactory
     {
-        private readonly IMapper mapper;
-
-        public EngineFactory(IMapper mapper)
+        public EngineFactory()
         {
-            this.mapper = mapper;
+            
         }
 
-        public IEngine CreateEngine(ILogSource logSource, ILogParser logParser, BaseDocument document)
+        public IEngine CreateEngine(ILogSource logSource, ILogParser logParser)
         {
-            return new Engine(mapper, logSource, logParser, document);
+            return new Engine(logSource, logParser);
         }
     }
 }

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Engine.Infrastructure.Events
 {
-    class ClearedFilteredEntriesEvent : BaseEvent
+    class HighlightedItemsClearedEvent : BaseEvent
     {
         public override string ToString()
         {
-            return "[ ]-[F]-[ ] Cleared filtered entries";
+            return "[ ]-[ ]-[H] Highlighted items cleared!";
         }
     }
 }

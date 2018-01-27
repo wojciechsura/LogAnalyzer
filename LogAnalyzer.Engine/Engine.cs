@@ -12,6 +12,7 @@ using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Engine.Components;
 using LogAnalyzer.Engine.Infrastructure.Data;
 using AutoMapper;
+using LogAnalyzer.Types;
 
 namespace LogAnalyzer.Engine
 {
@@ -20,21 +21,23 @@ namespace LogAnalyzer.Engine
         private readonly EventBus eventBus;
         private readonly LogReader logReader;
         private readonly LogFilter logFilter;
-        private readonly IMapper mapper;
+        private readonly LogHighlighter logHighlighter;
         private readonly EngineData data;
 
-        public Engine(IMapper mapper, ILogSource logSource, ILogParser logParser, BaseDocument document)
+        public Engine(ILogSource logSource, ILogParser logParser)
         {
-            this.mapper = mapper;
             eventBus = new EventBus();
-            data = new EngineData(mapper);
-            logReader = new LogReader(logSource, logParser, eventBus, mapper, data);
-            logFilter = new LogFilter(eventBus, mapper, data);
+            data = new EngineData();
+            logReader = new LogReader(logSource, logParser, eventBus, data);
+            logFilter = new LogFilter(eventBus, data);
+            logHighlighter = new LogHighlighter(eventBus, data);
         }
 
         public void NotifySourceReady()
         {
             logReader.NotifySourceReady();
         }
+
+        public ObservableRangeCollection<HighlightedLogEntry> LogEntries => data.HighlightedLogEntries;
     }
 }

@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="Open log" SizeToContent="Height" Width="400" ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
-        WindowStyle="ToolWindow">
+        WindowStyle="SingleBorderWindow">
     <Window.Resources>
         <i:LogSourceTemplateSelector x:Key="LogSourceTemplateSelector" />
         <c:NullToBooleanConverter x:Key="NullToBooleanConverter" />

@@ -16,7 +16,7 @@ namespace LogAnalyzer.Engine.Infrastructure.Events
 
         public override string ToString()
         {
-            return $"Added new parsed entries - start: {Start}, count: {Count}";
+            return $"[P]-[ ]-[ ] Added new parsed entries - start: {Start}, count: {Count}";
         }
 
         public int Start { get; }

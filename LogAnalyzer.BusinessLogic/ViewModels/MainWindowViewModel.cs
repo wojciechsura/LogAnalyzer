@@ -51,9 +51,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 ILogSourceProvider logSourceProvider = logSourceRepository.LogSourceProviders.Single(p => p.UniqueName == result.Result.LogSourceProviderName);
                 ILogSource source = logSourceProvider.CreateLogSource(result.Result.LogSourceConfiguration, parser);
 
-                BaseDocument document = new BaseDocument();
-
-                engine = engineFactory.CreateEngine(source, parser, document);
+                engine = engineFactory.CreateEngine(source, parser);
                 engine.NotifySourceReady();
             }
         }

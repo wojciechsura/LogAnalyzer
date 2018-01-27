@@ -17,7 +17,7 @@ namespace LogAnalyzer.Engine.Infrastructure.Events
 
         public override string ToString()
         {
-            return $"Last parsed entries item replaced - index: {Index}";
+            return $"[P]-[ ]-[ ] Last parsed entries item replaced - index: {Index}";
         }
 
         public int Index => index;

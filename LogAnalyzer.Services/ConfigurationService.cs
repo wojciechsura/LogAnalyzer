@@ -29,7 +29,7 @@ namespace LogAnalyzer.Services
             {
                 configuration.Load(pathProviderService.GetConfigurationFilePath());
             }
-            catch (Exception e)
+            catch 
             {
                 configuration.Defaults();
             }

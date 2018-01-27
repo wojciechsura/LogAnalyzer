@@ -12,10 +12,7 @@ namespace LineLogParser
     {
         public LogEntry Parse(string line, LogEntry lastEntry)
         {
-            return new LogEntry()
-            {
-                Message = line
-            };
+            return new LogEntry(DateTime.MinValue, null, line);
         }
     }
 }

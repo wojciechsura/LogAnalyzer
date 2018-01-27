@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using LogAnalyzer.API.Models;
-using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
+﻿using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Events;
 using LogAnalyzer.Engine.Interfaces;
 using LogAnalyzer.Models.Engine;
@@ -10,10 +8,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace LogAnalyzer.Engine.Components
 {
-    class LogFilter : IEventListener<AddedNewParsedEntriesEvent>, IEventListener<LastParsedEntriesItemReplacedEvent>
+    class LogHighlighter : IEventListener<AddedNewFilteredEntriesEvent>, IEventListener<RemovedLastFilteredLogEntryEvent>
     {
         // Private constants --------------------------------------------------
 
@@ -23,14 +22,14 @@ namespace LogAnalyzer.Engine.Components
 
         private class Range
         {
-            public Range(int start, int count)
+            public Range (int start, int count)
             {
                 Start = start;
                 Count = count;
             }
 
-            public int Start { get; set; }
-            public int Count { get; set; }
+            public int Start { get; }
+            public int Count { get; }
         }
 
         private class BaseQueueItem
@@ -43,33 +42,34 @@ namespace LogAnalyzer.Engine.Components
             public Range Range { get; set; }
         }
 
-        private class ClearFilteredItemsQueueItem : BaseQueueItem
+        private class ClearHighlightQueueItem : BaseQueueItem
         {
 
         }
 
-        private class HandleLogEntryReplacedQueueItem : BaseQueueItem
+        private class HandleFilteredLogEntryReplacedQueueItem : BaseQueueItem
         {
-            public int Index { get; set; }
+            public int LogEntryIndex { get; set; }
+            public int FilteredLogEntryIndex { get; set; }
         }
 
         private class ProcessingArgument
         {
             public Range Range { get; set; }
-            public List<LogEntry> InputEntries { get; set; }
+            public List<FilteredLogEntry> InputEntries { get; set; }
         }
 
         private class ProcessingResult
         {
             public Range ProcessedInputRange { get; set; }
-            public List<FilteredLogEntry> Entries { get; set; }
+            public List<HighlightInfo> Entries { get; set; }
         }
 
         // Private fields -----------------------------------------------------
 
         private readonly EventBus eventBus;
-        private readonly ILogFilterEngineDataView data;
-        private readonly Queue<BaseQueueItem> queue;
+        private readonly ILogHighlighterEngineDataView data;
+        private readonly Queue<BaseQueueItem> queue = null;
         private Range processedRange = null;
 
         private BackgroundWorker backgroundWorker;
@@ -80,30 +80,21 @@ namespace LogAnalyzer.Engine.Components
         private void DoWork(object sender, DoWorkEventArgs e)
         {
             var argument = e.Argument as ProcessingArgument;
-            var processedItems = new List<FilteredLogEntry>();
+            var processedItems = new List<HighlightInfo>();
 
-            int index = argument.Range.Start;
             for (int i = 0; i < argument.InputEntries.Count; i++)
             {
                 var entry = argument.InputEntries[i];
-                
-                // TODO verify filtering condition
-                if (true)
-                {
-                    FilteredLogEntry filteredLogEntry = new FilteredLogEntry(index, 
-                        entry.Date, 
-                        entry.Severity, 
-                        entry.Message);
-                    processedItems.Add(filteredLogEntry);
-                }
 
-                index++;
+                // TODO verify highlighting condition
+                HighlightInfo info = new HighlightInfo(i % 2 == 0 ? Colors.Red : Colors.Black, Colors.Transparent);
+                processedItems.Add(info);
             }
 
             ProcessingResult result = new ProcessingResult
             {
-                ProcessedInputRange = argument.Range,
-                Entries = processedItems
+                Entries = processedItems,
+                ProcessedInputRange = argument.Range
             };
             e.Result = result;
         }
@@ -124,12 +115,24 @@ namespace LogAnalyzer.Engine.Components
 
                     if (result.Entries.Count > 0)
                     {
-                        int start = data.FilteredLogEntries.Count;
-                        int count = result.Entries.Count;
+                        // TODO safer safeguard
 
-                        data.FilteredLogEntries.AddRange(result.Entries);
+                        // Safeguard against clearing result data during processing
+                        int start = result.ProcessedInputRange.Start;
+                        int count = result.ProcessedInputRange.Count;
 
-                        eventBus.Send(new AddedNewFilteredEntriesEvent(start, count));
+                        if (start < data.HighlightedLogEntries.Count &&
+                            start + count <= data.HighlightedLogEntries.Count)
+                        {
+                            for (int i = start; i < start + count; i++)
+                            {
+                                int highlightIndex = i - start;
+
+                                data.HighlightedLogEntries[i].Highlight = result.Entries[highlightIndex];
+                            }
+                        }
+
+                        eventBus.Send(new EntriesHighlightedEvent(start, count));
                     }
                 }
             }
@@ -148,7 +151,7 @@ namespace LogAnalyzer.Engine.Components
 
             var argument = new ProcessingArgument
             {
-                InputEntries = data.GetLogEntries(range.Start, range.Count),
+                InputEntries = data.GetFilteredLogEntries(range.Start, range.Count),
                 Range = range
             };
 
@@ -164,40 +167,36 @@ namespace LogAnalyzer.Engine.Components
 
                 if (item is ProcessItemsQueueItem processItems)
                 {
-                    if (processItems.Range.Start < 0 || processItems.Range.Start >= data.GetLogEntryCount() || processItems.Range.Start + processItems.Range.Count > data.GetLogEntryCount())
+                    if (processItems.Range.Start < 0 || processItems.Range.Start >= data.GetFilteredLogEntryCount() || processItems.Range.Start + processItems.Range.Count > data.GetFilteredLogEntryCount())
                         throw new ArgumentException("Invalid range of LogEntries to process!");
 
                     StartWorker(processItems.Range);
                     return true;
                 }
-                else if (item is ClearFilteredItemsQueueItem)
+                else if (item is ClearHighlightQueueItem)
                 {
-                    data.FilteredLogEntries.Clear();
+                    data.HighlightedLogEntries.Clear();
 
-                    eventBus.Send(new ClearedFilteredEntriesEvent());
+                    eventBus.Send(new HighlightedItemsClearedEvent());
                     continue;
                 }
-                else if (item is HandleLogEntryReplacedQueueItem replacedItem)
+                else if (item is HandleFilteredLogEntryReplacedQueueItem replacedItem)
                 {
-                    // Searching for filtered item built on replaced entry
-                    if (data.FilteredLogEntries.Count > 0)
+                    if (data.HighlightedLogEntries.Count > 0)
                     {
-                        if (data.FilteredLogEntries[data.FilteredLogEntries.Count - 1].LogEntryIndex > replacedItem.Index)
-                            throw new InvalidOperationException("Replaced last LogEntry is not last item in FilteredLogItems!");
+                        if (data.HighlightedLogEntries[data.HighlightedLogEntries.Count - 1].LogEntry.LogEntryIndex > replacedItem.LogEntryIndex)
+                            throw new InvalidOperationException("Replaced last LogEntry is not last item in HighlightedLogItems!");
 
-                        if (data.FilteredLogEntries[data.FilteredLogEntries.Count - 1].LogEntryIndex == replacedItem.Index)
+                        if (data.HighlightedLogEntries[data.HighlightedLogEntries.Count - 1].LogEntry.LogEntryIndex == replacedItem.LogEntryIndex)
                         {
                             // Remove item and notify
-                            int removedFilteredItemIndex = data.FilteredLogEntries.Count - 1;
-                            data.FilteredLogEntries.RemoveAt(removedFilteredItemIndex);
+                            data.HighlightedLogEntries.RemoveAt(data.HighlightedLogEntries.Count - 1);
 
-                            eventBus.Send(new RemovedLastFilteredLogEntryEvent(removedFilteredItemIndex, replacedItem.Index));
+                            eventBus.Send(new RemovedLastHighlightedLogEntryEvent(replacedItem.FilteredLogEntryIndex, replacedItem.LogEntryIndex));
+                            // Item not yet exists in FilteredLogEntries - when appropriate event
+                            // comes, that it has been added again, it will be processed normally.
 
-                            // Re-process the item immediately not to lose data integrity
-                            Range range = new Range(replacedItem.Index, 1);
-                            StartWorker(range);
-
-                            return true;                            
+                            return true;
                         }
                     }
                 }
@@ -213,10 +212,10 @@ namespace LogAnalyzer.Engine.Components
             if (processedRange != null)
             {
                 // Items were already processed, trying to get next chunk of data
-                if (data.GetLogEntryCount() > processedRange.Start + processedRange.Count)
+                if (data.GetFilteredLogEntryCount() > processedRange.Start + processedRange.Count)
                 {
                     int start = processedRange.Start + processedRange.Count;
-                    processedRange = new Range(start, Math.Min(MAX_PROCESSED_ITEMS, data.GetLogEntryCount() - start));
+                    processedRange = new Range(start, Math.Min(MAX_PROCESSED_ITEMS, data.GetFilteredLogEntryCount() - start));
 
                     StartWorker(processedRange);
                     return;
@@ -224,10 +223,9 @@ namespace LogAnalyzer.Engine.Components
             }
             else
             {
-                // Starting processing data from beginning
-                if (data.GetLogEntryCount() > 0)
+                if (data.GetFilteredLogEntryCount() > 0)
                 {
-                    processedRange = new Range(0, Math.Min(MAX_PROCESSED_ITEMS, data.GetLogEntryCount()));
+                    processedRange = new Range(0, Math.Min(MAX_PROCESSED_ITEMS, data.GetFilteredLogEntryCount()));
 
                     StartWorker(processedRange);
                     return;
@@ -239,7 +237,7 @@ namespace LogAnalyzer.Engine.Components
         {
             if (workerRunning)
                 throw new InvalidOperationException("Worker cannot be running when continuing work!");
-            
+
             if (!ProcessQueue())
             {
                 // No task on queue, checking if there are more entries to process
@@ -249,7 +247,7 @@ namespace LogAnalyzer.Engine.Components
 
         // Public methods -----------------------------------------------------
 
-        public LogFilter(EventBus eventBus, ILogFilterEngineDataView data)
+        public LogHighlighter(EventBus eventBus, ILogHighlighterEngineDataView data)
         {
             this.eventBus = eventBus;
             this.data = data;
@@ -260,12 +258,19 @@ namespace LogAnalyzer.Engine.Components
 
             queue = new Queue<BaseQueueItem>();
 
-            eventBus.Register<AddedNewParsedEntriesEvent>(this);
-            eventBus.Register<LastParsedEntriesItemReplacedEvent>(this);
+            eventBus.Register<AddedNewFilteredEntriesEvent>(this);
+            eventBus.Register<RemovedLastFilteredLogEntryEvent>(this);
         }
 
-        public void Receive(AddedNewParsedEntriesEvent @event)
+        public void Receive(AddedNewFilteredEntriesEvent @event)
         {
+            // Add new highlighted entries (we're on UI thread, this is safe)
+            List<FilteredLogEntry> newEntries = data.GetFilteredLogEntries(@event.Start, @event.Count);
+            for (int i = 0; i < newEntries.Count; i++)
+            {
+                data.HighlightedLogEntries.Add(new HighlightedLogEntry(newEntries[i]));
+            }
+
             // Worker will pick new chunk of data after
             // finishing current one, no need for any action
             if (workerRunning)
@@ -279,11 +284,11 @@ namespace LogAnalyzer.Engine.Components
             }
         }
 
-        public void Receive(LastParsedEntriesItemReplacedEvent @event)
+        public void Receive(RemovedLastFilteredLogEntryEvent @event)
         {
             if (workerRunning)
             {
-                if (@event.Index >= processedRange.Start + processedRange.Count)
+                if (@event.LogEntryIndex >= processedRange.Start + processedRange.Count)
                 {
                     // Replaced entry will be parsed later, no need for any action
                     return;
@@ -291,9 +296,10 @@ namespace LogAnalyzer.Engine.Components
                 else
                 {
                     // Replaced entry is being processed right now, need to be re-processed
-                    HandleLogEntryReplacedQueueItem logEntryReplacedItem = new HandleLogEntryReplacedQueueItem
+                    HandleFilteredLogEntryReplacedQueueItem logEntryReplacedItem = new HandleFilteredLogEntryReplacedQueueItem
                     {
-                        Index = @event.Index
+                        LogEntryIndex = @event.LogEntryIndex,
+                        FilteredLogEntryIndex = @event.FilteredItemIndex
                     };
 
                     queue.Enqueue(logEntryReplacedItem);
@@ -302,9 +308,9 @@ namespace LogAnalyzer.Engine.Components
             else
             {
                 // Worker is not running, re-processing entry
-                HandleLogEntryReplacedQueueItem logEntryReplacedItem = new HandleLogEntryReplacedQueueItem
+                HandleFilteredLogEntryReplacedQueueItem logEntryReplacedItem = new HandleFilteredLogEntryReplacedQueueItem
                 {
-                    Index = @event.Index
+                    LogEntryIndex = @event.LogEntryIndex
                 };
 
                 queue.Enqueue(logEntryReplacedItem);

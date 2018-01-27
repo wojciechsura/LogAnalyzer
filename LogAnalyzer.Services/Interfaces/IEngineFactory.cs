@@ -11,6 +11,6 @@ namespace LogAnalyzer.Services.Interfaces
 {
     public interface IEngineFactory
     {
-        IEngine CreateEngine(ILogSource logSource, ILogParser logParser, BaseDocument document);
+        IEngine CreateEngine(ILogSource logSource, ILogParser logParser);
     }
 }

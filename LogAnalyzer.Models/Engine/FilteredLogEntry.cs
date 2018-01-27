@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogAnalyzer.API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,21 @@ namespace LogAnalyzer.Models.Engine
 {
     public class FilteredLogEntry
     {
-        public int LogEntryIndex { get; set; }
+        public FilteredLogEntry(int logEntryIndex, 
+            DateTime date, 
+            string severity, 
+            string message)
+        {
+            LogEntryIndex = logEntryIndex;
+            Date = date;
+            Severity = severity;
+            Message = message;
+        }
 
-        public DateTime Date { get; set; }
-        public string Severity { get; set; }
-        public string Message { get; set; }
+        public int LogEntryIndex { get; }
+
+        public DateTime Date { get; }
+        public string Severity { get; }
+        public string Message { get; }
     }
 }

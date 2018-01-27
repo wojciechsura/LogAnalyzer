@@ -2,7 +2,6 @@
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
 using LogAnalyzer.API.Models;
-using LogAnalyzer.API.Models.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Events;
 using System;
@@ -24,7 +23,7 @@ namespace LogAnalyzer.Engine.Components
 
         private class ProcessingArgument
         {
-            public IReadOnlyLogEntry LastLogEntry { get; set; }
+            public LogEntry LastLogEntry { get; set; }
         }
 
         private class ProcessingResult
@@ -38,7 +37,6 @@ namespace LogAnalyzer.Engine.Components
         private readonly ILogSource logSource;
         private readonly ILogParser logParser;
         private readonly EventBus eventBus;
-        private readonly IMapper mapper;
         private readonly ILogReaderEngineDataView data;
 
         private readonly BackgroundWorker backgroundWorker;
@@ -57,8 +55,7 @@ namespace LogAnalyzer.Engine.Components
 
             if (argument.LastLogEntry != null)
             {
-                lastEntry = mapper.Map<LogEntry>(argument.LastLogEntry);
-                processedItems.Add(lastEntry);
+                processedItems.Add(argument.LastLogEntry);
                 replaceFirst = true;
             }
 
@@ -180,12 +177,11 @@ namespace LogAnalyzer.Engine.Components
 
         // Public methods -----------------------------------------------------
 
-        public LogReader(ILogSource logSource, ILogParser logParser, EventBus eventBus, IMapper mapper, ILogReaderEngineDataView data)
+        public LogReader(ILogSource logSource, ILogParser logParser, EventBus eventBus, ILogReaderEngineDataView data)
         {
             this.logSource = logSource;
             this.logParser = logParser;
             this.eventBus = eventBus;
-            this.mapper = mapper;
             this.data = data;
 
             backgroundWorker = new BackgroundWorker();

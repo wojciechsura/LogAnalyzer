@@ -8,16 +8,18 @@ namespace LogAnalyzer.Engine.Infrastructure.Events
 {
     class RemovedLastFilteredLogEntryEvent : BaseEvent
     {
-        public RemovedLastFilteredLogEntryEvent(int index)
+        public RemovedLastFilteredLogEntryEvent(int filteredItemIndex, int logEntryIndex)
         {
-            Index = index;
+            FilteredItemIndex = filteredItemIndex;
+            LogEntryIndex = logEntryIndex;
         }
+
+        public int FilteredItemIndex { get; }
+        public int LogEntryIndex { get; }
 
         public override string ToString()
         {
-            return $"Removed last filtered log entry event - index: {Index}";
+            return $"[ ]-[F]-[ ] Removed last filtered log entry event - filteredItemIndex: {FilteredItemIndex}, logEntryIndex: {LogEntryIndex}";
         }
-
-        public int Index { get; }
     }
 }

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Engine.Infrastructure.Events
 {
-    class AddedNewFilteredEntriesEvent : BaseEvent
+    class EntriesHighlightedEvent : BaseEvent
     {
-        public AddedNewFilteredEntriesEvent(int start, int count)
+        public EntriesHighlightedEvent(int start, int count)
         {
             Start = start;
             Count = count;
@@ -16,7 +16,7 @@ namespace LogAnalyzer.Engine.Infrastructure.Events
 
         public override string ToString()
         {
-            return $"[ ]-[F]-[ ] Added new filtered entries - start: {Start}, count: {Count}";
+            return $"[ ]-[ ]-[H] Log entries highlighted - start: {Start}, count: {Count}";
         }
 
         public int Start { get; }
