@@ -13,10 +13,10 @@ using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
 using LogAnalyzer.Configuration;
-using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Types;
 using System.ComponentModel;
 using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.API.Models;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -55,21 +55,29 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ILogSource source = logSourceProvider.CreateLogSource(result.LogSourceConfiguration, parser);
 
             engine = engineFactory.CreateEngine(source, parser);
+            access.SetupListView(engine.GetColumnInfos());
             engine.NotifySourceReady();
 
             LogEntries = engine.LogEntries;
             OnPropertyChanged(nameof(LogEntries));
         }
 
-        private void EngineStoppedWithOpenCallback(OpenResult result)
+        private void DoStopEngine()
         {
             engineStoppingCondition.Value = false;
+            engine = null;
+            access.ClearListView();
+        }
+
+        private void EngineStoppedWithOpenCallback(OpenResult result)
+        {
+            DoStopEngine();
             DoCreateEngine(result);
         }
 
         private void EngineStoppedWithCloseCallback(CloseData closeData)
         {
-            engine = null;
+            DoStopEngine();
             if (!closeData.HandlingClosing)
                 access.Close();
         }
@@ -146,7 +154,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
             else
             {
-                return true;
+                return false;
             }
         }
 

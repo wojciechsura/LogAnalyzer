@@ -16,10 +16,12 @@ namespace LineLogParser
             return new LogEntry(DateTime.MinValue, null, line);
         }
 
-        public List<ColumnInfo> GetColumns()
+        public List<BaseColumnInfo> GetColumnInfos()
         {
-            List<ColumnInfo> result = new List<ColumnInfo>();
-            result.Add(new ColumnInfo(LogEntryColumn.Message));
+            List<BaseColumnInfo> result = new List<BaseColumnInfo>
+            {
+                new CommonColumnInfo(LogEntryColumn.Message)
+            };
 
             return result;
         }

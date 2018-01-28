@@ -122,6 +122,10 @@
     <Compile Include="Windows\ParserProfileEditorWindow.xaml.cs">
       <DependentUpon>ParserProfileEditorWindow.xaml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Resources\Xaml\RegularColumn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <Page Include="Windows\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -705,6 +709,10 @@
     <ProjectReference Include="..\LogAnalyzer.BusinessLogic\LogAnalyzer.BusinessLogic.csproj">
       <Project>{ED8AF742-2431-40D8-A8CC-295A8BDA2423}</Project>
       <Name>LogAnalyzer.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">
+      <Project>{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}</Project>
+      <Name>LogAnalyzer.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>

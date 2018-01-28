@@ -195,6 +195,11 @@ namespace LogAnalyzer.Engine.Components
                 throw new InvalidOperationException("Invalid state!");
         }
 
+        internal List<BaseColumnInfo> GetColumnInfos()
+        {
+            return logParser.GetColumnInfos();
+        }
+
         private void StartWorker()
         {
             if (workerRunning)

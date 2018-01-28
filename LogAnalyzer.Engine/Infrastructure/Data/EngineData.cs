@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
-using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Types;
 using System;
 using System.Collections.Generic;

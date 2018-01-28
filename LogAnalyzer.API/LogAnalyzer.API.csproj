@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -49,10 +50,22 @@
     <Compile Include="LogSource\ILogSourceConfiguration.cs" />
     <Compile Include="LogSource\ILogSourceEditorViewModel.cs" />
     <Compile Include="LogSource\ILogSourceProvider.cs" />
-    <Compile Include="Models\ColumnInfo.cs" />
+    <Compile Include="Models\BaseColumnInfo.cs" />
+    <Compile Include="Models\CommonColumnInfo.cs" />
+    <Compile Include="Models\FilteredLogEntry.cs" />
+    <Compile Include="Models\HighlightedLogEntry.cs" />
+    <Compile Include="Models\HighlightInfo.cs" />
     <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\Attributes\ColumnHeaderAttribute.cs" />
+    <Compile Include="Types\Attributes\MemberNameAttribute.cs" />
     <Compile Include="Types\LogEntryColumn.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">
+      <Project>{815b5af9-bac8-43fd-88d5-d50a51bc09de}</Project>
+      <Name>LogAnalyzer.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

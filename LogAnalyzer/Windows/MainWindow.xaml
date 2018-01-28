@@ -30,7 +30,7 @@
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>
-        <ListView ItemsSource="{Binding LogEntries}" SelectionMode="Extended">
+        <ListView x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended">
             <!--
             <ListView.View>
                 <GridView>

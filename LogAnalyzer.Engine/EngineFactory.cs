@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
-using LogAnalyzer.Models.Engine;
 using AutoMapper;
 
 namespace LogAnalyzer.Engine

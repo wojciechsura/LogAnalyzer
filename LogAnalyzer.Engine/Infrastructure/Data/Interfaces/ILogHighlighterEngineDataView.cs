@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LogAnalyzer.Models.Engine;
+using LogAnalyzer.API.Models;
 using LogAnalyzer.Types;
 
 namespace LogAnalyzer.Engine.Infrastructure.Data.Interfaces

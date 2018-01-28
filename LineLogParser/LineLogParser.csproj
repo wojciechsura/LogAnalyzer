@@ -80,10 +80,6 @@
       <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
       <Name>LogAnalyzer.API</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">
-      <Project>{815b5af9-bac8-43fd-88d5-d50a51bc09de}</Project>
-      <Name>LogAnalyzer.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
       <Name>LogAnalyzer.Dependencies</Name>

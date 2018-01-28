@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogAnalyzer.API.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +10,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Interfaces
     public interface IMainWindowAccess
     {
         void Close();
+        void ClearListView();
+        void SetupListView(List<BaseColumnInfo> columns);
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LogAnalyzer.API.Models;
+using LogAnalyzer.API.Types.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +10,14 @@ namespace LogAnalyzer.API.Types
 {
     public enum LogEntryColumn
     {
+        [ColumnHeader("Date")]
+        [MemberName(nameof(FilteredLogEntry.Date))]
         Date,
+        [ColumnHeader("Severity")]
+        [MemberName(nameof(FilteredLogEntry.Severity))]
         Severity,
-        Message,
-        User
+        [ColumnHeader("Message")]
+        [MemberName(nameof(FilteredLogEntry.Message))]
+        Message
     }
 }

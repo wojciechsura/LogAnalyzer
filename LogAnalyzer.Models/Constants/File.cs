@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Common.Constants
+namespace LogAnalyzer.Models.Constants
 {
     public static class File
     {

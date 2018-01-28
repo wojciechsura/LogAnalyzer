@@ -8,11 +8,11 @@ using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
 using System.Collections.Concurrent;
 using System.ComponentModel;
-using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Engine.Components;
 using LogAnalyzer.Engine.Infrastructure.Data;
 using AutoMapper;
 using LogAnalyzer.Types;
+using LogAnalyzer.API.Models;
 
 namespace LogAnalyzer.Engine
 {
@@ -106,6 +106,11 @@ namespace LogAnalyzer.Engine
                     stopToken.HighlighterStopped = true;
                     CheckStopCallback();
                 });
+        }
+
+        public List<BaseColumnInfo> GetColumnInfos()
+        {
+            return logReader.GetColumnInfos();
         }
 
         // Public properties --------------------------------------------------

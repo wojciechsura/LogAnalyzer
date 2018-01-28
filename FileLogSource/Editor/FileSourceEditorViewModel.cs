@@ -35,7 +35,7 @@ namespace FileLogSource.Editor
 
         private void DoOpenFile()
         {
-            string filename = winApiService.OpenFile(LogAnalyzer.Common.Constants.File.LogFilterDefinitions);
+            string filename = winApiService.OpenFile(LogAnalyzer.Models.Constants.File.LogFilterDefinitions);
             if (filename != null) {
                 this.filename = filename;
                 OnPropertyChanged(nameof(Filename));

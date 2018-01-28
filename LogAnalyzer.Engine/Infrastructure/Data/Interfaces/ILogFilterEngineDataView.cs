@@ -1,5 +1,4 @@
 ﻿using LogAnalyzer.API.Models;
-using LogAnalyzer.Models.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -42,11 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\File.cs" />
     <Compile Include="DialogResults\LogParserProfileEditorResult.cs" />
     <Compile Include="DialogResults\OpenResult.cs" />
-    <Compile Include="Engine\FilteredLogEntry.cs" />
-    <Compile Include="Engine\HighlightedLogEntry.cs" />
-    <Compile Include="Engine\HighlightInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WinApiService\FilterDefinition.cs" />
     <Compile Include="Views\OpenWindow\LogParserProfileInfo.cs" />

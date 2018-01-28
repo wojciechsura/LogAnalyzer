@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace LogAnalyzer.Models.Engine
+namespace LogAnalyzer.API.Models
 {
     public class HighlightInfo
     {

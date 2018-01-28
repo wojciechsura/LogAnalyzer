@@ -1,7 +1,7 @@
-﻿using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
+﻿using LogAnalyzer.API.Models;
+using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Events;
 using LogAnalyzer.Engine.Interfaces;
-using LogAnalyzer.Models.Engine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,6 +1,5 @@
 ﻿using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
-using LogAnalyzer.Models.Engine;
 using System;
 using System.Collections.Generic;
 using System.Linq;

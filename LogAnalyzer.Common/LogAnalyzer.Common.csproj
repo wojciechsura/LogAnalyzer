@@ -40,18 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\File.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
-      <Project>{5B2CEEC9-3261-400F-B198-831743AE86CC}</Project>
-      <Name>LogAnalyzer.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
-      <Project>{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}</Project>
-      <Name>LogAnalyzer.Services</Name>
-    </ProjectReference>
+    <Compile Include="Tools\ResourceReader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
