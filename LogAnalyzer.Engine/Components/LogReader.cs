@@ -127,7 +127,7 @@ namespace LogAnalyzer.Engine.Components
             }
             else if (state == State.Stopped)
             {
-                throw new InvalidOperationException("Cannot start worker when stopped!");
+                throw new InvalidOperationException("Already stopped, cannot process data!");
             }
             else if (state == State.Working)
             {

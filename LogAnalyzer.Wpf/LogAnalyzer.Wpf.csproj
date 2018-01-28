@@ -44,7 +44,13 @@
   <ItemGroup>
     <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\NullToBooleanConverter.cs" />
+    <Compile Include="Input\BaseCondition.cs" />
+    <Compile Include="Input\CompositeCondition.cs" />
+    <Compile Include="Input\Condition.cs" />
+    <Compile Include="Input\NegateCondition.cs" />
     <Compile Include="Input\SimpleCommand.cs" />
+    <Compile Include="Input\SwitchCondition.cs" />
+    <Compile Include="Input\ValueChangedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -65,6 +65,16 @@ namespace LogAnalyzer.Engine.Components
             public List<FilteredLogEntry> Entries { get; set; }
         }
 
+        private class StopData
+        {
+            public StopData(Action afterStop)
+            {
+                this.AfterStop = afterStop;
+            }
+
+            public Action AfterStop { get; set; }
+        }
+
         private enum State
         {
             Working,
@@ -82,6 +92,7 @@ namespace LogAnalyzer.Engine.Components
         private BackgroundWorker backgroundWorker;
         private bool workerRunning = false;
         private State state = State.Working;
+        private StopData stopData = null;
 
         // Private methods ----------------------------------------------------
 
@@ -118,7 +129,6 @@ namespace LogAnalyzer.Engine.Components
 
         private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            if (state == State.)
             try
             {
                 if (e.Cancelled)
@@ -155,6 +165,9 @@ namespace LogAnalyzer.Engine.Components
             if (workerRunning)
                 throw new InvalidOperationException("Cannot start already running worker!");
 
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot start worker when stopped!");
+
             var argument = new ProcessingArgument
             {
                 InputEntries = data.GetLogEntries(range.Start, range.Count),
@@ -165,8 +178,19 @@ namespace LogAnalyzer.Engine.Components
             backgroundWorker.RunWorkerAsync(argument);
         }
 
+        private void DoStopFilter()
+        {
+            queue.Clear();
+            state = State.Stopped;
+
+            stopData.AfterStop();
+        }
+
         private bool ProcessQueue()
         {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot process queue when stopped or stopping!");
+
             while (queue.Count > 0)
             {
                 BaseQueueItem item = queue.Dequeue();
@@ -219,6 +243,9 @@ namespace LogAnalyzer.Engine.Components
 
         private void ProcessNextChunkOfData()
         {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot process data when stopping or stopped!");
+
             if (processedRange != null)
             {
                 // Items were already processed, trying to get next chunk of data
@@ -246,14 +273,27 @@ namespace LogAnalyzer.Engine.Components
 
         private void ContinueWork()
         {
-            if (workerRunning)
-                throw new InvalidOperationException("Worker cannot be running when continuing work!");
-            
-            if (!ProcessQueue())
+            if (state == State.Stopping)
             {
-                // No task on queue, checking if there are more entries to process
-                ProcessNextChunkOfData();
+                DoStopFilter();
             }
+            else if (state == State.Stopped)
+            {
+                throw new InvalidOperationException("Cannot continue work when stopped!");
+            }
+            else if (state == State.Working)
+            {
+                if (workerRunning)
+                    throw new InvalidOperationException("Worker cannot be running when continuing work!");
+
+                if (!ProcessQueue())
+                {
+                    // No task on queue, checking if there are more entries to process
+                    ProcessNextChunkOfData();
+                }
+            }
+            else
+                throw new InvalidOperationException("Invalid state!");
         }
 
         // Public methods -----------------------------------------------------
@@ -273,13 +313,33 @@ namespace LogAnalyzer.Engine.Components
             eventBus.Register<LastParsedEntriesItemReplacedEvent>(this);
         }
 
-        public void Stop(Action stopAction)
+        public void Stop(Action afterStop)
         {
-            throw new NotImplementedException();
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Already stopping or stopped");
+
+            eventBus.Unregister<AddedNewParsedEntriesEvent>(this);
+            eventBus.Unregister<LastParsedEntriesItemReplacedEvent>(this);
+
+            state = State.Stopping;
+            stopData = new StopData(afterStop);
+
+            if (workerRunning)
+            {
+                backgroundWorker.CancelAsync();
+                // RunWorkerCompleted will take care of stopping the filter.
+            }
+            else
+            {
+                DoStopFilter();
+            }
         }
 
         public void Receive(AddedNewParsedEntriesEvent @event)
         {
+            if (state == State.Stopped || state == State.Stopping)
+                throw new InvalidOperationException("Cannot receive events when stopped!");
+
             // Worker will pick new chunk of data after
             // finishing current one, no need for any action
             if (workerRunning)
@@ -295,6 +355,9 @@ namespace LogAnalyzer.Engine.Components
 
         public void Receive(LastParsedEntriesItemReplacedEvent @event)
         {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot receive events when stopped!");
+
             if (workerRunning)
             {
                 if (@event.Index >= processedRange.Start + processedRange.Count)

@@ -24,7 +24,6 @@ namespace LogAnalyzer.Services.Interfaces
     {
         void NotifySourceReady();
         ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; }
-
-        event EngineStoppedDelegate EngineStopped;
+        void Stop(Action stopAction);
     }
 }

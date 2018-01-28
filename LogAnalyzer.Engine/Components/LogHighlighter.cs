@@ -65,6 +65,23 @@ namespace LogAnalyzer.Engine.Components
             public List<HighlightInfo> Entries { get; set; }
         }
 
+        private class StopData
+        {
+            public StopData(Action afterStop)
+            {
+                this.AfterStop = afterStop;
+            }
+
+            public Action AfterStop { get; set; }
+        }
+
+        private enum State
+        {
+            Working,
+            Stopping,
+            Stopped
+        }
+
         // Private fields -----------------------------------------------------
 
         private readonly EventBus eventBus;
@@ -74,6 +91,8 @@ namespace LogAnalyzer.Engine.Components
 
         private BackgroundWorker backgroundWorker;
         private bool workerRunning = false;
+        private State state = State.Working;
+        private StopData stopData = null;
 
         // Private methods ----------------------------------------------------
 
@@ -97,11 +116,6 @@ namespace LogAnalyzer.Engine.Components
                 ProcessedInputRange = argument.Range
             };
             e.Result = result;
-        }
-
-        internal void Stop(Action stopAction)
-        {
-            throw new NotImplementedException();
         }
 
         private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -154,6 +168,9 @@ namespace LogAnalyzer.Engine.Components
             if (workerRunning)
                 throw new InvalidOperationException("Cannot start already running worker!");
 
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot start worker when stopped!");
+
             var argument = new ProcessingArgument
             {
                 InputEntries = data.GetFilteredLogEntries(range.Start, range.Count),
@@ -164,8 +181,19 @@ namespace LogAnalyzer.Engine.Components
             backgroundWorker.RunWorkerAsync(argument);
         }
 
+        private void DoStopHighlighter()
+        {
+            queue.Clear();
+            state = State.Stopped;
+
+            stopData.AfterStop();
+        }
+
         private bool ProcessQueue()
         {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot process queue when stopped or stopping!");
+
             while (queue.Count > 0)
             {
                 BaseQueueItem item = queue.Dequeue();
@@ -214,6 +242,9 @@ namespace LogAnalyzer.Engine.Components
 
         private void ProcessNextChunkOfData()
         {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot process data when stopping or stopped!");
+
             if (processedRange != null)
             {
                 // Items were already processed, trying to get next chunk of data
@@ -240,14 +271,27 @@ namespace LogAnalyzer.Engine.Components
 
         private void ContinueWork()
         {
-            if (workerRunning)
-                throw new InvalidOperationException("Worker cannot be running when continuing work!");
-
-            if (!ProcessQueue())
+            if (state == State.Stopping)
             {
-                // No task on queue, checking if there are more entries to process
-                ProcessNextChunkOfData();
+                DoStopHighlighter();
             }
+            else if (state == State.Stopped)
+            {
+                throw new InvalidOperationException("Cannot continue work when stopped!");
+            }
+            else if (state == State.Working)
+            {
+                if (workerRunning)
+                    throw new InvalidOperationException("Worker cannot be running when continuing work!");
+
+                if (!ProcessQueue())
+                {
+                    // No task on queue, checking if there are more entries to process
+                    ProcessNextChunkOfData();
+                }
+            }
+            else
+                throw new InvalidOperationException("Invalid state!");
         }
 
         // Public methods -----------------------------------------------------
@@ -267,8 +311,33 @@ namespace LogAnalyzer.Engine.Components
             eventBus.Register<RemovedLastFilteredLogEntryEvent>(this);
         }
 
+        internal void Stop(Action afterStop)
+        {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Already stopping or stopped!");
+
+            eventBus.Unregister<AddedNewFilteredEntriesEvent>(this);
+            eventBus.Unregister<RemovedLastFilteredLogEntryEvent>(this);
+
+            state = State.Stopping;
+            stopData = new StopData(afterStop);
+
+            if (workerRunning)
+            {
+                backgroundWorker.CancelAsync();
+                // RunWorkerCompleted will take care of stopping the highlighter.
+            }
+            else
+            {
+                DoStopHighlighter();
+            }
+        }
+
         public void Receive(AddedNewFilteredEntriesEvent @event)
         {
+            if (state == State.Stopped || state == State.Stopping)
+                throw new InvalidOperationException("Cannot receive events when stopped!");
+
             // Add new highlighted entries (we're on UI thread, this is safe)
             List<FilteredLogEntry> newEntries = data.GetFilteredLogEntries(@event.Start, @event.Count);
             for (int i = 0; i < newEntries.Count; i++)
@@ -291,6 +360,9 @@ namespace LogAnalyzer.Engine.Components
 
         public void Receive(RemovedLastFilteredLogEntryEvent @event)
         {
+            if (state == State.Stopped || state == State.Stopping)
+                throw new InvalidOperationException("Cannot receive events when stopped!");
+
             if (workerRunning)
             {
                 if (@event.LogEntryIndex >= processedRange.Start + processedRange.Count)

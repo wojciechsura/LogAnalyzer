@@ -16,6 +16,7 @@ using LogAnalyzer.Configuration;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Types;
 using System.ComponentModel;
+using LogAnalyzer.Models.DialogResults;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -32,7 +33,34 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private IEngine engine;
 
+        private Condition engineStoppingCondition;
+        private BaseCondition generalCommandCondition;
+
         // Private methods ----------------------------------------------------
+
+        private void DoCreateEngine(OpenResult result)
+        {
+            // Build log parser
+            LogParserProfile profile = configurationService.Configuration.LogParserProfiles.Single(p => p.Guid.Value.Equals(result.ParserProfileGuid));
+            ILogParserProvider logParserProvider = logParserRepository.LogParserProviders.Single(p => p.UniqueName == profile.ParserUniqueName.Value);
+            ILogParser parser = logParserProvider.CreateParser(logParserProvider.DeserializeConfiguration(profile.SerializedParserConfiguration.Value));
+
+            // Build log source
+            ILogSourceProvider logSourceProvider = logSourceRepository.LogSourceProviders.Single(p => p.UniqueName == result.LogSourceProviderName);
+            ILogSource source = logSourceProvider.CreateLogSource(result.LogSourceConfiguration, parser);
+
+            engine = engineFactory.CreateEngine(source, parser);
+            engine.NotifySourceReady();
+
+            LogEntries = engine.LogEntries;
+            OnPropertyChanged(nameof(LogEntries));
+        }
+
+        private void EngineStoppedWithOpenCallback(OpenResult result)
+        {
+            engineStoppingCondition.Value = false;
+            DoCreateEngine(result);
+        }
 
         private void DoOpen()
         {
@@ -40,24 +68,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             if (result.DialogResult)
             {
-                #warning Close current engine
-
-                // TODO finish
-
-                // Build log parser
-                LogParserProfile profile = configurationService.Configuration.LogParserProfiles.Single(p => p.Guid.Value.Equals(result.Result.ParserProfileGuid));
-                ILogParserProvider logParserProvider = logParserRepository.LogParserProviders.Single(p => p.UniqueName == profile.ParserUniqueName.Value);
-                ILogParser parser = logParserProvider.CreateParser(logParserProvider.DeserializeConfiguration(profile.SerializedParserConfiguration.Value));
-
-                // Build log source
-                ILogSourceProvider logSourceProvider = logSourceRepository.LogSourceProviders.Single(p => p.UniqueName == result.Result.LogSourceProviderName);
-                ILogSource source = logSourceProvider.CreateLogSource(result.Result.LogSourceConfiguration, parser);
-
-                engine = engineFactory.CreateEngine(source, parser);
-                engine.NotifySourceReady();
-
-                LogEntries = engine.LogEntries;
-                OnPropertyChanged(nameof(LogEntries));                
+                if (engine != null)
+                {
+                    engineStoppingCondition.Value = true;
+                    engine.Stop(() => { EngineStoppedWithOpenCallback(result.Result); });
+                }
+                else
+                {
+                    DoCreateEngine(result.Result);
+                }
             }
         }
 
@@ -84,7 +103,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.logSourceRepository = logSourceRepository;
             this.configurationService = configurationService;
 
-            OpenCommand = new SimpleCommand((obj) => DoOpen());
+            engineStoppingCondition = new Condition(false);
+            generalCommandCondition = !engineStoppingCondition;
+
+            OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
         }
 
         // Public properties --------------------------------------------------

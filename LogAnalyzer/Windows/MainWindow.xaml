@@ -29,7 +29,7 @@
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>
-        <ListView ItemsSource="{Binding LogEntries}" SelectionMode="Multiple">
+        <ListView ItemsSource="{Binding LogEntries}" SelectionMode="Extended">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="" DisplayMemberBinding="{Binding LogEntry.LogEntryIndex}" />

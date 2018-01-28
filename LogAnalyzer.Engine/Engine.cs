@@ -22,17 +22,24 @@ namespace LogAnalyzer.Engine
 
         private class StopToken
         {
-            public StopToken(object stopData)
+            public StopToken(Action stopAction)
             {
-                this.StopData = stopData;
+                this.StopAction = stopAction;
             }
 
             public bool ReaderStopped { get; set; } = false;
             public bool FilterStopped { get; set; } = false;
             public bool HighlighterStopped { get; set; } = false;
-            public object StopData { get; }
+            public Action StopAction { get; }
 
             public bool AllStopped => ReaderStopped && FilterStopped && HighlighterStopped;
+        }
+
+        private enum State
+        {
+            Working,
+            Stopping,
+            Stopped
         }
 
         // Private fields -----------------------------------------------------
@@ -43,7 +50,19 @@ namespace LogAnalyzer.Engine
         private readonly LogHighlighter logHighlighter;
         private readonly EngineData data;
 
+        private State state = State.Working;
         private StopToken stopToken = null;
+
+        // Private methods ----------------------------------------------------
+
+        private void CheckStopCallback()
+        {
+            if (stopToken.AllStopped)
+            {
+                state = State.Stopped;
+                stopToken.StopAction?.Invoke();
+            }
+        }
 
         // Public methods -----------------------------------------------------
 
@@ -58,44 +77,39 @@ namespace LogAnalyzer.Engine
 
         public void NotifySourceReady()
         {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot perform work when stopping or stopped!");
+
             logReader.NotifySourceReady();
         }
 
-        public void Stop(object stopData)
+        public void Stop(Action stopAction)
         {
-            if (stopToken != null)
+            if (state == State.Stopping || state == State.Stopped)
                 throw new InvalidOperationException("Already stopping!");
 
-            stopToken = new StopToken(stopData);
+            state = State.Stopping;
+            stopToken = new StopToken(stopAction);
+
             logReader.Stop(() =>
                 {
                     stopToken.ReaderStopped = true;
-                    CheckStop();
+                    CheckStopCallback();
                 });
             logFilter.Stop(() =>
                 {
                     stopToken.FilterStopped = true;
-                    CheckStop();
+                    CheckStopCallback();
                 });
             logHighlighter.Stop(() =>
                 {
                     stopToken.HighlighterStopped = true;
-                    CheckStop();
+                    CheckStopCallback();
                 });
-        }
-
-        public void CheckStop()
-        {
-            if (stopToken.AllStopped)
-            {
-                EngineStopped?.Invoke(this, new EngineStoppedEventArgs(stopToken.StopData));
-            }
         }
 
         // Public properties --------------------------------------------------
 
         public ObservableRangeCollection<HighlightedLogEntry> LogEntries => data.HighlightedLogEntries;
-
-        public event EngineStoppedDelegate EngineStopped;
     }
 }
