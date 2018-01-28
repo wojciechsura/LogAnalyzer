@@ -22,8 +22,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
-        // Private fields -----------------------------------------------------
+        private class CloseData
+        {
+            public bool HandlingClosing { get; set; } = false;
+        }
 
+        // Private fields -----------------------------------------------------
+        
         private readonly IMainWindowAccess access;
         private readonly IDialogService dialogService;
         private readonly ILogSourceRepository logSourceRepository;
@@ -62,6 +67,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             DoCreateEngine(result);
         }
 
+        private void EngineStoppedWithCloseCallback(CloseData closeData)
+        {
+            engine = null;
+            if (!closeData.HandlingClosing)
+                access.Close();
+        }
+
         private void DoOpen()
         {
             var result = dialogService.OpenLog();
@@ -71,7 +83,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 if (engine != null)
                 {
                     engineStoppingCondition.Value = true;
-                    engine.Stop(() => { EngineStoppedWithOpenCallback(result.Result); });
+                    engine.Stop(() => EngineStoppedWithOpenCallback(result.Result));
                 }
                 else
                 {
@@ -107,6 +119,35 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             generalCommandCondition = !engineStoppingCondition;
 
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
+        }
+
+        public bool HandleClosing()
+        {
+            if (engine != null)
+            {
+                CloseData closeData = new CloseData
+                {
+                    HandlingClosing = true
+                };
+
+                // Engine may stop synchronously - in such case
+                // callback should not call Close again, because
+                // it may cause InvalidOperationException
+                engine.Stop(() =>
+                {
+                    EngineStoppedWithCloseCallback(closeData);
+                });
+
+                // If engine stops asynchronously, it will still do
+                // it in UI thread, and then will call Close.
+                closeData.HandlingClosing = false;
+
+                return engine != null;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         // Public properties --------------------------------------------------

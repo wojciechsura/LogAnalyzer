@@ -34,5 +34,10 @@ namespace LogAnalyzer.Windows
             viewModel = Dependencies.Container.Instance.Resolve<MainWindowViewModel>(new ParameterOverride("access", this));
             DataContext = viewModel;
         }
+
+        private void HandleWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = viewModel.HandleClosing();
+        }
     }
 }

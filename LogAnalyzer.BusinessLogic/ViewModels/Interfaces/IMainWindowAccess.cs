@@ -8,6 +8,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Interfaces
 {
     public interface IMainWindowAccess
     {
-
+        void Close();
     }
 }
