@@ -31,6 +31,7 @@
             </f:RibbonTabItem>
         </f:Ribbon>
         <ListView ItemsSource="{Binding LogEntries}" SelectionMode="Extended">
+            <!--
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="" DisplayMemberBinding="{Binding LogEntry.LogEntryIndex}" />
@@ -47,6 +48,7 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
+            -->
         </ListView>
     </DockPanel>
 </f:RibbonWindow>

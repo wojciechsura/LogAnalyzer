@@ -49,8 +49,10 @@
     <Compile Include="LogSource\ILogSourceConfiguration.cs" />
     <Compile Include="LogSource\ILogSourceEditorViewModel.cs" />
     <Compile Include="LogSource\ILogSourceProvider.cs" />
+    <Compile Include="Models\ColumnInfo.cs" />
     <Compile Include="Models\LogEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Types\LogEntryColumn.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
