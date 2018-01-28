@@ -38,7 +38,7 @@
                     <GridViewColumn Header="Message">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock FontFamily="Consolas" FontSize="11" Text="{Binding LogEntry.Message}" 
+                                <TextBlock Text="{Binding LogEntry.Message}" 
                                            Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" 
                                            Background="{Binding Highlight.Background, Converter={StaticResource ColorToBrushConverter}}" />
                             </DataTemplate>

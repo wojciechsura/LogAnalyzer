@@ -32,6 +32,23 @@ namespace LogAnalyzer.Engine.Components
             public List<LogEntry> ParsedEntries { get; set; }
         }
 
+        private class StopData
+        {
+            public StopData(Action afterStop)
+            {
+                this.AfterStop = afterStop;
+            }
+
+            public Action AfterStop { get; set; }
+        }
+
+        private enum State
+        {
+            Working,
+            Stopping,
+            Stopped
+        }
+
         // Private fields -----------------------------------------------------
 
         private readonly ILogSource logSource;
@@ -42,6 +59,8 @@ namespace LogAnalyzer.Engine.Components
         private readonly BackgroundWorker backgroundWorker;
         private bool workerRunning = false;
         private bool restart = false;
+        private State state = State.Working;
+        private StopData stopData = null;
 
         // Private methods ----------------------------------------------------
 
@@ -102,65 +121,78 @@ namespace LogAnalyzer.Engine.Components
 
         private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            bool runAgain = false;
-
-            try
+            if (state == State.Stopping)
             {
-                if (e.Cancelled)
+                DoStopReader();
+            }
+            else if (state == State.Stopped)
+            {
+                throw new InvalidOperationException("Cannot start worker when stopped!");
+            }
+            else if (state == State.Working)
+            {
+                bool runAgain = false;
+
+                try
                 {
-                    // TODO - disposing
+                    if (e.Cancelled)
+                    {
+                        // Stopping
+                    }
+                    else
+                    {
+                        ProcessingResult result = e.Result as ProcessingResult;
+                        if (result == null)
+                            throw new InvalidOperationException("Invalid processing result!");
+
+                        if (result.ReplaceLast)
+                        {
+                            if (data.ResultLogEntries.Count == 0)
+                                throw new InvalidOperationException("Cannot replace last item!");
+
+                            data.ResultLogEntries[data.ResultLogEntries.Count - 1] = result.ParsedEntries[0];
+                            result.ParsedEntries.RemoveAt(0);
+
+                            // Only last item of parsed entries may be updated, because
+                            // lines following this entry may contain eg. exception details
+                            // or callstack lines, which are appended to last entry's message.
+                            eventBus.Send(new LastParsedEntriesItemReplacedEvent(data.ResultLogEntries.Count - 1));
+                        }
+
+                        if (result.ParsedEntries.Count > 0)
+                        {
+                            int start = data.ResultLogEntries.Count;
+                            int count = result.ParsedEntries.Count;
+
+                            data.ResultLogEntries.AddRange(result.ParsedEntries);
+
+                            eventBus.Send(new AddedNewParsedEntriesEvent(start, count));
+                        }
+
+                        if (result.ParsedEntries.Count == MAX_PROCESSED_LINES)
+                        {
+                            runAgain = true;
+                            return;
+                        }
+
+                        if (restart)
+                        {
+                            restart = false;
+                            runAgain = true;
+                            return;
+                        }
+                    }
                 }
-                else
+                finally
                 {
-                    ProcessingResult result = e.Result as ProcessingResult;
-                    if (result == null)
-                        throw new InvalidOperationException("Invalid processing result!");
+                    workerRunning = false;
 
-                    if (result.ReplaceLast)
-                    {
-                        if (data.ResultLogEntries.Count == 0)
-                            throw new InvalidOperationException("Cannot replace last item!");
-
-                        data.ResultLogEntries[data.ResultLogEntries.Count - 1] = result.ParsedEntries[0];
-                        result.ParsedEntries.RemoveAt(0);
-
-                        // Only last item of parsed entries may be updated, because
-                        // lines following this entry may contain eg. exception details
-                        // or callstack lines, which are appended to last entry's message.
-                        eventBus.Send(new LastParsedEntriesItemReplacedEvent(data.ResultLogEntries.Count - 1));
-                    }
-
-                    if (result.ParsedEntries.Count > 0)
-                    {
-                        int start = data.ResultLogEntries.Count;
-                        int count = result.ParsedEntries.Count;
-
-                        data.ResultLogEntries.AddRange(result.ParsedEntries);
-
-                        eventBus.Send(new AddedNewParsedEntriesEvent(start, count));
-                    }
-
-                    if (result.ParsedEntries.Count == MAX_PROCESSED_LINES)
-                    {
-                        runAgain = true;
-                        return;
-                    }
-
-                    if (restart)
-                    {
-                        restart = false;
-                        runAgain = true;
-                        return;
-                    }
+                    if (runAgain)
+                        StartWorker();
                 }
             }
-            finally
-            {
-                workerRunning = false;
-
-                if (runAgain)
-                    StartWorker();
-            }
+            else
+                throw new InvalidOperationException("Invalid state!");
         }
 
         private void StartWorker()
@@ -168,11 +200,24 @@ namespace LogAnalyzer.Engine.Components
             if (workerRunning)
                 throw new InvalidOperationException("Cannot start already running worker!");
 
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot start worker when stopped!");
+
             workerRunning = true;
             backgroundWorker.RunWorkerAsync(new ProcessingArgument
             {
                 LastLogEntry = data.ResultLogEntries.LastOrDefault()
             });
+        }
+
+        private void DoStopReader()
+        {
+            logSource.Dispose();
+            logParser.Dispose();
+
+            state = State.Stopped;
+
+            stopData.AfterStop();
         }
 
         // Public methods -----------------------------------------------------
@@ -189,8 +234,30 @@ namespace LogAnalyzer.Engine.Components
             backgroundWorker.RunWorkerCompleted += RunWorkerCompleted;
         }
 
+        public void Stop(Action afterStop)
+        {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Already stopping or stopped!");
+
+            state = State.Stopping;
+            stopData = new StopData(afterStop);
+
+            if (workerRunning)
+            {
+                backgroundWorker.CancelAsync();
+                // RunWorkerCompleted will take care of stopping the reader.
+            }
+            else
+            {
+                DoStopReader();
+            }
+        }
+
         public void NotifySourceReady()
         {
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot perform this operation, reader is stopped!");
+
             if (workerRunning)
             {
                 restart = true;

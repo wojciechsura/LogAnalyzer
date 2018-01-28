@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.LogParser
 {
-    public interface ILogParser
+    public interface ILogParser : IDisposable
     {
         LogEntry Parse(string line, LogEntry lastEntry);
     }

@@ -14,5 +14,10 @@ namespace LineLogParser
         {
             return new LogEntry(DateTime.MinValue, null, line);
         }
+
+        public void Dispose()
+        {
+
+        }
     }
 }

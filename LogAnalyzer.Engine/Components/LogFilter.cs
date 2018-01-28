@@ -65,6 +65,13 @@ namespace LogAnalyzer.Engine.Components
             public List<FilteredLogEntry> Entries { get; set; }
         }
 
+        private enum State
+        {
+            Working,
+            Stopping,
+            Stopped
+        }
+
         // Private fields -----------------------------------------------------
 
         private readonly EventBus eventBus;
@@ -74,6 +81,7 @@ namespace LogAnalyzer.Engine.Components
 
         private BackgroundWorker backgroundWorker;
         private bool workerRunning = false;
+        private State state = State.Working;
 
         // Private methods ----------------------------------------------------
 
@@ -110,6 +118,7 @@ namespace LogAnalyzer.Engine.Components
 
         private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            if (state == State.)
             try
             {
                 if (e.Cancelled)
@@ -262,6 +271,11 @@ namespace LogAnalyzer.Engine.Components
 
             eventBus.Register<AddedNewParsedEntriesEvent>(this);
             eventBus.Register<LastParsedEntriesItemReplacedEvent>(this);
+        }
+
+        public void Stop(Action stopAction)
+        {
+            throw new NotImplementedException();
         }
 
         public void Receive(AddedNewParsedEntriesEvent @event)

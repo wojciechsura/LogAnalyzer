@@ -99,6 +99,11 @@ namespace LogAnalyzer.Engine.Components
             e.Result = result;
         }
 
+        internal void Stop(Action stopAction)
+        {
+            throw new NotImplementedException();
+        }
+
         private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             try
