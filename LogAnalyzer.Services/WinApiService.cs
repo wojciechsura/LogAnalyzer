@@ -23,5 +23,10 @@ namespace LogAnalyzer.Services
             else
                 return null;
         }
+
+        public void StartProcess(string path)
+        {
+            System.Diagnostics.Process.Start(path);
+        }
     }
 }

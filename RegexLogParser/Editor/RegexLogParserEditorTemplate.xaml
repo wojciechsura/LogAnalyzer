@@ -76,14 +76,17 @@
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
                                                         <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
                                                     </Grid.ColumnDefinitions>
                                                     <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto" />
                                                         <RowDefinition Height="Auto" />
                                                     </Grid.RowDefinitions>
 
                                                     <Label Grid.Row="0" Grid.Column="0">Input date format</Label>
                                                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Format, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <Button Width="24" Height="24" Grid.Row="0" Grid.Column="2" Command="{Binding DateFormatHelpCommand}">
+                                                        <Image Source="/Resources/Images/Help16.png" Width="16" Height="16" />
+                                                    </Button>
                                                 </Grid>
                                             </DataTemplate>
                                             <DataTemplate DataType="{x:Type gc:CustomGroupConfigurationViewModel}">
