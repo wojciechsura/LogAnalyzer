@@ -2,6 +2,7 @@
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
 using LogAnalyzer.API.Models;
+using LogAnalyzer.API.Types;
 using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Events;
 using System;
@@ -88,11 +89,29 @@ namespace LogAnalyzer.Engine.Components
                 {
                     linesProcessed++;
 
-                    LogEntry newEntry = logParser.Parse(line, lastEntry);
-                    if (newEntry != null)
-                        lastEntry = newEntry;
+                    (LogEntry entry, ParserOperation operation) = logParser.Parse(line, lastEntry);
 
-                    processedItems.Add(newEntry);
+                    if (operation == ParserOperation.ReplaceLast)
+                    {
+                        if (entry == null)
+                            throw new InvalidOperationException("ReplaceLast operation must yield entry!");
+
+                        processedItems[processedItems.Count - 1] = entry;
+                        lastEntry = entry;
+                    }
+                    else if (operation == ParserOperation.AddNew)
+                    {
+                        if (entry == null)
+                            throw new InvalidOperationException("AddNew operation must yield entry!");
+
+                        processedItems.Add(entry);
+                        lastEntry = entry;
+                    }
+                    else if (operation == ParserOperation.None)
+                    {
+                        if (entry != null)
+                            throw new InvalidOperationException("None operation must not yield entry!");
+                    }
                 }
             }
             while (line != null && linesProcessed < MAX_PROCESSED_LINES);

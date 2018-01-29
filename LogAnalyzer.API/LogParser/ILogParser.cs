@@ -1,4 +1,5 @@
 ﻿using LogAnalyzer.API.Models;
+using LogAnalyzer.API.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace LogAnalyzer.API.LogParser
 {
     public interface ILogParser : IDisposable
     {
-        LogEntry Parse(string line, LogEntry lastEntry);
+        (LogEntry, ParserOperation) Parse(string line, LogEntry lastEntry);
         List<BaseColumnInfo> GetColumnInfos();
     }
 }

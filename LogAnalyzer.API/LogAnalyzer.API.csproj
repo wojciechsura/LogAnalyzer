@@ -34,6 +34,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,6 +63,7 @@
     <Compile Include="Types\Attributes\ColumnHeaderAttribute.cs" />
     <Compile Include="Types\Attributes\MemberNameAttribute.cs" />
     <Compile Include="Types\LogEntryColumn.cs" />
+    <Compile Include="Types\ParserOperation.cs" />
     <Compile Include="Types\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +71,9 @@
       <Project>{815b5af9-bac8-43fd-88d5-d50a51bc09de}</Project>
       <Name>LogAnalyzer.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
