@@ -5,9 +5,10 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:local="clr-namespace:LogAnalyzer"
                 xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
-                     xmlns:f="urn:fluent-ribbon"
-                     mc:Ignorable="d"
-                     Title="MainWindow" Height="350" Width="525"
+                xmlns:f="urn:fluent-ribbon"
+                mc:Ignorable="d"
+                Title="MainWindow" Height="350" Width="525"
+                WindowStartupLocation="CenterScreen"
                 Closing="HandleWindowClosing">
     <f:RibbonWindow.Resources>
         <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />

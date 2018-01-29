@@ -64,10 +64,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             else
             {
                 configurationService.Configuration.SuspendNotifications();
+
+                var newProfileGuid = Guid.NewGuid();
+
                 try
                 {
                     var newProfile = new LogParserProfile();
-                    newProfile.Guid.Value = Guid.NewGuid();
+                    newProfile.Guid.Value = newProfileGuid;
                     FillProfileFields(newProfile);
 
                     configurationService.Configuration.LogParserProfiles.Add(newProfile);
@@ -78,7 +81,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 }
 
                 result.DialogResult = true;
-                result.Result = new LogParserProfileEditorResult(editedProfileGuid);
+                result.Result = new LogParserProfileEditorResult(newProfileGuid);
             }
         }
 

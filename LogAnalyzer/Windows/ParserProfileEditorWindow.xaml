@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Parser profile editor" MinWidth="400"
         SizeToContent="WidthAndHeight" ResizeMode="NoResize"        
-        WindowStartupLocation="CenterOwner"
+        WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow">
     <Window.Resources>
         <i:LogParserTemplateSelector x:Key="LogParserTemplateSelector" />

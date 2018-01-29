@@ -10,6 +10,13 @@ namespace RegexLogParser
 {
     class RegexLogParser : ILogParser
     {
+        private RegexLogParserConfiguration configuration;
+
+        public RegexLogParser(RegexLogParserConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public List<BaseColumnInfo> GetColumnInfos()
         {
             throw new NotImplementedException();

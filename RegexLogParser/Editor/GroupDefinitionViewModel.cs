@@ -31,6 +31,15 @@ namespace RegexLogParser.Editor
         private readonly List<GroupDisplayInfo> availableGroupTypes;
         private GroupDisplayInfo selectedGroupType;
 
+        private void FillAvailableGroupTypes()
+        {
+            foreach (LogEntryColumn column in Enum.GetValues(typeof(LogEntryColumn)))
+            {
+                availableGroupTypes.Add(new GroupDisplayInfo(column,
+                    column.GetAttribute<ColumnHeaderAttribute>().Header));
+            }
+        }
+
         private void HandleSelectedColumnTypeChanged(GroupDisplayInfo value)
         {
             DisplayName = value.DisplayName;
@@ -69,22 +78,23 @@ namespace RegexLogParser.Editor
         public GroupDefinitionViewModel()
         {
             availableGroupTypes = new List<GroupDisplayInfo>();
-            foreach (LogEntryColumn column in Enum.GetValues(typeof(LogEntryColumn)))
-            {
-                availableGroupTypes.Add(new GroupDisplayInfo(column,
-                    column.GetAttribute<ColumnHeaderAttribute>().Header));
-            }
+            FillAvailableGroupTypes();
 
             SelectedGroupType = availableGroupTypes.First();
         }
 
         public GroupDefinitionViewModel(BaseGroupDefinition groupDefinition)
         {
+            availableGroupTypes = new List<GroupDisplayInfo>();
+            FillAvailableGroupTypes();
+
             groupConfiguration = BaseGroupConfigurationViewModel.FromGroupDefinition(groupDefinition);
             selectedGroupType = availableGroupTypes.Single(a => groupDefinition.GetColumn() == a.Column);
+            displayName = selectedGroupType.DisplayName;
 
             OnPropertyChanged(nameof(GroupConfiguration));
-            OnPropertyChanged(nameof(SelectedGroupType));            
+            OnPropertyChanged(nameof(SelectedGroupType));
+            OnPropertyChanged(nameof(DisplayName));
         }
 
         public string DisplayName
