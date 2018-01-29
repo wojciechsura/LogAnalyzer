@@ -16,10 +16,10 @@
                     <TextBox Margin="4" Text="{Binding RegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label>Capture groups</Label>
                     <StackPanel Orientation="Horizontal" Margin="4">
-                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding AddColumnDefinition}">
+                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding AddGroupDefinition}">
                             <Image Width="16" Height="16" Source="/Resources/Images/Plus16.png" />
                         </Button>
-                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding RemoveColumnDefinition}">
+                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding RemoveGroupDefinition}">
                             <Image Width="16" Height="16" Source="/Resources/Images/Minus16.png" />
                         </Button>
                         <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveLeft}">
@@ -31,9 +31,9 @@
                     </StackPanel>
                     <ListBox Height="60" Padding="4" Margin="4"
                              MaxWidth="600"
-                            ItemsSource="{Binding ColumnDefinitions}"
-                            SelectedItem="{Binding SelectedColumnDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            SelectedIndex="{Binding SelectedColumnDefinitionIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            ItemsSource="{Binding GroupDefinitions}"
+                            SelectedItem="{Binding SelectedGroupDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedIndex="{Binding SelectedGroupDefinitionIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal" IsItemsHost="True" />
@@ -48,8 +48,8 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <Label>Group settings</Label>
-                    <ContentControl MinHeight="100" Content="{Binding SelectedColumnDefinition}"
-                                    Visibility="{Binding SelectedColumnDefinition, Converter={StaticResource HideIfNullConverter}}">
+                    <ContentControl MinHeight="100" Content="{Binding SelectedGroupDefinition}"
+                                    Visibility="{Binding SelectedGroupDefinition, Converter={StaticResource HideIfNullConverter}}">
                         <ContentControl.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
@@ -64,9 +64,9 @@
                                                   Width="150"
                                                   Margin="0,4"
                                                   HorizontalAlignment="Left"
-                                                  ItemsSource="{Binding AvailableColumns}"
+                                                  ItemsSource="{Binding AvailableGroups}"
                                                   DisplayMemberPath="DisplayName"
-                                                  SelectedItem="{Binding SelectedColumnType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                  SelectedItem="{Binding SelectedGroupType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </Grid>
                                     <ContentControl Content="{Binding GroupConfiguration}">
                                         <ContentControl.Resources>
@@ -91,7 +91,12 @@
                                                     <Label Grid.Column="0">Custom field name</Label>
                                                     <TextBox Grid.Column="1" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
                                                 </Grid>
-
+                                            </DataTemplate>
+                                            <DataTemplate DataType="{x:Type gc:SeverityGroupConfigurationViewModel}">
+                                                <Grid />
+                                            </DataTemplate>
+                                            <DataTemplate DataType="{x:Type gc:MessageGroupConfigurationViewModel}">
+                                                <Grid />
                                             </DataTemplate>
                                         </ContentControl.Resources>
                                     </ContentControl>

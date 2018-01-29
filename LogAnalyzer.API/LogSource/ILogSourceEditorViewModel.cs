@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogAnalyzer.API.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace LogAnalyzer.API.LogSource
     public interface ILogSourceEditorViewModel
     {
         ILogSourceConfiguration BuildConfiguration();
-        bool Validate();
+        ValidationResult Validate();
 
         string DisplayName { get; }
         string EditorResource { get; }

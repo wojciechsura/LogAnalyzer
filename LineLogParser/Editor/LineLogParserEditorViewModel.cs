@@ -1,4 +1,5 @@
 ﻿using LogAnalyzer.API.LogParser;
+using LogAnalyzer.API.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +28,9 @@ namespace LineLogParser.Editor
             return new LineLogParserConfiguration();
         }
 
-        public bool Validate()
+        public ValidationResult Validate()
         {
-            return true;
+            return new ValidationResult(true, null);
         }
 
         public string DisplayName => DISPLAY_NAME;

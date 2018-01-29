@@ -1,4 +1,5 @@
 ﻿using LogAnalyzer.API.LogSource;
+using LogAnalyzer.API.Types;
 using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Wpf.Input;
 using System;
@@ -49,9 +50,14 @@ namespace FileLogSource.Editor
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public bool Validate()
-        {            
-            return filename != null && File.Exists(filename);
+        public ValidationResult Validate()
+        {
+            if (filename != null)
+                return new ValidationResult(false, "Choose log file");
+            if (!File.Exists(filename))
+                return new ValidationResult(false, "File does not exist!");
+
+            return new ValidationResult(true, null);
         }
 
         // Public methods -----------------------------------------------------

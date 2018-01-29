@@ -60,6 +60,7 @@
     <Compile Include="Types\Attributes\ColumnHeaderAttribute.cs" />
     <Compile Include="Types\Attributes\MemberNameAttribute.cs" />
     <Compile Include="Types\LogEntryColumn.cs" />
+    <Compile Include="Types\ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">

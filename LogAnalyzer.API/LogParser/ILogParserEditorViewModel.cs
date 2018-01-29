@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogAnalyzer.API.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ namespace LogAnalyzer.API.LogParser
 
         string DisplayName { get; }
         string EditorResource { get; }
-        bool Validate();
+        ValidationResult Validate();
 
         ILogParserProvider Provider { get; }
     }

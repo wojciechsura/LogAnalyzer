@@ -7,9 +7,11 @@ using LogAnalyzer.API.Types;
 
 namespace RegexLogParser.Configuration
 {
-    public class GroupDefinition
+    public class SeverityGroupDefinition : BaseGroupDefinition
     {
-        public LogEntryColumn Column { get; set; }
-        public BaseGroupDefinitionData Data { get; set; }
+        public override LogEntryColumn GetColumn()
+        {
+            return LogEntryColumn.Severity;
+        }
     }
 }

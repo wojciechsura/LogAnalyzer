@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.API.Types.Attributes;
 using LogAnalyzer.Common.Extensions;
+using RegexLogParser.Configuration;
 using RegexLogParser.Editor.GroupConfiguration;
 
 namespace RegexLogParser.Editor
@@ -27,8 +28,8 @@ namespace RegexLogParser.Editor
 
         private string displayName;
         private BaseGroupConfigurationViewModel groupConfiguration;
-        private readonly List<GroupDisplayInfo> availableColumnTypes;
-        private GroupDisplayInfo selectedColumnType;
+        private readonly List<GroupDisplayInfo> availableGroupTypes;
+        private GroupDisplayInfo selectedGroupType;
 
         private void HandleSelectedColumnTypeChanged(GroupDisplayInfo value)
         {
@@ -45,11 +46,18 @@ namespace RegexLogParser.Editor
                         GroupConfiguration = new CustomGroupConfigurationViewModel();
                         break;
                     }
-                default:
+                case LogEntryColumn.Message:
                     {
-                        GroupConfiguration = null;
+                        GroupConfiguration = new MessageGroupConfigurationViewModel();
                         break;
                     }
+                case LogEntryColumn.Severity:
+                    {
+                        GroupConfiguration = new SeverityGroupConfigurationViewModel();
+                        break;
+                    }
+                default:
+                    throw new InvalidOperationException("Not recognized log entry column!");
             }
         }
 
@@ -60,14 +68,23 @@ namespace RegexLogParser.Editor
 
         public GroupDefinitionViewModel()
         {
-            availableColumnTypes = new List<GroupDisplayInfo>();
+            availableGroupTypes = new List<GroupDisplayInfo>();
             foreach (LogEntryColumn column in Enum.GetValues(typeof(LogEntryColumn)))
             {
-                availableColumnTypes.Add(new GroupDisplayInfo(column,
+                availableGroupTypes.Add(new GroupDisplayInfo(column,
                     column.GetAttribute<ColumnHeaderAttribute>().Header));
             }
 
-            SelectedColumnType = availableColumnTypes.First();
+            SelectedGroupType = availableGroupTypes.First();
+        }
+
+        public GroupDefinitionViewModel(BaseGroupDefinition groupDefinition)
+        {
+            groupConfiguration = BaseGroupConfigurationViewModel.FromGroupDefinition(groupDefinition);
+            selectedGroupType = availableGroupTypes.Single(a => groupDefinition.GetColumn() == a.Column);
+
+            OnPropertyChanged(nameof(GroupConfiguration));
+            OnPropertyChanged(nameof(SelectedGroupType));            
         }
 
         public string DisplayName
@@ -83,19 +100,30 @@ namespace RegexLogParser.Editor
             }
         }
 
-        public List<GroupDisplayInfo> AvailableColumns => availableColumnTypes;
-        public GroupDisplayInfo SelectedColumnType
+        public List<GroupDisplayInfo> AvailableGroups => availableGroupTypes;
+
+        public GroupDisplayInfo SelectedGroupType
         {
             get
             {
-                return selectedColumnType;
+                return selectedGroupType;
             }
             set
             {
-                selectedColumnType = value;
+                selectedGroupType = value;
                 HandleSelectedColumnTypeChanged(value);
-                OnPropertyChanged(nameof(SelectedColumnType));
+                OnPropertyChanged(nameof(SelectedGroupType));
             }
+        }
+
+        public BaseGroupDefinition GetGroupDefinition()
+        {
+            return groupConfiguration.GetGroupDefinition();
+        }
+
+        public ValidationResult Validate()
+        {
+            return groupConfiguration.Validate();
         }
 
         public BaseGroupConfigurationViewModel GroupConfiguration

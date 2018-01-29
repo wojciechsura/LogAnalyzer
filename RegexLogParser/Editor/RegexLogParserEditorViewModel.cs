@@ -1,11 +1,15 @@
 ﻿using LogAnalyzer.API.LogParser;
+using LogAnalyzer.API.Types;
 using LogAnalyzer.Wpf.Input;
+using RegexLogParser.Configuration;
+using RegexLogParser.Editor.GroupConfiguration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace RegexLogParser.Editor
@@ -20,9 +24,9 @@ namespace RegexLogParser.Editor
         // Private fields -----------------------------------------------------
 
         private string regularExpression;
-        private GroupDefinitionViewModel selectedColumnDefinition;
-        private int selectedColumnDefinitionIndex;
-        private readonly ObservableCollection<GroupDefinitionViewModel> columnDefinitions;
+        private GroupDefinitionViewModel selectedGroupDefinition;
+        private int selectedGroupDefinitionIndex;
+        private readonly ObservableCollection<GroupDefinitionViewModel> groupDefinitions;
 
         private readonly Condition itemSelectedCondition;
         private readonly Condition firstItemSelectedCondition;
@@ -30,29 +34,35 @@ namespace RegexLogParser.Editor
 
         // Private methods ----------------------------------------------------
 
-        private void DoAddColumnDefinition()
+        private void DoAddGroupDefinition()
         {
-            var newColumnDefinition = new GroupDefinitionViewModel();
-            columnDefinitions.Add(newColumnDefinition);
-            SelectedColumnDefinition = newColumnDefinition;
+            var newGroupDefinition = new GroupDefinitionViewModel();
+            groupDefinitions.Add(newGroupDefinition);
+            SelectedGroupDefinition = newGroupDefinition;
         }
 
-        private void DoRemoveColumnDefinition()
+        private void DoRemoveGroupDefinition()
         {
-            columnDefinitions.Remove(selectedColumnDefinition);
-            SelectedColumnDefinition = null;
+            groupDefinitions.Remove(selectedGroupDefinition);
+            SelectedGroupDefinition = null;
         }
 
         private void DoMoveLeft()
         {
-            int index = columnDefinitions.IndexOf(selectedColumnDefinition);
-            columnDefinitions.Move(index, index - 1);
+            int index = groupDefinitions.IndexOf(selectedGroupDefinition);
+            groupDefinitions.Move(index, index - 1);
         }
 
         private void DoMoveRight()
         {
-            int index = columnDefinitions.IndexOf(selectedColumnDefinition);
-            columnDefinitions.Move(index, index + 1);
+            int index = groupDefinitions.IndexOf(selectedGroupDefinition);
+            groupDefinitions.Move(index, index + 1);
+        }
+
+        private void Clear()
+        {
+            regularExpression = "";
+            groupDefinitions.Clear();            
         }
 
         // Protected methods --------------------------------------------------
@@ -68,23 +78,37 @@ namespace RegexLogParser.Editor
         {
             this.Provider = parentProvider;
 
-            columnDefinitions = new ObservableCollection<GroupDefinitionViewModel>();
+            groupDefinitions = new ObservableCollection<GroupDefinitionViewModel>();
 
             itemSelectedCondition = new Condition(false);
             firstItemSelectedCondition = new Condition(false);
             lastItemSelectedCondition = new Condition(false);
 
-            AddColumnDefinition = new SimpleCommand((obj) => DoAddColumnDefinition());
-            RemoveColumnDefinition = new SimpleCommand((obj) => DoRemoveColumnDefinition(), itemSelectedCondition);
+            AddGroupDefinition = new SimpleCommand((obj) => DoAddGroupDefinition());
+            RemoveGroupDefinition = new SimpleCommand((obj) => DoRemoveGroupDefinition(), itemSelectedCondition);
             MoveLeft = new SimpleCommand((obj) => DoMoveLeft(), !firstItemSelectedCondition & itemSelectedCondition);
             MoveRight = new SimpleCommand((obj) => DoMoveRight(), !lastItemSelectedCondition & itemSelectedCondition);
         }
 
         public ILogParserConfiguration GetConfiguration()
         {
+            if (!Validate().Valid)
+                throw new InvalidOperationException("Cannot get configuration, editor values are not valid!");
+
             var configuration = new RegexLogParserConfiguration();
+
+            // Regular expression
             configuration.Regex = regularExpression;
 
+            // Group definitions
+            var groupDefinitions = new List<BaseGroupDefinition>();
+            for (int i = 0; i < this.groupDefinitions.Count; i++)
+            {
+                BaseGroupDefinition data = this.groupDefinitions[i].GetGroupDefinition();
+                groupDefinitions.Add(data);
+            }
+            configuration.GroupDefinitions = groupDefinitions;
+            
             return configuration;
         }
 
@@ -94,12 +118,57 @@ namespace RegexLogParser.Editor
             if (regexConfig == null)
                 throw new ArgumentNullException(nameof(configuration));
 
+            Clear();
+
+            // Regular expression
             regularExpression = regexConfig.Regex;
+
+            for (int i = 0; i < regexConfig.GroupDefinitions.Count; i++)
+            {
+                GroupDefinitionViewModel groupDefinitionViewModel = new GroupDefinitionViewModel(regexConfig.GroupDefinitions[i]);
+                groupDefinitions.Add(groupDefinitionViewModel);
+            }
         }
 
-        public bool Validate()
+        public ValidationResult Validate()
         {
-            throw new NotImplementedException();
+            // Regular expression
+            try
+            {
+                Regex regex = new Regex(regularExpression);
+            }
+            catch
+            {
+                return new ValidationResult(false, "Invalid regular expression!");
+            }
+
+            // Group count > 0
+            if (groupDefinitions.Count == 0)
+                return new ValidationResult(false, "You have to define at least one group definition!");
+
+            // Unique custom group names
+            var customGroupNames = groupDefinitions.Where(g => g.GroupConfiguration is CustomGroupConfigurationViewModel)
+                    .Select(g => g.GroupConfiguration as CustomGroupConfigurationViewModel)
+                    .Select(c => c.Name)
+                    .ToList();
+            if (customGroupNames.Count != customGroupNames.Distinct().Count())
+                return new ValidationResult(false, "Custom group names must be unique!");
+
+            // Unique group types
+            var groupTypes = groupDefinitions
+                .Select(g => g.SelectedGroupType.Column)
+                .ToList();
+            if (groupTypes.Count() != groupTypes.Distinct().Count())
+                return new ValidationResult(false, "Group types cannot be used more than once!");
+
+            for (int i = 0; i < groupDefinitions.Count; i++)
+            {
+                ValidationResult result = groupDefinitions[i].Validate();
+                if (!result.Valid)
+                    return result;
+            }
+
+            return new ValidationResult(true, null);
         }
 
         // Public properties --------------------------------------------------
@@ -123,39 +192,39 @@ namespace RegexLogParser.Editor
             }
         }
 
-        public ObservableCollection<GroupDefinitionViewModel> ColumnDefinitions => columnDefinitions;
+        public ObservableCollection<GroupDefinitionViewModel> GroupDefinitions => groupDefinitions;
 
-        public GroupDefinitionViewModel SelectedColumnDefinition
+        public GroupDefinitionViewModel SelectedGroupDefinition
         {
             get
             {
-                return selectedColumnDefinition;
+                return selectedGroupDefinition;
             }
             set
             {
-                selectedColumnDefinition = value;
-                OnPropertyChanged(nameof(SelectedColumnDefinition));
+                selectedGroupDefinition = value;
+                OnPropertyChanged(nameof(SelectedGroupDefinition));
             }
         }
 
-        public int SelectedColumnDefinitionIndex
+        public int SelectedGroupDefinitionIndex
         {
             get
             {
-                return selectedColumnDefinitionIndex;
+                return selectedGroupDefinitionIndex;
             }
             set
             {
-                selectedColumnDefinitionIndex = value;
+                selectedGroupDefinitionIndex = value;
                 itemSelectedCondition.Value = (value != -1);
                 firstItemSelectedCondition.Value = (value == 0);
-                lastItemSelectedCondition.Value = (value == columnDefinitions.Count - 1);
-                OnPropertyChanged(nameof(SelectedColumnDefinitionIndex));
+                lastItemSelectedCondition.Value = (value == groupDefinitions.Count - 1);
+                OnPropertyChanged(nameof(SelectedGroupDefinitionIndex));
             }
         }
 
-        public SimpleCommand AddColumnDefinition { get; }
-        public SimpleCommand RemoveColumnDefinition { get; }
+        public SimpleCommand AddGroupDefinition { get; }
+        public SimpleCommand RemoveGroupDefinition { get; }
         public SimpleCommand MoveLeft { get; }
         public SimpleCommand MoveRight { get; }
 

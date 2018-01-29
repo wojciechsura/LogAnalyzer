@@ -13,6 +13,7 @@ using LogAnalyzer.API.LogParser;
 using System.Windows.Input;
 using LogAnalyzer.Wpf.Input;
 using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.API.Types;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -93,8 +94,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoOk()
         {
-            if (!selectedLogParserViewModel.Validate())
+            ValidationResult result = selectedLogParserViewModel.Validate();
+            if (!result.Valid)
+            {
+                messagingService.Inform(result.Message);
                 return;
+            }
 
             Save();
 
@@ -157,14 +162,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             CancelCommand = new SimpleCommand((obj) => DoCancel());
         }
 
-        private LogParserProfile GetEditedProfile(Guid? editedProfileGuid)
+        private LogParserProfile GetEditedProfile(Guid editedProfileGuid)
         {
             LogParserProfile profile = null;
             if (editedProfileGuid != null)
             {
                 // Load profile's settings
                 profile = configurationService.Configuration.LogParserProfiles
-                    .Where(p => p.Guid.Equals(editedProfileGuid))
+                    .Where(p => p.Guid.Value.Equals(editedProfileGuid))
                     .SingleOrDefault();
             }
 

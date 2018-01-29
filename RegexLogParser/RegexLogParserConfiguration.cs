@@ -11,6 +11,6 @@ namespace RegexLogParser
     public class RegexLogParserConfiguration : ILogParserConfiguration
     {
         public string Regex { get; set; }
-        public List<GroupDefinition> GroupDefinitions{ get; set; }
+        public List<BaseGroupDefinition> GroupDefinitions { get; set; }
     }
 }

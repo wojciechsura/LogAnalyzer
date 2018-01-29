@@ -1,4 +1,5 @@
 ﻿using LogAnalyzer.API.LogSource;
+using LogAnalyzer.API.Types;
 using LogAnalyzer.BusinessLogic.Models.Views.OpenWindow;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Configuration;
@@ -13,7 +14,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
@@ -58,7 +58,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void OnSelectedParserChanged()
         {
-            OnPropertyChanged(nameof(selectedParserProfile));
+            OnPropertyChanged(nameof(SelectedLogParserProfile));
         }
 
         private void DoEditParserProfile()
@@ -93,8 +93,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 return;
             }
 
-            if (!selectedLogSource.Validate())
+            ValidationResult validationResult = selectedLogSource.Validate();
+            if (!validationResult.Valid)
+            {
+                messagingService.Inform(validationResult.Message);
                 return;
+            }
 
             if (selectedParserProfile == null)
             {

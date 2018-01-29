@@ -46,13 +46,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Consts.cs" />
-    <Compile Include="Configuration\BaseGroupDefinitionData.cs" />
-    <Compile Include="Configuration\CustomGroupDefinitionData.cs" />
-    <Compile Include="Configuration\DateGroupDefinitionData.cs" />
-    <Compile Include="Configuration\GroupDefinition.cs" />
+    <Compile Include="Configuration\BaseGroupDefinition.cs" />
+    <Compile Include="Configuration\CustomGroupDefinition.cs" />
+    <Compile Include="Configuration\DateGroupDefinition.cs" />
+    <Compile Include="Configuration\MessageGroupDefinition.cs" />
+    <Compile Include="Configuration\SeverityGroupDefinition.cs" />
     <Compile Include="Editor\GroupConfiguration\BaseGroupConfigurationViewModel.cs" />
     <Compile Include="Editor\GroupConfiguration\CustomGroupConfigurationViewModel.cs" />
     <Compile Include="Editor\GroupConfiguration\DateGroupConfigurationViewModel.cs" />
+    <Compile Include="Editor\GroupConfiguration\MessageGroupConfigurationViewModel.cs" />
+    <Compile Include="Editor\GroupConfiguration\SeverityGroupConfigurationViewModel.cs" />
     <Compile Include="Editor\GroupDefinitionViewModel.cs" />
     <Compile Include="Editor\RegexLogParserEditorViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
