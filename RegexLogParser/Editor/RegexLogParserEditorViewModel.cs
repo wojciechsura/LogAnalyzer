@@ -1,6 +1,9 @@
 ﻿using LogAnalyzer.API.LogParser;
+using LogAnalyzer.API.Models;
 using LogAnalyzer.API.Types;
+using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Wpf.Input;
+using LogAnalyzer.Wpf.Models;
 using RegexLogParser.Configuration;
 using RegexLogParser.Editor.GroupConfiguration;
 using System;
@@ -11,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace RegexLogParser.Editor
 {
@@ -23,6 +27,8 @@ namespace RegexLogParser.Editor
 
         // Private fields -----------------------------------------------------
 
+        private readonly IMessagingService messagingService;
+        
         private string regularExpression;
         private GroupDefinitionViewModel selectedGroupDefinition;
         private int selectedGroupDefinitionIndex;
@@ -31,6 +37,8 @@ namespace RegexLogParser.Editor
         private readonly Condition itemSelectedCondition;
         private readonly Condition firstItemSelectedCondition;
         private readonly Condition lastItemSelectedCondition;
+
+        private TableData resultData;
 
         // Private methods ----------------------------------------------------
 
@@ -65,6 +73,140 @@ namespace RegexLogParser.Editor
             groupDefinitions.Clear();            
         }
 
+        private List<LogEntry> ParseSampleData(RegexLogParser parser)
+        {
+            List<LogEntry> result = new List<LogEntry>();
+
+            string[] sampleLines = Regex.Split(SampleData, "\r\n|\r|\n");
+
+            LogEntry lastEntry = null;
+            for (int i = 0; i < sampleLines.Length; i++)
+            {
+                (LogEntry entry, ParserOperation operation) = parser.Parse(sampleLines[i], lastEntry);
+                switch (operation)
+                {
+                    case ParserOperation.AddNew:
+                        {
+                            if (entry == null)
+                                throw new InvalidOperationException("Entry cannot be null if operation is AddNew!");
+
+                            result.Add(entry);
+                            lastEntry = entry;
+                            break;
+                        }
+                    case ParserOperation.ReplaceLast:
+                        {
+                            if (entry == null)
+                                throw new InvalidOperationException("Entry cannot be null if operation is AddNew!");
+
+                            result[result.Count - 1] = entry;
+                            lastEntry = entry;
+                            break;
+                        }
+                    case ParserOperation.None:
+                        {
+                            if (entry != null)
+                                throw new InvalidOperationException("Entry must be null if operation is None!");
+
+                            break;
+                        }
+                        throw new InvalidOperationException("Unsupported parser operation!");
+                }
+            }
+
+            return result;
+        }
+
+        private List<TableDataRow> BuildTableDataRows(List<LogEntry> result, List<BaseColumnInfo> columnInfos)
+        {
+            List<TableDataRow> rows = new List<TableDataRow>();
+            for (int i = 0; i < result.Count; i++)
+            {
+                LogEntry entry = result[i];
+
+                List<string> rowData = new List<string>();
+
+                for (int j = 0; j < columnInfos.Count; j++)
+                {
+                    if (columnInfos[j] is CommonColumnInfo commonInfo)
+                    {
+                        switch (commonInfo.Column)
+                        {
+                            case LogEntryColumn.Date:
+                                {
+                                    rowData.Add(entry.Date.ToString());
+                                    break;
+                                }
+                            case LogEntryColumn.Message:
+                                {
+                                    rowData.Add(entry.Message);
+                                    break;
+                                }
+                            case LogEntryColumn.Severity:
+                                {
+                                    rowData.Add(entry.Severity);
+                                    break;
+                                }
+                            case LogEntryColumn.Custom:
+                                throw new InvalidOperationException("Critical error: custom column in CommonColumnInfo");
+                            default:
+                                throw new InvalidOperationException("Unsupported column!");
+                        }
+                    }
+                }
+
+                rows.Add(new TableDataRow(rowData));
+            }
+
+            return rows;
+        }
+
+        private List<string> BuildTableDataColumns(List<BaseColumnInfo> columnInfos)
+        {
+            List<string> columns = new List<string>();
+            for (int i = 0; i < columnInfos.Count; i++)
+            {
+                if (columnInfos[i] is CommonColumnInfo commonInfo)
+                {
+                    columns.Add(commonInfo.Header);
+                }
+                else
+                    throw new InvalidOperationException("Custom columns are not yet supported!");
+            }
+
+            return columns;
+        }
+
+        private TableData BuildTableData(RegexLogParser parser, List<LogEntry> result)
+        {
+            var columnInfos = parser.GetColumnInfos();
+
+            List<string> columns = BuildTableDataColumns(columnInfos);
+            List<TableDataRow> rows = BuildTableDataRows(result, columnInfos);
+
+            TableData data = new TableData(columns, rows);
+            return data;
+        }
+
+        private void DoTestParser()
+        {
+            ValidationResult validationResult = Validate();
+            if (!validationResult.Valid)
+            {
+                messagingService.Inform(validationResult.Message);
+                return;
+            }
+
+            // Try parse data
+            var configuration = (RegexLogParserConfiguration)GetConfiguration();
+            var parser = new RegexLogParser(configuration);
+
+            List<LogEntry> result = ParseSampleData(parser);
+            TableData data = BuildTableData(parser, result);
+
+            ResultData = data;
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -74,9 +216,10 @@ namespace RegexLogParser.Editor
 
         // Public methods -----------------------------------------------------
 
-        public RegexLogParserEditorViewModel(ILogParserProvider parentProvider)
+        public RegexLogParserEditorViewModel(ILogParserProvider parentProvider, IMessagingService messagingService)
         {
             this.Provider = parentProvider;
+            this.messagingService = messagingService;
 
             groupDefinitions = new ObservableCollection<GroupDefinitionViewModel>();
 
@@ -84,10 +227,11 @@ namespace RegexLogParser.Editor
             firstItemSelectedCondition = new Condition(false);
             lastItemSelectedCondition = new Condition(false);
 
-            AddGroupDefinition = new SimpleCommand((obj) => DoAddGroupDefinition());
-            RemoveGroupDefinition = new SimpleCommand((obj) => DoRemoveGroupDefinition(), itemSelectedCondition);
-            MoveLeft = new SimpleCommand((obj) => DoMoveLeft(), !firstItemSelectedCondition & itemSelectedCondition);
-            MoveRight = new SimpleCommand((obj) => DoMoveRight(), !lastItemSelectedCondition & itemSelectedCondition);
+            AddGroupDefinitionCommand = new SimpleCommand((obj) => DoAddGroupDefinition());
+            RemoveGroupDefinitionCommand = new SimpleCommand((obj) => DoRemoveGroupDefinition(), itemSelectedCondition);
+            MoveLeftCommand = new SimpleCommand((obj) => DoMoveLeft(), !firstItemSelectedCondition & itemSelectedCondition);
+            MoveRightCommand = new SimpleCommand((obj) => DoMoveRight(), !lastItemSelectedCondition & itemSelectedCondition);
+            TestParserCommand = new SimpleCommand((obj) => DoTestParser());
         }
 
         public ILogParserConfiguration GetConfiguration()
@@ -223,10 +367,23 @@ namespace RegexLogParser.Editor
             }
         }
 
-        public SimpleCommand AddGroupDefinition { get; }
-        public SimpleCommand RemoveGroupDefinition { get; }
-        public SimpleCommand MoveLeft { get; }
-        public SimpleCommand MoveRight { get; }
+        public string SampleData { get; set; }
+
+        public ICommand AddGroupDefinitionCommand { get; }
+        public ICommand RemoveGroupDefinitionCommand { get; }
+        public ICommand MoveLeftCommand { get; }
+        public ICommand MoveRightCommand { get; }
+        public ICommand TestParserCommand { get; }
+
+        public TableData ResultData
+        {
+            get => resultData;
+            set
+            {
+                resultData = value;
+                OnPropertyChanged(nameof(ResultData));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

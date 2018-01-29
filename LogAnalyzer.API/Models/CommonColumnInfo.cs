@@ -13,6 +13,8 @@ namespace LogAnalyzer.API.Models
     {
         public CommonColumnInfo(LogEntryColumn column)
         {
+            if (column == LogEntryColumn.Custom)
+                throw new ArgumentException("Custom column cannot be passed to CommonColumnInfo!");
             Column = column;
         }
 

@@ -35,6 +35,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private ObservableCollection<LogParserProfileInfo> logParserProfiles;
         private LogParserProfileInfo selectedParserProfile;
+        private Condition parserProfileSelected;
 
         // Private methods ----------------------------------------------------
 
@@ -82,6 +83,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 SelectedLogParserProfile = logParserProfiles
                     .Where(p => p.Guid.Equals(result.Result.Guid))
                     .FirstOrDefault();
+            }
+        }
+
+        private void DoDeleteParserProfile()
+        {
+            if (messagingService.Ask("Are you sure you want to delete this profile?"))
+            {
+                var deletedProfile = configurationService.Configuration.LogParserProfiles.Where(p => p.Guid.Value == selectedParserProfile.Guid).Single();
+                configurationService.Configuration.LogParserProfiles.Remove(deletedProfile);
+
+                logParserProfiles.Remove(selectedParserProfile);
+                SelectedLogParserProfile = logParserProfiles.FirstOrDefault();
             }
         }
 
@@ -140,8 +153,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.dialogService = dialogService;
             this.messagingService = messagingService;
 
+            parserProfileSelected = new Condition(false);
+
             NewParserProfileCommand = new SimpleCommand((obj) => DoNewParserProfile());
-            EditParserProfileCommand = new SimpleCommand((obj) => DoEditParserProfile());
+            EditParserProfileCommand = new SimpleCommand((obj) => DoEditParserProfile(), parserProfileSelected);
+            DeleteParserProfileCommand = new SimpleCommand((obj) => DoDeleteParserProfile(), parserProfileSelected);
             OkCommand = new SimpleCommand((obj) => DoOk());
             CancelCommand = new SimpleCommand((obj) => DoCancel());
 
@@ -188,19 +204,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             set
             {
                 selectedParserProfile = value;
+                parserProfileSelected.Value = value != null;
                 OnSelectedParserChanged();
             }
         }
 
         public ModalDialogResult<OpenResult> Result => result;
 
-        public ICommand NewParserProfileCommand { get; private set; }
-
-        public ICommand EditParserProfileCommand { get; private set; }
-
-        public ICommand OkCommand { get; private set; }
-
-        public ICommand CancelCommand { get; private set; }
+        public ICommand NewParserProfileCommand { get; }
+        public ICommand EditParserProfileCommand { get; }
+        public ICommand DeleteParserProfileCommand { get; }
+        public ICommand OkCommand { get; }
+        public ICommand CancelCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

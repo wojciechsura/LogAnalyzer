@@ -9,5 +9,6 @@ namespace LogAnalyzer.Services.Interfaces
     public interface IMessagingService
     {
         void Inform(string message);
+        bool Ask(string message);
     }
 }

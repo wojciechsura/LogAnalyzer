@@ -52,7 +52,7 @@ namespace FileLogSource.Editor
 
         public ValidationResult Validate()
         {
-            if (filename != null)
+            if (String.IsNullOrEmpty(filename))
                 return new ValidationResult(false, "Choose log file");
             if (!File.Exists(filename))
                 return new ValidationResult(false, "File does not exist!");

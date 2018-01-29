@@ -3,7 +3,8 @@
                     xmlns:local="clr-namespace:RegexLogParser"
                     xmlns:editor="clr-namespace:RegexLogParser.Editor"
                     xmlns:gc="clr-namespace:RegexLogParser.Editor.GroupConfiguration" 
-                    xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf">
+                    xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
+                    xmlns:h="clr-namespace:LogAnalyzer.Wpf.Helpers;assembly=LogAnalyzer.Wpf">
 
     <DataTemplate x:Key="RegexLogEditorTemplate">
         <DataTemplate.Resources>
@@ -16,16 +17,16 @@
                     <TextBox Margin="4" Text="{Binding RegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label>Capture groups</Label>
                     <StackPanel Orientation="Horizontal" Margin="4">
-                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding AddGroupDefinition}">
+                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding AddGroupDefinitionCommand}">
                             <Image Width="16" Height="16" Source="/Resources/Images/Plus16.png" />
                         </Button>
-                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding RemoveGroupDefinition}">
+                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding RemoveGroupDefinitionCommand}">
                             <Image Width="16" Height="16" Source="/Resources/Images/Minus16.png" />
                         </Button>
-                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveLeft}">
+                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveLeftCommand}">
                             <Image Width="16" Height="16" Source="/Resources/Images/Left16.png" />
                         </Button>
-                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveRight}">
+                        <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveRightCommand}">
                             <Image Width="16" Height="16" Source="/Resources/Images/Right16.png" />
                         </Button>
                     </StackPanel>
@@ -76,9 +77,13 @@
                                                         <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
                                                         <ColumnDefinition Width="1*" />
                                                     </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
 
-                                                    <Label Grid.Column="0">Date format</Label>
-                                                    <TextBox Grid.Column="1" Text="{Binding Format, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                                    <Label Grid.Row="0" Grid.Column="0">Input date format</Label>
+                                                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Format, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Grid>
                                             </DataTemplate>
                                             <DataTemplate DataType="{x:Type gc:CustomGroupConfigurationViewModel}">
@@ -109,9 +114,12 @@
             <GroupBox Header="Tester" Margin="4" Padding="4">
                 <StackPanel Orientation="Vertical">
                     <Label>Sample</Label>
-                    <TextBox Height="100" TextWrapping="Wrap" AcceptsReturn="True">Paste a couple of lines of your log here</TextBox>
-                    <Button Margin="0,4">Parse</Button>
-                    <DataGrid Height="100" />
+                    <TextBox Height="100" 
+                             TextWrapping="Wrap" 
+                             AcceptsReturn="True" 
+                             Text="{Binding SampleData, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    <Button Margin="0,4" Command="{Binding TestParserCommand}">Parse</Button>
+                    <DataGrid AutoGenerateColumns="False" Height="100" h:DataGridHelper.TableData="{Binding ResultData}" />
                 </StackPanel>
             </GroupBox>
         </StackPanel>

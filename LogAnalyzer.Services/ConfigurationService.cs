@@ -15,9 +15,17 @@ namespace LogAnalyzer.Services
         private AppConfiguration configuration;
         private readonly IPathProviderService pathProviderService;
 
+        private void HandleConfigurationChanged(object sender, EventArgs e)
+        {
+            string configFilename = pathProviderService.GetConfigurationFilePath();
+            Directory.CreateDirectory(Path.GetDirectoryName(configFilename));
+            configuration.Save(configFilename);
+        }
+
         public ConfigurationService(IPathProviderService pathProviderService)
         {
             configuration = new AppConfiguration();
+            configuration.ConfigurationChanged += HandleConfigurationChanged;
 
             this.pathProviderService = pathProviderService;
             LoadConfiguration();            

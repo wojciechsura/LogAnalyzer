@@ -1,4 +1,5 @@
 ﻿using LogAnalyzer.API.LogParser;
+using LogAnalyzer.Services.Interfaces;
 using Newtonsoft.Json;
 using RegexLogParser.Common;
 using RegexLogParser.Editor;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Unity;
+using Unity.Resolution;
 
 namespace RegexLogParser
 {
@@ -14,7 +17,7 @@ namespace RegexLogParser
     {
         public ILogParserEditorViewModel CreateEditorViewModel()
         {
-            return new RegexLogParserEditorViewModel(this);
+            return LogAnalyzer.Dependencies.Container.Instance.Resolve<RegexLogParserEditorViewModel>(new ParameterOverride("parentProvider", this));
         }
 
         public ILogParser CreateParser(ILogParserConfiguration configuration)
