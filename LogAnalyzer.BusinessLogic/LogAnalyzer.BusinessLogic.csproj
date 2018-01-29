@@ -129,6 +129,10 @@
       <Project>{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}</Project>
       <Name>LogAnalyzer.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RegexLogParser\RegexLogParser.csproj">
+      <Project>{39b4d915-c6b6-46c6-93a9-a4ac7763a5be}</Project>
+      <Name>RegexLogParser</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,6 +8,12 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBox">
+                <Style.Setters>
+                    <Setter Property="Padding" Value="4"></Setter>
+                </Style.Setters>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

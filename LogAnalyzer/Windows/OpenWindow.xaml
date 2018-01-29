@@ -15,7 +15,7 @@
         <c:NullToBooleanConverter x:Key="NullToBooleanConverter" />
     </Window.Resources>
     <StackPanel Orientation="Vertical">
-        <GroupBox Header="Open log" Padding="4" Margin="4">
+        <GroupBox Header="Log source" Padding="4" Margin="4">
             <StackPanel Orientation="Vertical">
                 <Label>Log source</Label>
                 <ComboBox HorizontalAlignment="Stretch" ItemsSource="{Binding LogSources}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedLogSource}"/>
@@ -28,7 +28,11 @@
                         </ResourceDictionary>
                     </ContentControl.Resources>
                 </ContentControl>
-                <Separator HorizontalAlignment="Stretch" Margin="0,4" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Log parser" Padding="4" Margin="4">
+            <StackPanel Orientation="Vertical">
                 <Label>Parser profile</Label>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -38,14 +42,25 @@
                     </Grid.ColumnDefinitions>
 
                     <ComboBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" ItemsSource="{Binding LogParserProfiles}" SelectedItem="{Binding SelectedLogParserProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" />
-                    <Button Width="24" Height="24" Grid.Column="1" Margin="4" Command="{Binding EditParserProfileCommand}" IsEnabled="{Binding SelectedLogParserProfile, Converter={StaticResource NullToBooleanConverter}}">Edit</Button>
-                    <Button Width="24" Height="24" Grid.Column="2" Margin="4" Command="{Binding NewParserProfileCommand}">New</Button>
+                    <Button Width="24" Height="24" Grid.Column="1" Margin="4" 
+                            Command="{Binding EditParserProfileCommand}" 
+                            IsEnabled="{Binding SelectedLogParserProfile, Converter={StaticResource NullToBooleanConverter}}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Edit16.png" />
+                    </Button>
+                    <Button Width="24" Height="24" Grid.Column="2" Margin="4" Command="{Binding NewParserProfileCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/New16.png" />
+                    </Button>
                 </Grid>
-                <Separator HorizontalAlignment="Stretch" Margin="0,4" />
+            </StackPanel>
+        </GroupBox>
+
+        <GroupBox Header="Processing profile" Margin="4" Padding="4">
+            <StackPanel Orientation="Vertical">
                 <Label>Processing profile</Label>
                 <ComboBox HorizontalAlignment="Stretch" Margin="4" />
             </StackPanel>
         </GroupBox>
+        
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
             <Button Width="120" Margin="4" Content="Cancel" Command="{Binding CancelCommand}" />
             <Button Width="120" Margin="4" Content="OK" Command="{Binding OkCommand}" />

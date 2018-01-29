@@ -588,6 +588,16 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\Right16.png" />
+    <Resource Include="Resources\Images\Left16.png" />
+    <Resource Include="Resources\Images\Minus16.png" />
+    <Resource Include="Resources\Images\Minus32.png" />
+    <Resource Include="Resources\Images\Plus16.png" />
+    <Resource Include="Resources\Images\Plus32.png" />
+    <Resource Include="Resources\Images\New16.png" />
+    <Resource Include="Resources\Images\New32.png" />
+    <Resource Include="Resources\Images\Edit16.png" />
+    <Resource Include="Resources\Images\Edit32.png" />
     <Resource Include="Resources\Images\Open16.png" />
     <Resource Include="Resources\Images\Open32.png" />
     <Resource Include="Lib\site-packages\README.txt" />
@@ -729,6 +739,10 @@
     <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
       <Project>{47fc3aa3-69ca-424a-8f09-fa2c89c5995f}</Project>
       <Name>LogAnalyzer.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RegexLogParser\RegexLogParser.csproj">
+      <Project>{39b4d915-c6b6-46c6-93a9-a4ac7763a5be}</Project>
+      <Name>RegexLogParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

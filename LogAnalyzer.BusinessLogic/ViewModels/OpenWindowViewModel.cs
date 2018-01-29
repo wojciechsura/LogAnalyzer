@@ -87,11 +87,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoOk()
         {
-            if (selectedLogSource == null || !selectedLogSource.Validate())
+            if (selectedLogSource == null)
             {
-                messagingService.Inform("Choose and configure log source first!");
+                messagingService.Inform("Choose the log source!");
                 return;
             }
+
+            if (!selectedLogSource.Validate())
+                return;
 
             if (selectedParserProfile == null)
             {

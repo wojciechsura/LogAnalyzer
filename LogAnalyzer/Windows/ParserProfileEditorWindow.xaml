@@ -6,50 +6,45 @@
         xmlns:local="clr-namespace:LogAnalyzer.Windows"
         xmlns:i="clr-namespace:LogAnalyzer.Infrastructure"
         mc:Ignorable="d"
-        Title="Parser profile editor" Width="400"
-        SizeToContent="Height" ResizeMode="NoResize"
+        Title="Parser profile editor" MinWidth="400"
+        SizeToContent="WidthAndHeight" ResizeMode="NoResize"        
         WindowStartupLocation="CenterOwner"
-        WindowStyle="ToolWindow">
+        WindowStyle="SingleBorderWindow">
     <Window.Resources>
         <i:LogParserTemplateSelector x:Key="LogParserTemplateSelector" />
     </Window.Resources>
-    <StackPanel Orientation="Vertical" Margin="4" Grid.IsSharedSizeScope="True">
-        <DockPanel>
-            <Label DockPanel.Dock="Left">Profile</Label>
-            <Separator />
-        </DockPanel>
 
-        <Grid Margin="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="OptionHeaders" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+    <StackPanel Orientation="Vertical">
 
-            <Label Grid.Column="0" VerticalAlignment="Center">Profile name</Label>
-            <TextBox Grid.Column="1" VerticalAlignment="Center" Text="{Binding ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </Grid>
+        <GroupBox Header="Profile" Margin="4" Padding="4">
+            <Grid Margin="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="OptionHeaders" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-        <DockPanel>
-            <Label DockPanel.Dock="Left">Log parser settings</Label>
-            <Separator />
-        </DockPanel>
-        <Grid Margin="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="OptionHeaders" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Profile name</Label>
+                <TextBox Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Text="{Binding ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-            <Label Grid.Column="0" VerticalAlignment="Center">Parser engine</Label>
-            <ComboBox Margin="0,4" Grid.Column="1" VerticalAlignment="Center"
-                      ItemsSource="{Binding LogParserEditorViewModels}"
-                      SelectedItem="{Binding SelectedLogParserViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      DisplayMemberPath="DisplayName"/>
-        </Grid>
+                <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Parser engine</Label>
+                <ComboBox Grid.Row="1" Margin="0,4" Grid.Column="1" VerticalAlignment="Center"
+                    ItemsSource="{Binding LogParserEditorViewModels}"
+                    SelectedItem="{Binding SelectedLogParserViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    DisplayMemberPath="DisplayName"/>
+
+            </Grid>
+        </GroupBox>
+
         <ContentControl Content="{Binding SelectedLogParserViewModel}" ContentTemplateSelector="{StaticResource LogParserTemplateSelector}">
             <ContentControl.Resources>
                 <ResourceDictionary>
                     <ResourceDictionary.MergedDictionaries>
                         <ResourceDictionary Source="pack://application:,,,/LineLogParser;component/Editor/LineLogParserEditorTemplate.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/RegexLogParser;component/Editor/RegexLogParserEditorTemplate.xaml" />
                     </ResourceDictionary.MergedDictionaries>
                 </ResourceDictionary>
             </ContentControl.Resources>
@@ -59,6 +54,5 @@
             <Button Width="120" Margin="4" Content="Cancel" Command="{Binding CancelCommand}" />
             <Button Width="120" Margin="4" Content="OK" Command="{Binding OkCommand}" />
         </StackPanel>
-
     </StackPanel>
 </Window>

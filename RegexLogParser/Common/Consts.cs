@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LineLogParser.Common
+namespace RegexLogParser.Common
 {
     class Consts
     {
-        public static readonly string UNIQUE_NAME = "LogParser.Line";
+        public static readonly string UNIQUE_NAME = "LogParser.Regex";
     }
 }

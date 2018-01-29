@@ -94,10 +94,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private void DoOk()
         {
             if (!selectedLogParserViewModel.Validate())
-            {
-                messagingService.Inform("Fix all errors in log parser configuration first!");
                 return;
-            }
 
             Save();
 
@@ -152,6 +149,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                     SelectedLogParserViewModel = vm;
                 }
             }
+
+            if (SelectedLogParserViewModel == null)
+                SelectedLogParserViewModel = logParserEditorViewModels.First();
 
             OkCommand = new SimpleCommand((obj) => DoOk());
             CancelCommand = new SimpleCommand((obj) => DoCancel());

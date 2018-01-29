@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RegexLogParser;
 
 namespace LogAnalyzer.BusinessLogic.Services
 {
@@ -18,7 +19,8 @@ namespace LogAnalyzer.BusinessLogic.Services
         {
             logParserProviders = new List<ILogParserProvider>
             {
-                new LineLogParserProvider()
+                new LineLogParserProvider(),
+                new RegexLogParserProvider()
             };
 
             // Verifying uniqueness of names

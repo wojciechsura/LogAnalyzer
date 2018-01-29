@@ -4,6 +4,6 @@
                     xmlns:editor="clr-namespace:LineLogParser.Editor">
 
     <DataTemplate x:Key="LineLogEditorTemplate">
-        <Label>Line parser</Label>
+        
     </DataTemplate>
 </ResourceDictionary>

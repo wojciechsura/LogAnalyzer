@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Converters\HideIfNullConverter.cs" />
     <Compile Include="Converters\NullToBooleanConverter.cs" />
     <Compile Include="Input\BaseCondition.cs" />
     <Compile Include="Input\CompositeCondition.cs" />

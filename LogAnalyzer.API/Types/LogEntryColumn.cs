@@ -18,6 +18,8 @@ namespace LogAnalyzer.API.Types
         Severity,
         [ColumnHeader("Message")]
         [MemberName(nameof(FilteredLogEntry.Message))]
-        Message
+        Message,
+        [ColumnHeader("Custom")]
+        Custom
     }
 }

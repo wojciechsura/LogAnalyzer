@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LineLogParser.Common
+namespace RegexLogParser.Editor.GroupConfiguration
 {
-    class Consts
+    abstract class BaseGroupConfigurationViewModel
     {
-        public static readonly string UNIQUE_NAME = "LogParser.Line";
     }
 }
