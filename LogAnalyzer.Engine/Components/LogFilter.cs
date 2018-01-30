@@ -111,7 +111,8 @@ namespace LogAnalyzer.Engine.Components
                     FilteredLogEntry filteredLogEntry = new FilteredLogEntry(index, 
                         entry.Date, 
                         entry.Severity, 
-                        entry.Message);
+                        entry.Message,
+                        entry.CustomFields);
                     processedItems.Add(filteredLogEntry);
                 }
 

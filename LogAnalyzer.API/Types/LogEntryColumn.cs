@@ -11,7 +11,7 @@ namespace LogAnalyzer.API.Types
     public enum LogEntryColumn
     {
         [ColumnHeader("Date")]
-        [MemberName(nameof(FilteredLogEntry.Date))]
+        [MemberName(nameof(FilteredLogEntry.DisplayDate))]
         Date,
         [ColumnHeader("Severity")]
         [MemberName(nameof(FilteredLogEntry.Severity))]
@@ -20,6 +20,7 @@ namespace LogAnalyzer.API.Types
         [MemberName(nameof(FilteredLogEntry.Message))]
         Message,
         [ColumnHeader("Custom")]
+        [MemberName(nameof(FilteredLogEntry.CustomFields))]
         Custom
     }
 }

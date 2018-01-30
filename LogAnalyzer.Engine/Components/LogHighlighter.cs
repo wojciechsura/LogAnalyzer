@@ -106,7 +106,7 @@ namespace LogAnalyzer.Engine.Components
                 var entry = argument.InputEntries[i];
 
                 // TODO verify highlighting condition
-                HighlightInfo info = new HighlightInfo(i % 2 == 0 ? Colors.Red : Colors.Black, Colors.Transparent);
+                HighlightInfo info = new HighlightInfo(Colors.Black, Colors.Transparent);
                 processedItems.Add(info);
             }
 

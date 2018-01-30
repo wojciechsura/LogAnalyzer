@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.Models
 {
-    public class BaseColumnInfo
+    public abstract class BaseColumnInfo
     {
-
+        public abstract string Header { get; }
+        public abstract string Member { get; }
     }
 }

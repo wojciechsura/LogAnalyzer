@@ -46,7 +46,7 @@ namespace LogAnalyzer.Windows
             lvMain.View = null;
         }
 
-        private void CreateCommonColumn(string commonColumnXaml, GridView gridView, CommonColumnInfo commonColumn)
+        private void CreateColumn(string commonColumnXaml, GridView gridView, BaseColumnInfo commonColumn)
         {
             string columnXaml = String.Format(commonColumnXaml, commonColumn.Member);
             DataTemplate dataTemplate = (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(columnXaml)));
@@ -87,12 +87,7 @@ namespace LogAnalyzer.Windows
             // Other columns
             for (int i = 0; i < columns.Count; i++)
             {
-                if (columns[i] is CommonColumnInfo commonColumn)
-                {
-                    CreateCommonColumn(commonColumnXaml, gridView, commonColumn);
-                }
-                else
-                    throw new InvalidOperationException("Invalid columnInfo type!");
+                CreateColumn(commonColumnXaml, gridView, columns[i]);
             }
 
             lvMain.View = gridView;

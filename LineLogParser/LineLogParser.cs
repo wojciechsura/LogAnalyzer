@@ -13,7 +13,7 @@ namespace LineLogParser
     {
         (LogEntry, ParserOperation) ILogParser.Parse(string line, LogEntry lastEntry)
         {
-            return (new LogEntry(DateTime.MinValue, null, line), ParserOperation.AddNew);
+            return (new LogEntry(DateTime.MinValue, null, line, null), ParserOperation.AddNew);
         }
         
         public List<BaseColumnInfo> GetColumnInfos()

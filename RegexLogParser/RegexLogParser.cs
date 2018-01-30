@@ -18,12 +18,13 @@ namespace RegexLogParser
         {
             public LogEntry Build()
             {
-                return new LogEntry(Date, Severity, Message);
+                return new LogEntry(Date, Severity, Message, CustomFields);
             }
 
             public DateTime Date { get; set; } = DateTime.MinValue;
             public string Severity { get; set; } = null;
             public string Message { get; set; } = null;
+            public List<string> CustomFields { get; set; } = new List<string>();
         }
 
         private readonly RegexLogParserConfiguration configuration;
@@ -65,7 +66,10 @@ namespace RegexLogParser
                 }
                 else if (definition is CustomGroupDefinition customGroupDefinition)
                 {
-                    throw new InvalidOperationException("Custom groups are not yet supported!");
+                    groupActions.Add((value, logEntryBuilder) =>
+                    {
+                        logEntryBuilder.CustomFields.Add(value);
+                    });
                 }
             }
         }
@@ -82,6 +86,7 @@ namespace RegexLogParser
         public List<BaseColumnInfo> GetColumnInfos()
         {
             var result = new List<BaseColumnInfo>();
+            int customColumns = 0;
 
             for (int i = 0; i < configuration.GroupDefinitions.Count; i++)
             {
@@ -89,7 +94,7 @@ namespace RegexLogParser
                 if (definition.GetColumn() != LogEntryColumn.Custom)
                     result.Add(new CommonColumnInfo(definition.GetColumn()));
                 else
-                    throw new InvalidOperationException("Custom columns are not yet supported!");
+                    result.Add(new CustomColumnInfo(customColumns++, ((CustomGroupDefinition)definition).Name));
             }
 
             return result;
@@ -117,7 +122,8 @@ namespace RegexLogParser
                 {
                     var newLastEntry = new LogEntry(lastEntry.Date,
                         lastEntry.Severity,
-                        lastEntry.Message + "\n" + line);
+                        lastEntry.Message + "\n" + line,
+                        lastEntry.CustomFields);
 
                     return (newLastEntry, ParserOperation.ReplaceLast);
                 }
@@ -130,7 +136,7 @@ namespace RegexLogParser
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }

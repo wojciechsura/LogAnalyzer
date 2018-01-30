@@ -19,8 +19,8 @@ namespace LogAnalyzer.API.Models
         }
 
         public LogEntryColumn Column { get; }
-        public string Header => Column.GetAttribute<ColumnHeaderAttribute>().Header;
-        public string Member => Column.GetAttribute<MemberNameAttribute>().Member;
+        public override string Header => Column.GetAttribute<ColumnHeaderAttribute>().Header;
+        public override string Member => Column.GetAttribute<MemberNameAttribute>().Member;
 
     }
 }

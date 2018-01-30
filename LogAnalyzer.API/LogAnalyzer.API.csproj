@@ -55,6 +55,7 @@
     <Compile Include="LogSource\ILogSourceProvider.cs" />
     <Compile Include="Models\BaseColumnInfo.cs" />
     <Compile Include="Models\CommonColumnInfo.cs" />
+    <Compile Include="Models\CustomColumnInfo.cs" />
     <Compile Include="Models\FilteredLogEntry.cs" />
     <Compile Include="Models\HighlightedLogEntry.cs" />
     <Compile Include="Models\HighlightInfo.cs" />

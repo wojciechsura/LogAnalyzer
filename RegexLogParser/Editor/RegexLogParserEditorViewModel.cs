@@ -153,6 +153,10 @@ namespace RegexLogParser.Editor
                                 throw new InvalidOperationException("Unsupported column!");
                         }
                     }
+                    else if (columnInfos[j] is CustomColumnInfo customInfo)
+                    {
+                        rowData.Add(entry.CustomFields[customInfo.Index]);
+                    }
                 }
 
                 rows.Add(new TableDataRow(rowData));
@@ -166,12 +170,7 @@ namespace RegexLogParser.Editor
             List<string> columns = new List<string>();
             for (int i = 0; i < columnInfos.Count; i++)
             {
-                if (columnInfos[i] is CommonColumnInfo commonInfo)
-                {
-                    columns.Add(commonInfo.Header);
-                }
-                else
-                    throw new InvalidOperationException("Custom columns are not yet supported!");
+                columns.Add(columnInfos[i].Header);                
             }
 
             return columns;
@@ -194,6 +193,12 @@ namespace RegexLogParser.Editor
             if (!validationResult.Valid)
             {
                 messagingService.Inform(validationResult.Message);
+                return;
+            }
+
+            if (String.IsNullOrEmpty(SampleData))
+            {
+                messagingService.Inform("Enter sample data first!");
                 return;
             }
 
@@ -298,12 +303,13 @@ namespace RegexLogParser.Editor
             if (customGroupNames.Count != customGroupNames.Distinct().Count())
                 return new ValidationResult(false, "Custom group names must be unique!");
 
-            // Unique group types
+            // Unique group types (except custom)
             var groupTypes = groupDefinitions
+                .Where(d => d.SelectedGroupType.Column != LogEntryColumn.Custom)
                 .Select(g => g.SelectedGroupType.Column)
                 .ToList();
             if (groupTypes.Count() != groupTypes.Distinct().Count())
-                return new ValidationResult(false, "Group types cannot be used more than once!");
+                return new ValidationResult(false, "Common (non-custom) group types cannot be used more than once!");
 
             for (int i = 0; i < groupDefinitions.Count; i++)
             {
