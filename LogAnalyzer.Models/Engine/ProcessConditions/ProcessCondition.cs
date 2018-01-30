@@ -1,4 +1,5 @@
-﻿using LogAnalyzer.Models.Types;
+﻿using LogAnalyzer.API.Models;
+using LogAnalyzer.Models.Types;
 
 namespace LogAnalyzer.Models.Engine.ProcessConditions
 {

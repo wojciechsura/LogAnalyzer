@@ -18,6 +18,15 @@ namespace LogAnalyzer.API.Models
             Column = column;
         }
 
+        public override bool Equals(object obj)
+        {
+            var other = obj as CommonColumnInfo;
+            if (other == null)
+                return false;
+
+            return other.Column == Column;
+        }
+
         public LogEntryColumn Column { get; }
         public override string Header => Column.GetAttribute<ColumnHeaderAttribute>().Header;
         public override string Member => Column.GetAttribute<MemberNameAttribute>().Member;

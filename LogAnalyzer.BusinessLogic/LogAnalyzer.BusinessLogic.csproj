@@ -75,9 +75,12 @@
     <Compile Include="Services\LogSourceRepository.cs" />
     <Compile Include="ViewModels\HighlightConfigWindowViewModel.cs" />
     <Compile Include="ViewModels\Highlighting\BaseRuleDataEditorViewModel.cs" />
+    <Compile Include="ViewModels\Highlighting\CustomRuleDataEditorViewModel.cs" />
     <Compile Include="ViewModels\Highlighting\DateRuleDataEditorViewModel.cs" />
     <Compile Include="ViewModels\Highlighting\RuleEditorViewModel.cs" />
-    <Compile Include="ViewModels\Highlighting\StringRuleDataEditorViewModel.cs" />
+    <Compile Include="ViewModels\Highlighting\MessageRuleDataEditorViewModel.cs" />
+    <Compile Include="ViewModels\Highlighting\SeverityRuleDataEditorViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IHighlightConfigWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IMainWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IOpenWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IParserProfileEditorWindowAccess.cs" />

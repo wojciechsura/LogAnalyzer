@@ -5,15 +5,13 @@ namespace LogAnalyzer.Models.Engine
 {
     public class HighlightEntry
     {
-        public HighlightEntry(ProcessCondition condition, Color foreground, Color background)
+        public HighlightEntry()
         {
-            Condition = condition;
-            Foreground = foreground;
-            Background = background;
+            
         }
 
-        public ProcessCondition Condition { get; }
-        public Color Foreground { get; }
-        public Color Background { get; }
+        public ProcessCondition Condition { get; set; }
+        public Color Foreground { get; set; }
+        public Color Background { get; set; }
     }
 }

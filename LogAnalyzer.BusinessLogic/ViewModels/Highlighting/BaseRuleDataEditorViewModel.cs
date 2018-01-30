@@ -1,4 +1,5 @@
 ﻿using LogAnalyzer.Common.Extensions;
+using LogAnalyzer.Models.Engine.ProcessConditions;
 using LogAnalyzer.Models.Types;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
         private ComparisonMethodInfo selectedComparisonMethod;
         private bool not;
 
+        private void BuildComparisonMethods()
+        {
+            foreach (ComparisonMethod method in Enum.GetValues(typeof(ComparisonMethod)))
+            {
+                ComparisonMethods.Add(new ComparisonMethodInfo(method));
+            }
+        }
+
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -23,11 +32,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
         public BaseRuleDataEditorViewModel()
         {
             ComparisonMethods = new ObservableCollection<ComparisonMethodInfo>();
-            foreach (ComparisonMethod method in Enum.GetValues(typeof(ComparisonMethod)))
-            {
-                ComparisonMethods.Add(new ComparisonMethodInfo(method));
-            }
+            BuildComparisonMethods();
+
             SelectedComparisonMethod = ComparisonMethods.FirstOrDefault();
+        }
+
+        public BaseRuleDataEditorViewModel(ProcessCondition condition)
+        {
+            ComparisonMethods = new ObservableCollection<ComparisonMethodInfo>();
+            BuildComparisonMethods();
+
+            SelectedComparisonMethod = ComparisonMethods.Single(c => c.ComparisonMethod == condition.Comparison);
+            Not = condition.Negate;
         }
 
         public class ComparisonMethodInfo
@@ -43,19 +59,17 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
         }
 
         public ObservableCollection<ComparisonMethodInfo> ComparisonMethods { get; }
+
         public ComparisonMethodInfo SelectedComparisonMethod
         {
-            get
-            {
-                return selectedComparisonMethod;
-            }
+            get => selectedComparisonMethod;
             set
             {
                 selectedComparisonMethod = value;
                 OnPropertyChanged(nameof(SelectedComparisonMethod));
             }
         }
-    
+
         public bool Not
         {
             get => not;

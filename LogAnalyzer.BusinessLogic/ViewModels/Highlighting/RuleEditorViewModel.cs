@@ -1,5 +1,9 @@
 ﻿using LogAnalyzer.API.Models;
 using LogAnalyzer.API.Types;
+using LogAnalyzer.API.Types.Attributes;
+using LogAnalyzer.Common.Extensions;
+using LogAnalyzer.Models.Engine;
+using LogAnalyzer.Models.Engine.ProcessConditions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,9 +17,23 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
 {
     public class RuleEditorViewModel : INotifyPropertyChanged
     {
+        // Private classes ----------------------------------------------------
+
+        public class LogEntryColumnInfo
+        {
+            public LogEntryColumnInfo(LogEntryColumn column)
+            {
+                Column = column;
+            }
+
+            public LogEntryColumn Column { get; }
+            public string Display => Column.GetAttribute<ColumnHeaderAttribute>().Header;
+        }
+
         // Private fields -----------------------------------------------------
 
-        private BaseColumnInfo selectedColumn;
+        private LogEntryColumnInfo selectedColumn;
+        private List<string> availableCustomColumns;
         private BaseRuleDataEditorViewModel dataEditorViewModel;
         private Color foreground;
         private Color background;
@@ -26,33 +44,135 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
         {
             OnPropertyChanged(nameof(SelectedColumn));
 
-            if (selectedColumn is CommonColumnInfo commonInfo)
+            switch (selectedColumn.Column)
             {
-                switch (commonInfo.Column)
-                {
-                    case LogEntryColumn.Message:
-                    case LogEntryColumn.Severity:
+                case LogEntryColumn.Message:
+                    {
+                        DataEditorViewModel = new MessageRuleDataEditorViewModel();
+                        break;
+                    }
+                case LogEntryColumn.Severity:
+                    {
+                        DataEditorViewModel = new SeverityRuleDataEditorViewModel();
+                        break;
+                    }
+                case LogEntryColumn.Date:
+                    {
+                        DataEditorViewModel = new DateRuleDataEditorViewModel();
+                        break;
+                    }
+                case LogEntryColumn.Custom:
+                    {
+                        DataEditorViewModel = new CustomRuleDataEditorViewModel(availableCustomColumns);
+                        break;
+                    }
+                default:
+                    throw new InvalidEnumArgumentException("Unsupported LogEntryColumn!");
+            }            
+        }
+
+        private ProcessCondition BuildProcessCondition()
+        {
+            switch (selectedColumn.Column)
+            {
+                case LogEntryColumn.Date:
+                    {
+                        var editor = (dataEditorViewModel as DateRuleDataEditorViewModel);
+                        if (editor == null)
+                            throw new InvalidOperationException("Empty rule editor!");
+
+                        return new DateProcessCondition
                         {
-                            DataEditorViewModel = new StringRuleDataEditorViewModel();
-                            break;
-                        }
-                    case LogEntryColumn.Date:
+                            Argument = editor.Argument,
+                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod,
+                            Negate = editor.Not
+                        };
+                    }
+                case LogEntryColumn.Severity:
+                    {
+                        var editor = (dataEditorViewModel as SeverityRuleDataEditorViewModel);
+                        if (editor == null)
+                            throw new InvalidOperationException("Empty rule editor!");
+
+                        return new SeverityProcessCondition
                         {
-                            DataEditorViewModel = new DateRuleDataEditorViewModel();
-                            break;
-                        }
-                    case LogEntryColumn.Custom:
-                        throw new InvalidOperationException("Common column cannot containt Custom LogEntryColumn!");
-                    default:
-                        throw new InvalidEnumArgumentException("Unsupported LogEntryColumn!");
-                }
+                            Argument = editor.Argument,
+                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod,
+                            Negate = editor.Not
+                        };
+                    }
+                case LogEntryColumn.Message:
+                    {
+                        var editor = (dataEditorViewModel as MessageRuleDataEditorViewModel);
+                        if (editor == null)
+                            throw new InvalidOperationException("Empty rule editor!");
+
+                        return new MessageProcessCondition
+                        {
+                            Argument = editor.Argument,
+                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod,
+                            Negate = editor.Not
+                        };
+                    }
+                case LogEntryColumn.Custom:
+                    {
+                        var editor = (dataEditorViewModel as CustomRuleDataEditorViewModel);
+                        if (editor == null)
+                            throw new InvalidOperationException("Empty rule editor!");
+
+                        return new CustomProcessCondition
+                        {
+                            Name = editor.CustomField,
+                            Argument = editor.Argument,
+                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod,
+                            Negate = editor.Not
+                        };
+                    }
+                default:
+                    throw new InvalidEnumArgumentException("Unsupported column type!");
             }
-            else if (selectedColumn is CustomColumnInfo customInfo)
+        }
+
+        private void RestoreProcessCondition(HighlightEntry highlightEntry)
+        {
+            foreground = highlightEntry.Foreground;
+            background = highlightEntry.Background;
+
+            if (highlightEntry.Condition is DateProcessCondition dateCondition)
             {
-                DataEditorViewModel = new StringRuleDataEditorViewModel();
+                selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Date);
+                dataEditorViewModel = new DateRuleDataEditorViewModel(dateCondition);
+            }
+            else if (highlightEntry.Condition is MessageProcessCondition messageCondition)
+            {
+                selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Message);
+                dataEditorViewModel = new MessageRuleDataEditorViewModel(messageCondition);
+            }
+            else if (highlightEntry.Condition is SeverityProcessCondition severityCondition)
+            {
+                selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Severity);
+                dataEditorViewModel = new SeverityRuleDataEditorViewModel(severityCondition);
+            }
+            else if (highlightEntry.Condition is CustomProcessCondition customCondition)
+            {
+                selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Custom);
+                dataEditorViewModel = new CustomRuleDataEditorViewModel(availableCustomColumns, customCondition);
             }
             else
-                throw new InvalidOperationException("Unsupported column type!");
+                throw new ArgumentException("Invalid highlight entry!");
+
+            OnPropertyChanged(nameof(Foreground));
+            OnPropertyChanged(nameof(Background));
+            OnPropertyChanged(nameof(DataEditorViewModel));
+            OnPropertyChanged(nameof(SelectedColumn));
+        }
+
+        private void BuildAvailableColumns()
+        {           
+            foreach (LogEntryColumn column in Enum.GetValues(typeof(LogEntryColumn)))
+            {
+                AvailableColumns.Add(new LogEntryColumnInfo(column));
+            }
         }
 
         // Protected methods --------------------------------------------------
@@ -64,19 +184,47 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
 
         // Public methods -----------------------------------------------------
 
-        public RuleEditorViewModel(List<BaseColumnInfo> availableColumns)
+        public RuleEditorViewModel(List<string> availableCustomColumns)
         {
-            AvailableColumns = new ObservableCollection<BaseColumnInfo>(availableColumns);
+            AvailableColumns = new ObservableCollection<LogEntryColumnInfo>();
+            BuildAvailableColumns();
+
+            this.availableCustomColumns = availableCustomColumns;
+
             SelectedColumn = AvailableColumns.First();
             Foreground = Colors.Black;
             Background = Colors.Transparent;
         }
 
+        public RuleEditorViewModel(List<string> availableCustomColumns, HighlightEntry highlightEntry)
+        {
+            AvailableColumns = new ObservableCollection<LogEntryColumnInfo>();
+            BuildAvailableColumns();
+
+            this.availableCustomColumns = availableCustomColumns;
+
+            RestoreProcessCondition(highlightEntry);
+        }
+
+        public HighlightEntry CreateHighlightEntry()
+        {
+            ProcessCondition condition = BuildProcessCondition();
+            
+            HighlightEntry result = new HighlightEntry
+            {
+                Foreground = this.Foreground,
+                Background = this.Background,
+                Condition = condition
+            };
+
+            return result;
+        }
+
         // Public properties --------------------------------------------------
 
-        public ObservableCollection<BaseColumnInfo> AvailableColumns { get; }
+        public ObservableCollection<LogEntryColumnInfo> AvailableColumns { get; }
 
-        public BaseColumnInfo SelectedColumn
+        public LogEntryColumnInfo SelectedColumn
         {
             get
             {

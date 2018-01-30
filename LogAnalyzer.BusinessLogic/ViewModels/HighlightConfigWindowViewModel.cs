@@ -1,5 +1,6 @@
 ﻿using LogAnalyzer.API.Models;
 using LogAnalyzer.BusinessLogic.ViewModels.Highlighting;
+using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Services.Common;
@@ -20,11 +21,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private ModalDialogResult<HighlightConfig> result;
         private RuleEditorViewModel selectedRule;
         private int selectedRuleIndex;
-        private List<BaseColumnInfo> availableColumns;
+        private List<string> availableCustomColumns;
 
         private readonly Condition ruleSelectedCondition;
         private readonly Condition firstRuleSelectedCondition;
         private readonly Condition lastRuleSelectedCondition;
+        private readonly IHighlightConfigWindowAccess access;
 
         private void DoMoveRuleDown()
         {
@@ -44,9 +46,43 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoAddRule()
         {
-            var newRule = new RuleEditorViewModel(availableColumns);
+            var newRule = new RuleEditorViewModel(availableCustomColumns);
             Rules.Add(newRule);
             SelectedRule = newRule;
+        }
+
+        private void DoOk()
+        {
+            List<HighlightEntry> entries = new List<HighlightEntry>();
+            for (int i = 0; i < Rules.Count; i++)
+            {
+                entries.Add(Rules[i].CreateHighlightEntry());
+            }
+
+            HighlightConfig config = new HighlightConfig
+            {
+                HighlightEntries = entries
+            };
+
+            result.DialogResult = true;
+            result.Result = config;
+            access.Close(true);
+        }
+
+        private void DoCancel()
+        {
+            result.DialogResult = false;
+            result.Result = null;
+            access.Close(false);
+        }
+
+        private void LoadCurrentConfig(HighlightConfig currentConfig)
+        {
+            for (int i = 0; i < currentConfig.HighlightEntries.Count; i++)
+            {
+                RuleEditorViewModel rule = new RuleEditorViewModel(availableCustomColumns, currentConfig.HighlightEntries[i]);
+                Rules.Add(rule);
+            }
         }
 
         protected void OnPropertyChanged(string name)
@@ -54,11 +90,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public HighlightConfigWindowViewModel(HighlightConfigModel model)
+        public HighlightConfigWindowViewModel(IHighlightConfigWindowAccess access, HighlightConfigModel model)
         {
             result = new ModalDialogResult<HighlightConfig>();
+            this.access = access;
 
-            availableColumns = model.CurrentColumns;
+            availableCustomColumns = model.CurrentColumns
+                .OfType<CustomColumnInfo>()
+                .Select(c => c.Name)
+                .ToList();
 
             ruleSelectedCondition = new Condition(false);
             firstRuleSelectedCondition = new Condition(false);
@@ -68,8 +108,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             RemoveRuleCommand = new SimpleCommand((obj) => DoRemoveRule(), ruleSelectedCondition);
             MoveRuleUpCommand = new SimpleCommand((obj) => DoMoveRuleUp(), !firstRuleSelectedCondition & ruleSelectedCondition);
             MoveRuleDownCommand = new SimpleCommand((obj) => DoMoveRuleDown(), !lastRuleSelectedCondition & ruleSelectedCondition);
+            OkCommand = new SimpleCommand((obj) => DoOk());
+            CancelCommand = new SimpleCommand((obj) => DoCancel());
 
             Rules = new ObservableCollection<RuleEditorViewModel>();
+
+            if (model.CurrentConfig != null)
+                LoadCurrentConfig(model.CurrentConfig);
         }
 
         public ObservableCollection<RuleEditorViewModel> Rules { get; }
@@ -109,6 +154,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand RemoveRuleCommand { get; }
         public ICommand MoveRuleUpCommand { get; }
         public ICommand MoveRuleDownCommand { get; }
+        public ICommand OkCommand { get; }
+        public ICommand CancelCommand { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

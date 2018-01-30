@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LogAnalyzer.API.Models;
 
 namespace LogAnalyzer.Models.Engine.ProcessConditions
 {
     public class CustomProcessCondition : StringProcessCondition
-    {
-        public int Index { get; }
+    {      
+        public string Name { get; set; }        
     }
 }

@@ -12,16 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using LogAnalyzer.BusinessLogic.ViewModels;
+using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Services.Common;
+using Unity;
+using Unity.Resolution;
 
 namespace LogAnalyzer.Windows
 {
     /// <summary>
     /// Interaction logic for HighlightConfigWindow.xaml
     /// </summary>
-    public partial class HighlightConfigWindow : Window
+    public partial class HighlightConfigWindow : Window, IHighlightConfigWindowAccess
     {
         private readonly HighlightConfigWindowViewModel viewModel;
 
@@ -29,8 +32,13 @@ namespace LogAnalyzer.Windows
         {
             InitializeComponent();
 
-            viewModel = new HighlightConfigWindowViewModel(model);
+            viewModel = Dependencies.Container.Instance.Resolve<HighlightConfigWindowViewModel>(new ParameterOverride("access", this), new ParameterOverride("model", model));
             DataContext = viewModel;
+        }
+
+        public void Close(bool result)
+        {
+            DialogResult = result;
         }
 
         public ModalDialogResult<HighlightConfig> DataResult => viewModel.Result;
