@@ -7,7 +7,7 @@
                 xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
                 xmlns:f="urn:fluent-ribbon"
                 mc:Ignorable="d"
-                Title="MainWindow" Height="350" Width="525"
+                Title="MainWindow" Height="600" Width="800"
                 WindowStartupLocation="CenterScreen"
                 Closing="HandleWindowClosing">
     <f:RibbonWindow.Resources>
@@ -28,6 +28,12 @@
                               LargeIcon="/Resources/Images/Open32.png" 
                               Icon="/Resources/Images/Open16.png" 
                               Command="{Binding OpenCommand}"/>
+                </f:RibbonGroupBox>
+                <f:RibbonGroupBox Header="Highlight">
+                    <f:Button Header="Highlight"
+                              LargeIcon="/Resources/Images/Highlight32.png"
+                              Icon="/Resources/Images/Highlight16.png"
+                              Command="{Binding HighlightConfigCommand}" />
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>

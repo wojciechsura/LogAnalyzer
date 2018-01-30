@@ -1,0 +1,103 @@
+﻿<Window x:Class="LogAnalyzer.Windows.HighlightConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LogAnalyzer.Windows"
+        xmlns:h="clr-namespace:LogAnalyzer.BusinessLogic.ViewModels.Highlighting;assembly=LogAnalyzer.BusinessLogic"
+        xmlns:xwt="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Configure highlighting" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow">
+    <StackPanel Orientation="Vertical">
+        <GroupBox Header="Highlighting rules" Margin="4" Padding="4">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" Margin="0,4">
+                    <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding AddRuleCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Plus16.png" />
+                    </Button>
+                    <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding RemoveRuleCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Minus16.png" />
+                    </Button>
+                    <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveRuleUpCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Up16.png" />
+                    </Button>
+                    <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveRuleDownCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Down16.png" />
+                    </Button>
+                </StackPanel>
+
+                <ListBox Height="300" Width="800" 
+                         ItemsSource="{Binding Rules}" 
+                         SelectedItem="{Binding SelectedRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         SelectedIndex="{Binding SelectedRuleIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type h:RuleEditorViewModel}">
+                            <StackPanel Orientation="Vertical" Margin="4">
+                                <DockPanel Margin="0,0,0,4">
+                                    <ComboBox Width="150"
+                                            VerticalAlignment="Center"
+                                            DockPanel.Dock="Left"
+                                            ItemsSource="{Binding AvailableColumns}" 
+                                            SelectedItem="{Binding SelectedColumn}" 
+                                            DisplayMemberPath="Header" 
+                                            Margin="0,0,4,0"/>
+                                    <ContentControl Content="{Binding DataEditorViewModel}">
+                                        <ContentControl.Resources>
+                                            <DataTemplate DataType="{x:Type h:StringRuleDataEditorViewModel}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="1*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <CheckBox Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" IsChecked="{Binding Not, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Not</CheckBox>
+                                                    <ComboBox Grid.Column="1" Margin="0,0,4,0" VerticalAlignment="Center"
+                                                            Width="140"
+                                                            ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
+                                                            SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBox Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                            <DataTemplate DataType="{x:Type h:DateRuleDataEditorViewModel}">
+                                                <DockPanel>
+                                                    <CheckBox DockPanel.Dock="Left" Margin="0,0,4,0" VerticalAlignment="Center" IsChecked="{Binding Not, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Not</CheckBox>
+                                                    <ComboBox DockPanel.Dock="Left" Margin="0,0,4,0" VerticalAlignment="Center" Width="140"
+                                                            ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
+                                                            SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <xwt:DateTimePicker ShowButtonSpinner="False" Value="{Binding Argument}" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss.fff" />
+                                                </DockPanel>
+                                            </DataTemplate>
+                                        </ContentControl.Resources>
+                                    </ContentControl>
+                                </DockPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="100" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <Label Grid.Column="0" Grid.Row="0">Foreground</Label>
+                                    <xwt:ColorPicker Grid.Column="1" Grid.Row="0" ColorMode="ColorCanvas" SelectedColor="{Binding Foreground}" />
+                                    <Label Grid.Column="0" Grid.Row="1">Background</Label>
+                                    <xwt:ColorPicker Grid.Column="1" Grid.Row="1" ColorMode="ColorCanvas" SelectedColor="{Binding Background}" />
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
+            <Button Width="120" Margin="4" Content="Cancel" Command="{Binding CancelCommand}" />
+            <Button Width="120" Margin="4" Content="OK" Command="{Binding OkCommand}" />
+        </StackPanel>
+
+    </StackPanel>
+</Window>

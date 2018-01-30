@@ -17,6 +17,7 @@ using LogAnalyzer.Types;
 using System.ComponentModel;
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.API.Models;
+using LogAnalyzer.Models.Views.HighlightConfigWindow;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -40,6 +41,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private Condition engineStoppingCondition;
         private BaseCondition generalCommandCondition;
+        private Condition enginePresentCondition;
+        private BaseCondition generalEnginePresentCondition;
 
         // Private methods ----------------------------------------------------
 
@@ -60,6 +63,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             LogEntries = engine.LogEntries;
             OnPropertyChanged(nameof(LogEntries));
+
+            enginePresentCondition.Value = true;
         }
 
         private void DoStopEngine()
@@ -100,6 +105,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        private void DoHighlightConfig()
+        {
+            HighlightConfigModel model = new HighlightConfigModel(engine.HighlightConfig, engine.GetColumnInfos());
+            var result = dialogService.ConfigHighlighting(model);
+            if (result.DialogResult)
+                engine.HighlightConfig = result.Result;
+        }
+
         // Protected methods --------------------------------------------------
 
         private void OnPropertyChanged(string name)
@@ -125,8 +138,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             engineStoppingCondition = new Condition(false);
             generalCommandCondition = !engineStoppingCondition;
+            enginePresentCondition = new Condition(false);
+            generalEnginePresentCondition = enginePresentCondition & !engineStoppingCondition;
 
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
+            HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -160,7 +176,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         // Public properties --------------------------------------------------
 
-        public ICommand OpenCommand { get; private set; }
+        public ICommand OpenCommand { get; }
+
+        public ICommand HighlightConfigCommand { get; }
 
         public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; set; }
 

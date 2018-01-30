@@ -366,7 +366,7 @@ namespace RegexLogParser.Editor
             set
             {
                 selectedGroupDefinitionIndex = value;
-                itemSelectedCondition.Value = (value != -1);
+                itemSelectedCondition.Value = (value >= 0);
                 firstItemSelectedCondition.Value = (value == 0);
                 lastItemSelectedCondition.Value = (value == groupDefinitions.Count - 1);
                 OnPropertyChanged(nameof(SelectedGroupDefinitionIndex));

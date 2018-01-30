@@ -7,11 +7,20 @@ using System.Threading.Tasks;
 using LogAnalyzer.Windows;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.Models.Engine;
+using LogAnalyzer.Models.Views.HighlightConfigWindow;
 
 namespace LogAnalyzer.Services
 {
     public class DialogService : IDialogService
     {
+        public ModalDialogResult<HighlightConfig> ConfigHighlighting(HighlightConfigModel model)
+        {
+            HighlightConfigWindow window = new HighlightConfigWindow(model);
+            window.ShowDialog();
+            return window.DataResult;
+        }
+
         public ModalDialogResult<LogParserProfileEditorResult> EditLogParserProfile(Guid guid)
         {
             ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(guid);

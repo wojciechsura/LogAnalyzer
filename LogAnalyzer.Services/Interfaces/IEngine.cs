@@ -1,4 +1,5 @@
 ﻿using LogAnalyzer.API.Models;
+using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Types;
 using System;
 using System.Collections.Generic;
@@ -26,5 +27,7 @@ namespace LogAnalyzer.Services.Interfaces
         ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; }
         void Stop(Action stopAction);
         List<BaseColumnInfo> GetColumnInfos();
+
+        HighlightConfig HighlightConfig { get; set; }
     }
 }

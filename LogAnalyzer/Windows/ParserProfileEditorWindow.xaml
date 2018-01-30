@@ -35,7 +35,6 @@
                     ItemsSource="{Binding LogParserEditorViewModels}"
                     SelectedItem="{Binding SelectedLogParserViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     DisplayMemberPath="DisplayName"/>
-
             </Grid>
         </GroupBox>
 

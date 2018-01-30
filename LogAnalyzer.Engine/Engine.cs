@@ -13,6 +13,7 @@ using LogAnalyzer.Engine.Infrastructure.Data;
 using AutoMapper;
 using LogAnalyzer.Types;
 using LogAnalyzer.API.Models;
+using LogAnalyzer.Models.Engine;
 
 namespace LogAnalyzer.Engine
 {
@@ -49,6 +50,7 @@ namespace LogAnalyzer.Engine
         private readonly LogFilter logFilter;
         private readonly LogHighlighter logHighlighter;
         private readonly EngineData data;
+        private HighlightConfig highlightConfig;
 
         private State state = State.Working;
         private StopToken stopToken = null;
@@ -64,6 +66,13 @@ namespace LogAnalyzer.Engine
             }
         }
 
+        private void SetHighlightConfig(HighlightConfig value)
+        {
+            highlightConfig = value;
+            
+            // TODO pass to logHighlighter
+        }
+
         // Public methods -----------------------------------------------------
 
         public Engine(ILogSource logSource, ILogParser logParser)
@@ -73,6 +82,11 @@ namespace LogAnalyzer.Engine
             logReader = new LogReader(logSource, logParser, eventBus, data);
             logFilter = new LogFilter(eventBus, data);
             logHighlighter = new LogHighlighter(eventBus, data);
+
+            highlightConfig = new HighlightConfig
+            {
+                HighlightEntries = new List<HighlightEntry>()
+            };
         }
 
         public void NotifySourceReady()
@@ -116,5 +130,17 @@ namespace LogAnalyzer.Engine
         // Public properties --------------------------------------------------
 
         public ObservableRangeCollection<HighlightedLogEntry> LogEntries => data.HighlightedLogEntries;
+
+        public HighlightConfig HighlightConfig
+        {
+            get
+            {
+                return highlightConfig;
+            }
+            set
+            {
+                SetHighlightConfig(value);
+            }
+        }
     }
 }
