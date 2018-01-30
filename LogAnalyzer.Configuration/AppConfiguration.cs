@@ -11,20 +11,23 @@ namespace LogAnalyzer.Configuration
     {
         public static readonly string XML_NAME = "Config";
 
-        private SimpleCollection<LogParserProfile> logParserProfiles;
-
         public AppConfiguration() 
             : base(XML_NAME)
         {
-            logParserProfiles = new SimpleCollection<LogParserProfile>("LogParserProfiles", this, LogParserProfile.XML_NAME);
+            Session = new Session(this);
+
+            LogParserProfiles = new SimpleCollection<LogParserProfile>("LogParserProfiles", this, LogParserProfile.XML_NAME);
         }
 
         public void Defaults()
         {
             this.SetDefaults();
-            logParserProfiles.Add(new LogParserProfile("Parse whole line as message", Guid.NewGuid(), "LogParser.Line", ""));
+            LogParserProfiles.Clear();
+            LogParserProfiles.Add(new LogParserProfile("Parse whole line as message", Guid.NewGuid(), "LogParser.Line", ""));
         }
 
-        public SimpleCollection<LogParserProfile> LogParserProfiles => logParserProfiles;
+        public Session Session { get; }
+
+        public SimpleCollection<LogParserProfile> LogParserProfiles { get; }
     }
 }

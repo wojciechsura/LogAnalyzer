@@ -122,6 +122,17 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             result.DialogResult = true;
             result.Result = new OpenResult(selectedLogSource.BuildConfiguration(), selectedLogSource.Provider.UniqueName, selectedParserProfile.Guid);
 
+            // Save configuration
+            configurationService.Configuration.SuspendNotifications();
+            try
+            {
+                configurationService.Configuration.Session.LastParserProfile.Value = selectedParserProfile.Guid;
+            }
+            finally
+            { 
+                configurationService.Configuration.ResumeNotifications();
+            }
+
             access.Close(true);
         }
 
@@ -173,7 +184,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             logParserProfiles = new ObservableCollection<LogParserProfileInfo>();
             BuildLogParserProfileInfos();
-            SelectedLogParserProfile = logParserProfiles.FirstOrDefault();
+
+            LogParserProfileInfo lastProfile = logParserProfiles.FirstOrDefault(p => p.Guid.Equals(configurationService.Configuration.Session.LastParserProfile.Value));        
+            SelectedLogParserProfile = lastProfile ?? logParserProfiles.FirstOrDefault();
         }
 
         // Public properties --------------------------------------------------
