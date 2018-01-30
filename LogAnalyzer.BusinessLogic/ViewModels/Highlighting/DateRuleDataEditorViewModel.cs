@@ -16,6 +16,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
         {
             ComparisonMethods.Remove(ComparisonMethods.Single(ci => ci.ComparisonMethod == ComparisonMethod.Contains));
             ComparisonMethods.Remove(ComparisonMethods.Single(ci => ci.ComparisonMethod == ComparisonMethod.Matches));
+            ComparisonMethods.Remove(ComparisonMethods.Single(ci => ci.ComparisonMethod == ComparisonMethod.NotContains));
+            ComparisonMethods.Remove(ComparisonMethods.Single(ci => ci.ComparisonMethod == ComparisonMethod.NotMatches));
         }
 
         public DateRuleDataEditorViewModel()

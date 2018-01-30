@@ -28,7 +28,7 @@
                     </Button>
                 </StackPanel>
 
-                <ListBox Height="300" Width="800" 
+                <ListBox Height="600" Width="800" 
                          ItemsSource="{Binding Rules}" 
                          SelectedItem="{Binding SelectedRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          SelectedIndex="{Binding SelectedRuleIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -36,7 +36,7 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type h:RuleEditorViewModel}">
                             <StackPanel Orientation="Vertical" Margin="4">
-                                <DockPanel Margin="0,0,0,4">
+                                <DockPanel Margin="4">
                                     <ComboBox Width="150"
                                             VerticalAlignment="Center"
                                             DockPanel.Dock="Left"
@@ -50,35 +50,30 @@
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="1*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <CheckBox Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" IsChecked="{Binding Not, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Not</CheckBox>
-                                                    <ComboBox Grid.Column="1" Margin="0,0,4,0" VerticalAlignment="Center"
+                                                    <ComboBox Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center"
                                                             Width="140"
                                                             ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
                                                             SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBox Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Grid>
                                             </DataTemplate>
                                             <DataTemplate DataType="{x:Type h:SeverityRuleDataEditorViewModel}">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="1*" />
                                                     </Grid.ColumnDefinitions>
-                                                    <CheckBox Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center" IsChecked="{Binding Not, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Not</CheckBox>
-                                                    <ComboBox Grid.Column="1" Margin="0,0,4,0" VerticalAlignment="Center"
+                                                    <ComboBox Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center"
                                                             Width="140"
                                                             ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
                                                             SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBox Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Grid>
                                             </DataTemplate>
                                             <DataTemplate DataType="{x:Type h:DateRuleDataEditorViewModel}">
                                                 <DockPanel>
-                                                    <CheckBox DockPanel.Dock="Left" Margin="0,0,4,0" VerticalAlignment="Center" IsChecked="{Binding Not, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Not</CheckBox>
                                                     <ComboBox DockPanel.Dock="Left" Margin="0,0,4,0" VerticalAlignment="Center" Width="140"
                                                             ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
                                                             SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -90,23 +85,21 @@
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
                                                         <ColumnDefinition Width="1*" />
                                                     </Grid.ColumnDefinitions>
                                                     <ComboBox Grid.Column="0" Margin="0,0,4,0" Width="150" IsEditable="True" ItemsSource="{Binding AvailableCustomFields}" Text="{Binding CustomField}" />
-                                                    <CheckBox Grid.Column="1" Margin="0,0,4,0" VerticalAlignment="Center" IsChecked="{Binding Not, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Not</CheckBox>
-                                                    <ComboBox Grid.Column="2" Margin="0,0,4,0" VerticalAlignment="Center"
+                                                    <ComboBox Grid.Column="1" Margin="0,0,4,0" VerticalAlignment="Center"
                                                             Width="140"
                                                             ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
                                                             SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBox Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBox Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </Grid>
                                             </DataTemplate>
 
                                         </ContentControl.Resources>
                                     </ContentControl>
                                 </DockPanel>
-                                <Grid>
+                                <Grid Margin="4">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="100" />
                                         <ColumnDefinition Width="100" />

@@ -84,8 +84,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         return new DateProcessCondition
                         {
                             Argument = editor.Argument,
-                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod,
-                            Negate = editor.Not
+                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod
                         };
                     }
                 case LogEntryColumn.Severity:
@@ -97,8 +96,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         return new SeverityProcessCondition
                         {
                             Argument = editor.Argument,
-                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod,
-                            Negate = editor.Not
+                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod
                         };
                     }
                 case LogEntryColumn.Message:
@@ -110,8 +108,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         return new MessageProcessCondition
                         {
                             Argument = editor.Argument,
-                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod,
-                            Negate = editor.Not
+                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod
                         };
                     }
                 case LogEntryColumn.Custom:
@@ -124,8 +121,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         {
                             Name = editor.CustomField,
                             Argument = editor.Argument,
-                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod,
-                            Negate = editor.Not
+                            Comparison = editor.SelectedComparisonMethod.ComparisonMethod
                         };
                     }
                 default:

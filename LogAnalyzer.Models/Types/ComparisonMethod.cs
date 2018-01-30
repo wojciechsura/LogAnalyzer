@@ -21,7 +21,11 @@ namespace LogAnalyzer.Models.Types
         MoreThan,
         [Description("Contains")]
         Contains,
+        [Description("Not contains")]
+        NotContains,
         [Description("Matches")]
-        Matches
+        Matches,
+        [Description("Not matches")]
+        NotMatches
     }
 }

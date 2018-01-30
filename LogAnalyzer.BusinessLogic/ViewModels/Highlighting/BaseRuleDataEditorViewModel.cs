@@ -14,7 +14,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
     public abstract class BaseRuleDataEditorViewModel : INotifyPropertyChanged
     {
         private ComparisonMethodInfo selectedComparisonMethod;
-        private bool not;
 
         private void BuildComparisonMethods()
         {
@@ -43,7 +42,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             BuildComparisonMethods();
 
             SelectedComparisonMethod = ComparisonMethods.Single(c => c.ComparisonMethod == condition.Comparison);
-            Not = condition.Negate;
         }
 
         public class ComparisonMethodInfo
@@ -67,16 +65,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             {
                 selectedComparisonMethod = value;
                 OnPropertyChanged(nameof(SelectedComparisonMethod));
-            }
-        }
-
-        public bool Not
-        {
-            get => not;
-            set
-            {
-                not = value;
-                OnPropertyChanged(nameof(Not));
             }
         }
 
