@@ -11,6 +11,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
     {
         private string customField;
         private string argument;
+        private bool caseSensitive;
 
         public CustomRuleDataEditorViewModel(List<string> availableCustomFields)
         {
@@ -24,8 +25,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             AvailableCustomFields = availableCustomFields;
             CustomField = condition.Name;
             Argument = condition.Argument;
+            CaseSensitive = condition.CaseSensitive;
         }
-            
+
         public List<string> AvailableCustomFields { get; }
 
         public string CustomField
@@ -35,6 +37,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             {
                 customField = value;
                 OnPropertyChanged(nameof(CustomField));
+                OnPropertyChanged(nameof(Summary));
             }
         }
 
@@ -45,7 +48,21 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             {
                 argument = value;
                 OnPropertyChanged(nameof(Argument));
+                OnPropertyChanged(nameof(Summary));
             }
         }
+
+        public bool CaseSensitive
+        {
+            get => caseSensitive;
+            set
+            {
+                caseSensitive = value;
+                OnPropertyChanged(nameof(CaseSensitive));
+                OnPropertyChanged(nameof(Summary));
+            }
+        }
+
+        public override string Summary => $"\"{CustomField}\" {SelectedComparisonMethod.SummaryDisplay} \"{Argument}\"{(CaseSensitive ? " (case sensitive)" : "")}";
     }
 }

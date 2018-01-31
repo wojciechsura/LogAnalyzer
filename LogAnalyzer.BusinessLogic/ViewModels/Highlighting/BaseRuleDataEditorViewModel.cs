@@ -13,7 +13,27 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
 {
     public abstract class BaseRuleDataEditorViewModel : INotifyPropertyChanged
     {
+        // Public types -------------------------------------------------------
+
+        public class ComparisonMethodInfo
+        {
+            public ComparisonMethodInfo(ComparisonMethod method)
+            {
+                ComparisonMethod = method;
+                Display = method.GetAttribute<DescriptionAttribute>().Description;
+                SummaryDisplay = method.GetAttribute<SummaryDisplayAttribute>().Summary;
+            }
+
+            public ComparisonMethod ComparisonMethod { get; }
+            public string Display { get; }
+            public string SummaryDisplay { get; }
+        }
+
+        // Private fields -----------------------------------------------------
+
         private ComparisonMethodInfo selectedComparisonMethod;
+
+        // Private methods ----------------------------------------------------
 
         private void BuildComparisonMethods()
         {
@@ -23,10 +43,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             }
         }
 
+        // Protected methods --------------------------------------------------
+
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        // Public methods -----------------------------------------------------
 
         public BaseRuleDataEditorViewModel()
         {
@@ -44,19 +68,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             SelectedComparisonMethod = ComparisonMethods.Single(c => c.ComparisonMethod == condition.Comparison);
         }
 
-        public class ComparisonMethodInfo
-        {
-            public ComparisonMethodInfo(ComparisonMethod method)
-            {
-                ComparisonMethod = method;
-                Display = method.GetAttribute<DescriptionAttribute>().Description;
-            }
-
-            public ComparisonMethod ComparisonMethod { get; }
-            public string Display { get; }
-        }
-
         public ObservableCollection<ComparisonMethodInfo> ComparisonMethods { get; }
+
+        // Public properties --------------------------------------------------
 
         public ComparisonMethodInfo SelectedComparisonMethod
         {
@@ -65,8 +79,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             {
                 selectedComparisonMethod = value;
                 OnPropertyChanged(nameof(SelectedComparisonMethod));
+                OnPropertyChanged(nameof(Summary));
             }
         }
+
+        public abstract string Summary { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

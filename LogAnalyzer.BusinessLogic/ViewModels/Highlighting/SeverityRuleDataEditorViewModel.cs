@@ -10,6 +10,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
     public class SeverityRuleDataEditorViewModel : BaseRuleDataEditorViewModel
     {
         private string argument;
+        private bool caseSensitive;
 
         public SeverityRuleDataEditorViewModel()
         {
@@ -20,6 +21,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             : base(condition)
         {
             Argument = condition.Argument;
+            CaseSensitive = condition.CaseSensitive;
         }
 
         public string Argument
@@ -29,7 +31,21 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             {
                 argument = value;
                 OnPropertyChanged(nameof(Argument));
+                OnPropertyChanged(nameof(Summary));
             }
         }
+
+        public bool CaseSensitive
+        {
+            get => caseSensitive;
+            set
+            {
+                caseSensitive = value;
+                OnPropertyChanged(nameof(CaseSensitive));
+                OnPropertyChanged(nameof(Summary));
+            }
+        }
+
+        public override string Summary => $"{SelectedComparisonMethod.SummaryDisplay} \"{Argument}\"{(CaseSensitive ? " (case sensitive)" : "")}";
     }
 }

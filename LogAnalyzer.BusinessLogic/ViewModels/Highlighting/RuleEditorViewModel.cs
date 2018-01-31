@@ -4,6 +4,7 @@ using LogAnalyzer.API.Types.Attributes;
 using LogAnalyzer.Common.Extensions;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Engine.PredicateDescriptions;
+using LogAnalyzer.Models.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -43,6 +44,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
         private void HandleSelectedColumnChanged()
         {
             OnPropertyChanged(nameof(SelectedColumn));
+            OnPropertyChanged(nameof(Summary));
 
             switch (selectedColumn.Column)
             {
@@ -96,6 +98,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         return new SeverityPredicateDescription
                         {
                             Argument = editor.Argument,
+                            CaseSensitive = editor.CaseSensitive,
                             Comparison = editor.SelectedComparisonMethod.ComparisonMethod
                         };
                     }
@@ -108,6 +111,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         return new MessagePredicateDescription
                         {
                             Argument = editor.Argument,
+                            CaseSensitive = editor.CaseSensitive,
                             Comparison = editor.SelectedComparisonMethod.ComparisonMethod
                         };
                     }
@@ -121,6 +125,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         {
                             Name = editor.CustomField,
                             Argument = editor.Argument,
+                            CaseSensitive = editor.CaseSensitive,
                             Comparison = editor.SelectedComparisonMethod.ComparisonMethod
                         };
                     }
@@ -229,7 +234,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             set
             {
                 selectedColumn = value;
-                HandleSelectedColumnChanged();
+                HandleSelectedColumnChanged();            
             }
         }
 
@@ -260,6 +265,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             {
                 background = value;
                 OnPropertyChanged(nameof(Background));
+            }
+        }
+
+        public string Summary
+        {
+            get
+            {
+                return selectedColumn.Display.ToLower();
             }
         }
 

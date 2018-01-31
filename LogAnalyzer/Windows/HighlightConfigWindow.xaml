@@ -4,12 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogAnalyzer.Windows"
+        xmlns:w="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
         xmlns:h="clr-namespace:LogAnalyzer.BusinessLogic.ViewModels.Highlighting;assembly=LogAnalyzer.BusinessLogic"
         xmlns:xwt="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Configure highlighting" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow">
+    <Window.Resources>
+        <ResourceDictionary>
+            <w:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+            <w:HideIfNullConverter x:Key="HideIfNullConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
     <StackPanel Orientation="Vertical">
         <GroupBox Header="Highlighting rules" Margin="4" Padding="4">
             <StackPanel Orientation="Vertical">
@@ -28,96 +35,210 @@
                     </Button>
                 </StackPanel>
 
-                <ListBox Height="600" Width="800" 
+                <ListBox Height="300" Width="600" 
                          ItemsSource="{Binding Rules}" 
                          SelectedItem="{Binding SelectedRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          SelectedIndex="{Binding SelectedRuleIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type h:RuleEditorViewModel}">
-                            <StackPanel Orientation="Vertical" Margin="4">
-                                <DockPanel Margin="4">
-                                    <ComboBox Width="150"
-                                            VerticalAlignment="Center"
-                                            DockPanel.Dock="Left"
-                                            ItemsSource="{Binding AvailableColumns}" 
-                                            SelectedItem="{Binding SelectedColumn}" 
-                                            DisplayMemberPath="Display" 
-                                            Margin="0,0,4,0"/>
-                                    <ContentControl Content="{Binding DataEditorViewModel}">
-                                        <ContentControl.Resources>
-                                            <DataTemplate DataType="{x:Type h:MessageRuleDataEditorViewModel}">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="1*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <ComboBox Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center"
-                                                            Width="140"
-                                                            ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
-                                                            SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </Grid>
-                                            </DataTemplate>
-                                            <DataTemplate DataType="{x:Type h:SeverityRuleDataEditorViewModel}">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="1*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <ComboBox Grid.Column="0" Margin="0,0,4,0" VerticalAlignment="Center"
-                                                            Width="140"
-                                                            ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
-                                                            SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </Grid>
-                                            </DataTemplate>
-                                            <DataTemplate DataType="{x:Type h:DateRuleDataEditorViewModel}">
-                                                <DockPanel>
-                                                    <ComboBox DockPanel.Dock="Left" Margin="0,0,4,0" VerticalAlignment="Center" Width="140"
-                                                            ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
-                                                            SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <xwt:DateTimePicker ShowButtonSpinner="False" Value="{Binding Argument}" Format="Custom" FormatString="yyyy-MM-dd HH:mm:ss.fff" />
-                                                </DockPanel>
-                                            </DataTemplate>
-                                            <DataTemplate DataType="{x:Type h:CustomRuleDataEditorViewModel}">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="1*" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <ComboBox Grid.Column="0" Margin="0,0,4,0" Width="150" IsEditable="True" ItemsSource="{Binding AvailableCustomFields}" Text="{Binding CustomField}" />
-                                                    <ComboBox Grid.Column="1" Margin="0,0,4,0" VerticalAlignment="Center"
-                                                            Width="140"
-                                                            ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
-                                                            SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <TextBox Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                </Grid>
-                                            </DataTemplate>
-
-                                        </ContentControl.Resources>
-                                    </ContentControl>
-                                </DockPanel>
-                                <Grid Margin="4">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100" />
-                                        <ColumnDefinition Width="100" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <Label Grid.Column="0" Grid.Row="0">Foreground</Label>
-                                    <xwt:ColorPicker Grid.Column="1" Grid.Row="0" ColorMode="ColorCanvas" SelectedColor="{Binding Foreground}" />
-                                    <Label Grid.Column="0" Grid.Row="1">Background</Label>
-                                    <xwt:ColorPicker Grid.Column="1" Grid.Row="1" ColorMode="ColorCanvas" SelectedColor="{Binding Background}" />
-                                </Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Entries with " />
+                                <TextBlock Text="{Binding Summary}" />
+                                <TextBlock Text=" field " />
+                                <TextBlock Text="{Binding DataEditorViewModel.Summary}" />
+                                <TextBlock Text=" will be " />
+                                <TextBlock Text="highlighted like this." 
+                                           Foreground="{Binding Foreground, Converter={StaticResource ColorToBrushConverter}}" 
+                                           Background="{Binding Background, Converter={StaticResource ColorToBrushConverter}}" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
+
+                <DockPanel Margin="4">
+                    <Label DockPanel.Dock="Left" Margin="0,0,4,4">Highlight rule</Label>
+                    <Separator />
+                </DockPanel>
+
+                <ContentControl Content="{Binding SelectedRule}" Height="200" Visibility="{Binding SelectedRule, Converter={StaticResource HideIfNullConverter}}">
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate DataType="{x:Type h:RuleEditorViewModel}">
+                            <StackPanel Orientation="Vertical" Margin="4,0,4,4">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0">Field</Label>
+                                    <ComboBox Grid.Column="1"
+                                            Width="150"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            DockPanel.Dock="Left"
+                                            ItemsSource="{Binding AvailableColumns}" 
+                                            SelectedItem="{Binding SelectedColumn}" 
+                                            DisplayMemberPath="Display" 
+                                            Margin="0,2,4,2"/>
+                                </Grid>
+
+                                <ContentControl Content="{Binding DataEditorViewModel}">
+                                    <ContentControl.Resources>
+                                        <DataTemplate DataType="{x:Type h:MessageRuleDataEditorViewModel}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0">Condition</Label>
+                                                <DockPanel Grid.Row="0" Grid.Column="1">
+                                                    <ComboBox DockPanel.Dock="Left" 
+                                                              Margin="0,2,4,2" 
+                                                              VerticalAlignment="Center"
+                                                              Width="150"
+                                                              ItemsSource="{Binding ComparisonMethods}" 
+                                                              DisplayMemberPath="Display"
+                                                              SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBox VerticalAlignment="Center" 
+                                                             HorizontalAlignment="Stretch" 
+                                                             Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                             Margin="0,2,4,2"/>
+                                                </DockPanel>
+
+                                                <Label Grid.Row="1" Grid.Column="0">Options</Label>
+                                                <CheckBox Grid.Row="1" 
+                                                          Grid.Column="1" 
+                                                          IsChecked="{Binding CaseSensitive}"
+                                                          VerticalAlignment="Center"
+                                                          Margin="0,2,4,2">Case-sensitive</CheckBox>
+                                            </Grid>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type h:SeverityRuleDataEditorViewModel}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0">Condition</Label>
+                                                <DockPanel Grid.Row="0" Grid.Column="1">
+                                                    <ComboBox DockPanel.Dock="Left" Margin="0,4,4,4" VerticalAlignment="Center"
+                                                              Width="150"
+                                                              ItemsSource="{Binding ComparisonMethods}" 
+                                                              DisplayMemberPath="Display"
+                                                              SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBox VerticalAlignment="Center" 
+                                                             HorizontalAlignment="Stretch" 
+                                                             Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                             Margin="0,2,4,2" />
+                                                </DockPanel>
+
+                                                <Label Grid.Row="1" Grid.Column="0">Options</Label>
+                                                <CheckBox Grid.Row="1" Grid.Column="1" 
+                                                          IsChecked="{Binding CaseSensitive}"
+                                                          VerticalAlignment="Center"
+                                                          Margin="0,2,4,2" >Case-sensitive</CheckBox>
+                                            </Grid>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type h:DateRuleDataEditorViewModel}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0">Condition</Label>
+                                                <DockPanel Grid.Row="0" Grid.Column="1">
+                                                    <ComboBox DockPanel.Dock="Left" Margin="0,2,4,2" 
+                                                              VerticalAlignment="Center" 
+                                                              Width="150"
+                                                              ItemsSource="{Binding ComparisonMethods}" 
+                                                              DisplayMemberPath="Display"
+                                                              SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <xwt:DateTimePicker 
+                                                        ShowButtonSpinner="False" 
+                                                        Value="{Binding Argument}" 
+                                                        Format="Custom" 
+                                                        FormatString="yyyy-MM-dd HH:mm:ss.fff" 
+                                                        Margin="0,2,4,2"/>
+                                                </DockPanel>
+                                            </Grid>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type h:CustomRuleDataEditorViewModel}">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="100" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0">Custom field</Label>
+                                                <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,2,4,2" Width="150" 
+                                                          IsEditable="True" 
+                                                          ItemsSource="{Binding AvailableCustomFields}" 
+                                                          Text="{Binding CustomField}" 
+                                                          HorizontalAlignment="Left"/>
+
+                                                <Label Grid.Row="1" Grid.Column="0">Condition</Label>
+                                                <DockPanel Grid.Row="1" Grid.Column="1">
+                                                    <ComboBox Grid.Row="0" Grid.Column="1" Margin="0,2,4,2" 
+                                                              VerticalAlignment="Center"
+                                                              Width="150"
+                                                              HorizontalAlignment="Left"
+                                                              ItemsSource="{Binding ComparisonMethods}" DisplayMemberPath="Display"
+                                                              SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBox Grid.Row="0" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </DockPanel>
+
+                                                <Label Grid.Row="2" Grid.Column="0">Options</Label>
+                                                <CheckBox Grid.Row="2" Grid.Column="1" 
+                                                          IsChecked="{Binding CaseSensitive}"
+                                                          VerticalAlignment="Center"
+                                                          Margin="0,2,4,2">Case-sensitive</CheckBox>
+                                            </Grid>
+                                        </DataTemplate>
+
+                                    </ContentControl.Resources>
+                                </ContentControl>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0">Style</Label>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <Label Width="80">Foreground</Label>
+                                        <xwt:ColorPicker Width="100" 
+                                                         ColorMode="ColorCanvas" 
+                                                         SelectedColor="{Binding Foreground}" 
+                                                         Margin="0,2,4,2"/>
+                                        <Label Width="80">Background</Label>
+                                        <xwt:ColorPicker ColorMode="ColorCanvas" SelectedColor="{Binding Background}" 
+                                                         Margin="0,2,4,2"/>
+                                    </StackPanel>
+                                </Grid>
+
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                </ContentControl>
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">

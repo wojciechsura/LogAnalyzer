@@ -9,6 +9,6 @@ namespace LogAnalyzer.Models.Engine.PredicateDescriptions
 {
     public class CustomPredicateDescription : StringPredicateDescription
     {      
-        public string Name { get; set; }        
+        public string Name { get; set; }  
     }
 }

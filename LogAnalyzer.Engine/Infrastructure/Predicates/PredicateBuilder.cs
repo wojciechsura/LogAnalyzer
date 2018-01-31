@@ -7,13 +7,36 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Engine.Infrastructure.Conditions
+namespace LogAnalyzer.Engine.Infrastructure.Predicates
 {
     public static class PredicateBuilder
     {
         private static Func<LogEntry, bool> BuildStringPredicate(Func<LogEntry, string> getStringFunc, StringPredicateDescription stringPredicateDesc)
         {
+            switch (stringPredicateDesc.Comparison)
+            {
+                case Models.Types.ComparisonMethod.LessThan:
 
+                    break;
+                case Models.Types.ComparisonMethod.LessThanOrEqual:
+                    break;
+                case Models.Types.ComparisonMethod.Equal:
+                    break;
+                case Models.Types.ComparisonMethod.MoreThanOrEqual:
+                    break;
+                case Models.Types.ComparisonMethod.MoreThan:
+                    break;
+                case Models.Types.ComparisonMethod.Contains:
+                    break;
+                case Models.Types.ComparisonMethod.NotContains:
+                    break;
+                case Models.Types.ComparisonMethod.Matches:
+                    break;
+                case Models.Types.ComparisonMethod.NotMatches:
+                    break;
+            }
+
+            return null;
         }
 
         private static Func<LogEntry, bool> BuildCustomPredicate(CustomPredicateDescription customPredicateDesc, List<BaseColumnInfo> currentColumns)

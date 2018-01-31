@@ -38,7 +38,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             {
                 argument = value;
                 OnPropertyChanged(nameof(Argument));
+                OnPropertyChanged(nameof(Summary));
             }
         }
+
+        public override string Summary => $"{SelectedComparisonMethod.SummaryDisplay} \"{Argument}\"";
     }
 }
