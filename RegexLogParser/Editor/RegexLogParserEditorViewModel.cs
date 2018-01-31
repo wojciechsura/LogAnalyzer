@@ -155,7 +155,10 @@ namespace RegexLogParser.Editor
                     }
                     else if (columnInfos[j] is CustomColumnInfo customInfo)
                     {
-                        rowData.Add(entry.CustomFields[customInfo.Index]);
+                        if (customInfo.Index < entry.CustomFields.Count)
+                            rowData.Add(entry.CustomFields[customInfo.Index]);
+                        else
+                            rowData.Add(null);
                     }
                 }
 

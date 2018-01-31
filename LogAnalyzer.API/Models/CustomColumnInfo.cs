@@ -20,15 +20,6 @@ namespace LogAnalyzer.API.Models
             this.name = name;
         }
 
-        public override bool Equals(object obj)
-        {
-            var other = obj as CustomColumnInfo;
-            if (other == null)
-                return false;
-
-            return other.Index == Index && other.Name == name;
-        }
-
         public override string Header => name;
         public override string Member => $"{LogEntryColumn.Custom.GetAttribute<MemberNameAttribute>().Member}[{index}]";
         public int Index => index;

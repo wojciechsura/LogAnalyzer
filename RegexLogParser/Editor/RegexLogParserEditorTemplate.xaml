@@ -10,9 +10,9 @@
         <DataTemplate.Resources>
             <c:HideIfNullConverter x:Key="HideIfNullConverter" />
         </DataTemplate.Resources>
-        <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical" Width="600">
             <GroupBox Header="Regular expression parser" Margin="4" Padding="4">
-                <StackPanel Orientation="Vertical" MinWidth="600">
+                <StackPanel Orientation="Vertical">
                     <Label>Regular expression</Label>
                     <TextBox Margin="4" Text="{Binding RegularExpression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <Label>Capture groups</Label>
