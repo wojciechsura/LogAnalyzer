@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LogAnalyzer.Models.Engine.ProcessConditions;
+using LogAnalyzer.Models.Engine.PredicateDescriptions;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
 {
@@ -16,7 +16,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
 
         }
 
-        public SeverityRuleDataEditorViewModel(SeverityProcessCondition condition) 
+        public SeverityRuleDataEditorViewModel(SeverityPredicateDescription condition) 
             : base(condition)
         {
             Argument = condition.Argument;

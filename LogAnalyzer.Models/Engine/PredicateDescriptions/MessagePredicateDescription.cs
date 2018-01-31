@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.API.Types;
 
-namespace LogAnalyzer.Models.Engine.ProcessConditions
+namespace LogAnalyzer.Models.Engine.PredicateDescriptions
 {
-    public class DateProcessCondition : ProcessCondition
+    public class MessagePredicateDescription : StringPredicateDescription
     {
-        public DateTime Argument { get; set; }
     }
 }

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using LogAnalyzer.API.Models;
 
-namespace LogAnalyzer.Models.Engine.ProcessConditions
+namespace LogAnalyzer.Models.Engine.PredicateDescriptions
 {
-    public class CustomProcessCondition : StringProcessCondition
+    public class CustomPredicateDescription : StringPredicateDescription
     {      
         public string Name { get; set; }        
     }

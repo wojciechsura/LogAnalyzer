@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.Models.Engine.ProcessConditions
+namespace LogAnalyzer.Models.Engine.PredicateDescriptions
 {
-    public abstract class StringProcessCondition : ProcessCondition
+    public abstract class StringPredicateDescription : PredicateDescription
     {
         public string Argument { get; set; }
     }

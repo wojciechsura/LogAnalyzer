@@ -1,4 +1,4 @@
-﻿using LogAnalyzer.Models.Engine.ProcessConditions;
+﻿using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using System.Windows.Media;
 
 namespace LogAnalyzer.Models.Engine
@@ -10,7 +10,7 @@ namespace LogAnalyzer.Models.Engine
             
         }
 
-        public ProcessCondition Condition { get; set; }
+        public PredicateDescription Condition { get; set; }
         public Color Foreground { get; set; }
         public Color Background { get; set; }
     }

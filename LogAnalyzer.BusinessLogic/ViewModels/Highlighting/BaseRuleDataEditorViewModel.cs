@@ -1,5 +1,5 @@
 ﻿using LogAnalyzer.Common.Extensions;
-using LogAnalyzer.Models.Engine.ProcessConditions;
+using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using LogAnalyzer.Models.Types;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             SelectedComparisonMethod = ComparisonMethods.FirstOrDefault();
         }
 
-        public BaseRuleDataEditorViewModel(ProcessCondition condition)
+        public BaseRuleDataEditorViewModel(PredicateDescription condition)
         {
             ComparisonMethods = new ObservableCollection<ComparisonMethodInfo>();
             BuildComparisonMethods();

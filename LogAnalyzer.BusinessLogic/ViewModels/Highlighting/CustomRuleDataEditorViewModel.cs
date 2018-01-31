@@ -1,4 +1,4 @@
-﻿using LogAnalyzer.Models.Engine.ProcessConditions;
+﻿using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +18,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             CustomField = AvailableCustomFields.FirstOrDefault();
         }
 
-        public CustomRuleDataEditorViewModel(List<string> availableCustomFields, CustomProcessCondition condition)
+        public CustomRuleDataEditorViewModel(List<string> availableCustomFields, CustomPredicateDescription condition)
             : base(condition)
         {
             AvailableCustomFields = availableCustomFields;

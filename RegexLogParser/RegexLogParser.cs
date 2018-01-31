@@ -29,6 +29,7 @@ namespace RegexLogParser
 
         private readonly RegexLogParserConfiguration configuration;
         private readonly List<Action<string, LogEntryBuilder>> groupActions;
+        private readonly int customColumnCount;
         private Regex regex;
 
         private void BuildGroupActions()
@@ -81,6 +82,10 @@ namespace RegexLogParser
 
             groupActions = new List<Action<string, LogEntryBuilder>>();
             BuildGroupActions();
+
+            customColumnCount = configuration.GroupDefinitions
+                .OfType<CustomGroupDefinition>()
+                .Count();
         }
 
         public List<BaseColumnInfo> GetColumnInfos()
@@ -111,6 +116,9 @@ namespace RegexLogParser
                 {
                     groupActions[i - 1].Invoke(match.Groups[i].Value, builder);
                 }
+
+                while (builder.CustomFields.Count < customColumnCount)
+                    builder.CustomFields.Add("");
 
                 var entry = builder.Build();
 

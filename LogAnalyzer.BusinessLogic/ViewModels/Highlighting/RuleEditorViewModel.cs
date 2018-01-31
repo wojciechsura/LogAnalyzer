@@ -3,7 +3,7 @@ using LogAnalyzer.API.Types;
 using LogAnalyzer.API.Types.Attributes;
 using LogAnalyzer.Common.Extensions;
 using LogAnalyzer.Models.Engine;
-using LogAnalyzer.Models.Engine.ProcessConditions;
+using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -71,7 +71,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             }            
         }
 
-        private ProcessCondition BuildProcessCondition()
+        private PredicateDescription BuildProcessCondition()
         {
             switch (selectedColumn.Column)
             {
@@ -81,7 +81,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         if (editor == null)
                             throw new InvalidOperationException("Empty rule editor!");
 
-                        return new DateProcessCondition
+                        return new DatePredicateDescription
                         {
                             Argument = editor.Argument,
                             Comparison = editor.SelectedComparisonMethod.ComparisonMethod
@@ -93,7 +93,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         if (editor == null)
                             throw new InvalidOperationException("Empty rule editor!");
 
-                        return new SeverityProcessCondition
+                        return new SeverityPredicateDescription
                         {
                             Argument = editor.Argument,
                             Comparison = editor.SelectedComparisonMethod.ComparisonMethod
@@ -105,7 +105,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         if (editor == null)
                             throw new InvalidOperationException("Empty rule editor!");
 
-                        return new MessageProcessCondition
+                        return new MessagePredicateDescription
                         {
                             Argument = editor.Argument,
                             Comparison = editor.SelectedComparisonMethod.ComparisonMethod
@@ -117,7 +117,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                         if (editor == null)
                             throw new InvalidOperationException("Empty rule editor!");
 
-                        return new CustomProcessCondition
+                        return new CustomPredicateDescription
                         {
                             Name = editor.CustomField,
                             Argument = editor.Argument,
@@ -134,22 +134,22 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             foreground = highlightEntry.Foreground;
             background = highlightEntry.Background;
 
-            if (highlightEntry.Condition is DateProcessCondition dateCondition)
+            if (highlightEntry.Condition is DatePredicateDescription dateCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Date);
                 dataEditorViewModel = new DateRuleDataEditorViewModel(dateCondition);
             }
-            else if (highlightEntry.Condition is MessageProcessCondition messageCondition)
+            else if (highlightEntry.Condition is MessagePredicateDescription messageCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Message);
                 dataEditorViewModel = new MessageRuleDataEditorViewModel(messageCondition);
             }
-            else if (highlightEntry.Condition is SeverityProcessCondition severityCondition)
+            else if (highlightEntry.Condition is SeverityPredicateDescription severityCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Severity);
                 dataEditorViewModel = new SeverityRuleDataEditorViewModel(severityCondition);
             }
-            else if (highlightEntry.Condition is CustomProcessCondition customCondition)
+            else if (highlightEntry.Condition is CustomPredicateDescription customCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Custom);
                 dataEditorViewModel = new CustomRuleDataEditorViewModel(availableCustomColumns, customCondition);
@@ -204,7 +204,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
 
         public HighlightEntry CreateHighlightEntry()
         {
-            ProcessCondition condition = BuildProcessCondition();
+            PredicateDescription condition = BuildProcessCondition();
             
             HighlightEntry result = new HighlightEntry
             {
