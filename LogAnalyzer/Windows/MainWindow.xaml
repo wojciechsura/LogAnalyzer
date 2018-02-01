@@ -10,7 +10,7 @@
                 Title="MainWindow" Height="600" Width="800"
                 WindowStartupLocation="CenterScreen"
                 Closing="HandleWindowClosing"
-                Icon="Resources/Images/LogAnalyzer.ico">
+                Icon="/Resources/Images/LogAnalyzer.ico">
     <f:RibbonWindow.Resources>
         <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         <c:TransparentColorConverter x:Key="TransparentColorConverter" />
