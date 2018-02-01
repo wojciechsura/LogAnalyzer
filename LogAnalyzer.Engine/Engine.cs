@@ -14,7 +14,7 @@ using AutoMapper;
 using LogAnalyzer.Types;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.Models.Engine;
-using LogAnalyzer.Engine.Infrastructure.Highlighting;
+using LogAnalyzer.Engine.Infrastructure.Processing;
 
 namespace LogAnalyzer.Engine
 {
@@ -30,11 +30,10 @@ namespace LogAnalyzer.Engine
             }
 
             public bool ReaderStopped { get; set; } = false;
-            public bool FilterStopped { get; set; } = false;
-            public bool HighlighterStopped { get; set; } = false;
+            public bool ProcessorStopped { get; set; } = false;
             public Action StopAction { get; }
 
-            public bool AllStopped => ReaderStopped && FilterStopped && HighlighterStopped;
+            public bool AllStopped => ReaderStopped && ProcessorStopped;
         }
 
         private enum State
@@ -48,9 +47,9 @@ namespace LogAnalyzer.Engine
 
         private readonly EventBus eventBus;
         private readonly LogReader logReader;
-        private readonly LogFilter logFilter;
-        private readonly LogHighlighter logHighlighter;
+        private readonly LogProcessor logProcessor;
         private readonly EngineData data;
+
         private HighlightConfig highlightConfig;
 
         private State state = State.Working;
@@ -72,7 +71,7 @@ namespace LogAnalyzer.Engine
             highlightConfig = value;
 
             LogHighlighterConfig config = new LogHighlighterConfig(value, GetColumnInfos());
-            logHighlighter.SetConfig(config);
+            logProcessor.SetHighlighterConfig(config);
         }
 
         // Public methods -----------------------------------------------------
@@ -82,8 +81,7 @@ namespace LogAnalyzer.Engine
             eventBus = new EventBus();
             data = new EngineData();
             logReader = new LogReader(logSource, logParser, eventBus, data);
-            logFilter = new LogFilter(eventBus, data);
-            logHighlighter = new LogHighlighter(eventBus, data);
+            logProcessor = new LogProcessor(eventBus, data);
 
             highlightConfig = new HighlightConfig
             {
@@ -112,14 +110,9 @@ namespace LogAnalyzer.Engine
                     stopToken.ReaderStopped = true;
                     CheckStopCallback();
                 });
-            logFilter.Stop(() =>
+            logProcessor.Stop(() =>
                 {
-                    stopToken.FilterStopped = true;
-                    CheckStopCallback();
-                });
-            logHighlighter.Stop(() =>
-                {
-                    stopToken.HighlighterStopped = true;
+                    stopToken.ProcessorStopped = true;
                     CheckStopCallback();
                 });
         }

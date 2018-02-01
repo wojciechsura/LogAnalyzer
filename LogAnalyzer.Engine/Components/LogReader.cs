@@ -154,11 +154,7 @@ namespace LogAnalyzer.Engine.Components
 
                 try
                 {
-                    if (e.Cancelled)
-                    {
-                        // Stopping
-                    }
-                    else
+                    if (!e.Cancelled)
                     {
                         ProcessingResult result = e.Result as ProcessingResult;
                         if (result == null)
@@ -166,6 +162,10 @@ namespace LogAnalyzer.Engine.Components
 
                         if (result.ReplaceLast)
                         {
+#if DEBUG
+                            System.Diagnostics.Debug.WriteLine($"[R]->[ ] Replacing last item with index {data.ResultLogEntries.Count - 1}");
+#endif
+
                             if (data.ResultLogEntries.Count == 0)
                                 throw new InvalidOperationException("Cannot replace last item!");
 
@@ -182,6 +182,10 @@ namespace LogAnalyzer.Engine.Components
                         {
                             int start = data.ResultLogEntries.Count;
                             int count = result.ParsedEntries.Count;
+
+#if DEBUG
+                            System.Diagnostics.Debug.WriteLine($"[R]->[ ] Added new parsed entries - start: {start}, count: {count}");
+#endif
 
                             data.ResultLogEntries.AddRange(result.ParsedEntries);
 

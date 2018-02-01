@@ -7,7 +7,7 @@ using LogAnalyzer.API.Models;
 using LogAnalyzer.Engine.Infrastructure.Predicates;
 using LogAnalyzer.Models.Engine;
 
-namespace LogAnalyzer.Engine.Infrastructure.Highlighting
+namespace LogAnalyzer.Engine.Infrastructure.Processing
 {
     class LogHighlighterConfig
     {

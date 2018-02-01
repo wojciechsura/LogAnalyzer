@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace LogAnalyzer.Engine.Infrastructure.Highlighting
+namespace LogAnalyzer.Engine.Infrastructure.Processing
 {
     class Highlighter
     {

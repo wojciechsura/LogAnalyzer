@@ -86,8 +86,6 @@ namespace LogAnalyzer.Engine.Infrastructure.Predicates
                 default:
                     throw new ArgumentException("Not supported comparison type!");
             }
-
-            return null;
         }
 
         private static Func<LogEntry, bool> BuildCustomPredicate(CustomPredicateDescription customPredicateDesc, List<BaseColumnInfo> currentColumns)

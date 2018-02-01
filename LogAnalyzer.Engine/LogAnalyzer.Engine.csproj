@@ -73,28 +73,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\EventBus.cs" />
-    <Compile Include="Components\LogFilter.cs" />
-    <Compile Include="Components\LogHighlighter.cs" />
+    <Compile Include="Components\LogProcessor.cs" />
     <Compile Include="Components\LogReader.cs" />
     <Compile Include="Dependencies\Configuration.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="EngineFactory.cs" />
-    <Compile Include="Infrastructure\Highlighting\Highlighter.cs" />
-    <Compile Include="Infrastructure\Highlighting\LogHighlighterConfig.cs" />
+    <Compile Include="Infrastructure\Data\Interfaces\ILogProcessorEngineDataView.cs" />
+    <Compile Include="Infrastructure\Processing\Highlighter.cs" />
+    <Compile Include="Infrastructure\Processing\LogHighlighterConfig.cs" />
     <Compile Include="Infrastructure\Predicates\PredicateBuilder.cs" />
     <Compile Include="Infrastructure\Data\EngineData.cs" />
-    <Compile Include="Infrastructure\Data\Interfaces\ILogFilterEngineDataView.cs" />
-    <Compile Include="Infrastructure\Data\Interfaces\ILogHighlighterEngineDataView.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogReaderEngineDataView.cs" />
-    <Compile Include="Infrastructure\Events\AddedNewFilteredEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\AddedNewParsedEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\BaseEvent.cs" />
-    <Compile Include="Infrastructure\Events\ClearedFilteredEntriesEvent.cs" />
-    <Compile Include="Infrastructure\Events\EntriesHighlightedEvent.cs" />
-    <Compile Include="Infrastructure\Events\HighlightedItemsClearedEvent.cs" />
     <Compile Include="Infrastructure\Events\LastParsedEntriesItemReplacedEvent.cs" />
-    <Compile Include="Infrastructure\Events\RemovedLastFilteredLogEntryEvent.cs" />
-    <Compile Include="Infrastructure\Events\ReplacedLastHighlightedLogEntryEvent.cs" />
     <Compile Include="Interfaces\IEventListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -15,11 +15,6 @@ namespace LogAnalyzer.Engine.Infrastructure.Events
             this.index = index;
         }
 
-        public override string ToString()
-        {
-            return $"[P]-[ ]-[ ] Last parsed entries item replaced - index: {Index}";
-        }
-
         public int Index => index;
     }
 }
