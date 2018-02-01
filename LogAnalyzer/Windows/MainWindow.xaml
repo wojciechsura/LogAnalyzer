@@ -40,7 +40,24 @@
         <ListView x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended" VerticalContentAlignment="Top">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     <Setter Property="VerticalContentAlignment" Value="Top"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <Border x:Name="Border" SnapsToDevicePixels="true" Background="{Binding Highlight.Background, Converter={StaticResource ColorToBrushConverter}}">
+                                    <GridViewRowPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="true">
+                                        <Trigger.Setters>
+                                            <Setter TargetName="Border" Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
+                                        </Trigger.Setters>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
