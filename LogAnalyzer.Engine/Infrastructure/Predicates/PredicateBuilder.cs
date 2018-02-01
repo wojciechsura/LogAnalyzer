@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LogAnalyzer.Engine.Infrastructure.Predicates
@@ -16,24 +17,74 @@ namespace LogAnalyzer.Engine.Infrastructure.Predicates
             switch (stringPredicateDesc.Comparison)
             {
                 case Models.Types.ComparisonMethod.LessThan:
-
-                    break;
+                    {
+                        if (stringPredicateDesc.CaseSensitive)
+                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) < 0;
+                        else
+                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) < 0;
+                    }                    
                 case Models.Types.ComparisonMethod.LessThanOrEqual:
-                    break;
+                    {
+                        if (stringPredicateDesc.CaseSensitive)
+                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) <= 0;
+                        else
+                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) <= 0;
+                    }
                 case Models.Types.ComparisonMethod.Equal:
-                    break;
+                    {
+                        if (stringPredicateDesc.CaseSensitive)
+                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) == 0;
+                        else
+                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) == 0;
+                    }
                 case Models.Types.ComparisonMethod.MoreThanOrEqual:
-                    break;
+                    {
+                        if (stringPredicateDesc.CaseSensitive)
+                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) >= 0;
+                        else
+                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) >= 0;
+                    }
                 case Models.Types.ComparisonMethod.MoreThan:
-                    break;
+                    {
+                        if (stringPredicateDesc.CaseSensitive)
+                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) > 0;
+                        else
+                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) > 0;
+                    }
                 case Models.Types.ComparisonMethod.Contains:
-                    break;
+                    {
+                        if (stringPredicateDesc.CaseSensitive)
+                            return (logEntry) => getStringFunc(logEntry).Contains(stringPredicateDesc.Argument);
+                        else
+                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().Contains(stringPredicateDesc.Argument.ToLowerInvariant());
+                    }
                 case Models.Types.ComparisonMethod.NotContains:
-                    break;
+                    if (stringPredicateDesc.CaseSensitive)
+                        return (logEntry) => !(getStringFunc(logEntry).Contains(stringPredicateDesc.Argument));
+                    else
+                        return (logEntry) => !(getStringFunc(logEntry).ToLowerInvariant().Contains(stringPredicateDesc.Argument.ToLowerInvariant()));
                 case Models.Types.ComparisonMethod.Matches:
-                    break;
+                    {
+                        Regex regex;
+                        if (stringPredicateDesc.CaseSensitive)
+                            regex = new Regex(stringPredicateDesc.Argument);
+                        else
+                            regex = new Regex(stringPredicateDesc.Argument, RegexOptions.IgnoreCase);
+
+                        return (logEntry) => regex.IsMatch(getStringFunc(logEntry));
+                    }
                 case Models.Types.ComparisonMethod.NotMatches:
-                    break;
+                    {
+                        Regex regex;
+                        if (stringPredicateDesc.CaseSensitive)
+                            regex = new Regex(stringPredicateDesc.Argument);
+                        else
+                            regex = new Regex(stringPredicateDesc.Argument, RegexOptions.IgnoreCase);
+
+                        return (logEntry) => !regex.IsMatch(getStringFunc(logEntry));
+                    }
+                default:
+                    throw new ArgumentException("Not supported comparison type!");
             }
 
             return null;
@@ -80,7 +131,34 @@ namespace LogAnalyzer.Engine.Infrastructure.Predicates
 
         private static Func<LogEntry, bool> BuildDatePredicate(DatePredicateDescription datePredicateDesc, List<BaseColumnInfo> currentColumns)
         {
-            throw new NotImplementedException();
+            if (!currentColumns.OfType<CommonColumnInfo>().Any(cc => cc.Column == LogEntryColumn.Date))
+                return null;
+
+            switch (datePredicateDesc.Comparison)
+            {
+                case Models.Types.ComparisonMethod.LessThan:
+                    {
+                        return (logEntry) => logEntry.Date.CompareTo(datePredicateDesc.Argument) < 0;
+                    }
+                case Models.Types.ComparisonMethod.LessThanOrEqual:
+                    {
+                        return (logEntry) => logEntry.Date.CompareTo(datePredicateDesc.Argument) <= 0;
+                    }
+                case Models.Types.ComparisonMethod.Equal:
+                    {
+                        return (logEntry) => logEntry.Date.CompareTo(datePredicateDesc.Argument) == 0;
+                    }
+                case Models.Types.ComparisonMethod.MoreThanOrEqual:
+                    {
+                        return (logEntry) => logEntry.Date.CompareTo(datePredicateDesc.Argument) >= 0;
+                    }
+                case Models.Types.ComparisonMethod.MoreThan:
+                    {
+                        return (logEntry) => logEntry.Date.CompareTo(datePredicateDesc.Argument) > 0;
+                    }
+                default:
+                    throw new ArgumentException("Invalid comparison method for date field!");
+            }
         }
 
         public static Func<LogEntry, bool> BuildPredicate(PredicateDescription predicateDescription, List<BaseColumnInfo> currentColumns)
