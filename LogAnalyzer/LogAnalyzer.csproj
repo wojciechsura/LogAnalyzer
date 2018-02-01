@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LogAnalyzer.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.5.6\lib\net45\CommonServiceLocator.dll</HintPath>
@@ -620,6 +623,8 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="LogAnalyzer.ico" />
+    <Resource Include="Resources\Images\LogAnalyzer.ico" />
     <Resource Include="Resources\Images\Highlight16.png" />
     <Resource Include="Resources\Images\Highlight32.png" />
     <Resource Include="Resources\Images\Filter16.png" />

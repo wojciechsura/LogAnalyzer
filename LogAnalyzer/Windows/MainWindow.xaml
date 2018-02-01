@@ -9,9 +9,11 @@
                 mc:Ignorable="d"
                 Title="MainWindow" Height="600" Width="800"
                 WindowStartupLocation="CenterScreen"
-                Closing="HandleWindowClosing">
+                Closing="HandleWindowClosing"
+                Icon="Resources/Images/LogAnalyzer.ico">
     <f:RibbonWindow.Resources>
         <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+        <c:TransparentColorConverter x:Key="TransparentColorConverter" />
     </f:RibbonWindow.Resources>
     <DockPanel>
         <f:Ribbon DockPanel.Dock="Top">
@@ -58,7 +60,8 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsSelected" Value="true">
                                         <Trigger.Setters>
-                                            <Setter TargetName="Border" Property="Background" Value="{x:Static SystemColors.HighlightBrush}" />
+                                            <Setter TargetName="Border" Property="Background" 
+                                                    Value="{Binding Source={x:Static SystemColors.HighlightColor}, Converter={StaticResource TransparentColorConverter}}" />
                                         </Trigger.Setters>
                                     </Trigger>
                                 </ControlTemplate.Triggers>
