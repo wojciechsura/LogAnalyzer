@@ -8,7 +8,7 @@ using LogAnalyzer.API.Types;
 using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using LogAnalyzer.Models.Types;
 
-namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
+namespace LogAnalyzer.BusinessLogic.ViewModels.Processing
 {
     public class SeverityRuleDataEditorViewModel : BaseRuleDataEditorViewModel
     {

@@ -29,5 +29,6 @@ namespace LogAnalyzer.Services.Interfaces
         List<BaseColumnInfo> GetColumnInfos();
 
         HighlightConfig HighlightConfig { get; set; }
+        FilterConfig FilterConfig { get; set; }
     }
 }

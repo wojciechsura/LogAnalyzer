@@ -9,6 +9,7 @@ using LogAnalyzer.Services.Common;
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
+using LogAnalyzer.Models.Views.FilterConfigWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -17,6 +18,13 @@ namespace LogAnalyzer.Services
         public ModalDialogResult<HighlightConfig> ConfigHighlighting(HighlightConfigModel model)
         {
             HighlightConfigWindow window = new HighlightConfigWindow(model);
+            window.ShowDialog();
+            return window.DataResult;
+        }
+
+        public ModalDialogResult<FilterConfig> ConfigFiltering(FilterConfigModel model)
+        {
+            FilterConfigWindow window = new FilterConfigWindow(model);
             window.ShowDialog();
             return window.DataResult;
         }

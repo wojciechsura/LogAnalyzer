@@ -15,6 +15,7 @@ using LogAnalyzer.Types;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Engine.Infrastructure.Processing;
+using LogAnalyzer.Models.Types;
 
 namespace LogAnalyzer.Engine
 {
@@ -51,6 +52,7 @@ namespace LogAnalyzer.Engine
         private readonly EngineData data;
 
         private HighlightConfig highlightConfig;
+        private FilterConfig filterConfig;
 
         private State state = State.Working;
         private StopToken stopToken = null;
@@ -74,6 +76,14 @@ namespace LogAnalyzer.Engine
             logProcessor.SetHighlighterConfig(config);
         }
 
+        private void SetFilterConfig(FilterConfig value)
+        {
+            filterConfig = value;
+
+            LogFilteringConfig config = new LogFilteringConfig(value, GetColumnInfos());
+            logProcessor.SetFilteringConfig(config);
+        }
+
         // Public methods -----------------------------------------------------
 
         public Engine(ILogSource logSource, ILogParser logParser)
@@ -86,6 +96,11 @@ namespace LogAnalyzer.Engine
             highlightConfig = new HighlightConfig
             {
                 HighlightEntries = new List<HighlightEntry>()
+            };
+            filterConfig = new FilterConfig
+            {
+                FilterEntries = new List<FilterEntry>(),
+                DefaultAction = FilterAction.Include
             };
         }
 
@@ -135,6 +150,18 @@ namespace LogAnalyzer.Engine
             set
             {
                 SetHighlightConfig(value);
+            }
+        }
+
+        public FilterConfig FilterConfig
+        {
+            get
+            {
+                return filterConfig;
+            }
+            set
+            {
+                SetFilterConfig(value);
             }
         }
     }

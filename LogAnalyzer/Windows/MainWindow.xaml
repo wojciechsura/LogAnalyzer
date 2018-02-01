@@ -35,6 +35,12 @@
                               Icon="/Resources/Images/Highlight16.png"
                               Command="{Binding HighlightConfigCommand}" />
                 </f:RibbonGroupBox>
+                <f:RibbonGroupBox Header="Filter">
+                    <f:Button Header="Filter"
+                              LargeIcon="/Resources/Images/Filter32.png"
+                              Icon="/Resources/Images/Filter16.png"
+                              Command="{Binding FilterConfigCommand}" />
+                </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>
         <ListView x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended" VerticalContentAlignment="Top">

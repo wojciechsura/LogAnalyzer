@@ -1,34 +1,47 @@
-﻿using System;
+﻿using LogAnalyzer.API.Types;
+using LogAnalyzer.Models.Engine.PredicateDescriptions;
+using LogAnalyzer.Models.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using LogAnalyzer.API.Types;
-using LogAnalyzer.Models.Engine.PredicateDescriptions;
-using LogAnalyzer.Models.Types;
 
-namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
+namespace LogAnalyzer.BusinessLogic.ViewModels.Processing
 {
-    public class MessageRuleDataEditorViewModel : BaseRuleDataEditorViewModel
+    public class CustomRuleDataEditorViewModel : BaseRuleDataEditorViewModel
     {
+        // Private fields -----------------------------------------------------
+
+        private string customField;
         private string argument;
         private bool caseSensitive;
 
-        public MessageRuleDataEditorViewModel()
-        {
+        // Public methods -----------------------------------------------------
 
+        public CustomRuleDataEditorViewModel(List<string> availableCustomFields)
+        {
+            AvailableCustomFields = availableCustomFields;
+            CustomField = AvailableCustomFields.FirstOrDefault();
         }
 
-        public MessageRuleDataEditorViewModel(MessagePredicateDescription condition) 
+        public CustomRuleDataEditorViewModel(List<string> availableCustomFields, CustomPredicateDescription condition)
             : base(condition)
         {
+            AvailableCustomFields = availableCustomFields;
+            CustomField = condition.Name;
             Argument = condition.Argument;
             CaseSensitive = condition.CaseSensitive;
         }
 
         public override ValidationResult Validate()
         {
+            if (String.IsNullOrEmpty(customField))
+            {
+                return new ValidationResult(false, "Choose custom field for highlighting rule!");
+            }
+
             if (new ComparisonMethod[] { ComparisonMethod.Matches, ComparisonMethod.NotMatches }.Contains(SelectedComparisonMethod.ComparisonMethod))
             {
                 try
@@ -47,6 +60,21 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             }
 
             return new ValidationResult(true, null);
+        }
+
+        // Public properties --------------------------------------------------
+
+        public List<string> AvailableCustomFields { get; }
+
+        public string CustomField
+        {
+            get => customField;
+            set
+            {
+                customField = value;
+                OnPropertyChanged(nameof(CustomField));
+                OnPropertyChanged(nameof(Summary));
+            }
         }
 
         public string Argument
@@ -71,6 +99,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             }
         }
 
-        public override string Summary => $"{SelectedComparisonMethod.SummaryDisplay} \"{Argument}\"{(CaseSensitive ? " (case sensitive)" : "")}";
+        public override string Summary => $"\"{CustomField}\" {SelectedComparisonMethod.SummaryDisplay} \"{Argument}\"{(CaseSensitive ? " (case sensitive)" : "")}";
     }
 }

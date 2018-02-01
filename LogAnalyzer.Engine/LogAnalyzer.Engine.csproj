@@ -79,7 +79,9 @@
     <Compile Include="Engine.cs" />
     <Compile Include="EngineFactory.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogProcessorEngineDataView.cs" />
+    <Compile Include="Infrastructure\Processing\Filter.cs" />
     <Compile Include="Infrastructure\Processing\Highlighter.cs" />
+    <Compile Include="Infrastructure\Processing\LogFilteringConfig.cs" />
     <Compile Include="Infrastructure\Processing\LogHighlighterConfig.cs" />
     <Compile Include="Infrastructure\Predicates\PredicateBuilder.cs" />
     <Compile Include="Infrastructure\Data\EngineData.cs" />

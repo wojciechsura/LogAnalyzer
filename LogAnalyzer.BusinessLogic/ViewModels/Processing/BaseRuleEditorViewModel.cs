@@ -1,10 +1,7 @@
-﻿using LogAnalyzer.API.Models;
-using LogAnalyzer.API.Types;
+﻿using LogAnalyzer.API.Types;
 using LogAnalyzer.API.Types.Attributes;
 using LogAnalyzer.Common.Extensions;
-using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Engine.PredicateDescriptions;
-using LogAnalyzer.Models.Types;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,13 +9,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media;
 
-namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
+namespace LogAnalyzer.BusinessLogic.ViewModels.Processing
 {
-    public class RuleEditorViewModel : INotifyPropertyChanged
+    public abstract class BaseRuleEditorViewModel : INotifyPropertyChanged
     {
-        // Private classes ----------------------------------------------------
+        // Public types -------------------------------------------------------
 
         public class LogEntryColumnInfo
         {
@@ -31,13 +27,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             public string Display => Column.GetAttribute<ColumnHeaderAttribute>().Header;
         }
 
-        // Private fields -----------------------------------------------------
+        // Protected fields ---------------------------------------------------
 
-        private LogEntryColumnInfo selectedColumn;
-        private List<string> availableCustomColumns;
-        private BaseRuleDataEditorViewModel dataEditorViewModel;
-        private Color foreground;
-        private Color background;
+        protected LogEntryColumnInfo selectedColumn;
+        protected List<string> availableCustomColumns;
+        protected BaseRuleDataEditorViewModel dataEditorViewModel;
 
         // Private methods ----------------------------------------------------
 
@@ -70,18 +64,25 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                     }
                 default:
                     throw new InvalidEnumArgumentException("Unsupported LogEntryColumn!");
-            }            
+            }
         }
 
-        internal ValidationResult Validate()
+        private void BuildAvailableColumns()
         {
-            if (selectedColumn == null)
-                return new ValidationResult(false, "Select field for highlighting rule");
-
-            return dataEditorViewModel.Validate();
+            foreach (LogEntryColumn column in Enum.GetValues(typeof(LogEntryColumn)))
+            {
+                AvailableColumns.Add(new LogEntryColumnInfo(column));
+            }
         }
 
-        private PredicateDescription BuildProcessCondition()
+        // Protected methods --------------------------------------------------
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        protected PredicateDescription BuildProcessCondition()
         {
             switch (selectedColumn.Column)
             {
@@ -142,27 +143,24 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             }
         }
 
-        private void RestoreProcessCondition(HighlightEntry highlightEntry)
+        protected void RestoreDataEditorViewModel(PredicateDescription predicateDescription)
         {
-            foreground = highlightEntry.Foreground;
-            background = highlightEntry.Background;
-
-            if (highlightEntry.PredicateDescription is DatePredicateDescription dateCondition)
+            if (predicateDescription is DatePredicateDescription dateCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Date);
                 dataEditorViewModel = new DateRuleDataEditorViewModel(dateCondition);
             }
-            else if (highlightEntry.PredicateDescription is MessagePredicateDescription messageCondition)
+            else if (predicateDescription is MessagePredicateDescription messageCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Message);
                 dataEditorViewModel = new MessageRuleDataEditorViewModel(messageCondition);
             }
-            else if (highlightEntry.PredicateDescription is SeverityPredicateDescription severityCondition)
+            else if (predicateDescription is SeverityPredicateDescription severityCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Severity);
                 dataEditorViewModel = new SeverityRuleDataEditorViewModel(severityCondition);
             }
-            else if (highlightEntry.PredicateDescription is CustomPredicateDescription customCondition)
+            else if (predicateDescription is CustomPredicateDescription customCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Custom);
                 dataEditorViewModel = new CustomRuleDataEditorViewModel(availableCustomColumns, customCondition);
@@ -170,64 +168,21 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             else
                 throw new ArgumentException("Invalid highlight entry!");
 
-            OnPropertyChanged(nameof(Foreground));
-            OnPropertyChanged(nameof(Background));
-            OnPropertyChanged(nameof(DataEditorViewModel));
             OnPropertyChanged(nameof(SelectedColumn));
-        }
-
-        private void BuildAvailableColumns()
-        {           
-            foreach (LogEntryColumn column in Enum.GetValues(typeof(LogEntryColumn)))
-            {
-                AvailableColumns.Add(new LogEntryColumnInfo(column));
-            }
-        }
-
-        // Protected methods --------------------------------------------------
-
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            OnPropertyChanged(nameof(DataEditorViewModel));
         }
 
         // Public methods -----------------------------------------------------
 
-        public RuleEditorViewModel(List<string> availableCustomColumns)
+        public BaseRuleEditorViewModel(List<string> availableCustomColumns)
         {
-            AvailableColumns = new ObservableCollection<LogEntryColumnInfo>();
-            BuildAvailableColumns();
-
             this.availableCustomColumns = availableCustomColumns;
 
-            SelectedColumn = AvailableColumns.First();
-            Foreground = Colors.Black;
-            Background = Colors.Transparent;
-        }
-
-        public RuleEditorViewModel(List<string> availableCustomColumns, HighlightEntry highlightEntry)
-        {
             AvailableColumns = new ObservableCollection<LogEntryColumnInfo>();
             BuildAvailableColumns();
-
-            this.availableCustomColumns = availableCustomColumns;
-
-            RestoreProcessCondition(highlightEntry);
         }
 
-        public HighlightEntry CreateHighlightEntry()
-        {
-            PredicateDescription condition = BuildProcessCondition();
-            
-            HighlightEntry result = new HighlightEntry
-            {
-                Foreground = this.Foreground,
-                Background = this.Background,
-                PredicateDescription = condition
-            };
-
-            return result;
-        }
+        public abstract ValidationResult Validate();
 
         // Public properties --------------------------------------------------
 
@@ -242,7 +197,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             set
             {
                 selectedColumn = value;
-                HandleSelectedColumnChanged();            
+                HandleSelectedColumnChanged();
             }
         }
 
@@ -256,33 +211,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             }
         }
 
-        public Color Foreground
-        {
-            get => foreground;
-            set
-            {
-                foreground = value;
-                OnPropertyChanged(nameof(Foreground));
-            }
-        }
-
-        public Color Background
-        {
-            get => background;
-            set
-            {
-                background = value;
-                OnPropertyChanged(nameof(Background));
-            }
-        }
-
-        public string Summary
-        {
-            get
-            {
-                return selectedColumn.Display.ToLower();
-            }
-        }
+        public abstract string Summary { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

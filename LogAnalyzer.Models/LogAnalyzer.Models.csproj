@@ -45,6 +45,8 @@
     <Compile Include="Constants\File.cs" />
     <Compile Include="DialogResults\LogParserProfileEditorResult.cs" />
     <Compile Include="DialogResults\OpenResult.cs" />
+    <Compile Include="Engine\FilterConfig.cs" />
+    <Compile Include="Engine\FilterEntry.cs" />
     <Compile Include="Engine\HighlightConfig.cs" />
     <Compile Include="Engine\HighlightEntry.cs" />
     <Compile Include="Engine\PredicateDescriptions\CustomPredicateDescription.cs" />
@@ -56,7 +58,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\WinApiService\FilterDefinition.cs" />
     <Compile Include="Types\ComparisonMethod.cs" />
+    <Compile Include="Types\FilterAction.cs" />
     <Compile Include="Types\SummaryDisplayAttribute.cs" />
+    <Compile Include="Views\FilterConfigWindow\FilterConfigModel.cs" />
     <Compile Include="Views\HighlightConfigWindow\HighlightConfigModel.cs" />
     <Compile Include="Views\OpenWindow\LogParserProfileInfo.cs" />
   </ItemGroup>

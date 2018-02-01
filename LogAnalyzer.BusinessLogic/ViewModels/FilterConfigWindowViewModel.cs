@@ -1,9 +1,11 @@
 ﻿using LogAnalyzer.API.Models;
 using LogAnalyzer.API.Types;
-using LogAnalyzer.BusinessLogic.ViewModels.Processing;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
+using LogAnalyzer.BusinessLogic.ViewModels.Processing;
+using LogAnalyzer.Common.Extensions;
 using LogAnalyzer.Models.Engine;
-using LogAnalyzer.Models.Views.HighlightConfigWindow;
+using LogAnalyzer.Models.Types;
+using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Wpf.Input;
@@ -18,19 +20,31 @@ using System.Windows.Input;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
-    public class HighlightConfigWindowViewModel : INotifyPropertyChanged
+    public class FilterConfigWindowViewModel
     {
+        public class FilterActionInfo
+        {
+            public FilterActionInfo(FilterAction action)
+            {
+                Action = action;
+            }
+
+            public FilterAction Action { get; }
+            public string Display => Action.GetAttribute<DescriptionAttribute>().Description;
+        }
+
         private readonly IMessagingService messagingService;
 
-        private ModalDialogResult<HighlightConfig> result;
-        private HighlightingRuleEditorViewModel selectedRule;
+        private ModalDialogResult<FilterConfig> result;
+        private FilteringRuleEditorViewModel selectedRule;
         private int selectedRuleIndex;
+        private ObservableCollection<FilterActionInfo> availableDefaultActions;
+        private FilterActionInfo selectedDefaultAction;
         private List<string> availableCustomColumns;
-
         private readonly Condition ruleSelectedCondition;
         private readonly Condition firstRuleSelectedCondition;
         private readonly Condition lastRuleSelectedCondition;
-        private readonly IHighlightConfigWindowAccess access;
+        private readonly IFilterConfigWindowAccess access;
 
         private void DoMoveRuleDown()
         {
@@ -50,7 +64,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoAddRule()
         {
-            var newRule = new HighlightingRuleEditorViewModel(availableCustomColumns);
+            var newRule = new FilteringRuleEditorViewModel(availableCustomColumns);
             Rules.Add(newRule);
             SelectedRule = newRule;
         }
@@ -68,15 +82,16 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 }
             }
 
-            List<HighlightEntry> entries = new List<HighlightEntry>();
+            List<FilterEntry> entries = new List<FilterEntry>();
             for (int i = 0; i < Rules.Count; i++)
             {
-                entries.Add(Rules[i].CreateHighlightEntry());
+                entries.Add(Rules[i].CreateFilterEntry());
             }
 
-            HighlightConfig config = new HighlightConfig
+            FilterConfig config = new FilterConfig
             {
-                HighlightEntries = entries
+                FilterEntries = entries,
+                DefaultAction = selectedDefaultAction.Action
             };
 
             result.DialogResult = true;
@@ -91,11 +106,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             access.Close(false);
         }
 
-        private void LoadCurrentConfig(HighlightConfig currentConfig)
+        private void LoadCurrentConfig(FilterConfig currentConfig)
         {
-            for (int i = 0; i < currentConfig.HighlightEntries.Count; i++)
+            SelectedDefaultAction = AvailableDefaultActions.Single(a => a.Action == currentConfig.DefaultAction);
+
+            for (int i = 0; i < currentConfig.FilterEntries.Count; i++)
             {
-                HighlightingRuleEditorViewModel rule = new HighlightingRuleEditorViewModel(availableCustomColumns, currentConfig.HighlightEntries[i]);
+                FilteringRuleEditorViewModel rule = new FilteringRuleEditorViewModel(availableCustomColumns, currentConfig.FilterEntries[i]);
                 Rules.Add(rule);
             }
 
@@ -107,18 +124,25 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public HighlightConfigWindowViewModel(IHighlightConfigWindowAccess access, IMessagingService messagingService, HighlightConfigModel model)
+        public FilterConfigWindowViewModel(IFilterConfigWindowAccess access, IMessagingService messagingService, FilterConfigModel model)
         {
             this.access = access;
             this.messagingService = messagingService;
 
-            result = new ModalDialogResult<HighlightConfig>();
+            result = new ModalDialogResult<FilterConfig>();
 
             availableCustomColumns = model.CurrentColumns
                 .OfType<CustomColumnInfo>()
                 .Select(c => c.Name)
                 .ToList();
 
+            availableDefaultActions = new ObservableCollection<FilterActionInfo>();
+            foreach (FilterAction action in Enum.GetValues(typeof(FilterAction)))
+            {
+                availableDefaultActions.Add(new FilterActionInfo(action));
+            }
+            selectedDefaultAction = availableDefaultActions.Single(a => a.Action == FilterAction.Include);
+                
             ruleSelectedCondition = new Condition(false);
             firstRuleSelectedCondition = new Condition(false);
             lastRuleSelectedCondition = new Condition(false);
@@ -130,15 +154,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             OkCommand = new SimpleCommand((obj) => DoOk());
             CancelCommand = new SimpleCommand((obj) => DoCancel());
 
-            Rules = new ObservableCollection<HighlightingRuleEditorViewModel>();
+            Rules = new ObservableCollection<FilteringRuleEditorViewModel>();
 
             if (model.CurrentConfig != null)
                 LoadCurrentConfig(model.CurrentConfig);
         }
 
-        public ObservableCollection<HighlightingRuleEditorViewModel> Rules { get; }
+        public ObservableCollection<FilteringRuleEditorViewModel> Rules { get; }
 
-        public HighlightingRuleEditorViewModel SelectedRule
+        public FilteringRuleEditorViewModel SelectedRule
         {
             get
             {
@@ -167,7 +191,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
-        public ModalDialogResult<HighlightConfig> Result => result;
+        public ObservableCollection<FilterActionInfo> AvailableDefaultActions => availableDefaultActions;
+        public FilterActionInfo SelectedDefaultAction
+        {
+            get => selectedDefaultAction;
+            set
+            {
+                selectedDefaultAction = value;
+                OnPropertyChanged(nameof(SelectedDefaultAction));
+            }
+        }
+
+        public ModalDialogResult<FilterConfig> Result => result;
 
         public ICommand AddRuleCommand { get; }
         public ICommand RemoveRuleCommand { get; }

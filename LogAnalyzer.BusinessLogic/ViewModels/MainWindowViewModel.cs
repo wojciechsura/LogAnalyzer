@@ -18,6 +18,7 @@ using System.ComponentModel;
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
+using LogAnalyzer.Models.Views.FilterConfigWindow;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -113,6 +114,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 engine.HighlightConfig = result.Result;
         }
 
+        private void DoFilterConfig()
+        {
+            FilterConfigModel model = new FilterConfigModel(engine.FilterConfig, engine.GetColumnInfos());
+            var result = dialogService.ConfigFiltering(model);
+            if (result.DialogResult)
+                engine.FilterConfig = result.Result;
+        }
+
         // Protected methods --------------------------------------------------
 
         private void OnPropertyChanged(string name)
@@ -143,6 +152,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
+            FilterConfigCommand = new SimpleCommand((obj) => DoFilterConfig(), generalEnginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -179,6 +189,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand OpenCommand { get; }
 
         public ICommand HighlightConfigCommand { get; }
+
+        public ICommand FilterConfigCommand { get; }
 
         public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; set; }
 

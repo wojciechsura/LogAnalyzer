@@ -11,7 +11,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
+namespace LogAnalyzer.BusinessLogic.ViewModels.Processing
 {
     public abstract class BaseRuleDataEditorViewModel : INotifyPropertyChanged
     {

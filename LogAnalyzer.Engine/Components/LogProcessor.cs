@@ -3,6 +3,7 @@ using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Events;
 using LogAnalyzer.Engine.Infrastructure.Processing;
 using LogAnalyzer.Engine.Interfaces;
+using LogAnalyzer.Models.Types;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,14 +60,16 @@ namespace LogAnalyzer.Engine.Components
 
         private class FilterArgument
         {
-            public FilterArgument(Range range, List<LogEntry> inputEntries)
+            public FilterArgument(Range range, List<LogEntry> inputEntries, LogFilteringConfig config)
             {
                 Range = range;
                 InputEntries = inputEntries;
+                Config = config;
             }
 
             public Range Range { get; }
             public List<LogEntry> InputEntries { get; }
+            public LogFilteringConfig Config { get; }
         }
 
         private class FilterResult
@@ -152,6 +155,7 @@ namespace LogAnalyzer.Engine.Components
         private StopData stopData = null;
 
         private LogHighlighterConfig highlightConfig = null;
+        private LogFilteringConfig filterConfig = null;
 
         // Private methods ----------------------------------------------------
 
@@ -174,8 +178,23 @@ namespace LogAnalyzer.Engine.Components
                 {
                     var entry = filterArgument.InputEntries[i];
 
-                    // TODO verify filtering condition
-                    if (true)
+                    bool add = true;
+                    if (filterArgument.Config != null)
+                    {
+                        add = filterArgument.Config.DefaultAction == FilterAction.Include;
+
+                        for (int j = 0; j < filterArgument.Config.Filters.Count; j++)
+                        {
+                            Filter filter = filterArgument.Config.Filters[j];
+                            if (filter.Predicate(entry))
+                            {
+                                add = filter.Action == FilterAction.Include;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (add)
                     {
                         FilteredLogEntry filteredLogEntry = new FilteredLogEntry(index,
                             entry.Date,
@@ -232,16 +251,16 @@ namespace LogAnalyzer.Engine.Components
                 {
                     if (e.Result is FilterResult filterResult)
                     {
-                        int start = data.HighlightedLogEntries.Count;
-                        int count = filterResult.Entries.Count;
-
+                        int start = filterResult.InputRange.Start;
+                        int count = filterResult.InputRange.Count;
+                        int filteredCount = filterResult.Entries.Count;
 #if DEBUG
-                        System.Diagnostics.Debug.WriteLine($"[ ]->[ F ] Filtered parsed entries - start {start}, count {count}");
+                        System.Diagnostics.Debug.WriteLine($"[ ]->[ F ] Filtered parsed entries - start {start}, count {count}, kept entries: {filteredCount}");
 #endif
 
-                        if (filterResult.Entries.Count > 0)
+                        if (filteredCount > 0)
                         {
-                            for (int i = 0; i < filterResult.Entries.Count; i++)
+                            for (int i = 0; i < filteredCount; i++)
                                 data.HighlightedLogEntries.Add(new HighlightedLogEntry(filterResult.Entries[i]));
 
 #if DEBUG
@@ -250,7 +269,6 @@ namespace LogAnalyzer.Engine.Components
                         }
 
                         lastFilteredLogIndex = start + count - 1;
-
 #if DEBUG
                         System.Diagnostics.Debug.WriteLine($"[ ]->[ F ] Last filtered log index is now {lastFilteredLogIndex}");
 #endif
@@ -304,7 +322,7 @@ namespace LogAnalyzer.Engine.Components
             if (state == State.Stopping || state == State.Stopped)
                 throw new InvalidOperationException("Cannot start worker when stopped!");
 
-            var argument = new FilterArgument(range, data.BuildDataForFiltering(range.Start, range.Count));
+            var argument = new FilterArgument(range, data.BuildDataForFiltering(range.Start, range.Count), filterConfig);
 
             workerRunning = true;
             backgroundWorker.RunWorkerAsync(argument);
@@ -542,6 +560,22 @@ namespace LogAnalyzer.Engine.Components
                 ContinueWork();
         }
 
+        public void SetFilteringConfig(LogFilteringConfig newConfig)
+        {
+            if (state == State.Stopped || state == State.Stopping)
+                throw new InvalidOperationException("Cannot change config when stopped or stopping!");
+
+            filterConfig = newConfig;
+
+            if (workerRunning && backgroundWorker.IsBusy)
+            {
+                backgroundWorker.CancelAsync();
+            }
+
+            queue.Enqueue(new ResetFilterQueueItem());
+            if (!workerRunning)
+                ContinueWork();
+        }
 
         public void Receive(AddedNewParsedEntriesEvent @event)
         {
