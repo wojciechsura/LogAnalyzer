@@ -1,17 +1,24 @@
-﻿using LogAnalyzer.Models.Engine.PredicateDescriptions;
+﻿using LogAnalyzer.API.Types;
+using LogAnalyzer.Models.Engine.PredicateDescriptions;
+using LogAnalyzer.Models.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
 {
     public class CustomRuleDataEditorViewModel : BaseRuleDataEditorViewModel
     {
+        // Private fields -----------------------------------------------------
+
         private string customField;
         private string argument;
         private bool caseSensitive;
+
+        // Public methods -----------------------------------------------------
 
         public CustomRuleDataEditorViewModel(List<string> availableCustomFields)
         {
@@ -27,6 +34,35 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             Argument = condition.Argument;
             CaseSensitive = condition.CaseSensitive;
         }
+
+        public override ValidationResult Validate()
+        {
+            if (String.IsNullOrEmpty(customField))
+            {
+                return new ValidationResult(false, "Choose custom field for highlighting rule!");
+            }
+
+            if (new ComparisonMethod[] { ComparisonMethod.Matches, ComparisonMethod.NotMatches }.Contains(SelectedComparisonMethod.ComparisonMethod))
+            {
+                try
+                {
+                    new Regex(argument);
+                }
+                catch
+                {
+                    return new ValidationResult(false, "Invalid regular expression for highlighting rule!");
+                }
+            }
+
+            if (String.IsNullOrEmpty(argument))
+            {
+                return new ValidationResult(false, "Enter argument for validation rule!");
+            }
+
+            return new ValidationResult(true, null);
+        }
+
+        // Public properties --------------------------------------------------
 
         public List<string> AvailableCustomFields { get; }
 

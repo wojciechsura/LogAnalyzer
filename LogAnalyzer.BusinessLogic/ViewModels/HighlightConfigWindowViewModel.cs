@@ -1,9 +1,11 @@
 ﻿using LogAnalyzer.API.Models;
+using LogAnalyzer.API.Types;
 using LogAnalyzer.BusinessLogic.ViewModels.Highlighting;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Services.Common;
+using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Wpf.Input;
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 {
     public class HighlightConfigWindowViewModel : INotifyPropertyChanged
     {
+        private readonly IMessagingService messagingService;
+
         private ModalDialogResult<HighlightConfig> result;
         private RuleEditorViewModel selectedRule;
         private int selectedRuleIndex;
@@ -53,6 +57,17 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoOk()
         {
+            for (int i = 0; i < Rules.Count; i++)
+            {
+                ValidationResult result = Rules[i].Validate();
+                if (!result.Valid)
+                {
+                    SelectedRule = Rules[i];
+                    messagingService.Inform(result.Message);
+                    return;
+                }
+            }
+
             List<HighlightEntry> entries = new List<HighlightEntry>();
             for (int i = 0; i < Rules.Count; i++)
             {
@@ -90,10 +105,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public HighlightConfigWindowViewModel(IHighlightConfigWindowAccess access, HighlightConfigModel model)
+        public HighlightConfigWindowViewModel(IHighlightConfigWindowAccess access, IMessagingService messagingService, HighlightConfigModel model)
         {
-            result = new ModalDialogResult<HighlightConfig>();
             this.access = access;
+            this.messagingService = messagingService;
+
+            result = new ModalDialogResult<HighlightConfig>();
 
             availableCustomColumns = model.CurrentColumns
                 .OfType<CustomColumnInfo>()

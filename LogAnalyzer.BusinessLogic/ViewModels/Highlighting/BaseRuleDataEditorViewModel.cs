@@ -1,4 +1,5 @@
-﻿using LogAnalyzer.Common.Extensions;
+﻿using LogAnalyzer.API.Types;
+using LogAnalyzer.Common.Extensions;
 using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using LogAnalyzer.Models.Types;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
@@ -82,6 +84,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
                 OnPropertyChanged(nameof(Summary));
             }
         }
+
+        public abstract ValidationResult Validate();
 
         public abstract string Summary { get; }
 

@@ -1,4 +1,5 @@
-﻿using LogAnalyzer.Models.Engine.PredicateDescriptions;
+﻿using LogAnalyzer.API.Types;
+using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using LogAnalyzer.Models.Types;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,21 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
         {
             RemoveNonSupportedComparisonMethods();
             Argument = condition.Argument;            
+        }
+
+        public override ValidationResult Validate()
+        {
+            if (new ComparisonMethod[] {
+                    ComparisonMethod.Contains,
+                    ComparisonMethod.NotContains,
+                    ComparisonMethod.Matches,
+                    ComparisonMethod.NotMatches
+                }.Contains(SelectedComparisonMethod.ComparisonMethod))
+            {
+                return new ValidationResult(false, "Invalid comparison method for date!");
+            }
+
+            return new ValidationResult(true, null);
         }
 
         public DateTime Argument

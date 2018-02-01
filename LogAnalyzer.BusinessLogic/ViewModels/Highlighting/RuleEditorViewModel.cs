@@ -73,6 +73,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             }            
         }
 
+        internal ValidationResult Validate()
+        {
+            if (selectedColumn == null)
+                return new ValidationResult(false, "Select field for highlighting rule");
+
+            return dataEditorViewModel.Validate();
+        }
+
         private PredicateDescription BuildProcessCondition()
         {
             switch (selectedColumn.Column)
