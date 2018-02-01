@@ -79,6 +79,8 @@
     <Compile Include="Dependencies\Configuration.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="EngineFactory.cs" />
+    <Compile Include="Infrastructure\Highlighting\Highlighter.cs" />
+    <Compile Include="Infrastructure\Highlighting\LogHighlighterConfig.cs" />
     <Compile Include="Infrastructure\Predicates\PredicateBuilder.cs" />
     <Compile Include="Infrastructure\Data\EngineData.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogFilterEngineDataView.cs" />

@@ -14,6 +14,7 @@ using AutoMapper;
 using LogAnalyzer.Types;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.Models.Engine;
+using LogAnalyzer.Engine.Infrastructure.Highlighting;
 
 namespace LogAnalyzer.Engine
 {
@@ -69,8 +70,9 @@ namespace LogAnalyzer.Engine
         private void SetHighlightConfig(HighlightConfig value)
         {
             highlightConfig = value;
-            
-            // TODO pass to logHighlighter
+
+            LogHighlighterConfig config = new LogHighlighterConfig(value, GetColumnInfos());
+            logHighlighter.SetConfig(config);
         }
 
         // Public methods -----------------------------------------------------

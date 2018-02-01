@@ -10,7 +10,7 @@ namespace LogAnalyzer.Models.Engine
             
         }
 
-        public PredicateDescription Condition { get; set; }
+        public PredicateDescription PredicateDescription { get; set; }
         public Color Foreground { get; set; }
         public Color Background { get; set; }
     }

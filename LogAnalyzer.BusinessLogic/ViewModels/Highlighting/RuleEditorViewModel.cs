@@ -147,22 +147,22 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             foreground = highlightEntry.Foreground;
             background = highlightEntry.Background;
 
-            if (highlightEntry.Condition is DatePredicateDescription dateCondition)
+            if (highlightEntry.PredicateDescription is DatePredicateDescription dateCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Date);
                 dataEditorViewModel = new DateRuleDataEditorViewModel(dateCondition);
             }
-            else if (highlightEntry.Condition is MessagePredicateDescription messageCondition)
+            else if (highlightEntry.PredicateDescription is MessagePredicateDescription messageCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Message);
                 dataEditorViewModel = new MessageRuleDataEditorViewModel(messageCondition);
             }
-            else if (highlightEntry.Condition is SeverityPredicateDescription severityCondition)
+            else if (highlightEntry.PredicateDescription is SeverityPredicateDescription severityCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Severity);
                 dataEditorViewModel = new SeverityRuleDataEditorViewModel(severityCondition);
             }
-            else if (highlightEntry.Condition is CustomPredicateDescription customCondition)
+            else if (highlightEntry.PredicateDescription is CustomPredicateDescription customCondition)
             {
                 selectedColumn = AvailableColumns.Single(c => c.Column == LogEntryColumn.Custom);
                 dataEditorViewModel = new CustomRuleDataEditorViewModel(availableCustomColumns, customCondition);
@@ -223,7 +223,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Highlighting
             {
                 Foreground = this.Foreground,
                 Background = this.Background,
-                Condition = condition
+                PredicateDescription = condition
             };
 
             return result;

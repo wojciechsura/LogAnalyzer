@@ -1,6 +1,7 @@
 ﻿using LogAnalyzer.API.Models;
 using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Events;
+using LogAnalyzer.Engine.Infrastructure.Highlighting;
 using LogAnalyzer.Engine.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,12 @@ namespace LogAnalyzer.Engine.Components
 
         private class ProcessItemsQueueItem : BaseQueueItem
         {
-            public Range Range { get; set; }
+            public ProcessItemsQueueItem(Range range)
+            {
+                Range = range;
+            }
+
+            public Range Range { get; }
         }
 
         private class ClearHighlightQueueItem : BaseQueueItem
@@ -49,20 +55,40 @@ namespace LogAnalyzer.Engine.Components
 
         private class HandleFilteredLogEntryReplacedQueueItem : BaseQueueItem
         {
-            public int LogEntryIndex { get; set; }
-            public int FilteredLogEntryIndex { get; set; }
+            public HandleFilteredLogEntryReplacedQueueItem(int logEntryIndex, int filteredLogEntryIndex)
+            {
+                LogEntryIndex = logEntryIndex;
+                FilteredLogEntryIndex = filteredLogEntryIndex;
+            }
+
+            public int LogEntryIndex { get; }
+            public int FilteredLogEntryIndex { get; }
         }
 
         private class ProcessingArgument
         {
-            public Range Range { get; set; }
-            public List<FilteredLogEntry> InputEntries { get; set; }
+            public ProcessingArgument(Range range, List<FilteredLogEntry> inputEntries, LogHighlighterConfig config)
+            {
+                Range = range;
+                InputEntries = inputEntries;
+                Config = config;
+            }
+
+            public Range Range { get; }
+            public List<FilteredLogEntry> InputEntries { get; }
+            public LogHighlighterConfig Config { get; }
         }
 
         private class ProcessingResult
         {
-            public Range ProcessedInputRange { get; set; }
-            public List<HighlightInfo> Entries { get; set; }
+            public ProcessingResult(Range processedInputRange, List<HighlightInfo> entries)
+            {
+                ProcessedInputRange = processedInputRange;
+                Entries = entries;
+            }
+
+            public Range ProcessedInputRange { get; }
+            public List<HighlightInfo> Entries { get; }
         }
 
         private class StopData
@@ -85,6 +111,7 @@ namespace LogAnalyzer.Engine.Components
         // Private fields -----------------------------------------------------
 
         private readonly EventBus eventBus;
+
         private readonly ILogHighlighterEngineDataView data;
         private readonly Queue<BaseQueueItem> queue = null;
         private Range processedRange = null;
@@ -93,6 +120,8 @@ namespace LogAnalyzer.Engine.Components
         private bool workerRunning = false;
         private State state = State.Working;
         private StopData stopData = null;
+
+        private LogHighlighterConfig config;
 
         // Private methods ----------------------------------------------------
 
@@ -105,16 +134,25 @@ namespace LogAnalyzer.Engine.Components
             {
                 var entry = argument.InputEntries[i];
 
-                // TODO verify highlighting condition
                 HighlightInfo info = new HighlightInfo(Colors.Black, Colors.Transparent);
+
+                if (argument.Config != null)
+                {
+                    for (int j = 0; j < argument.Config.Highlighters.Count; j++)
+                    {
+                        Highlighter highlighter = argument.Config.Highlighters[j];
+                        if (highlighter.Predicate(entry))
+                        {
+                            info = new HighlightInfo(highlighter.Foreground, highlighter.Background);
+                            break;
+                        }
+                    }
+                }
+                
                 processedItems.Add(info);
             }
 
-            ProcessingResult result = new ProcessingResult
-            {
-                Entries = processedItems,
-                ProcessedInputRange = argument.Range
-            };
+            ProcessingResult result = new ProcessingResult(argument.Range, processedItems);            
             e.Result = result;
         }
 
@@ -134,7 +172,7 @@ namespace LogAnalyzer.Engine.Components
 
                     if (result.Entries.Count > 0)
                     {
-                        // TODO safer safeguard
+                        // TODO safer safeguard (flag?)
 
                         // Safeguard against clearing result data during processing
                         int start = result.ProcessedInputRange.Start;
@@ -171,11 +209,7 @@ namespace LogAnalyzer.Engine.Components
             if (state == State.Stopping || state == State.Stopped)
                 throw new InvalidOperationException("Cannot start worker when stopped!");
 
-            var argument = new ProcessingArgument
-            {
-                InputEntries = data.GetFilteredLogEntries(range.Start, range.Count),
-                Range = range
-            };
+            var argument = new ProcessingArgument(range, data.GetFilteredLogEntries(range.Start, range.Count), config);
 
             workerRunning = true;
             backgroundWorker.RunWorkerAsync(argument);
@@ -208,7 +242,11 @@ namespace LogAnalyzer.Engine.Components
                 }
                 else if (item is ClearHighlightQueueItem)
                 {
-                    data.HighlightedLogEntries.Clear();
+                    foreach (var entry in data.HighlightedLogEntries)
+                    {
+                        entry.Highlight = null;
+                    }
+                    processedRange = null;
 
                     eventBus.Send(new HighlightedItemsClearedEvent());
                     continue;
@@ -311,7 +349,7 @@ namespace LogAnalyzer.Engine.Components
             eventBus.Register<RemovedLastFilteredLogEntryEvent>(this);
         }
 
-        internal void Stop(Action afterStop)
+        public void Stop(Action afterStop)
         {
             if (state == State.Stopping || state == State.Stopped)
                 throw new InvalidOperationException("Already stopping or stopped!");
@@ -331,6 +369,26 @@ namespace LogAnalyzer.Engine.Components
             {
                 DoStopHighlighter();
             }
+        }
+
+        public void SetConfig(LogHighlighterConfig newConfig)
+        {
+            if (state == State.Stopped || state == State.Stopping)
+                throw new InvalidOperationException("Cannot change config when stopped or stopping!");
+
+            config = newConfig;
+
+            if (workerRunning && backgroundWorker.IsBusy)
+            {
+                backgroundWorker.CancelAsync();
+            }
+
+            queue.Clear();
+
+            queue.Enqueue(new ClearHighlightQueueItem());
+
+            if (!workerRunning)
+                ContinueWork();
         }
 
         public void Receive(AddedNewFilteredEntriesEvent @event)
@@ -373,23 +431,14 @@ namespace LogAnalyzer.Engine.Components
                 else
                 {
                     // Replaced entry is being processed right now, need to be re-processed
-                    HandleFilteredLogEntryReplacedQueueItem logEntryReplacedItem = new HandleFilteredLogEntryReplacedQueueItem
-                    {
-                        LogEntryIndex = @event.LogEntryIndex,
-                        FilteredLogEntryIndex = @event.FilteredItemIndex
-                    };
-
+                    HandleFilteredLogEntryReplacedQueueItem logEntryReplacedItem = new HandleFilteredLogEntryReplacedQueueItem(@event.LogEntryIndex, @event.FilteredItemIndex);
                     queue.Enqueue(logEntryReplacedItem);
                 }
             }
             else
             {
                 // Worker is not running, re-processing entry
-                HandleFilteredLogEntryReplacedQueueItem logEntryReplacedItem = new HandleFilteredLogEntryReplacedQueueItem
-                {
-                    LogEntryIndex = @event.LogEntryIndex
-                };
-
+                HandleFilteredLogEntryReplacedQueueItem logEntryReplacedItem = new HandleFilteredLogEntryReplacedQueueItem(@event.LogEntryIndex, @event.FilteredItemIndex);
                 queue.Enqueue(logEntryReplacedItem);
 
                 ContinueWork();
