@@ -9,7 +9,8 @@ namespace LogAnalyzer.Services.Interfaces
 {
     public interface IWinApiService
     {
-        String OpenFile(IEnumerable<FilterDefinition> filter);
+        string OpenFile(IEnumerable<FilterDefinition> filter);
+        List<string> OpenFiles(List<FilterDefinition> logFilterDefinitions);
         void StartProcess(string path);
     }
 }

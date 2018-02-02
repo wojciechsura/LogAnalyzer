@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace FileLogSource.Editor
 {
-    public class FileSourceEditorViewModel : ILogSourceEditorViewModel, INotifyPropertyChanged
+    public class FileLogSourceEditorViewModel : ILogSourceEditorViewModel, INotifyPropertyChanged
     {
         // Private constants --------------------------------------------------
 
@@ -62,7 +62,7 @@ namespace FileLogSource.Editor
 
         // Public methods -----------------------------------------------------
 
-        public FileSourceEditorViewModel(ILogSourceProvider provider, IWinApiService winApiService)
+        public FileLogSourceEditorViewModel(ILogSourceProvider provider, IWinApiService winApiService)
         {
             this.Provider = provider;
             this.winApiService = winApiService;

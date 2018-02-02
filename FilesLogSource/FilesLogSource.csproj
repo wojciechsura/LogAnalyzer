@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{ED8AF742-2431-40D8-A8CC-295A8BDA2423}</ProjectGuid>
+    <ProjectGuid>{FD4113DD-4CEC-48C4-B15B-290D57F88804}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LogAnalyzer.BusinessLogic</RootNamespace>
-    <AssemblyName>LogAnalyzer.BusinessLogic</AssemblyName>
+    <RootNamespace>FilesLogSource</RootNamespace>
+    <AssemblyName>FilesLogSource</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,13 +33,14 @@
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.5.6\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="ConfigurationBase">
-      <HintPath>..\Libraries\ConfigurationBase.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,93 +68,46 @@
     <Reference Include="Unity.ServiceLocation, Version=2.1.0.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.5.6\lib\net45\Unity.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dependencies\Configuration.cs" />
+    <Compile Include="Common\Consts.cs" />
+    <Compile Include="Editor\FilesLogSourceEditorViewModel.cs" />
+    <Compile Include="FilesLogSource.cs" />
+    <Compile Include="FilesLogSourceConfiguration.cs" />
+    <Compile Include="FilesLogSourceProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\LogParserRepository.cs" />
-    <Compile Include="Services\LogSourceRepository.cs" />
-    <Compile Include="ViewModels\FilterConfigWindowViewModel.cs" />
-    <Compile Include="ViewModels\Processing\BaseRuleEditorViewModel.cs" />
-    <Compile Include="ViewModels\Processing\FilteringRuleEditorViewModel.cs" />
-    <Compile Include="ViewModels\HighlightConfigWindowViewModel.cs" />
-    <Compile Include="ViewModels\Interfaces\IFilterConfigWindowAccess.cs" />
-    <Compile Include="ViewModels\Processing\BaseRuleDataEditorViewModel.cs" />
-    <Compile Include="ViewModels\Processing\CustomRuleDataEditorViewModel.cs" />
-    <Compile Include="ViewModels\Processing\DateRuleDataEditorViewModel.cs" />
-    <Compile Include="ViewModels\Processing\HighlightingRuleEditorViewModel.cs" />
-    <Compile Include="ViewModels\Processing\MessageRuleDataEditorViewModel.cs" />
-    <Compile Include="ViewModels\Processing\SeverityRuleDataEditorViewModel.cs" />
-    <Compile Include="ViewModels\Interfaces\IHighlightConfigWindowAccess.cs" />
-    <Compile Include="ViewModels\Interfaces\IMainWindowAccess.cs" />
-    <Compile Include="ViewModels\Interfaces\IOpenWindowAccess.cs" />
-    <Compile Include="ViewModels\Interfaces\IParserProfileEditorWindowAccess.cs" />
-    <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\OpenWindowViewModel.cs" />
-    <Compile Include="ViewModels\ParserProfileEditorWindowViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
-      <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
-      <Name>FileLogSource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FilesLogSource\FilesLogSource.csproj">
-      <Project>{FD4113DD-4CEC-48C4-B15B-290D57F88804}</Project>
-      <Name>FilesLogSource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LineLogParser\LineLogParser.csproj">
-      <Project>{897C5F60-27CC-43CC-8E66-8718B8822D60}</Project>
-      <Name>LineLogParser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
       <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
       <Name>LogAnalyzer.API</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">
-      <Project>{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}</Project>
-      <Name>LogAnalyzer.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Configuration\LogAnalyzer.Configuration.csproj">
-      <Project>{CA47417B-1C22-4513-A654-B78805A120F3}</Project>
-      <Name>LogAnalyzer.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
       <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
       <Name>LogAnalyzer.Dependencies</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Engine\LogAnalyzer.Engine.csproj">
-      <Project>{055946e5-d9f3-42ef-9a4e-98e32ff1769b}</Project>
-      <Name>LogAnalyzer.Engine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Mapper\LogAnalyzer.Mapper.csproj">
-      <Project>{677955a9-5cd0-491b-8ebc-70f0597c1427}</Project>
-      <Name>LogAnalyzer.Mapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
-      <Project>{5B2CEEC9-3261-400F-B198-831743AE86CC}</Project>
+      <Project>{5b2ceec9-3261-400f-b198-831743ae86cc}</Project>
       <Name>LogAnalyzer.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
       <Project>{3bb6cdc4-0642-4a68-9557-9ef4d81eb0f9}</Project>
       <Name>LogAnalyzer.Services</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Types\LogAnalyzer.Types.csproj">
-      <Project>{1C717240-85A8-455C-992D-7546AE7526AD}</Project>
-      <Name>LogAnalyzer.Types</Name>
-    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
-      <Project>{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}</Project>
+      <Project>{47fc3aa3-69ca-424a-8f09-fa2c89c5995f}</Project>
       <Name>LogAnalyzer.Wpf</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RegexLogParser\RegexLogParser.csproj">
-      <Project>{39b4d915-c6b6-46c6-93a9-a4ac7763a5be}</Project>
-      <Name>RegexLogParser</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Editor\FilesLogSourceEditorTemplate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

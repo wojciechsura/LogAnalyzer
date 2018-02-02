@@ -15,7 +15,7 @@ namespace FileLogSource
     {
         public ILogSourceEditorViewModel CreateEditorViewModel()
         {
-            return LogAnalyzer.Dependencies.Container.Instance.Resolve<FileSourceEditorViewModel>(new ParameterOverride("provider", this));
+            return LogAnalyzer.Dependencies.Container.Instance.Resolve<FileLogSourceEditorViewModel>(new ParameterOverride("provider", this));
         }
 
         public ILogSource CreateLogSource(ILogSourceConfiguration configuration, ILogParser parser)

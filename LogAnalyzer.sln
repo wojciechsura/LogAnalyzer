@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Types", "LogAna
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegexLogParser", "RegexLogParser\RegexLogParser.csproj", "{39B4D915-C6B6-46C6-93A9-A4AC7763A5BE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilesLogSource", "FilesLogSource\FilesLogSource.csproj", "{FD4113DD-4CEC-48C4-B15B-290D57F88804}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,10 @@ Global
 		{39B4D915-C6B6-46C6-93A9-A4AC7763A5BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39B4D915-C6B6-46C6-93A9-A4AC7763A5BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39B4D915-C6B6-46C6-93A9-A4AC7763A5BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4113DD-4CEC-48C4-B15B-290D57F88804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4113DD-4CEC-48C4-B15B-290D57F88804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4113DD-4CEC-48C4-B15B-290D57F88804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4113DD-4CEC-48C4-B15B-290D57F88804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +117,7 @@ Global
 		{F26A204C-101F-4C8E-864F-3331BF0AF48F} = {F34EB931-8299-4882-BCF9-05F05183926E}
 		{897C5F60-27CC-43CC-8E66-8718B8822D60} = {51820161-F76F-4C86-9A98-F81A97CAD616}
 		{39B4D915-C6B6-46C6-93A9-A4AC7763A5BE} = {51820161-F76F-4C86-9A98-F81A97CAD616}
+		{FD4113DD-4CEC-48C4-B15B-290D57F88804} = {F34EB931-8299-4882-BCF9-05F05183926E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8A01F61-35D1-4F28-9DDC-4593A57402D7}

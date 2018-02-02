@@ -11,7 +11,7 @@ namespace LogAnalyzer.Services
 {
     class WinApiService : IWinApiService
     {
-        public String OpenFile(IEnumerable<FilterDefinition> filter)
+        public string OpenFile(IEnumerable<FilterDefinition> filter)
         {
             OpenFileDialog dialog = new OpenFileDialog
             {
@@ -20,6 +20,20 @@ namespace LogAnalyzer.Services
 
             if (dialog.ShowDialog() == true)
                 return dialog.FileName;
+            else
+                return null;
+        }
+
+        public List<string> OpenFiles(List<FilterDefinition> filter)
+        {
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Filter = String.Join("|", filter.Select(f => $"{f.Text}|{f.Filter}")),
+                Multiselect = true
+            };
+
+            if (dialog.ShowDialog() == true)
+                return dialog.FileNames.ToList();
             else
                 return null;
         }

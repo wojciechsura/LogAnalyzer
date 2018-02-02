@@ -31,6 +31,7 @@ namespace LogAnalyzer.Engine.Components
         {
             public bool ReplaceLast { get; set; }
             public List<LogEntry> ParsedEntries { get; set; }
+            public bool MoreData { get; set; }
         }
 
         private class StopData
@@ -121,7 +122,9 @@ namespace LogAnalyzer.Engine.Components
                 ProcessingResult result = new ProcessingResult
                 {
                     ParsedEntries = null,
-                    ReplaceLast = false
+                    ReplaceLast = false,
+                    MoreData = false
+                    
                 };
                 e.Result = result;
                 return;
@@ -131,7 +134,8 @@ namespace LogAnalyzer.Engine.Components
                 ProcessingResult result = new ProcessingResult
                 {
                     ParsedEntries = processedItems,
-                    ReplaceLast = replaceFirst
+                    ReplaceLast = replaceFirst,
+                    MoreData = linesProcessed == MAX_PROCESSED_LINES
                 };
                 e.Result = result;
                 return;
@@ -192,7 +196,7 @@ namespace LogAnalyzer.Engine.Components
                             eventBus.Send(new AddedNewParsedEntriesEvent(start, count));
                         }
 
-                        if (result.ParsedEntries.Count == MAX_PROCESSED_LINES)
+                        if (result.MoreData)
                         {
                             runAgain = true;
                             return;

@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:FileLogSource"
+                    xmlns:editor="clr-namespace:FileLogSource.Editor">
+
+    <DataTemplate x:Key="FilesLogEditorDataTemplate">
+        <StackPanel Orientation="Vertical">
+
+            <Label>Choose files...</Label>
+
+            <StackPanel Orientation="Horizontal" Margin="0,4">
+                <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding AddFilesCommand}">
+                    <Image Width="16" Height="16" Source="/Resources/Images/Plus16.png" />
+                </Button>
+                <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding RemoveFileCommand}">
+                    <Image Width="16" Height="16" Source="/Resources/Images/Minus16.png" />
+                </Button>
+                <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveFileDownCommand}">
+                    <Image Width="16" Height="16" Source="/Resources/Images/Down16.png" />
+                </Button>
+                <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveFileUpCommand}">
+                    <Image Width="16" Height="16" Source="/Resources/Images/Up16.png" />
+                </Button>
+            </StackPanel>
+
+            <ListBox Height="100" 
+                     ItemsSource="{Binding Files}" 
+                     SelectedItem="{Binding SelectedFile}" 
+                     SelectedIndex="{Binding SelectedFileIndex, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                     DisplayMemberPath="Filename"/>
+
+            <CheckBox Margin="0,8,0,0" IsChecked="{Binding AutoSort}">Sort files automatically (parser must provide date)</CheckBox>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

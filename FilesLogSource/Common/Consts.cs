@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileLogSource.Common
+namespace FilesLogSource.Common
 {
     class Consts
     {
-        public static readonly string UNIQUE_NAME = "LogSource.File";
+        public static readonly string UNIQUE_NAME = "LogSource.Files";
     }
 }
