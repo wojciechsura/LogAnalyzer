@@ -35,10 +35,10 @@
                     </Button>
                 </StackPanel>
 
-                <ListBox Height="300" Width="600" 
+                <ListBox Height="150" Width="600" 
                          ItemsSource="{Binding Rules}" 
                          SelectedItem="{Binding SelectedRule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         SelectedIndex="{Binding SelectedRuleIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         SelectedIndex="{Binding SelectedRuleIndex, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                          HorizontalContentAlignment="Stretch">
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type p:HighlightingRuleEditorViewModel}">

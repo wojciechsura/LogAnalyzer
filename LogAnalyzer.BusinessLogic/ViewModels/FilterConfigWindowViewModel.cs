@@ -37,7 +37,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private ModalDialogResult<FilterConfig> result;
         private FilteringRuleEditorViewModel selectedRule;
-        private int selectedRuleIndex;
+        private int selectedRuleIndex = -1;
         private ObservableCollection<FilterActionInfo> availableDefaultActions;
         private FilterActionInfo selectedDefaultAction;
         private List<string> availableCustomColumns;
@@ -177,10 +177,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public int SelectedRuleIndex
         {
-            get
-            {
-                return selectedRuleIndex;
-            }
             set
             {
                 selectedRuleIndex = value;

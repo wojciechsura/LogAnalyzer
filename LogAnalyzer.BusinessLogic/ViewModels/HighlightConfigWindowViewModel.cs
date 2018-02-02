@@ -24,7 +24,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private ModalDialogResult<HighlightConfig> result;
         private HighlightingRuleEditorViewModel selectedRule;
-        private int selectedRuleIndex;
+        private int selectedRuleIndex = -1;
         private List<string> availableCustomColumns;
 
         private readonly Condition ruleSelectedCondition;
@@ -153,10 +153,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public int SelectedRuleIndex
         {
-            get
-            {
-                return selectedRuleIndex;
-            }
             set
             {
                 selectedRuleIndex = value;
