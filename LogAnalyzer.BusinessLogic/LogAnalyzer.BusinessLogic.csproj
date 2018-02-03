@@ -70,10 +70,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dependencies\Configuration.cs" />
+    <Compile Include="ViewModels\FindWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\LogParserRepository.cs" />
     <Compile Include="Services\LogSourceRepository.cs" />
     <Compile Include="ViewModels\FilterConfigWindowViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IFindWindowAccess.cs" />
     <Compile Include="ViewModels\Processing\BaseRuleEditorViewModel.cs" />
     <Compile Include="ViewModels\Processing\FilteringRuleEditorViewModel.cs" />
     <Compile Include="ViewModels\HighlightConfigWindowViewModel.cs" />

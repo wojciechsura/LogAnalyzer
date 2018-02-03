@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\File.cs" />
+    <Compile Include="DialogResults\FindResult.cs" />
     <Compile Include="DialogResults\LogParserProfileEditorResult.cs" />
     <Compile Include="DialogResults\OpenResult.cs" />
     <Compile Include="Engine\FilterConfig.cs" />
@@ -59,8 +60,10 @@
     <Compile Include="Services\WinApiService\FilterDefinition.cs" />
     <Compile Include="Types\ComparisonMethod.cs" />
     <Compile Include="Types\FilterAction.cs" />
+    <Compile Include="Types\FindAction.cs" />
     <Compile Include="Types\SummaryDisplayAttribute.cs" />
     <Compile Include="Views\FilterConfigWindow\FilterConfigModel.cs" />
+    <Compile Include="Views\FindWindow\FindModel.cs" />
     <Compile Include="Views\HighlightConfigWindow\HighlightConfigModel.cs" />
     <Compile Include="Views\OpenWindow\LogParserProfileInfo.cs" />
   </ItemGroup>

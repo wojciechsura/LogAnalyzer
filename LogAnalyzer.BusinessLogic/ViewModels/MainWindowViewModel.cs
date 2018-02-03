@@ -19,6 +19,7 @@ using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Models.Views.FilterConfigWindow;
+using LogAnalyzer.Models.Views.FindWindow;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -122,6 +123,21 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 engine.FilterConfig = result.Result;
         }
 
+        private void DoSearch()
+        {
+            List<string> availableCustomColumns = engine.GetColumnInfos()
+                .OfType<CustomColumnInfo>()
+                .Select(c => c.Name)
+                .ToList();
+
+            FindModel model = new FindModel(availableCustomColumns);
+            var result = dialogService.OpenFind(model);
+            if (result.DialogResult)
+            {
+                // TODO
+            }
+        }
+
         // Protected methods --------------------------------------------------
 
         private void OnPropertyChanged(string name)
@@ -153,6 +169,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
             FilterConfigCommand = new SimpleCommand((obj) => DoFilterConfig(), generalEnginePresentCondition);
+            SearchCommand = new SimpleCommand((obj) => DoSearch(), generalEnginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -191,6 +208,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand HighlightConfigCommand { get; }
 
         public ICommand FilterConfigCommand { get; }
+
+        public ICommand SearchCommand { get; }
 
         public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; set; }
 

@@ -140,6 +140,9 @@
     <Compile Include="Windows\FilterConfigWindow.xaml.cs">
       <DependentUpon>FilterConfigWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\FindWindow.xaml.cs">
+      <DependentUpon>FindWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\HighlightConfigWindow.xaml.cs">
       <DependentUpon>HighlightConfigWindow.xaml</DependentUpon>
     </Compile>
@@ -153,7 +156,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <Page Include="PredicateDataEditors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\FilterConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FindWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -623,6 +634,10 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\Search16.png" />
+    <Resource Include="Resources\Images\Search32.png" />
+    <Resource Include="Resources\Images\Clock16.png" />
+    <Resource Include="Resources\Images\Clock32.png" />
     <Resource Include="LogAnalyzer.ico" />
     <Resource Include="Resources\Images\LogAnalyzer.ico" />
     <Resource Include="Resources\Images\Highlight16.png" />

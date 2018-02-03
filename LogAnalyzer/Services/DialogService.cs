@@ -10,6 +10,7 @@ using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Models.Views.FilterConfigWindow;
+using LogAnalyzer.Models.Views.FindWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -48,6 +49,13 @@ namespace LogAnalyzer.Services
             OpenWindow openWindow = new OpenWindow();
             openWindow.ShowDialog();
             return openWindow.DataResult;
+        }
+
+        public ModalDialogResult<FindResult> OpenFind(FindModel model)
+        {
+            FindWindow findWindow = new FindWindow(model);
+            findWindow.ShowDialog();
+            return findWindow.DataResult;
         }
     }
 }

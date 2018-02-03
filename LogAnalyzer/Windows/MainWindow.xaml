@@ -43,6 +43,13 @@
                               Icon="/Resources/Images/Filter16.png"
                               Command="{Binding FilterConfigCommand}" />
                 </f:RibbonGroupBox>
+                <f:RibbonGroupBox Header="Navigation">
+                    <f:Button Header="Search"
+                              LargeIcon="/Resources/Images/Search32.png"
+                              Icon="/Resources/Images/Search16.png"
+                              Command="{Binding SearchCommand}" 
+                              SizeDefinition="Middle,Middle,Middle"/>
+                </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>
         <ListView x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended" VerticalContentAlignment="Top">
