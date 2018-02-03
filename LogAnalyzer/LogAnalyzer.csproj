@@ -634,6 +634,8 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\BottomPane32.png" />
+    <Resource Include="Resources\Images\BottomPane16.png" />
     <Resource Include="Resources\Images\Search16.png" />
     <Resource Include="Resources\Images\Search32.png" />
     <Resource Include="Resources\Images\Clock16.png" />

@@ -25,10 +25,12 @@ namespace LogAnalyzer.Services.Interfaces
     {
         void NotifySourceReady();
         ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; }
+        ObservableRangeCollection<HighlightedLogEntry> SearchResults { get; }
         void Stop(Action stopAction);
         List<BaseColumnInfo> GetColumnInfos();
 
         HighlightConfig HighlightConfig { get; set; }
         FilterConfig FilterConfig { get; set; }
+        SearchConfig SearchConfig { get; set; }
     }
 }

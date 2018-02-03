@@ -11,6 +11,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Interfaces
     {
         void Close();
         void ClearListView();
-        void SetupListView(List<BaseColumnInfo> columns);
+        void SetupListViews(List<BaseColumnInfo> columns);
     }
 }

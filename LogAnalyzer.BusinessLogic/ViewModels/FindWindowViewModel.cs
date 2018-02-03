@@ -2,6 +2,7 @@
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.BusinessLogic.ViewModels.Processing;
 using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Types;
 using LogAnalyzer.Models.Views.FindWindow;
 using LogAnalyzer.Services.Common;
@@ -21,7 +22,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
     {
         private readonly IFindWindowAccess access;
         private readonly IMessagingService messagingService;
-        private ModalDialogResult<FindResult> result;
+        private ModalDialogResult<SearchConfig> result;
 
         private void DoCancel()
         {
@@ -30,7 +31,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             access.Close(false);            
         }
 
-        private void DoFindNext()
+        private void DoFindAll()
         {
             ValidationResult validationResult = Validate();
             if (!validationResult.Valid)
@@ -39,10 +40,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 return;
             }
 
-            var findResult = new FindResult
+            var findResult = new SearchConfig
             {
-                Action = FindAction.FindNext,
-                FindCondition = BuildProcessCondition()
+                PredicateDescription = BuildProcessCondition()
             };
             Result.DialogResult = true;
             Result.Result = findResult;
@@ -52,14 +52,17 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public FindWindowViewModel(IFindWindowAccess access, FindModel model, IMessagingService messagingService) 
             : base(model.AvailableCustomColumns)
         {
-            result = new ModalDialogResult<FindResult>();
+            result = new ModalDialogResult<SearchConfig>();
 
-            FindNextCommand = new SimpleCommand((obj) => DoFindNext());
+            FindAllCommand = new SimpleCommand((obj) => DoFindAll());
             CancelCommand = new SimpleCommand((obj) => DoCancel());
             this.access = access;
             this.messagingService = messagingService;
 
             SelectedColumn = AvailableColumns.FirstOrDefault();
+
+            if (model.SearchConfig != null)
+                RestoreDataEditorViewModel(model.SearchConfig.PredicateDescription);
         }
 
         public override ValidationResult Validate()
@@ -72,9 +75,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public override string Summary => null;
 
-        public ICommand FindNextCommand { get; }
+        public ICommand FindAllCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public ModalDialogResult<FindResult> Result => result;
+        public ModalDialogResult<SearchConfig> Result => result;
     }
 }

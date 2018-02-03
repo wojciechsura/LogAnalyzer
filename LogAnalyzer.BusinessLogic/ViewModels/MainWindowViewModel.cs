@@ -46,6 +46,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private Condition enginePresentCondition;
         private BaseCondition generalEnginePresentCondition;
 
+        private bool bottomPaneVisible;
+
         // Private methods ----------------------------------------------------
 
         private void DoCreateEngine(OpenResult result)
@@ -60,13 +62,16 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ILogSource source = logSourceProvider.CreateLogSource(result.LogSourceConfiguration, parser);
 
             engine = engineFactory.CreateEngine(source, parser);
-            access.SetupListView(engine.GetColumnInfos());
+            access.SetupListViews(engine.GetColumnInfos());
             engine.NotifySourceReady();
 
             LogEntries = engine.LogEntries;
             OnPropertyChanged(nameof(LogEntries));
+            SearchResults = engine.SearchResults;
+            OnPropertyChanged(nameof(SearchResults));
 
             enginePresentCondition.Value = true;
+            bottomPaneVisible = false;
         }
 
         private void DoStopEngine()
@@ -130,12 +135,23 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 .Select(c => c.Name)
                 .ToList();
 
-            FindModel model = new FindModel(availableCustomColumns);
+            FindModel model = new FindModel(engine.SearchConfig, availableCustomColumns);
             var result = dialogService.OpenFind(model);
             if (result.DialogResult)
             {
-                // TODO
+                engine.SearchConfig = result.Result;
+                BottomPaneVisible = true;
             }
+        }
+
+        private void DoToggleBottomPane()
+        {
+            BottomPaneVisible = !BottomPaneVisible;
+        }
+
+        private void DoCloseBootomPane()
+        {
+            BottomPaneVisible = false;
         }
 
         // Protected methods --------------------------------------------------
@@ -170,6 +186,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
             FilterConfigCommand = new SimpleCommand((obj) => DoFilterConfig(), generalEnginePresentCondition);
             SearchCommand = new SimpleCommand((obj) => DoSearch(), generalEnginePresentCondition);
+            ToggleBottomPaneCommand = new SimpleCommand((obj) => DoToggleBottomPane());
+            CloseBottomPaneCommand = new SimpleCommand((obj) => DoCloseBootomPane());
         }
 
         public bool HandleClosing()
@@ -211,8 +229,24 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public ICommand SearchCommand { get; }
 
-        public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; set; }
+        public ICommand ToggleBottomPaneCommand { get; }
+
+        public ICommand CloseBottomPaneCommand { get; }
+
+        public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; private set; }
+
+        public ObservableRangeCollection<HighlightedLogEntry> SearchResults { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool BottomPaneVisible
+        {
+            get => bottomPaneVisible;
+            set
+            {
+                bottomPaneVisible = value;
+                OnPropertyChanged(nameof(BottomPaneVisible));
+            }
+        }
     }
 }

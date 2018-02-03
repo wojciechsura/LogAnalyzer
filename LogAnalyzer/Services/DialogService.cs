@@ -51,7 +51,7 @@ namespace LogAnalyzer.Services
             return openWindow.DataResult;
         }
 
-        public ModalDialogResult<FindResult> OpenFind(FindModel model)
+        public ModalDialogResult<SearchConfig> OpenFind(FindModel model)
         {
             FindWindow findWindow = new FindWindow(model);
             findWindow.ShowDialog();

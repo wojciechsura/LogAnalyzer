@@ -89,6 +89,7 @@
     <Compile Include="Infrastructure\Events\AddedNewParsedEntriesEvent.cs" />
     <Compile Include="Infrastructure\Events\BaseEvent.cs" />
     <Compile Include="Infrastructure\Events\LastParsedEntriesItemReplacedEvent.cs" />
+    <Compile Include="Infrastructure\Processing\LogSearchConfig.cs" />
     <Compile Include="Interfaces\IEventListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

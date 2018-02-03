@@ -1,6 +1,7 @@
 ﻿using LogAnalyzer.BusinessLogic.ViewModels;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.FindWindow;
 using LogAnalyzer.Services.Common;
 using System;
@@ -41,6 +42,6 @@ namespace LogAnalyzer.Windows
             DialogResult = dialogResult;
         }
 
-        public ModalDialogResult<FindResult> DataResult => viewModel.Result;
+        public ModalDialogResult<SearchConfig> DataResult => viewModel.Result;
     }
 }

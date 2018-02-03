@@ -53,6 +53,7 @@ namespace LogAnalyzer.Engine
 
         private HighlightConfig highlightConfig;
         private FilterConfig filterConfig;
+        private SearchConfig searchConfig;
 
         private State state = State.Working;
         private StopToken stopToken = null;
@@ -82,6 +83,14 @@ namespace LogAnalyzer.Engine
 
             LogFilteringConfig config = new LogFilteringConfig(value, GetColumnInfos());
             logProcessor.SetFilteringConfig(config);
+        }
+
+        private void SetSearchConfig(SearchConfig value)
+        {
+            searchConfig = value;
+
+            LogSearchConfig config = new LogSearchConfig(value, GetColumnInfos());
+            logProcessor.SetSearchConfig(config);
         }
 
         // Public methods -----------------------------------------------------
@@ -141,6 +150,8 @@ namespace LogAnalyzer.Engine
 
         public ObservableRangeCollection<HighlightedLogEntry> LogEntries => data.HighlightedLogEntries;
 
+        public ObservableRangeCollection<HighlightedLogEntry> SearchResults => data.FoundEntries;
+
         public HighlightConfig HighlightConfig
         {
             get
@@ -162,6 +173,18 @@ namespace LogAnalyzer.Engine
             set
             {
                 SetFilterConfig(value);
+            }
+        }
+
+        public SearchConfig SearchConfig
+        {
+            get
+            {
+                return searchConfig;
+            }
+            set
+            {
+                SetSearchConfig(value);
             }
         }
     }

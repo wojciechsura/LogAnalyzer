@@ -70,9 +70,9 @@ namespace LogAnalyzer.Windows
             gridView.Columns.Add(lineNumberColumn);
         }
 
-        public void SetupListView(List<BaseColumnInfo> columns)
+        public void SetupListView(ListView listView, List<BaseColumnInfo> columns)
         {
-            lvMain.View = null;
+            listView.View = null;
 
             string commonColumnXaml = ResourceReader.ReadEmbeddedResource(Assembly.GetExecutingAssembly(), "LogAnalyzer.Resources.Xaml.RegularColumn.xaml");
 
@@ -90,7 +90,13 @@ namespace LogAnalyzer.Windows
                 CreateColumn(commonColumnXaml, gridView, columns[i]);
             }
 
-            lvMain.View = gridView;
+            listView.View = gridView;
+        }
+
+        public void SetupListViews(List<BaseColumnInfo> columns)
+        {
+            SetupListView(lvMain, columns);
+            SetupListView(lvSearchResults, columns);
         }
 
         private void HandleWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)

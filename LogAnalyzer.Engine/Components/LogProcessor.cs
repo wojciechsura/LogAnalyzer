@@ -20,6 +20,7 @@ namespace LogAnalyzer.Engine.Components
 
         private const int MAX_FILTERED_ITEMS = 200;
         private const int MAX_HIGHLIGHTED_ITEMS = 200;
+        private const int MAX_SEARCHED_ITEMS = 200;
 
         // Private classes ----------------------------------------------------
 
@@ -54,6 +55,11 @@ namespace LogAnalyzer.Engine.Components
         }
 
         private class ResetFilterQueueItem : BaseQueueItem
+        {
+
+        }
+
+        private class ResetSearchQueueItem : BaseQueueItem
         {
 
         }
@@ -110,6 +116,32 @@ namespace LogAnalyzer.Engine.Components
             public List<HighlightInfo> Entries { get; }
         }
 
+        private class SearchArgument
+        {
+            public SearchArgument(Range range, List<HighlightedLogEntry> inputEntries, LogSearchConfig config)
+            {
+                Range = range;
+                InputEntries = inputEntries;
+                Config = config;
+            }
+
+            public Range Range { get; }
+            public List<HighlightedLogEntry> InputEntries { get; }
+            public LogSearchConfig Config { get; }
+        }
+
+        private class SearchResult
+        {
+            public SearchResult(Range inputRange, List<HighlightedLogEntry> entries)
+            {
+                InputRange = inputRange;
+                Entries = entries;
+            }
+
+            public Range InputRange { get; }
+            public List<HighlightedLogEntry> Entries { get; }
+        }
+
         private class StopData
         {
             public StopData(Action afterStop)
@@ -149,6 +181,7 @@ namespace LogAnalyzer.Engine.Components
         private int availableDataCount = 0;
         private int lastFilteredLogIndex = -1;
         private int lastHighlightedFilteredLogIndex = -1;
+        private int lastSearchedHighlightedLogIndex = -1;
 
         private bool workerRunning = false;
         private State state = State.Working;
@@ -156,6 +189,7 @@ namespace LogAnalyzer.Engine.Components
 
         private LogHighlighterConfig highlightConfig = null;
         private LogFilteringConfig filterConfig = null;
+        private LogSearchConfig searchConfig = null;
 
         // Private methods ----------------------------------------------------
 
@@ -239,6 +273,21 @@ namespace LogAnalyzer.Engine.Components
                 HighlightingResult result = new HighlightingResult(highlightArgument.Range, processedItems);
                 e.Result = result;
             }
+            else if (e.Argument is SearchArgument searchArgument)
+            {
+                var processedEntries = new List<HighlightedLogEntry>();
+
+                for (int i = 0; i < searchArgument.InputEntries.Count; i++)
+                {
+                    var entry = searchArgument.InputEntries[i];
+
+                    if (searchArgument.Config.Predicate(entry.LogEntry))
+                        processedEntries.Add(entry);
+                }
+
+                SearchResult result = new SearchResult(searchArgument.Range, processedEntries);
+                e.Result = result;
+            }
             else
                 throw new ArgumentException("Invalid argument!");
         }
@@ -304,6 +353,31 @@ namespace LogAnalyzer.Engine.Components
                         System.Diagnostics.Debug.WriteLine($"[ ]->[  H] Last highlighted filtered log index is now {lastHighlightedFilteredLogIndex}");
 #endif
                     }
+                    else if (e.Result is SearchResult searchResult)
+                    {
+                        int start = searchResult.InputRange.Start;
+                        int count = searchResult.InputRange.Count;
+
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine($"[ ]->[   S] Searched entries - start {start}, count {count}");
+#endif
+                        if (searchResult.Entries.Count > 0)
+                        {
+                            for (int i = 0; i < searchResult.Entries.Count; i++)
+                            {
+                                data.FoundEntries.Add(searchResult.Entries[i]);
+                            }
+
+#if DEBUG
+                            System.Diagnostics.Debug.WriteLine($"[ ]->[   S] Added {searchResult.Entries.Count} found entries");
+#endif
+                        }
+
+                        lastSearchedHighlightedLogIndex = start + count - 1;
+#if DEBUG
+                        System.Diagnostics.Debug.WriteLine($"[ ]->[   S] Last searched log index is now {lastFilteredLogIndex}");
+#endif
+                    }
                 }
             }
             finally
@@ -347,6 +421,27 @@ namespace LogAnalyzer.Engine.Components
 
 #if DEBUG
             System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Started highlighter - start {range.Start}, count {range.Count}");
+#endif
+        }
+
+        private void StartSearchWorker(Range range)
+        {
+            if (workerRunning)
+                throw new InvalidOperationException("Cannot start already running worker!");
+
+            if (state == State.Stopping || state == State.Stopped)
+                throw new InvalidOperationException("Cannot start worker when stopped!");
+
+            if (searchConfig == null)
+                throw new InvalidOperationException("Cannot start search worker with empty search config!");
+
+            var argument = new SearchArgument(range, data.BuildDataForSearching(range.Start, range.Count), searchConfig);
+
+            workerRunning = true;
+            backgroundWorker.RunWorkerAsync(argument);
+
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Started search - start {range.Start}, count {range.Count}");
 #endif
         }
 
@@ -435,7 +530,7 @@ namespace LogAnalyzer.Engine.Components
                 }
                 else if (item is ResetFilterQueueItem)
                 {
-                    // Re-filter, re-highlight
+                    // Re-filter, re-highlight, re-search
 
                     data.HighlightedLogEntries.Clear();
                     lastHighlightedFilteredLogIndex = -1;
@@ -446,6 +541,17 @@ namespace LogAnalyzer.Engine.Components
 #endif
                     continue;
                 }
+                else if (item is ResetSearchQueueItem)
+                {
+                    data.FoundEntries.Clear();
+                    lastSearchedHighlightedLogIndex = -1;
+
+#if DEBUG
+                    System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Queue: Resetting found items");
+#endif
+
+                    continue;
+                }
             }
         }
 
@@ -454,9 +560,19 @@ namespace LogAnalyzer.Engine.Components
             if (state == State.Stopping || state == State.Stopped)
                 throw new InvalidOperationException("Cannot process data when stopping or stopped!");
 
-            // Highlighting has priority over filtering
+            if (searchConfig != null && lastSearchedHighlightedLogIndex < data.HighlightedLogEntries.Count - 1)
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Found more entries to search");
+#endif
+
+                var processedRange = new Range(lastSearchedHighlightedLogIndex + 1, Math.Min(MAX_SEARCHED_ITEMS, data.HighlightedLogEntries.Count - 1 - lastSearchedHighlightedLogIndex));
+
+                StartSearchWorker(processedRange);
+            }
             if (lastHighlightedFilteredLogIndex < data.HighlightedLogEntries.Count - 1)
             {
+                // Highlighting has priority over filtering
 #if DEBUG
                 System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Found more entries to highlight");
 #endif
@@ -550,11 +666,6 @@ namespace LogAnalyzer.Engine.Components
 
             highlightConfig = newConfig;
 
-            if (workerRunning && backgroundWorker.IsBusy)
-            {
-                backgroundWorker.CancelAsync();
-            }
-
             queue.Enqueue(new ResetHighlightingQueueItem());
             if (!workerRunning)
                 ContinueWork();
@@ -573,6 +684,18 @@ namespace LogAnalyzer.Engine.Components
             }
 
             queue.Enqueue(new ResetFilterQueueItem());
+            if (!workerRunning)
+                ContinueWork();
+        }
+
+        public void SetSearchConfig(LogSearchConfig newConfig)
+        {
+            if (state == State.Stopped || state == State.Stopping)
+                throw new InvalidOperationException("Cannot change config when stopped or stopping!");
+
+            searchConfig = newConfig;
+
+            queue.Enqueue(new ResetSearchQueueItem());
             if (!workerRunning)
                 ContinueWork();
         }

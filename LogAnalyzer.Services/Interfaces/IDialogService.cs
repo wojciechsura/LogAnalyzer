@@ -19,6 +19,6 @@ namespace LogAnalyzer.Services.Interfaces
         ModalDialogResult<LogParserProfileEditorResult> NewLogParserProfile();
         ModalDialogResult<HighlightConfig> ConfigHighlighting(HighlightConfigModel model);
         ModalDialogResult<FilterConfig> ConfigFiltering(FilterConfigModel model);
-        ModalDialogResult<FindResult> OpenFind(FindModel model);
+        ModalDialogResult<SearchConfig> OpenFind(FindModel model);
     }
 }

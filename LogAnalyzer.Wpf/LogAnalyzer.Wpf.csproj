@@ -44,6 +44,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\DockPanelSplitter.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Converters\HideIfNullConverter.cs" />
     <Compile Include="Converters\NullToBooleanConverter.cs" />
