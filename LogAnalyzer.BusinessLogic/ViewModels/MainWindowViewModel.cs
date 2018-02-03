@@ -20,6 +20,7 @@ using LogAnalyzer.API.Models;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Models.Views.FindWindow;
+using System.Windows;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -41,9 +42,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private IEngine engine;
 
-        private Condition engineStoppingCondition;
+        private Wpf.Input.Condition engineStoppingCondition;
         private BaseCondition generalCommandCondition;
-        private Condition enginePresentCondition;
+        private Wpf.Input.Condition enginePresentCondition;
         private BaseCondition generalEnginePresentCondition;
 
         private bool bottomPaneVisible;
@@ -154,6 +155,56 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             BottomPaneVisible = false;
         }
 
+        private void DoCopy(IList<object> items)
+        {
+            if (items.Count == 0)
+                return;
+
+            var columns = engine.GetColumnInfos();
+
+            StringBuilder builder = new StringBuilder();
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                var entry = items[i] as HighlightedLogEntry;
+                if (entry == null)
+                    throw new InvalidOperationException("Invalid selected item!");
+
+                for (int col = 0; col < columns.Count; col++)
+                {
+                    BaseColumnInfo info = columns[col];
+                    if (info is CommonColumnInfo commonInfo)
+                    {
+                        switch (commonInfo.Column)
+                        {
+                            case API.Types.LogEntryColumn.Date:
+                                builder.Append(entry.LogEntry.DisplayDate);
+                                break;
+                            case API.Types.LogEntryColumn.Severity:
+                                builder.Append(entry.LogEntry.Severity);
+                                break;
+                            case API.Types.LogEntryColumn.Message:
+                                builder.Append(entry.LogEntry.Message);
+                                break;
+                            case API.Types.LogEntryColumn.Custom:
+                                throw new InvalidOperationException("Invalid column type in common column");
+                        }
+                    }
+                    else if (info is CustomColumnInfo customInfo)
+                    {
+                        builder.Append(entry.LogEntry.CustomFields[customInfo.Index]);
+                        
+                    }
+                    if (col < columns.Count - 1)
+                        builder.Append("\t");
+                    else
+                        builder.Append("\n");
+                }
+            }
+
+            Clipboard.SetText(builder.ToString());
+        }
+
         // Protected methods --------------------------------------------------
 
         private void OnPropertyChanged(string name)
@@ -177,9 +228,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.logSourceRepository = logSourceRepository;
             this.configurationService = configurationService;
 
-            engineStoppingCondition = new Condition(false);
+            engineStoppingCondition = new Wpf.Input.Condition(false);
             generalCommandCondition = !engineStoppingCondition;
-            enginePresentCondition = new Condition(false);
+            enginePresentCondition = new Wpf.Input.Condition(false);
             generalEnginePresentCondition = enginePresentCondition & !engineStoppingCondition;
 
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
@@ -188,6 +239,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             SearchCommand = new SimpleCommand((obj) => DoSearch(), generalEnginePresentCondition);
             ToggleBottomPaneCommand = new SimpleCommand((obj) => DoToggleBottomPane());
             CloseBottomPaneCommand = new SimpleCommand((obj) => DoCloseBootomPane());
+            CopyCommand = new SimpleCommand((obj) => DoCopy((IList<object>)obj), enginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -232,6 +284,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand ToggleBottomPaneCommand { get; }
 
         public ICommand CloseBottomPaneCommand { get; }
+
+        public ICommand CopyCommand { get; }
 
         public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; private set; }
 

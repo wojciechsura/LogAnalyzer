@@ -38,7 +38,7 @@ namespace LogAnalyzer.Windows
             InitializeComponent();
 
             viewModel = Dependencies.Container.Instance.Resolve<MainWindowViewModel>(new ParameterOverride("access", this));
-            DataContext = viewModel;
+            DataContext = viewModel;            
         }
 
         public void ClearListView()

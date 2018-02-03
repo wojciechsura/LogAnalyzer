@@ -57,6 +57,12 @@
                               Icon="/Resources/Images/Open16.png" 
                               Command="{Binding OpenCommand}"/>
                 </f:RibbonGroupBox>
+                <f:RibbonGroupBox Header="Edit">
+                    <f:Button Header="Copy"
+                              LargeIcon="/Resources/Images/Copy32.png"
+                              Icon="/Resources/Images/Copy16.png"
+                              Command="{Binding CopyCommand}" CommandParameter="{Binding ElementName=lvMain, Path=SelectedItems}"/>
+                </f:RibbonGroupBox>
                 <f:RibbonGroupBox Header="Highlight">
                     <f:Button Header="Highlight"
                               LargeIcon="/Resources/Images/Highlight32.png"
