@@ -48,6 +48,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private BaseCondition generalEnginePresentCondition;
 
         private bool bottomPaneVisible;
+        private HighlightedLogEntry selectedSearchResult;
 
         // Private methods ----------------------------------------------------
 
@@ -271,6 +272,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        public void OnSearchResultChosen()
+        {
+            if (selectedSearchResult != null)
+                access.NavigateTo(selectedSearchResult);
+        }
+
         // Public properties --------------------------------------------------
 
         public ICommand OpenCommand { get; }
@@ -290,6 +297,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; private set; }
 
         public ObservableRangeCollection<HighlightedLogEntry> SearchResults { get; private set; }
+
+        public HighlightedLogEntry SelectedSearchResult { get => selectedSearchResult;
+        set
+            {
+                selectedSearchResult = value;
+                OnPropertyChanged(nameof(SelectedSearchResult));
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

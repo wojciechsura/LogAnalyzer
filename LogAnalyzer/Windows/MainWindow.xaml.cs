@@ -70,6 +70,16 @@ namespace LogAnalyzer.Windows
             gridView.Columns.Add(lineNumberColumn);
         }
 
+        private void HandleWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = viewModel.HandleClosing();
+        }
+
+        private void SearchResultsDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            viewModel.OnSearchResultChosen();
+        }
+
         public void SetupListView(ListView listView, List<BaseColumnInfo> columns)
         {
             listView.View = null;
@@ -99,9 +109,10 @@ namespace LogAnalyzer.Windows
             SetupListView(lvSearchResults, columns);
         }
 
-        private void HandleWindowClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        public void NavigateTo(HighlightedLogEntry selectedSearchResult)
         {
-            e.Cancel = viewModel.HandleClosing();
+            lvMain.SelectedItem = selectedSearchResult;
+            lvMain.ScrollIntoView(selectedSearchResult);
         }
     }
 }

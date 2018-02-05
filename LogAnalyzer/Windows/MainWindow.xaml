@@ -9,7 +9,7 @@
                 xmlns:sc="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
                 xmlns:f="urn:fluent-ribbon"
                 mc:Ignorable="d"
-                Title="MainWindow" Height="600" Width="800"
+                Title="Spooksoft LogAnalyzer" Height="600" Width="800"
                 WindowStartupLocation="CenterScreen"
                 Closing="HandleWindowClosing"
                 Icon="/Resources/Images/LogAnalyzer.ico">
@@ -109,7 +109,8 @@
                     </DockPanel>
                 </Border>
                 <ListView x:Name="lvSearchResults" ItemsSource="{Binding SearchResults}" SelectionMode="Single" VerticalContentAlignment="Top"
-                          ItemContainerStyle="{StaticResource ListViewItemStyle}" />
+                          ItemContainerStyle="{StaticResource ListViewItemStyle}" MouseDoubleClick="SearchResultsDoubleClick"
+                          SelectedItem="{Binding SelectedSearchResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DockPanel>
 
             <ct:DockPanelSplitter DockPanel.Dock="Bottom" ProportionalResize="False" 
@@ -117,7 +118,7 @@
                                   Visibility="{Binding BottomPaneVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <ListView Grid.Row="0" x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended" VerticalContentAlignment="Top"
-                      ItemContainerStyle="{StaticResource ListViewItemStyle}" />
+                      ItemContainerStyle="{StaticResource ListViewItemStyle}"/>
         </DockPanel>
     </DockPanel>
 </f:RibbonWindow>
