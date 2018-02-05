@@ -62,7 +62,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Processing
             availableFilterActions = new ObservableCollection<FilterActionInfo>();
             BuildAvailableFilterActions();
 
-            SelectedColumn = AvailableColumns.First();
+            // Select "Message contains" by default
+            SelectedColumn = AvailableColumns.FirstOrDefault(c => c.Column == LogEntryColumn.Message);
+            dataEditorViewModel.SelectedComparisonMethod = dataEditorViewModel.ComparisonMethods.FirstOrDefault(m => m.ComparisonMethod == ComparisonMethod.Contains);
+
+            // Select "Include" by default
             SelectedFilterAction = availableFilterActions.Single(a => a.Action == FilterAction.Include);
         }
 

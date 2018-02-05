@@ -59,7 +59,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.access = access;
             this.messagingService = messagingService;
 
-            SelectedColumn = AvailableColumns.FirstOrDefault();
+            // Select "Message contains" by default
+            SelectedColumn = AvailableColumns.FirstOrDefault(c => c.Column == LogEntryColumn.Message);
+            dataEditorViewModel.SelectedComparisonMethod = dataEditorViewModel.ComparisonMethods.FirstOrDefault(m => m.ComparisonMethod == ComparisonMethod.Contains);
 
             if (model.SearchConfig != null)
                 RestoreDataEditorViewModel(model.SearchConfig.PredicateDescription);
