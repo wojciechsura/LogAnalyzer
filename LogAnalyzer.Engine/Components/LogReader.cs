@@ -167,19 +167,19 @@ namespace LogAnalyzer.Engine.Components
                         if (result.ReplaceLast)
                         {
 #if DEBUG
-                            System.Diagnostics.Debug.WriteLine($"[R]->[ ] Replacing last item with index {data.ResultLogEntries.Count - 1}");
+                            System.Diagnostics.Debug.WriteLine($"[R]->[    ] Replacing last item with meta index {data.ResultLogEntries.LastOrDefault()?.Meta.Index}");
 #endif
 
                             if (data.ResultLogEntries.Count == 0)
                                 throw new InvalidOperationException("Cannot replace last item!");
 
-                            data.ResultLogEntries[data.ResultLogEntries.Count - 1] = result.ParsedEntries[0];
+                            data.ResultLogEntries[data.ResultLogEntries.Count - 1] = new LogRecord(result.ParsedEntries[0], data.ResultLogEntries[data.ResultLogEntries.Count - 1].Meta);
                             result.ParsedEntries.RemoveAt(0);
 
                             // Only last item of parsed entries may be updated, because
                             // lines following this entry may contain eg. exception details
                             // or callstack lines, which are appended to last entry's message.
-                            eventBus.Send(new LastParsedEntriesItemReplacedEvent(data.ResultLogEntries.Count - 1));
+                            eventBus.Send(new LastParsedEntriesItemReplacedEvent(data.ResultLogEntries[data.ResultLogEntries.Count - 1].Meta.Index));
                         }
 
                         if (result.ParsedEntries.Count > 0)
@@ -188,10 +188,11 @@ namespace LogAnalyzer.Engine.Components
                             int count = result.ParsedEntries.Count;
 
 #if DEBUG
-                            System.Diagnostics.Debug.WriteLine($"[R]->[ ] Added new parsed entries - start: {start}, count: {count}");
+                            System.Diagnostics.Debug.WriteLine($"[R]->[    ] Added new parsed entries - start: {start}, count: {count}");
 #endif
-
-                            data.ResultLogEntries.AddRange(result.ParsedEntries);
+                            int index = data.ResultLogEntries.Count + 1;
+                            for (int i = 0; i < result.ParsedEntries.Count; i++)
+                                data.ResultLogEntries.Add(new LogRecord(result.ParsedEntries[i], new LogMetadata(index++)));
 
                             eventBus.Send(new AddedNewParsedEntriesEvent(start, count));
                         }
@@ -238,7 +239,7 @@ namespace LogAnalyzer.Engine.Components
             workerRunning = true;
             backgroundWorker.RunWorkerAsync(new ProcessingArgument
             {
-                LastLogEntry = data.ResultLogEntries.LastOrDefault()
+                LastLogEntry = data.ResultLogEntries.LastOrDefault()?.LogEntry
             });
         }
 

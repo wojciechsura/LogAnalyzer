@@ -8,13 +8,13 @@ namespace LogAnalyzer.Engine.Infrastructure.Events
 {
     class LastParsedEntriesItemReplacedEvent : BaseEvent
     {
-        private readonly int index;
+        private readonly int metaIndex;
 
-        public LastParsedEntriesItemReplacedEvent(int index)
+        public LastParsedEntriesItemReplacedEvent(int metaIndex)
         {
-            this.index = index;
+            this.metaIndex = metaIndex;
         }
 
-        public int Index => index;
+        public int MetaIndex => metaIndex;
     }
 }

@@ -7,31 +7,28 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.Models
 {
-    public class HighlightedLogEntry : INotifyPropertyChanged
+    public class LogMetadata : INotifyPropertyChanged
     {
-        private HighlightInfo highlight;
+        private Bookmark bookmark;
 
         protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public HighlightedLogEntry(FilteredLogEntry entry)
+        public LogMetadata(int index)
         {
-            LogEntry = entry;
+            Index = index;
         }
 
-        public FilteredLogEntry LogEntry { get; }
-        public HighlightInfo Highlight
+        public int Index { get; }
+        public Bookmark Bookmark
         {
-            get
-            {
-                return highlight;
-            }
+            get => bookmark;
             set
             {
-                highlight = value;
-                OnPropertyChanged(nameof(Highlight));
+                bookmark = value;
+                OnPropertyChanged(nameof(Bookmark));
             }
         }
 

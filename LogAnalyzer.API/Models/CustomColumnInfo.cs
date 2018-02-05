@@ -21,7 +21,7 @@ namespace LogAnalyzer.API.Models
         }
 
         public override string Header => name;
-        public override string Member => $"{LogEntryColumn.Custom.GetAttribute<MemberNameAttribute>().Member}[{index}]";
+        public override string Member => $"{LogEntryColumn.Custom.GetAttribute<LogRecordMemberNameAttribute>().Member}[{index}]";
         public int Index => index;
         public string Name => name;
     }

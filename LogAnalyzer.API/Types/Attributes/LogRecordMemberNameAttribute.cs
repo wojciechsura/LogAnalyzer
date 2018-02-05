@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.Types.Attributes
 {
-    public class MemberNameAttribute : Attribute
+    public class LogRecordMemberNameAttribute : Attribute
     {
-        public MemberNameAttribute(string member)
+        public LogRecordMemberNameAttribute(string member)
         {
             Member = member;
         }

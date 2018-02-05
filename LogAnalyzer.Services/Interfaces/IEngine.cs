@@ -24,8 +24,8 @@ namespace LogAnalyzer.Services.Interfaces
     public interface IEngine
     {
         void NotifySourceReady();
-        ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; }
-        ObservableRangeCollection<HighlightedLogEntry> SearchResults { get; }
+        ObservableRangeCollection<HighlightedLogRecord> LogEntries { get; }
+        ObservableRangeCollection<HighlightedLogRecord> SearchResults { get; }
         void Stop(Action stopAction);
         List<BaseColumnInfo> GetColumnInfos();
 

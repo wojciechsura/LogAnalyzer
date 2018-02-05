@@ -9,7 +9,7 @@ namespace LogAnalyzer.Engine.Infrastructure.Data.Interfaces
 {
     interface ILogReaderEngineDataView
     {
-        List<LogEntry> ResultLogEntries { get; }
+        List<LogRecord> ResultLogEntries { get; }
         bool IsReading { get; set; }
     }
 }

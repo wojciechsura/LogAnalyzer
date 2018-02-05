@@ -148,9 +148,9 @@ namespace LogAnalyzer.Engine
 
         // Public properties --------------------------------------------------
 
-        public ObservableRangeCollection<HighlightedLogEntry> LogEntries => data.HighlightedLogEntries;
+        public ObservableRangeCollection<HighlightedLogRecord> LogEntries => data.HighlightedLogEntries;
 
-        public ObservableRangeCollection<HighlightedLogEntry> SearchResults => data.FoundEntries;
+        public ObservableRangeCollection<HighlightedLogRecord> SearchResults => data.FoundEntries;
 
         public HighlightConfig HighlightConfig
         {

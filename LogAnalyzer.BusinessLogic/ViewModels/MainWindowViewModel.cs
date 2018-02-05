@@ -49,7 +49,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private BaseCondition generalEnginePresentCondition;
 
         private bool bottomPaneVisible;
-        private HighlightedLogEntry selectedSearchResult;
+        private HighlightedLogRecord selectedSearchResult;
 
         // Private methods ----------------------------------------------------
 
@@ -168,7 +168,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             for (int i = 0; i < items.Count; i++)
             {
-                var entry = items[i] as HighlightedLogEntry;
+                var entry = items[i] as HighlightedLogRecord;
                 if (entry == null)
                     throw new InvalidOperationException("Invalid selected item!");
 
@@ -300,11 +300,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public ICommand CopyCommand { get; }
 
-        public ObservableRangeCollection<HighlightedLogEntry> LogEntries { get; private set; }
+        public ObservableRangeCollection<HighlightedLogRecord> LogEntries { get; private set; }
 
-        public ObservableRangeCollection<HighlightedLogEntry> SearchResults { get; private set; }
+        public ObservableRangeCollection<HighlightedLogRecord> SearchResults { get; private set; }
 
-        public HighlightedLogEntry SelectedSearchResult { get => selectedSearchResult;
+        public HighlightedLogRecord SelectedSearchResult { get => selectedSearchResult;
         set
             {
                 selectedSearchResult = value;

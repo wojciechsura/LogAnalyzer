@@ -11,16 +11,16 @@ namespace LogAnalyzer.API.Types
     public enum LogEntryColumn
     {
         [ColumnHeader("Date")]
-        [MemberName(nameof(FilteredLogEntry.DisplayDate))]
+        [LogRecordMemberName(nameof(HighlightedLogRecord.LogEntry) + "." + nameof(LogEntry.Date))]
         Date,
         [ColumnHeader("Severity")]
-        [MemberName(nameof(FilteredLogEntry.Severity))]
+        [LogRecordMemberName(nameof(HighlightedLogRecord.LogEntry) + "." + nameof(LogEntry.Severity))]
         Severity,
         [ColumnHeader("Message")]
-        [MemberName(nameof(FilteredLogEntry.Message))]
+        [LogRecordMemberName(nameof(HighlightedLogRecord.LogEntry) + "." + nameof(LogEntry.Message))]
         Message,
         [ColumnHeader("Custom")]
-        [MemberName(nameof(FilteredLogEntry.CustomFields))]
+        [LogRecordMemberName(nameof(HighlightedLogRecord.LogEntry) + "." + nameof(LogEntry.CustomFields))]
         Custom
     }
 }

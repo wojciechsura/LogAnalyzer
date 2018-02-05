@@ -4,6 +4,6 @@
     <DataTemplate.Resources>
         <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />
     </DataTemplate.Resources>
-    <TextBlock Text="{{Binding LogEntry.{0}}}" FontFamily="Consolas" HorizontalAlignment="Stretch"
+    <TextBlock Text="{{Binding {0}}}" FontFamily="Consolas" HorizontalAlignment="Stretch"
         Foreground="{{Binding Highlight.Foreground, Converter={{StaticResource ColorToBrushConverter}}}}" />
 </DataTemplate>

@@ -11,11 +11,11 @@ namespace LogAnalyzer.Engine.Infrastructure.Data.Interfaces
     interface ILogProcessorEngineDataView
     {
         int GetLogEntryCount();
-        List<LogEntry> BuildDataForFiltering(int start, int count);
-        List<FilteredLogEntry> BuildDataForHighlighting(int start, int count);
-        List<HighlightedLogEntry> BuildDataForSearching(int start, int count);
-        ObservableRangeCollection<HighlightedLogEntry> HighlightedLogEntries { get; }
-        ObservableRangeCollection<HighlightedLogEntry> FoundEntries { get; }
+        List<LogRecord> BuildDataForFiltering(int start, int count);
+        List<LogEntry> BuildDataForHighlighting(int start, int count);
+        List<HighlightedLogRecord> BuildDataForSearching(int start, int count);
+        ObservableRangeCollection<HighlightedLogRecord> HighlightedLogEntries { get; }
+        ObservableRangeCollection<HighlightedLogRecord> FoundEntries { get; }
         bool IsProcessing { get; set; }
     }
 }

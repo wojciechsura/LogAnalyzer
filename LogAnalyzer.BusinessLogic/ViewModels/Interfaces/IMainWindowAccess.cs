@@ -12,6 +12,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Interfaces
         void Close();
         void ClearListView();
         void SetupListViews(List<BaseColumnInfo> columns);
-        void NavigateTo(HighlightedLogEntry selectedSearchResult);
+        void NavigateTo(HighlightedLogRecord selectedSearchResult);
     }
 }
