@@ -19,7 +19,7 @@ namespace FileLogSource
         {
             this.configuration = configuration as FileLogSourceConfiguration ?? throw new ArgumentException(nameof(configuration));
 
-            fileStream = File.OpenRead(this.configuration.Filename);
+            fileStream = new FileStream(this.configuration.Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             streamReader = new StreamReader(fileStream, Encoding.UTF8, true, 1024);
         }
 

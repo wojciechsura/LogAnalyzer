@@ -65,6 +65,7 @@
     <Compile Include="Views\FindWindow\FindModel.cs" />
     <Compile Include="Views\HighlightConfigWindow\HighlightConfigModel.cs" />
     <Compile Include="Views\OpenWindow\LogParserProfileInfo.cs" />
+    <Compile Include="Views\OpenWindow\OpenFilesModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">

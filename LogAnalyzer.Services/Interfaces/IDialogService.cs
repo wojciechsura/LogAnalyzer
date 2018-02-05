@@ -8,13 +8,14 @@ using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Models.Views.FindWindow;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
+using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Services.Common;
 
 namespace LogAnalyzer.Services.Interfaces
 {
     public interface IDialogService
     {
-        ModalDialogResult<OpenResult> OpenLog();
+        ModalDialogResult<OpenResult> OpenLog(OpenFilesModel files);
         ModalDialogResult<LogParserProfileEditorResult> EditLogParserProfile(Guid guid);
         ModalDialogResult<LogParserProfileEditorResult> NewLogParserProfile();
         ModalDialogResult<HighlightConfig> ConfigHighlighting(HighlightConfigModel model);

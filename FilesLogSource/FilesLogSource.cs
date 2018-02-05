@@ -25,7 +25,7 @@ namespace FilesLogSource
             StreamReader streamReader = null;
             try
             {
-                fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read);
+                fileStream = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 streamReader = new StreamReader(fileStream, Encoding.UTF8, true, 1024);
 
                 string line = null;
@@ -101,7 +101,7 @@ namespace FilesLogSource
             }
             else
             {
-                file = new FileStream(files[0], FileMode.Open, FileAccess.Read);
+                file = new FileStream(files[0], FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 reader = new StreamReader(file, Encoding.UTF8, true, 1024);
                 currentFile = 0;
             }
@@ -126,7 +126,7 @@ namespace FilesLogSource
 
                 currentFile++;
                
-                file = new FileStream(files[currentFile], FileMode.Open, FileAccess.Read);
+                file = new FileStream(files[currentFile], FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 reader = new StreamReader(file, Encoding.UTF8, true, 1024);
 
                 line = reader.ReadLine();

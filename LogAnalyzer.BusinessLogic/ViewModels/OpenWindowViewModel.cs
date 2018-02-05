@@ -4,6 +4,7 @@ using LogAnalyzer.BusinessLogic.Models.Views.OpenWindow;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Configuration;
 using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Wpf.Input;
@@ -151,6 +152,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         // Public methods -----------------------------------------------------
 
         public OpenWindowViewModel(IOpenWindowAccess access, 
+            OpenFilesModel model,
             ILogSourceRepository logSourceRepository, 
             ILogParserRepository logParserRepository, 
             IConfigurationService configurationService,
@@ -174,18 +176,37 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             result = new ModalDialogResult<OpenResult>();
 
+
             logSourceViewModels = new ObservableCollection<ILogSourceEditorViewModel>();
 
             logSourceRepository.LogSourceProviders
                 .Select(provider => provider.CreateEditorViewModel())
                 .ToList()
                 .ForEach(vm => logSourceViewModels.Add(vm));
-            selectedLogSource = logSourceViewModels.FirstOrDefault();
+
+            bool bestSourceFound = false;
+            if (model.DroppedFiles != null && model.DroppedFiles.Count > 0)
+            {
+                foreach (var viewmodel in logSourceViewModels)
+                {
+                    var config = viewmodel.Provider.CreateFromLocalPaths(model.DroppedFiles);
+                    if (config != null)
+                    {
+                        viewmodel.LoadConfiguration(config);
+                        selectedLogSource = viewmodel;
+                        bestSourceFound = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!bestSourceFound)
+                selectedLogSource = logSourceViewModels.FirstOrDefault();
 
             logParserProfiles = new ObservableCollection<LogParserProfileInfo>();
             BuildLogParserProfileInfos();
 
-            LogParserProfileInfo lastProfile = logParserProfiles.FirstOrDefault(p => p.Guid.Equals(configurationService.Configuration.Session.LastParserProfile.Value));        
+            LogParserProfileInfo lastProfile = logParserProfiles.FirstOrDefault(p => p.Guid.Equals(configurationService.Configuration.Session.LastParserProfile.Value));
             SelectedLogParserProfile = lastProfile ?? logParserProfiles.FirstOrDefault();
         }
 

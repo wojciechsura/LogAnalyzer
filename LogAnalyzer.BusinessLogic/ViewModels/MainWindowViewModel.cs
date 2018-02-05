@@ -21,6 +21,7 @@ using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Models.Views.FindWindow;
 using System.Windows;
+using LogAnalyzer.Models.Views.OpenWindow;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -96,9 +97,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 access.Close();
         }
 
-        private void DoOpen()
+        private void DoOpen(List<string> droppedFiles = null)
         {
-            var result = dialogService.OpenLog();
+            var result = dialogService.OpenLog(new OpenFilesModel { DroppedFiles = droppedFiles });
 
             if (result.DialogResult)
             {
@@ -276,6 +277,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             if (selectedSearchResult != null)
                 access.NavigateTo(selectedSearchResult);
+        }
+
+        public void FilesDropped(List<string> files)
+        {
+            DoOpen(files);
         }
 
         // Public properties --------------------------------------------------

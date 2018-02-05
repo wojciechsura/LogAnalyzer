@@ -10,6 +10,7 @@ namespace LogAnalyzer.API.LogSource
     public interface ILogSourceEditorViewModel
     {
         ILogSourceConfiguration BuildConfiguration();
+        void LoadConfiguration(ILogSourceConfiguration configuration);
         ValidationResult Validate();
 
         string DisplayName { get; }

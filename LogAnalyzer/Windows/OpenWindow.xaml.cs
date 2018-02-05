@@ -19,6 +19,7 @@ using Unity;
 using Unity.Resolution;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.Models.Views.OpenWindow;
 
 namespace LogAnalyzer.Windows
 {
@@ -29,11 +30,11 @@ namespace LogAnalyzer.Windows
     {
         private OpenWindowViewModel viewModel;
 
-        public OpenWindow()
+        public OpenWindow(OpenFilesModel model)
         {
             InitializeComponent();
 
-            this.viewModel = Dependencies.Container.Instance.Resolve<OpenWindowViewModel>(new ParameterOverride("access", this));
+            this.viewModel = Dependencies.Container.Instance.Resolve<OpenWindowViewModel>(new ParameterOverride("access", this), new ParameterOverride("model", model));
             DataContext = viewModel;
         }
 

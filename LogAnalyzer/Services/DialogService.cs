@@ -11,6 +11,7 @@ using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Models.Views.FindWindow;
+using LogAnalyzer.Models.Views.OpenWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -44,9 +45,9 @@ namespace LogAnalyzer.Services
             return editorWindow.DataResult;
         }
 
-        public ModalDialogResult<OpenResult> OpenLog()
+        public ModalDialogResult<OpenResult> OpenLog(OpenFilesModel model)
         {
-            OpenWindow openWindow = new OpenWindow();
+            OpenWindow openWindow = new OpenWindow(model);
             openWindow.ShowDialog();
             return openWindow.DataResult;
         }

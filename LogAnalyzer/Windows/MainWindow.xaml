@@ -12,7 +12,8 @@
                 Title="Spooksoft LogAnalyzer" Height="600" Width="800"
                 WindowStartupLocation="CenterScreen"
                 Closing="HandleWindowClosing"
-                Icon="/Resources/Images/LogAnalyzer.ico">
+                Icon="/Resources/Images/LogAnalyzer.ico"
+                AllowDrop="True" DragDrop.Drop="RibbonWindow_Drop" DragDrop.DragOver="RibbonWindow_DragOver">
     <f:RibbonWindow.Resources>
         <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         <c:TransparentColorConverter x:Key="TransparentColorConverter" />

@@ -21,6 +21,15 @@ namespace FilesLogSource
             return LogAnalyzer.Dependencies.Container.Instance.Resolve<FilesLogSourceEditorViewModel>(new ParameterOverride("provider", this));
         }
 
+        public ILogSourceConfiguration CreateFromLocalPaths(List<string> files)
+        {
+            return new FilesLogSourceConfiguration
+            {
+                Files = files,
+                AutoSort = true
+            };
+        }
+
         public ILogSource CreateLogSource(ILogSourceConfiguration configuration, ILogParser logParser)
         {
             var filesConfiguration = configuration as FilesLogSourceConfiguration;

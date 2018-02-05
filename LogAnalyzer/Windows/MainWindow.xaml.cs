@@ -114,5 +114,28 @@ namespace LogAnalyzer.Windows
             lvMain.SelectedItem = selectedSearchResult;
             lvMain.ScrollIntoView(selectedSearchResult);
         }
+
+        private void RibbonWindow_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+                List<string> filePaths = new List<string>(files);
+                viewModel.FilesDropped(filePaths);
+            }
+        }
+
+        private void RibbonWindow_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effects = DragDropEffects.All;
+            }
+            else
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
     }
 }

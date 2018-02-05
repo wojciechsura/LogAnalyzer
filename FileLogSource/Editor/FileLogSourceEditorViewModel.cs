@@ -43,6 +43,11 @@ namespace FileLogSource.Editor
             }
         }
 
+        private void LoadConfig(FileLogSourceConfiguration config)
+        {
+            Filename = config.Filename;
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -68,6 +73,14 @@ namespace FileLogSource.Editor
             this.winApiService = winApiService;
 
             OpenFileCommand = new SimpleCommand((obj) => DoOpenFile());
+        }
+
+        public void LoadConfiguration(ILogSourceConfiguration configuration)
+        {
+            if (configuration is FileLogSourceConfiguration config)
+                LoadConfig(config);
+            else
+                throw new ArgumentException("Invalid configuration!");
         }
 
         // Public properties --------------------------------------------------

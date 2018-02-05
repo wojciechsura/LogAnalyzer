@@ -23,6 +23,16 @@ namespace FileLogSource
             return new FileLogSource(configuration);
         }
 
+        public ILogSourceConfiguration CreateFromLocalPaths(List<string> files)
+        {
+            if (files.Count == 1)
+            {
+                return new FileLogSourceConfiguration(files[0]);
+            }
+            else
+                return null;
+        }
+
         public string UniqueName => Common.Consts.UNIQUE_NAME;
     }
 }

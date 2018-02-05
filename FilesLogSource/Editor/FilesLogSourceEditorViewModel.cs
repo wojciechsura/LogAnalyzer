@@ -41,6 +41,19 @@ namespace FilesLogSource.Editor
         private Condition firstFileSelectedCondition;
         private Condition lastFileSelectedCondition;
 
+        // Private methods ----------------------------------------------------
+
+        private void LoadConfig(FilesLogSourceConfiguration config)
+        {
+            files.Clear();
+            for (int i = 0; i < config.Files.Count; i++)
+            {
+                files.Add(new FileInfo { Filename = config.Files[i] });
+            }
+
+            AutoSort = config.AutoSort;
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -120,6 +133,14 @@ namespace FilesLogSource.Editor
             }
 
             return new ValidationResult(true, null);
+        }
+
+        public void LoadConfiguration(ILogSourceConfiguration configuration)
+        {
+            if (configuration is FilesLogSourceConfiguration fileLogSourceConfig)
+                LoadConfig(fileLogSourceConfig);
+            else
+                throw new ArgumentException("Invalid configuration!");
         }
 
         // Public properties --------------------------------------------------

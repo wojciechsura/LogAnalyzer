@@ -12,5 +12,6 @@ namespace LogAnalyzer.API.LogSource
         ILogSourceEditorViewModel CreateEditorViewModel();
         ILogSource CreateLogSource(ILogSourceConfiguration configuration, ILogParser logParser);
         string UniqueName { get; }
+        ILogSourceConfiguration CreateFromLocalPaths(List<string> files);
     }
 }
