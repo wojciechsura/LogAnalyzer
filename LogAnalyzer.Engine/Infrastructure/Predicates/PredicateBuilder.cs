@@ -19,50 +19,92 @@ namespace LogAnalyzer.Engine.Infrastructure.Predicates
                 case Models.Types.ComparisonMethod.LessThan:
                     {
                         if (stringPredicateDesc.CaseSensitive)
-                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) < 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) < 0;
+                            };
                         else
-                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) < 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) < 0;
+                            };
                     }                    
                 case Models.Types.ComparisonMethod.LessThanOrEqual:
                     {
                         if (stringPredicateDesc.CaseSensitive)
-                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) <= 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) <= 0;
+                            };
                         else
-                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) <= 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) <= 0;
+                            };
                     }
                 case Models.Types.ComparisonMethod.Equal:
                     {
                         if (stringPredicateDesc.CaseSensitive)
-                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) == 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) == 0;
+                            };
                         else
-                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) == 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) == 0;
+                            };
                     }
                 case Models.Types.ComparisonMethod.MoreThanOrEqual:
                     {
                         if (stringPredicateDesc.CaseSensitive)
-                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) >= 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) >= 0;
+                            };
                         else
-                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) >= 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) >= 0;
+                            };
                     }
                 case Models.Types.ComparisonMethod.MoreThan:
                     {
                         if (stringPredicateDesc.CaseSensitive)
-                            return (logEntry) => getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) > 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).CompareTo(stringPredicateDesc.Argument) > 0;
+                            };
                         else
-                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) > 0;
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).ToLowerInvariant().CompareTo(stringPredicateDesc.Argument.ToLowerInvariant()) > 0;
+                            };
                     }
                 case Models.Types.ComparisonMethod.Contains:
                     {
                         if (stringPredicateDesc.CaseSensitive)
-                            return (logEntry) => getStringFunc(logEntry).Contains(stringPredicateDesc.Argument);
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).Contains(stringPredicateDesc.Argument);
+                            };
                         else
-                            return (logEntry) => getStringFunc(logEntry).ToLowerInvariant().Contains(stringPredicateDesc.Argument.ToLowerInvariant());
+                            return (logEntry) =>
+                            {
+                                return getStringFunc(logEntry).ToLowerInvariant().Contains(stringPredicateDesc.Argument.ToLowerInvariant());
+                            };
                     }
                 case Models.Types.ComparisonMethod.NotContains:
                     if (stringPredicateDesc.CaseSensitive)
-                        return (logEntry) => !(getStringFunc(logEntry).Contains(stringPredicateDesc.Argument));
+                        return (logEntry) =>
+                        {
+                            return !(getStringFunc(logEntry).Contains(stringPredicateDesc.Argument));
+                        };
                     else
-                        return (logEntry) => !(getStringFunc(logEntry).ToLowerInvariant().Contains(stringPredicateDesc.Argument.ToLowerInvariant()));
+                        return (logEntry) =>
+                        {
+                            return !(getStringFunc(logEntry).ToLowerInvariant().Contains(stringPredicateDesc.Argument.ToLowerInvariant()));
+                        };
                 case Models.Types.ComparisonMethod.Matches:
                     {
                         Regex regex;
@@ -71,7 +113,10 @@ namespace LogAnalyzer.Engine.Infrastructure.Predicates
                         else
                             regex = new Regex(stringPredicateDesc.Argument, RegexOptions.IgnoreCase);
 
-                        return (logEntry) => regex.IsMatch(getStringFunc(logEntry));
+                        return (logEntry) =>
+                        {
+                            return regex.IsMatch(getStringFunc(logEntry));
+                        };
                     }
                 case Models.Types.ComparisonMethod.NotMatches:
                     {
@@ -81,7 +126,10 @@ namespace LogAnalyzer.Engine.Infrastructure.Predicates
                         else
                             regex = new Regex(stringPredicateDesc.Argument, RegexOptions.IgnoreCase);
 
-                        return (logEntry) => !regex.IsMatch(getStringFunc(logEntry));
+                        return (logEntry) =>
+                        {
+                            return !regex.IsMatch(getStringFunc(logEntry));
+                        };
                     }
                 default:
                     throw new ArgumentException("Not supported comparison type!");

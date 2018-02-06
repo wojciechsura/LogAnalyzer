@@ -11,7 +11,7 @@ namespace LogAnalyzer.API.Types
     public enum LogEntryColumn
     {
         [ColumnHeader("Date")]
-        [LogRecordMemberName(nameof(HighlightedLogRecord.LogEntry) + "." + nameof(LogEntry.Date))]
+        [LogRecordMemberName(nameof(HighlightedLogRecord.LogEntry) + "." + nameof(LogEntry.DisplayDate))]
         Date,
         [ColumnHeader("Severity")]
         [LogRecordMemberName(nameof(HighlightedLogRecord.LogEntry) + "." + nameof(LogEntry.Severity))]
