@@ -82,6 +82,11 @@
                               Icon="/Resources/Images/Search16.png"
                               Command="{Binding SearchCommand}" 
                               SizeDefinition="Middle,Middle,Middle"/>
+                    <f:Button Header="Jump to time"
+                              LargeIcon="/Resources/Images/Clock32.png"
+                              Icon="/Resources/Images/Clock16.png"
+                              Command="{Binding JumpToTimeCommand}"
+                              SizeDefinition="Middle,Middle,Middle" />
                 </f:RibbonGroupBox>
                 <f:RibbonGroupBox Header="View">
                     <f:ToggleButton Header="Bottom pane"

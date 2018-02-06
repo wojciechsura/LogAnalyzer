@@ -10,6 +10,7 @@ using LogAnalyzer.Models.Views.FindWindow;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Services.Common;
+using LogAnalyzer.Models.Views.JumpToTime;
 
 namespace LogAnalyzer.Services.Interfaces
 {
@@ -21,5 +22,6 @@ namespace LogAnalyzer.Services.Interfaces
         ModalDialogResult<HighlightConfig> ConfigHighlighting(HighlightConfigModel model);
         ModalDialogResult<FilterConfig> ConfigFiltering(FilterConfigModel model);
         ModalDialogResult<SearchConfig> OpenFind(FindModel model);
+        ModalDialogResult<JumpToTimeResult> OpenJumpToTime(JumpToTimeModel model);
     }
 }

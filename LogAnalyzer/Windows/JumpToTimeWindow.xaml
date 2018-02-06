@@ -1,0 +1,55 @@
+﻿<Window x:Class="LogAnalyzer.Windows.JumpToTimeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:LogAnalyzer.Windows"
+        mc:Ignorable="d"
+        Title="JumpToTimeWindow" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+    <StackPanel Orientation="Vertical">
+        <GroupBox Header="Jump to time" Margin="4" Padding="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Date</Label>
+
+                <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">Year</Label>
+                <TextBox Grid.Row="0" Grid.Column="2" MaxLength="4" Width="40" Margin="4" Text="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center">Month</Label>
+                <TextBox Grid.Row="0" Grid.Column="4" MaxLength="2" Width="30" Margin="4" Text="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="0" Grid.Column="5" VerticalAlignment="Center">Day</Label>
+                <TextBox Grid.Row="0" Grid.Column="6" MaxLength="2" Width="30" Margin="4" Text="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Label Grid.Row="1" Grid.Column="0">Time</Label>
+
+                <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">Hour</Label>
+                <TextBox Grid.Row="1" Grid.Column="2" MaxLength="4" Width="40" Margin="4" Text="{Binding Hour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="1" Grid.Column="3" VerticalAlignment="Center">Minute</Label>
+                <TextBox Grid.Row="1" Grid.Column="4" MaxLength="2" Width="30" Margin="4" Text="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label Grid.Row="1" Grid.Column="5" VerticalAlignment="Center">Second</Label>
+                <TextBox Grid.Row="1" Grid.Column="6" MaxLength="2" Width="30" Margin="4" Text="{Binding Second, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Grid.Row="1" Grid.Column="7" VerticalAlignment="Center">.</Label>
+                <TextBox Grid.Row="1" Grid.Column="8" MaxLength="3" Width="40" Margin="4" Text="{Binding Fraction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            </Grid>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
+            <Button Width="120" Margin="4" Content="Cancel" Command="{Binding CancelCommand}" />
+            <Button Width="120" Margin="4" Content="OK" Command="{Binding OkCommand}" />
+        </StackPanel>
+    </StackPanel>
+</Window>

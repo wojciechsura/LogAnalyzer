@@ -12,6 +12,7 @@ using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Models.Views.FindWindow;
 using LogAnalyzer.Models.Views.OpenWindow;
+using LogAnalyzer.Models.Views.JumpToTime;
 
 namespace LogAnalyzer.Services
 {
@@ -57,6 +58,13 @@ namespace LogAnalyzer.Services
             FindWindow findWindow = new FindWindow(model);
             findWindow.ShowDialog();
             return findWindow.DataResult;
+        }
+
+        public ModalDialogResult<JumpToTimeResult> OpenJumpToTime(JumpToTimeModel model)
+        {
+            JumpToTimeWindow jumpToTimeWindow = new JumpToTimeWindow(model);
+            jumpToTimeWindow.ShowDialog();
+            return jumpToTimeWindow.DataResult;
         }
     }
 }

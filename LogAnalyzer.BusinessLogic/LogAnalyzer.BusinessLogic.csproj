@@ -76,6 +76,8 @@
     <Compile Include="Services\LogSourceRepository.cs" />
     <Compile Include="ViewModels\FilterConfigWindowViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IFindWindowAccess.cs" />
+    <Compile Include="ViewModels\Interfaces\IJumpToTimeWindowAccess.cs" />
+    <Compile Include="ViewModels\JumpToTimeWindowViewModel.cs" />
     <Compile Include="ViewModels\Processing\BaseRuleEditorViewModel.cs" />
     <Compile Include="ViewModels\Processing\FilteringRuleEditorViewModel.cs" />
     <Compile Include="ViewModels\HighlightConfigWindowViewModel.cs" />

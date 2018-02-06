@@ -32,5 +32,8 @@ namespace LogAnalyzer.Services.Interfaces
         HighlightConfig HighlightConfig { get; set; }
         FilterConfig FilterConfig { get; set; }
         SearchConfig SearchConfig { get; set; }
+
+        DateTime GetFirstFilteredTime();
+        HighlightedLogRecord FindFirstRecordAfter(DateTime resultDate);
     }
 }

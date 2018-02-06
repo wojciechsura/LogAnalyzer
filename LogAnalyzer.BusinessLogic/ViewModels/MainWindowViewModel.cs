@@ -22,6 +22,7 @@ using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Models.Views.FindWindow;
 using System.Windows;
 using LogAnalyzer.Models.Views.OpenWindow;
+using LogAnalyzer.Models.Views.JumpToTime;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -207,9 +208,24 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             Clipboard.SetText(builder.ToString());
         }
 
+        private void DoJumpToTime()
+        {
+            DateTime firstTime = engine.GetFirstFilteredTime();
+            JumpToTimeModel model = new JumpToTimeModel { DefaultDate = firstTime };
+            var result = dialogService.OpenJumpToTime(model);
+            if (result.DialogResult)
+            {
+                var entry = engine.FindFirstRecordAfter(result.Result.ResultDate);
+                if (entry != null)
+                {
+                    access.NavigateTo(entry);
+                }
+            }
+        }
+
         // Protected methods --------------------------------------------------
 
-        private void OnPropertyChanged(string name)
+        protected void OnPropertyChanged(string name)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
@@ -242,6 +258,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ToggleBottomPaneCommand = new SimpleCommand((obj) => DoToggleBottomPane());
             CloseBottomPaneCommand = new SimpleCommand((obj) => DoCloseBootomPane());
             CopyCommand = new SimpleCommand((obj) => DoCopy((IList<object>)obj), enginePresentCondition);
+            JumpToTimeCommand = new SimpleCommand((obj) => DoJumpToTime(), enginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -299,6 +316,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand CloseBottomPaneCommand { get; }
 
         public ICommand CopyCommand { get; }
+
+        public ICommand JumpToTimeCommand { get; }
 
         public ObservableRangeCollection<HighlightedLogRecord> LogEntries { get; private set; }
 

@@ -146,6 +146,19 @@ namespace LogAnalyzer.Engine
             return logReader.GetColumnInfos();
         }
 
+        public DateTime GetFirstFilteredTime()
+        {
+            if (data.HighlightedLogEntries.Count > 0)
+                return data.HighlightedLogEntries.First().LogEntry.Date;
+            else
+                return DateTime.Now;
+        }
+
+        public HighlightedLogRecord FindFirstRecordAfter(DateTime resultDate)
+        {
+            return data.HighlightedLogEntries.FirstOrDefault(e => e.LogEntry.Date.CompareTo(resultDate) >= 0);            
+        }
+
         // Public properties --------------------------------------------------
 
         public ObservableRangeCollection<HighlightedLogRecord> LogEntries => data.HighlightedLogEntries;

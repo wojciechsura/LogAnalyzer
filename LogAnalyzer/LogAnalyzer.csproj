@@ -146,6 +146,9 @@
     <Compile Include="Windows\HighlightConfigWindow.xaml.cs">
       <DependentUpon>HighlightConfigWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\JumpToTimeWindow.xaml.cs">
+      <DependentUpon>JumpToTimeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\OpenWindow.xaml.cs">
       <DependentUpon>OpenWindow.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\HighlightConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\JumpToTimeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -771,6 +778,10 @@
     <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
       <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
       <Name>FileLogSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FilesLogSource\FilesLogSource.csproj">
+      <Project>{fd4113dd-4cec-48c4-b15b-290d57f88804}</Project>
+      <Name>FilesLogSource</Name>
     </ProjectReference>
     <ProjectReference Include="..\LineLogParser\LineLogParser.csproj">
       <Project>{897c5f60-27cc-43cc-8e66-8718b8822d60}</Project>
