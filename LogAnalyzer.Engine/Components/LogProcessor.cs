@@ -502,7 +502,18 @@ namespace LogAnalyzer.Engine.Components
                                 if (lastHighlightedLog != null && lastHighlightedLog.Meta.Index == replacedItem.MetaIndex)
                                     lastHighlightedFilteredLogIndex--;
 
+                                // If it is in search results, it must be checked again
+                                var lastFoundLog = lastSearchedHighlightedLogIndex >= 0 ? data.HighlightedLogEntries[lastSearchedHighlightedLogIndex] : null;
+
+                                if (lastFoundLog != null && lastFoundLog.Meta.Index == replacedItem.MetaIndex)
+                                {
+                                    data.FoundEntries.RemoveAt(data.FoundEntries.Count - 1);
+                                    lastSearchedHighlightedLogIndex--;
+                                }
+
                                 data.HighlightedLogEntries.RemoveAt(data.HighlightedLogEntries.Count - 1);
+
+
 #if DEBUG
                                 System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Queue: replaced item was removed, new last filtered index: {lastFilteredLogIndex}, new last highlighted index: {lastHighlightedFilteredLogIndex}");
 #endif
@@ -534,8 +545,10 @@ namespace LogAnalyzer.Engine.Components
                     // Re-filter, re-highlight, re-search
 
                     data.HighlightedLogEntries.Clear();
+                    data.FoundEntries.Clear();
                     lastHighlightedFilteredLogIndex = -1;
                     lastFilteredLogIndex = -1;
+                    lastSearchedHighlightedLogIndex = -1;
 
 #if DEBUG
                     System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Queue: Resetting filtered items");
