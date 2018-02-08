@@ -18,7 +18,7 @@ namespace LogAnalyzer.Engine.Components
     {
         // Private constants --------------------------------------------------
 
-        private const int MAX_PROCESSED_LINES = 200;
+        private const int MAX_PROCESSED_LINES = 1024;
 
         // Private classes ----------------------------------------------------
 

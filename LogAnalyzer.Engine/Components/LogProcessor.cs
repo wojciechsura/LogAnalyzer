@@ -18,9 +18,9 @@ namespace LogAnalyzer.Engine.Components
     {
         // Private constants --------------------------------------------------
 
-        private const int MAX_FILTERED_ITEMS = 200;
-        private const int MAX_HIGHLIGHTED_ITEMS = 200;
-        private const int MAX_SEARCHED_ITEMS = 200;
+        private const int MAX_FILTERED_ITEMS = 1024;
+        private const int MAX_HIGHLIGHTED_ITEMS = 1024;
+        private const int MAX_SEARCHED_ITEMS = 1024;
 
         // Private classes ----------------------------------------------------
 

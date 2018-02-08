@@ -38,7 +38,7 @@ namespace LogAnalyzer.Windows
             InitializeComponent();
 
             viewModel = Dependencies.Container.Instance.Resolve<MainWindowViewModel>(new ParameterOverride("access", this));
-            DataContext = viewModel;            
+            DataContext = viewModel;
         }
 
         public void ClearListView()
@@ -115,15 +115,23 @@ namespace LogAnalyzer.Windows
             lvMain.ScrollIntoView(selectedSearchResult);
         }
 
+
         private void RibbonWindow_Drop(object sender, DragEventArgs e)
         {
+            // Deferring invoke to avoid hanging source
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
                 List<string> filePaths = new List<string>(files);
-                viewModel.FilesDropped(filePaths);
+
+                this.Dispatcher.BeginInvoke(new Action(() => HandleFilesDropped(filePaths)));                
             }
+        }
+
+        private void HandleFilesDropped(List<string> filePaths)
+        {
+            viewModel.FilesDropped(filePaths);
         }
 
         private void RibbonWindow_DragOver(object sender, DragEventArgs e)
