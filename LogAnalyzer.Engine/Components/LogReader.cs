@@ -18,7 +18,7 @@ namespace LogAnalyzer.Engine.Components
     {
         // Private constants --------------------------------------------------
 
-        private const int MAX_PROCESSED_LINES = 1024;
+        private const int MAX_PROCESSED_LINES = 2048;
 
         // Private classes ----------------------------------------------------
 
@@ -263,6 +263,7 @@ namespace LogAnalyzer.Engine.Components
             this.data = data;
 
             backgroundWorker = new BackgroundWorker();
+            backgroundWorker.WorkerSupportsCancellation = true;
             backgroundWorker.DoWork += DoWork;
             backgroundWorker.RunWorkerCompleted += RunWorkerCompleted;
         }

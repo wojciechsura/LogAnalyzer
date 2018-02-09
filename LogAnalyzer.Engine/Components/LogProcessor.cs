@@ -6,6 +6,7 @@ using LogAnalyzer.Engine.Interfaces;
 using LogAnalyzer.Models.Types;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -18,9 +19,9 @@ namespace LogAnalyzer.Engine.Components
     {
         // Private constants --------------------------------------------------
 
-        private const int MAX_FILTERED_ITEMS = 1024;
-        private const int MAX_HIGHLIGHTED_ITEMS = 1024;
-        private const int MAX_SEARCHED_ITEMS = 1024;
+        private const int MAX_FILTERED_ITEMS = 2048;
+        private const int MAX_HIGHLIGHTED_ITEMS = 2048;
+        private const int MAX_SEARCHED_ITEMS = 2048;
 
         // Private classes ----------------------------------------------------
 
@@ -304,8 +305,15 @@ namespace LogAnalyzer.Engine.Components
 
                         if (filteredCount > 0)
                         {
+                            /*
                             for (int i = 0; i < filteredCount; i++)
                                 data.HighlightedLogEntries.Add(new HighlightedLogRecord(filterResult.Entries[i].LogEntry, filterResult.Entries[i].Meta));
+                            */
+
+                            List<HighlightedLogRecord> records = filterResult.Entries
+                                .Select(entry => new HighlightedLogRecord(entry.LogEntry, entry.Meta))
+                                .ToList();
+                            data.HighlightedLogEntries.AddRange(records, NotifyCollectionChangedAction.Reset);
 #if DEBUG
                             System.Diagnostics.Debug.WriteLine($"[ ]->[ F ] Added {filterResult.Entries.Count} filtered entries");
 #endif
@@ -644,6 +652,7 @@ namespace LogAnalyzer.Engine.Components
 
             this.queue = new Queue<BaseQueueItem>();
             this.backgroundWorker = new BackgroundWorker();
+            this.backgroundWorker.WorkerSupportsCancellation = true;
             backgroundWorker.DoWork += DoWork;
             backgroundWorker.RunWorkerCompleted += RunWorkerCompleted;
 
