@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
@@ -19,9 +20,9 @@ namespace LogAnalyzer.Engine.Components
     {
         // Private constants --------------------------------------------------
 
-        private const int MAX_FILTERED_ITEMS = 2048;
-        private const int MAX_HIGHLIGHTED_ITEMS = 2048;
-        private const int MAX_SEARCHED_ITEMS = 2048;
+        private const int MAX_FILTERED_ITEMS = 1024 * 100;
+        private const int MAX_HIGHLIGHTED_ITEMS = 1024 * 100;
+        private const int MAX_SEARCHED_ITEMS = 1024 * 100;
 
         // Private classes ----------------------------------------------------
 
@@ -204,6 +205,8 @@ namespace LogAnalyzer.Engine.Components
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
+            Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+
             if (e.Argument is FilterArgument filterArgument)
             {
                 var processedItems = new List<LogRecord>();

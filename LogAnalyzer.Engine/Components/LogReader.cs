@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LogAnalyzer.Engine.Components
@@ -18,7 +19,7 @@ namespace LogAnalyzer.Engine.Components
     {
         // Private constants --------------------------------------------------
 
-        private const int MAX_PROCESSED_LINES = 2048;
+        private const int MAX_PROCESSED_LINES = 1024 * 100;
 
         // Private classes ----------------------------------------------------
 
@@ -68,6 +69,8 @@ namespace LogAnalyzer.Engine.Components
 
         private void DoWork(object sender, DoWorkEventArgs e)
         {
+            Thread.CurrentThread.Priority = ThreadPriority.Lowest;
+
             var argument = e.Argument as ProcessingArgument;
 
             var processedItems = new List<LogEntry>();
