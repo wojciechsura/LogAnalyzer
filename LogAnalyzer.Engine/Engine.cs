@@ -96,6 +96,16 @@ namespace LogAnalyzer.Engine
             logProcessor.SetSearchConfig(config);
         }
 
+        private void RemoveBookmark(string name)
+        {
+            var entry = bookmarks.SingleOrDefault(b => b.Name == name);
+            if (entry != null)
+            {
+                bookmarks.Remove(entry);
+                entry.LogEntry.NotifyBookmarksChanged();
+            }
+        }
+
         // Public methods -----------------------------------------------------
 
         public Engine(ILogSource logSource, ILogParser logParser)
@@ -165,11 +175,40 @@ namespace LogAnalyzer.Engine
             return data.HighlightedLogEntries.FirstOrDefault(e => e.LogEntry.Date.CompareTo(resultDate) >= 0);            
         }
 
-        public void AddBookmark(string name, LogEntry logEntry)
+        public IEnumerable<string> GetBookmarks(LogEntry logEntry)
         {
-            if (bookmarks.Any(b => b.Name == name && b.LogEntry))
+            return bookmarks
+                .Where(b => b.LogEntry == logEntry)
+                .OrderBy(b => b.Name)
+                .Select(b => b.Name)
+                .ToList();
         }
 
+        public void AddBookmark(string name, LogRecord logRecord)
+        {
+            if (!data.ResultLogEntries.Any(le => le == logRecord.LogEntry))
+                throw new ArgumentException("Invalid log entry!");
+
+            // Removing existing
+            RemoveBookmark(name);
+
+            bookmarks.Add(new BookmarkEntry(name, logRecord.LogEntry));
+            logRecord.LogEntry.NotifyBookmarksChanged();
+        }
+
+        public LogRecord GetLogRecordForBookmark(string name)
+        {
+            var entry = bookmarks
+                .SingleOrDefault(b => b.Name == name)
+                ?.LogEntry;
+
+            if (entry == null)
+                return null;
+
+            return data.HighlightedLogEntries
+                .Where(r => r.LogEntry == entry)
+                .SingleOrDefault();
+        }
 
         // Public properties --------------------------------------------------
 

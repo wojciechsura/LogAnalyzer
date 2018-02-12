@@ -55,7 +55,6 @@
     <Compile Include="LogSource\ILogSourceProvider.cs" />
     <Compile Include="Models\BaseColumnInfo.cs" />
     <Compile Include="Models\BaseLogEntry.cs" />
-    <Compile Include="Models\Bookmark.cs" />
     <Compile Include="Models\CommonColumnInfo.cs" />
     <Compile Include="Models\CustomColumnInfo.cs" />
     <Compile Include="Models\LogRecord.cs" />

@@ -60,6 +60,17 @@ namespace LogAnalyzer.Windows
             gridView.Columns.Add(column);
         }
 
+        private void CreateMarginColumn(GridView gridView, DataTemplate dataTemplate)
+        {
+            GridViewColumn marginColumn = new GridViewColumn
+            {
+                Header = "",
+                Width = 48,
+                CellTemplate = dataTemplate
+            };
+            gridView.Columns.Add(marginColumn);
+        }
+
         private void CreateLineNumberColumn(GridView gridView, DataTemplate dataTemplate)
         {
             GridViewColumn lineNumberColumn = new GridViewColumn
@@ -85,14 +96,19 @@ namespace LogAnalyzer.Windows
             listView.View = null;
 
             string commonColumnXaml = ResourceReader.ReadEmbeddedResource(Assembly.GetExecutingAssembly(), "LogAnalyzer.Resources.Xaml.RegularColumn.xaml");
+            string marginColumnXaml = ResourceReader.ReadEmbeddedResource(Assembly.GetExecutingAssembly(), "LogAnalyzer.Resources.Xaml.MarginColumn.xaml");
 
             GridView gridView = new GridView();
 
+            // Margin
+            string marginXaml = marginColumnXaml;
+            DataTemplate marginColumnDataTemplate = (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(marginXaml)));
+            CreateMarginColumn(gridView, marginColumnDataTemplate);
+
             // Line number
             string columnXaml = String.Format(commonColumnXaml, $"{nameof(LogRecord.LogEntry)}.{nameof(LogEntry.Index)}");
-            DataTemplate dataTemplate = (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(columnXaml)));
-
-            CreateLineNumberColumn(gridView, dataTemplate);
+            DataTemplate indexColumnDataTemplate = (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(columnXaml)));
+            CreateLineNumberColumn(gridView, indexColumnDataTemplate);
 
             // Other columns
             for (int i = 0; i < columns.Count; i++)

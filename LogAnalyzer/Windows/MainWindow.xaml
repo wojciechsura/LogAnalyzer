@@ -47,7 +47,29 @@
         <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="F" Command="{Binding SearchCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="J" Command="{Binding JumpToTimeCommand}" />
-    </f:RibbonWindow.InputBindings>
+
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D1" Command="{Binding SetBookmarkCommand}" CommandParameter="1" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D2" Command="{Binding SetBookmarkCommand}" CommandParameter="2" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D3" Command="{Binding SetBookmarkCommand}" CommandParameter="3" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D4" Command="{Binding SetBookmarkCommand}" CommandParameter="4" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D5" Command="{Binding SetBookmarkCommand}" CommandParameter="5" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D6" Command="{Binding SetBookmarkCommand}" CommandParameter="6" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D7" Command="{Binding SetBookmarkCommand}" CommandParameter="7" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D8" Command="{Binding SetBookmarkCommand}" CommandParameter="8" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D9" Command="{Binding SetBookmarkCommand}" CommandParameter="9" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="D0" Command="{Binding SetBookmarkCommand}" CommandParameter="0" />
+
+        <KeyBinding Modifiers="Ctrl" Key="D1" Command="{Binding GotoBookmarkCommand}" CommandParameter="1" />
+        <KeyBinding Modifiers="Ctrl" Key="D2" Command="{Binding GotoBookmarkCommand}" CommandParameter="2" />
+        <KeyBinding Modifiers="Ctrl" Key="D3" Command="{Binding GotoBookmarkCommand}" CommandParameter="3" />
+        <KeyBinding Modifiers="Ctrl" Key="D4" Command="{Binding GotoBookmarkCommand}" CommandParameter="4" />
+        <KeyBinding Modifiers="Ctrl" Key="D5" Command="{Binding GotoBookmarkCommand}" CommandParameter="5" />
+        <KeyBinding Modifiers="Ctrl" Key="D6" Command="{Binding GotoBookmarkCommand}" CommandParameter="6" />
+        <KeyBinding Modifiers="Ctrl" Key="D7" Command="{Binding GotoBookmarkCommand}" CommandParameter="7" />
+        <KeyBinding Modifiers="Ctrl" Key="D8" Command="{Binding GotoBookmarkCommand}" CommandParameter="8" />
+        <KeyBinding Modifiers="Ctrl" Key="D9" Command="{Binding GotoBookmarkCommand}" CommandParameter="9" />
+        <KeyBinding Modifiers="Ctrl" Key="D0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0" />
+    </f:RibbonWindow.InputBindings>       
     <DockPanel>
         <f:Ribbon DockPanel.Dock="Top">
             <f:Ribbon.Menu>
@@ -130,7 +152,8 @@
                                   Visibility="{Binding BottomPaneVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
             <ListView Grid.Row="0" x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended" VerticalContentAlignment="Top"
-                      ItemContainerStyle="{StaticResource ListViewItemStyle}"/>
+                      ItemContainerStyle="{StaticResource ListViewItemStyle}" SelectedIndex="{Binding SelectedEntryIndex, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </DockPanel>
     </DockPanel>
 </f:RibbonWindow>

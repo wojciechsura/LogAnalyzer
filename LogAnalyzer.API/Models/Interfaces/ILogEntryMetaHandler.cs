@@ -8,5 +8,6 @@ namespace LogAnalyzer.API.Models.Interfaces
 {
     public interface ILogEntryMetaHandler
     {
+        IEnumerable<string> GetBookmarks(LogEntry logEntry);
     }
 }

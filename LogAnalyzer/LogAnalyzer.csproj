@@ -163,6 +163,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <EmbeddedResource Include="Resources\Xaml\MarginColumn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <Page Include="Windows\FilterConfigWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -641,6 +645,8 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\Bookmark16.png" />
+    <Resource Include="Resources\Images\Bookmark32.png" />
     <Resource Include="Resources\Images\Copy16.png" />
     <Resource Include="Resources\Images\Copy32.png" />
     <Resource Include="Resources\Images\BottomPane32.png" />

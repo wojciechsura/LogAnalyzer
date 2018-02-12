@@ -48,9 +48,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private BaseCondition generalCommandCondition;
         private Wpf.Input.Condition enginePresentCondition;
         private BaseCondition generalEnginePresentCondition;
+        private Wpf.Input.Condition itemSelectedCondition;
 
         private bool bottomPaneVisible;
         private LogRecord selectedSearchResult;
+        private LogRecord selectedLogEntry;
 
         // Private methods ----------------------------------------------------
 
@@ -223,6 +225,20 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        private void DoGotoBookmark(string id)
+        {
+            LogRecord bookmarkedRecord = engine.GetLogRecordForBookmark(id);
+            access.NavigateTo(bookmarkedRecord);
+        }
+
+        private void DoSetBookmark(string id)
+        {
+            if (selectedLogEntry == null)
+                throw new InvalidOperationException("Cannot set bookmark - no entry selected!");
+
+            engine.AddBookmark(id, selectedLogEntry);
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -250,6 +266,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             generalCommandCondition = !engineStoppingCondition;
             enginePresentCondition = new Wpf.Input.Condition(false);
             generalEnginePresentCondition = enginePresentCondition & !engineStoppingCondition;
+            itemSelectedCondition = new Wpf.Input.Condition(false);
 
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
@@ -259,6 +276,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             CloseBottomPaneCommand = new SimpleCommand((obj) => DoCloseBootomPane());
             CopyCommand = new SimpleCommand((obj) => DoCopy((IList<object>)obj), enginePresentCondition);
             JumpToTimeCommand = new SimpleCommand((obj) => DoJumpToTime(), enginePresentCondition);
+            SetBookmarkCommand = new SimpleCommand((obj) => DoSetBookmark((string)obj), enginePresentCondition & itemSelectedCondition);
+            GotoBookmarkCommand = new SimpleCommand((obj) => DoGotoBookmark((string)obj), enginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -319,15 +338,39 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public ICommand JumpToTimeCommand { get; }
 
+        public ICommand SetBookmarkCommand { get; }
+
+        public ICommand GotoBookmarkCommand { get; }
+
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 
         public ObservableRangeCollection<LogRecord> SearchResults { get; private set; }
 
-        public LogRecord SelectedSearchResult { get => selectedSearchResult;
-        set
+        public LogRecord SelectedSearchResult
+        {
+            get => selectedSearchResult;
+            set
             {
                 selectedSearchResult = value;
                 OnPropertyChanged(nameof(SelectedSearchResult));
+            }
+        }
+
+        public int SelectedEntryIndex
+        {
+            set
+            {
+                itemSelectedCondition.Value = value != -1;
+            }
+        }
+
+        public LogRecord SelectedLogEntry
+        {
+            get => selectedLogEntry;
+            set
+            {
+                selectedLogEntry = value;
+                OnPropertyChanged(nameof(SelectedLogEntry));
             }
         }
 

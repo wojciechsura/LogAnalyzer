@@ -30,7 +30,10 @@ namespace LogAnalyzer.Windows
         private void JumpToNextTextbox(TextBox current, int desiredLength, TextBox next)
         {
             if (current.Text.Length == desiredLength)
+            {
                 next.Focus();
+                next.SelectAll();
+            }
         }
 
         private void tbYear_TextChanged(object sender, TextChangedEventArgs e)
@@ -76,11 +79,6 @@ namespace LogAnalyzer.Windows
         public void Close(bool result)
         {
             DialogResult = result;
-        }
-
-        private void TextBoxGotFocus(object sender, RoutedEventArgs e)
-        {
-            (sender as TextBox)?.SelectAll();
         }
     }
 }

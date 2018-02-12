@@ -9,6 +9,12 @@ namespace LogAnalyzer.Models.Engine
 {
     public class BookmarkEntry
     {
+        public BookmarkEntry(string name, LogEntry logEntry)
+        {
+            Name = name;
+            LogEntry = logEntry;
+        }
+
         public string Name { get; }
         public LogEntry LogEntry { get; }
     }

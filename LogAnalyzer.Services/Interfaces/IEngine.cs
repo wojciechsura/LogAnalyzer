@@ -29,6 +29,9 @@ namespace LogAnalyzer.Services.Interfaces
         void Stop(Action stopAction);
         List<BaseColumnInfo> GetColumnInfos();
 
+        void AddBookmark(string name, LogRecord logRecord);
+        LogRecord GetLogRecordForBookmark(string name);
+
         HighlightConfig HighlightConfig { get; set; }
         FilterConfig FilterConfig { get; set; }
         SearchConfig SearchConfig { get; set; }

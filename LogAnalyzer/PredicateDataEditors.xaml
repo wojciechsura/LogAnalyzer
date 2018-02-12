@@ -17,16 +17,16 @@
             <Label Grid.Row="0" Grid.Column="0">Condition</Label>
             <DockPanel Grid.Row="0" Grid.Column="1">
                 <ComboBox DockPanel.Dock="Left" 
-                                                              Margin="0,2,4,2" 
-                                                              VerticalAlignment="Center"
-                                                              Width="150"
-                                                              ItemsSource="{Binding ComparisonMethods}" 
-                                                              DisplayMemberPath="Display"
-                                                              SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    Margin="0,2,4,2" 
+                    VerticalAlignment="Center"
+                    Width="150"
+                    ItemsSource="{Binding ComparisonMethods}" 
+                    DisplayMemberPath="Display"
+                    SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBox VerticalAlignment="Center" 
-                                                             HorizontalAlignment="Stretch" 
-                                                             Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                             Margin="0,2,4,2"/>
+                    HorizontalAlignment="Stretch" 
+                    Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    Margin="0,2,4,2"/>
             </DockPanel>
 
             <Label Grid.Row="1" Grid.Column="0">Options</Label>
@@ -51,21 +51,21 @@
             <Label Grid.Row="0" Grid.Column="0">Condition</Label>
             <DockPanel Grid.Row="0" Grid.Column="1">
                 <ComboBox DockPanel.Dock="Left" Margin="0,4,4,4" VerticalAlignment="Center"
-                                                              Width="150"
-                                                              ItemsSource="{Binding ComparisonMethods}" 
-                                                              DisplayMemberPath="Display"
-                                                              SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    Width="150"
+                    ItemsSource="{Binding ComparisonMethods}" 
+                    DisplayMemberPath="Display"
+                    SelectedItem="{Binding SelectedComparisonMethod, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TextBox VerticalAlignment="Center" 
-                                                             HorizontalAlignment="Stretch" 
-                                                             Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                                             Margin="0,2,4,2" />
+                    HorizontalAlignment="Stretch" 
+                    Text="{Binding Argument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    Margin="0,2,4,2" />
             </DockPanel>
 
             <Label Grid.Row="1" Grid.Column="0">Options</Label>
             <CheckBox Grid.Row="1" Grid.Column="1" 
-                                                          IsChecked="{Binding CaseSensitive}"
-                                                          VerticalAlignment="Center"
-                                                          Margin="0,2,4,2" >Case-sensitive</CheckBox>
+                IsChecked="{Binding CaseSensitive}"
+                VerticalAlignment="Center"
+                Margin="0,2,4,2" >Case-sensitive</CheckBox>
         </Grid>
     </DataTemplate>
     <DataTemplate DataType="{x:Type p:DateRuleDataEditorViewModel}">
