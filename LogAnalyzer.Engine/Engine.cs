@@ -56,7 +56,7 @@ namespace LogAnalyzer.Engine
         private FilterConfig filterConfig;
         private SearchConfig searchConfig;
 
-        private readonly Dictionary<string, LogRecord> bookmarks;
+        private readonly List<BookmarkEntry> bookmarks;
 
         private State state = State.Working;
         private StopToken stopToken = null;
@@ -116,7 +116,7 @@ namespace LogAnalyzer.Engine
                 DefaultAction = FilterAction.Include
             };
 
-            bookmarks = new Dictionary<string, LogRecord>();
+            bookmarks = new List<BookmarkEntry>();
         }
 
         public void NotifySourceReady()
@@ -165,55 +165,11 @@ namespace LogAnalyzer.Engine
             return data.HighlightedLogEntries.FirstOrDefault(e => e.LogEntry.Date.CompareTo(resultDate) >= 0);            
         }
 
-        public void AddBookmark(string name, LogRecord newRecord)
+        public void AddBookmark(string name, LogEntry logEntry)
         {
-            ClearBookmark(newRecord);
-            ClearBookmark(name);
-
-            bookmarks[name] = newRecord;
-            newRecord.LogEntry.NotifyBookmarkUpdated();
+            if (bookmarks.Any(b => b.Name == name && b.LogEntry))
         }
 
-        public void ClearBookmark(LogRecord record)
-        {
-            foreach (var item in bookmarks.Where(kvp => kvp.Value == record).ToList())
-            {
-                bookmarks.Remove(item.Key);
-
-                record.LogEntry.NotifyBookmarkUpdated();
-            }
-        }
-
-        public void ClearBookmark(string name)
-        {
-            if (bookmarks.ContainsKey(name))
-            {
-                var record = bookmarks[name];
-                bookmarks.Remove(name);
-
-                record.NotifyBookmarkUpdated();
-            }
-        }
-
-        public LogRecord GetBookmarkedItem(string name)
-        {
-            if (bookmarks.ContainsKey(name))
-                return bookmarks[name];
-            else
-                return null;
-        }
-
-        public string GetBookmarkFor(LogRecord record)
-        {
-            var items = bookmarks.Where(kvp => kvp.Value == record).ToList();
-
-            if (items.Count == 1)
-                return items[1].Key;
-            else if (items.Count == 0)
-                return null;
-
-            throw new InvalidOperationException("More than one bookmark for record!");
-        }
 
         // Public properties --------------------------------------------------
 
