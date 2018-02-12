@@ -18,13 +18,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
     {
         // Private fields -----------------------------------------------------
 
-        private int year;
-        private int month;
-        private int day;
-        private int hour;
-        private int minute;
-        private int second;
-        private int fraction;
+        private string year;
+        private string month;
+        private string day;
+        private string hour;
+        private string minute;
+        private string second;
+        private string fraction;
 
         private ModalDialogResult<JumpToTimeResult> result;
         private readonly IJumpToTimeWindowAccess access;
@@ -36,7 +36,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             try
             {
-                DateTime dateresult = new DateTime(year, month, day, hour, minute, second, fraction);
+                DateTime dateresult = new DateTime(int.Parse(year), 
+                    int.Parse(month), 
+                    int.Parse(day), 
+                    int.Parse(hour), 
+                    int.Parse(minute), 
+                    int.Parse(second), 
+                    int.Parse(fraction));
 
                 result.DialogResult = true;
                 result.Result = new JumpToTimeResult { ResultDate = dateresult};
@@ -66,13 +72,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             this.access = access;
             this.messagingService = messagingService;
-            year = model.DefaultDate.Year;
-            month = model.DefaultDate.Month;
-            day = model.DefaultDate.Day;
-            hour = model.DefaultDate.Hour;
-            minute = model.DefaultDate.Minute;
-            second = model.DefaultDate.Second;
-            fraction = model.DefaultDate.Millisecond;
+            fraction = model.DefaultDate.Millisecond.ToString("000");
+            second = model.DefaultDate.Second.ToString("00");
+            minute = model.DefaultDate.Minute.ToString("00");
+            hour = model.DefaultDate.Hour.ToString("00");
+            day = model.DefaultDate.Day.ToString("00");
+            month = model.DefaultDate.Month.ToString("00");
+            year = model.DefaultDate.Year.ToString("0000");
 
             result = new ModalDialogResult<JumpToTimeResult>();
 
@@ -84,43 +90,43 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int Hour
+        public string Hour
         {
             get { return hour; }
             set { hour = value; OnPropertyChanged(nameof(Hour)); }
         }
 
-        public int Minute
+        public string Minute
         {
             get { return minute; }
             set { minute = value; OnPropertyChanged(nameof(Minute)); }
         }
 
-        public int Second
+        public string Second
         {
             get { return second; }
             set { second = value; OnPropertyChanged(nameof(Second)); }
         }
 
-        public int Year
+        public string Year
         {
             get { return year; }
             set { year = value; OnPropertyChanged(nameof(Year)); }
         }
 
-        public int Month
+        public string Month
         {
             get { return month; }
             set { month = value; OnPropertyChanged(nameof(Month)); }
         }
 
-        public int Day
+        public string Day
         {
             get { return day; }
             set { day = value; OnPropertyChanged(nameof(Day)); }
         }
 
-        public int Fraction
+        public string Fraction
         {
             get { return fraction; }
             set { fraction = value; OnPropertyChanged(nameof(Fraction)); }

@@ -42,6 +42,12 @@
         </Style>
 
     </f:RibbonWindow.Resources>
+    <f:RibbonWindow.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenComand}" />
+        <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="F" Command="{Binding SearchCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="J" Command="{Binding JumpToTimeCommand}" />
+    </f:RibbonWindow.InputBindings>
     <DockPanel>
         <f:Ribbon DockPanel.Dock="Top">
             <f:Ribbon.Menu>

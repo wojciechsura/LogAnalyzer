@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogAnalyzer.Windows"
         mc:Ignorable="d"
-        Title="JumpToTimeWindow" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+        Title="Jump to time" SizeToContent="WidthAndHeight" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen" >
     <StackPanel Orientation="Vertical">
         <GroupBox Header="Jump to time" Margin="4" Padding="4">
             <Grid>
@@ -29,28 +30,28 @@
 
                 <Label Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">Year</Label>
                 <TextBox x:Name="tbYear" Grid.Row="0" Grid.Column="2" MaxLength="4" Width="40" Margin="4" Text="{Binding Year, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextChanged="tbYear_TextChanged" TabIndex="0"/>
+                         TextChanged="tbYear_TextChanged" GotFocus="TextBoxGotFocus" TabIndex="0"/>
                 <Label Grid.Row="0" Grid.Column="3" VerticalAlignment="Center">Month</Label>
                 <TextBox x:Name="tbMonth" Grid.Row="0" Grid.Column="4" MaxLength="2" Width="30" Margin="4" Text="{Binding Month, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextChanged="tbMonth_TextChanged" TabIndex="1"/>
+                         TextChanged="tbMonth_TextChanged" GotFocus="TextBoxGotFocus" TabIndex="1"/>
                 <Label Grid.Row="0" Grid.Column="5" VerticalAlignment="Center">Day</Label>
                 <TextBox x:Name="tbDay" Grid.Row="0" Grid.Column="6" MaxLength="2" Width="30" Margin="4" Text="{Binding Day, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextChanged="tbDay_TextChanged" TabIndex="2"/>
+                         TextChanged="tbDay_TextChanged" GotFocus="TextBoxGotFocus" TabIndex="2"/>
 
                 <Label Grid.Row="1" Grid.Column="0">Time</Label>
 
                 <Label Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">Hour</Label>
                 <TextBox x:Name="tbHour" Grid.Row="1" Grid.Column="2" MaxLength="4" Width="40" Margin="4" Text="{Binding Hour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextChanged="tbHour_TextChanged" TabIndex="3"/>
+                         TextChanged="tbHour_TextChanged" GotFocus="TextBoxGotFocus" TabIndex="3"/>
                 <Label Grid.Row="1" Grid.Column="3" VerticalAlignment="Center">Minute</Label>
                 <TextBox x:Name="tbMinute" Grid.Row="1" Grid.Column="4" MaxLength="2" Width="30" Margin="4" Text="{Binding Minute, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         TextChanged="tbMinute_TextChanged" TabIndex="4"/>
+                         TextChanged="tbMinute_TextChanged" GotFocus="TextBoxGotFocus" TabIndex="4"/>
                 <Label Grid.Row="1" Grid.Column="5" VerticalAlignment="Center">Second</Label>
                 <TextBox x:Name="tbSecond" Grid.Row="1" Grid.Column="6" MaxLength="2" Width="30" Margin="4" Text="{Binding Second, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         TextChanged="tbSecond_TextChanged" TabIndex="5"/>
+                         TextChanged="tbSecond_TextChanged" GotFocus="TextBoxGotFocus" TabIndex="5"/>
                 <Label Grid.Row="1" Grid.Column="7" VerticalAlignment="Center">.</Label>
                 <TextBox x:Name="tbFraction" Grid.Row="1" Grid.Column="8" MaxLength="3" Width="40" Margin="4" Text="{Binding Fraction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         TabIndex="6"/>
+                         GotFocus="TextBoxGotFocus" TabIndex="6"/>
 
             </Grid>
         </GroupBox>
