@@ -595,7 +595,7 @@ namespace LogAnalyzer.Engine.Components
 
                 StartSearchWorker(processedRange);
             }
-            if (lastHighlightedFilteredLogIndex < data.HighlightedLogEntries.Count - 1)
+            else if (lastHighlightedFilteredLogIndex < data.HighlightedLogEntries.Count - 1)
             {
                 // Highlighting has priority over filtering
 #if DEBUG
