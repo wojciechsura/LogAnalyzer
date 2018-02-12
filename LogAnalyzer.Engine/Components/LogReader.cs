@@ -2,6 +2,7 @@
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
 using LogAnalyzer.API.Models;
+using LogAnalyzer.API.Models.Interfaces;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Events;
@@ -25,13 +26,13 @@ namespace LogAnalyzer.Engine.Components
 
         private class ProcessingArgument
         {
-            public LogEntry LastLogEntry { get; set; }
+            public BaseLogEntry LastLogEntry { get; set; }
         }
 
         private class ProcessingResult
         {
             public bool ReplaceLast { get; set; }
-            public List<LogEntry> ParsedEntries { get; set; }
+            public List<BaseLogEntry> ParsedEntries { get; set; }
             public bool MoreData { get; set; }
         }
 
@@ -58,7 +59,7 @@ namespace LogAnalyzer.Engine.Components
         private readonly ILogParser logParser;
         private readonly EventBus eventBus;
         private readonly ILogReaderEngineDataView data;
-
+        private readonly ILogEntryMetaHandler handler;
         private readonly BackgroundWorker backgroundWorker;
         private bool workerRunning = false;
         private bool restart = false;
@@ -73,9 +74,9 @@ namespace LogAnalyzer.Engine.Components
 
             var argument = e.Argument as ProcessingArgument;
 
-            var processedItems = new List<LogEntry>();
+            var processedItems = new List<BaseLogEntry>();
             bool replaceFirst = false;
-            LogEntry lastEntry = null;
+            BaseLogEntry lastEntry = null;
 
             if (argument.LastLogEntry != null)
             {
@@ -93,14 +94,11 @@ namespace LogAnalyzer.Engine.Components
                 {
                     linesProcessed++;
 
-                    (LogEntry entry, ParserOperation operation) = logParser.Parse(line, lastEntry);
+                    (BaseLogEntry entry, ParserOperation operation) = logParser.Parse(line, lastEntry);
 
                     if (operation == ParserOperation.ReplaceLast)
                     {
-                        if (entry == null)
-                            throw new InvalidOperationException("ReplaceLast operation must yield entry!");
-
-                        processedItems[processedItems.Count - 1] = entry;
+                        processedItems[processedItems.Count - 1] = entry ?? throw new InvalidOperationException("ReplaceLast operation must yield entry!");
                         lastEntry = entry;
                     }
                     else if (operation == ParserOperation.AddNew)
@@ -126,8 +124,7 @@ namespace LogAnalyzer.Engine.Components
                 {
                     ParsedEntries = null,
                     ReplaceLast = false,
-                    MoreData = false
-                    
+                    MoreData = false                    
                 };
                 e.Result = result;
                 return;
@@ -170,19 +167,19 @@ namespace LogAnalyzer.Engine.Components
                         if (result.ReplaceLast)
                         {
 #if DEBUG
-                            System.Diagnostics.Debug.WriteLine($"[R]->[    ] Replacing last item with meta index {data.ResultLogEntries.LastOrDefault()?.Meta.Index}");
+                            System.Diagnostics.Debug.WriteLine($"[R]->[    ] Replacing last item with meta index {data.ResultLogEntries.LastOrDefault()?.Index}");
 #endif
 
                             if (data.ResultLogEntries.Count == 0)
                                 throw new InvalidOperationException("Cannot replace last item!");
 
-                            data.ResultLogEntries[data.ResultLogEntries.Count - 1] = new LogRecord(result.ParsedEntries[0], data.ResultLogEntries[data.ResultLogEntries.Count - 1].Meta);
+                            data.ResultLogEntries[data.ResultLogEntries.Count - 1] = new LogEntry(result.ParsedEntries[0], data.ResultLogEntries[data.ResultLogEntries.Count - 1].Index, handler);
                             result.ParsedEntries.RemoveAt(0);
 
                             // Only last item of parsed entries may be updated, because
                             // lines following this entry may contain eg. exception details
                             // or callstack lines, which are appended to last entry's message.
-                            eventBus.Send(new LastParsedEntriesItemReplacedEvent(data.ResultLogEntries[data.ResultLogEntries.Count - 1].Meta.Index));
+                            eventBus.Send(new LastParsedEntriesItemReplacedEvent(data.ResultLogEntries[data.ResultLogEntries.Count - 1].Index));
                         }
 
                         if (result.ParsedEntries.Count > 0)
@@ -195,7 +192,7 @@ namespace LogAnalyzer.Engine.Components
 #endif
                             int index = data.ResultLogEntries.Count + 1;
                             for (int i = 0; i < result.ParsedEntries.Count; i++)
-                                data.ResultLogEntries.Add(new LogRecord(result.ParsedEntries[i], new LogMetadata(index++)));
+                                data.ResultLogEntries.Add(new LogEntry(result.ParsedEntries[i], index++, handler));
 
                             eventBus.Send(new AddedNewParsedEntriesEvent(start, count));
                         }
@@ -242,7 +239,7 @@ namespace LogAnalyzer.Engine.Components
             workerRunning = true;
             backgroundWorker.RunWorkerAsync(new ProcessingArgument
             {
-                LastLogEntry = data.ResultLogEntries.LastOrDefault()?.LogEntry
+                LastLogEntry = data.ResultLogEntries.LastOrDefault()
             });
         }
 
@@ -258,15 +255,18 @@ namespace LogAnalyzer.Engine.Components
 
         // Public methods -----------------------------------------------------
 
-        public LogReader(ILogSource logSource, ILogParser logParser, EventBus eventBus, ILogReaderEngineDataView data)
+        public LogReader(ILogSource logSource, ILogParser logParser, EventBus eventBus, ILogReaderEngineDataView data, ILogEntryMetaHandler handler)
         {
             this.logSource = logSource;
             this.logParser = logParser;
             this.eventBus = eventBus;
             this.data = data;
+            this.handler = handler;
 
-            backgroundWorker = new BackgroundWorker();
-            backgroundWorker.WorkerSupportsCancellation = true;
+            backgroundWorker = new BackgroundWorker
+            {
+                WorkerSupportsCancellation = true
+            };
             backgroundWorker.DoWork += DoWork;
             backgroundWorker.RunWorkerCompleted += RunWorkerCompleted;
         }

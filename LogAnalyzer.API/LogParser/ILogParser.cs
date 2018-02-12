@@ -10,7 +10,7 @@ namespace LogAnalyzer.API.LogParser
 {
     public interface ILogParser : IDisposable
     {
-        (LogEntry, ParserOperation) Parse(string line, LogEntry lastEntry);
+        (BaseLogEntry, ParserOperation) Parse(string line, BaseLogEntry lastEntry);
         List<BaseColumnInfo> GetColumnInfos();
     }
 }

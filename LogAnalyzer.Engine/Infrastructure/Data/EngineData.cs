@@ -15,9 +15,9 @@ namespace LogAnalyzer.Engine.Infrastructure.Data
     {
         // Private fields -----------------------------------------------------
 
-        private List<LogRecord> parsedEntries;
-        private ObservableRangeCollection<HighlightedLogRecord> highlightedLogEntries;
-        private ObservableRangeCollection<HighlightedLogRecord> foundEntries;
+        private List<LogEntry> parsedEntries;
+        private ObservableRangeCollection<LogRecord> highlightedLogEntries;
+        private ObservableRangeCollection<LogRecord> foundEntries;
         private bool isReading = false;
         private bool isProcessing = false;
 
@@ -32,19 +32,19 @@ namespace LogAnalyzer.Engine.Infrastructure.Data
 
         public EngineData()
         {
-            parsedEntries = new List<LogRecord>();
-            highlightedLogEntries = new ObservableRangeCollection<HighlightedLogRecord>();
-            foundEntries = new ObservableRangeCollection<HighlightedLogRecord>();
+            parsedEntries = new List<LogEntry>();
+            highlightedLogEntries = new ObservableRangeCollection<LogRecord>();
+            foundEntries = new ObservableRangeCollection<LogRecord>();
         }
 
         public int GetLogEntryCount() => parsedEntries.Count;
 
-        public List<LogRecord> BuildDataForFiltering(int start, int count)
+        public List<LogEntry> BuildDataForFiltering(int start, int count)
         {
             if (start < 0 || start >= parsedEntries.Count || start + count > parsedEntries.Count)
                 throw new ArgumentException("Invalid start/count combination!");
 
-            return new List<LogRecord>(parsedEntries
+            return new List<LogEntry>(parsedEntries
                 .Skip(start)
                 .Take(count));
         }
@@ -60,23 +60,23 @@ namespace LogAnalyzer.Engine.Infrastructure.Data
                 .Select(he => he.LogEntry));
         }
 
-        public List<HighlightedLogRecord> BuildDataForSearching(int start, int count)
+        public List<LogRecord> BuildDataForSearching(int start, int count)
         {
             if (start < 0 || start >= highlightedLogEntries.Count || start + count > highlightedLogEntries.Count)
                 throw new ArgumentException("Invalid start/count combination!");
 
-            return new List<HighlightedLogRecord>(highlightedLogEntries
+            return new List<LogRecord>(highlightedLogEntries
                 .Skip(start)
                 .Take(count));
         }
 
         // Public properties --------------------------------------------------
 
-        public List<LogRecord> ResultLogEntries => parsedEntries;
+        public List<LogEntry> ResultLogEntries => parsedEntries;
 
-        public ObservableRangeCollection<HighlightedLogRecord> HighlightedLogEntries => highlightedLogEntries;
+        public ObservableRangeCollection<LogRecord> HighlightedLogEntries => highlightedLogEntries;
 
-        public ObservableRangeCollection<HighlightedLogRecord> FoundEntries => foundEntries;
+        public ObservableRangeCollection<LogRecord> FoundEntries => foundEntries;
 
         public bool IsReading
         {

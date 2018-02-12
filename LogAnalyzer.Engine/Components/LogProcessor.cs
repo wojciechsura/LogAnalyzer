@@ -45,10 +45,10 @@ namespace LogAnalyzer.Engine.Components
         {
             public HandleLastParsedItemReplacedQueueItem(int metaIndex)
             {
-                MetaIndex = metaIndex;
+                Index = metaIndex;
             }
 
-            public int MetaIndex { get; }
+            public int Index { get; }
         }
 
         private class ResetHighlightingQueueItem : BaseQueueItem
@@ -68,7 +68,7 @@ namespace LogAnalyzer.Engine.Components
 
         private class FilterArgument
         {
-            public FilterArgument(Range range, List<LogRecord> inputEntries, LogFilteringConfig config)
+            public FilterArgument(Range range, List<LogEntry> inputEntries, LogFilteringConfig config)
             {
                 Range = range;
                 InputEntries = inputEntries;
@@ -76,20 +76,20 @@ namespace LogAnalyzer.Engine.Components
             }
 
             public Range Range { get; }
-            public List<LogRecord> InputEntries { get; }
+            public List<LogEntry> InputEntries { get; }
             public LogFilteringConfig Config { get; }
         }
 
         private class FilterResult
         {
-            public FilterResult(Range inputRange, List<LogRecord> entries)
+            public FilterResult(Range inputRange, List<LogEntry> entries)
             {
                 InputRange = inputRange;
                 Entries = entries;
             }
 
             public Range InputRange { get; }
-            public List<LogRecord> Entries { get; }
+            public List<LogEntry> Entries { get; }
         }
 
         private class HighlightingArgument
@@ -120,7 +120,7 @@ namespace LogAnalyzer.Engine.Components
 
         private class SearchArgument
         {
-            public SearchArgument(Range range, List<HighlightedLogRecord> inputEntries, LogSearchConfig config)
+            public SearchArgument(Range range, List<LogRecord> inputEntries, LogSearchConfig config)
             {
                 Range = range;
                 InputEntries = inputEntries;
@@ -128,20 +128,20 @@ namespace LogAnalyzer.Engine.Components
             }
 
             public Range Range { get; }
-            public List<HighlightedLogRecord> InputEntries { get; }
+            public List<LogRecord> InputEntries { get; }
             public LogSearchConfig Config { get; }
         }
 
         private class SearchResult
         {
-            public SearchResult(Range inputRange, List<HighlightedLogRecord> entries)
+            public SearchResult(Range inputRange, List<LogRecord> entries)
             {
                 InputRange = inputRange;
                 Entries = entries;
             }
 
             public Range InputRange { get; }
-            public List<HighlightedLogRecord> Entries { get; }
+            public List<LogRecord> Entries { get; }
         }
 
         private class StopData
@@ -209,7 +209,7 @@ namespace LogAnalyzer.Engine.Components
 
             if (e.Argument is FilterArgument filterArgument)
             {
-                var processedItems = new List<LogRecord>();
+                var processedItems = new List<LogEntry>();
 
                 int index = filterArgument.Range.Start;
                 for (int i = 0; i < filterArgument.InputEntries.Count; i++)
@@ -224,7 +224,7 @@ namespace LogAnalyzer.Engine.Components
                         for (int j = 0; j < filterArgument.Config.Filters.Count; j++)
                         {
                             Filter filter = filterArgument.Config.Filters[j];
-                            if (filter.Predicate(entry.LogEntry))
+                            if (filter.Predicate(entry))
                             {
                                 add = filter.Action == FilterAction.Include;
                                 break;
@@ -274,7 +274,7 @@ namespace LogAnalyzer.Engine.Components
             }
             else if (e.Argument is SearchArgument searchArgument)
             {
-                var processedEntries = new List<HighlightedLogRecord>();
+                var processedEntries = new List<LogRecord>();
 
                 for (int i = 0; i < searchArgument.InputEntries.Count; i++)
                 {
@@ -313,8 +313,8 @@ namespace LogAnalyzer.Engine.Components
                                 data.HighlightedLogEntries.Add(new HighlightedLogRecord(filterResult.Entries[i].LogEntry, filterResult.Entries[i].Meta));
                             */
 
-                            List<HighlightedLogRecord> records = filterResult.Entries
-                                .Select(entry => new HighlightedLogRecord(entry.LogEntry, entry.Meta))
+                            List<LogRecord> records = filterResult.Entries
+                                .Select(entry => new LogRecord(entry))
                                 .ToList();
                             data.HighlightedLogEntries.AddRange(records, NotifyCollectionChangedAction.Reset);
 #if DEBUG
@@ -474,16 +474,16 @@ namespace LogAnalyzer.Engine.Components
                 else if (item is HandleLastParsedItemReplacedQueueItem replacedItem)
                 {
 #if DEBUG
-                    System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Queue: handling replaced item: {replacedItem.MetaIndex}");
+                    System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Queue: handling replaced item: {replacedItem.Index}");
 #endif
 
                     var lastFilteredLog = lastFilteredLogIndex >= 0 ? data.BuildDataForFiltering(lastFilteredLogIndex, 1)[0] : null;
 
                     // Sanity check
-                    if (lastFilteredLog != null && lastFilteredLog.Meta.Index > replacedItem.MetaIndex)
+                    if (lastFilteredLog != null && lastFilteredLog.Index > replacedItem.Index)
                         throw new InvalidOperationException("Replaced item is not last filtered one!");
 
-                    if (lastFilteredLog != null && lastFilteredLog.Meta.Index == replacedItem.MetaIndex)
+                    if (lastFilteredLog != null && lastFilteredLog.Index == replacedItem.Index)
                     {
 #if DEBUG
                         System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] Queue: replaced item has already been processed");
@@ -495,10 +495,10 @@ namespace LogAnalyzer.Engine.Components
                         if (data.HighlightedLogEntries.Count > 0)
                         {
                             // Sanity check
-                            if (data.HighlightedLogEntries.Last().Meta.Index > replacedItem.MetaIndex)
+                            if (data.HighlightedLogEntries.Last().LogEntry.Index > replacedItem.Index)
                                 throw new InvalidOperationException("Filtered item list has newer items than one replaced!");
 
-                            if (data.HighlightedLogEntries.Last().Meta.Index == replacedItem.MetaIndex)
+                            if (data.HighlightedLogEntries.Last().LogEntry.Index == replacedItem.Index)
                             {
                                 // We know, that filter included the replaced item
                                 // So now it must be removed and re-filtered and re-highlighted
@@ -510,13 +510,13 @@ namespace LogAnalyzer.Engine.Components
                                 // If it already has been highlighted as well, it must be highlighted again
                                 var lastHighlightedLog = lastHighlightedFilteredLogIndex >= 0 ? data.HighlightedLogEntries[lastHighlightedFilteredLogIndex] : null;
 
-                                if (lastHighlightedLog != null && lastHighlightedLog.Meta.Index == replacedItem.MetaIndex)
+                                if (lastHighlightedLog != null && lastHighlightedLog.LogEntry.Index == replacedItem.Index)
                                     lastHighlightedFilteredLogIndex--;
 
                                 // If it is in search results, it must be checked again
                                 var lastFoundLog = lastSearchedHighlightedLogIndex >= 0 ? data.HighlightedLogEntries[lastSearchedHighlightedLogIndex] : null;
 
-                                if (lastFoundLog != null && lastFoundLog.Meta.Index == replacedItem.MetaIndex)
+                                if (lastFoundLog != null && lastFoundLog.LogEntry.Index == replacedItem.Index)
                                 {
                                     data.FoundEntries.RemoveAt(data.FoundEntries.Count - 1);
                                     lastSearchedHighlightedLogIndex--;
@@ -654,8 +654,10 @@ namespace LogAnalyzer.Engine.Components
             this.data = data;
 
             this.queue = new Queue<BaseQueueItem>();
-            this.backgroundWorker = new BackgroundWorker();
-            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker = new BackgroundWorker
+            {
+                WorkerSupportsCancellation = true
+            };
             backgroundWorker.DoWork += DoWork;
             backgroundWorker.RunWorkerCompleted += RunWorkerCompleted;
 

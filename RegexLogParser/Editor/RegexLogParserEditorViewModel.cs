@@ -73,16 +73,16 @@ namespace RegexLogParser.Editor
             groupDefinitions.Clear();            
         }
 
-        private List<LogEntry> ParseSampleData(RegexLogParser parser)
+        private List<BaseLogEntry> ParseSampleData(RegexLogParser parser)
         {
-            List<LogEntry> result = new List<LogEntry>();
+            List<BaseLogEntry> result = new List<BaseLogEntry>();
 
             string[] sampleLines = Regex.Split(SampleData, "\r\n|\r|\n");
 
-            LogEntry lastEntry = null;
+            BaseLogEntry lastEntry = null;
             for (int i = 0; i < sampleLines.Length; i++)
             {
-                (LogEntry entry, ParserOperation operation) = parser.Parse(sampleLines[i], lastEntry);
+                (BaseLogEntry entry, ParserOperation operation) = parser.Parse(sampleLines[i], lastEntry);
                 switch (operation)
                 {
                     case ParserOperation.AddNew:
@@ -96,10 +96,7 @@ namespace RegexLogParser.Editor
                         }
                     case ParserOperation.ReplaceLast:
                         {
-                            if (entry == null)
-                                throw new InvalidOperationException("Entry cannot be null if operation is AddNew!");
-
-                            result[result.Count - 1] = entry;
+                            result[result.Count - 1] = entry ?? throw new InvalidOperationException("Entry cannot be null if operation is AddNew!");
                             lastEntry = entry;
                             break;
                         }
@@ -117,12 +114,12 @@ namespace RegexLogParser.Editor
             return result;
         }
 
-        private List<TableDataRow> BuildTableDataRows(List<LogEntry> result, List<BaseColumnInfo> columnInfos)
+        private List<TableDataRow> BuildTableDataRows(List<BaseLogEntry> result, List<BaseColumnInfo> columnInfos)
         {
             List<TableDataRow> rows = new List<TableDataRow>();
             for (int i = 0; i < result.Count; i++)
             {
-                LogEntry entry = result[i];
+                BaseLogEntry entry = result[i];
 
                 List<string> rowData = new List<string>();
 
@@ -179,7 +176,7 @@ namespace RegexLogParser.Editor
             return columns;
         }
 
-        private TableData BuildTableData(RegexLogParser parser, List<LogEntry> result)
+        private TableData BuildTableData(RegexLogParser parser, List<BaseLogEntry> result)
         {
             var columnInfos = parser.GetColumnInfos();
 
@@ -209,7 +206,7 @@ namespace RegexLogParser.Editor
             var configuration = (RegexLogParserConfiguration)GetConfiguration();
             var parser = new RegexLogParser(configuration);
 
-            List<LogEntry> result = ParseSampleData(parser);
+            List<BaseLogEntry> result = ParseSampleData(parser);
             TableData data = BuildTableData(parser, result);
 
             ResultData = data;
@@ -247,20 +244,20 @@ namespace RegexLogParser.Editor
             if (!Validate().Valid)
                 throw new InvalidOperationException("Cannot get configuration, editor values are not valid!");
 
-            var configuration = new RegexLogParserConfiguration();
-
-            // Regular expression
-            configuration.Regex = regularExpression;
-
-            // Group definitions
             var groupDefinitions = new List<BaseGroupDefinition>();
             for (int i = 0; i < this.groupDefinitions.Count; i++)
             {
                 BaseGroupDefinition data = this.groupDefinitions[i].GetGroupDefinition();
                 groupDefinitions.Add(data);
             }
-            configuration.GroupDefinitions = groupDefinitions;
-            
+
+            var configuration = new RegexLogParserConfiguration
+            {
+                Regex = regularExpression,
+                GroupDefinitions = groupDefinitions
+            };
+
+
             return configuration;
         }
 

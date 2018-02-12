@@ -19,7 +19,7 @@ namespace FilesLogSource
         private FileStream file;
         private StreamReader reader;
 
-        private LogEntry GetLogEntry(string filename, ILogParser logParser)
+        private BaseLogEntry GetLogEntry(string filename, ILogParser logParser)
         {
             FileStream fileStream = null;
             StreamReader streamReader = null;
@@ -29,13 +29,13 @@ namespace FilesLogSource
                 streamReader = new StreamReader(fileStream, Encoding.UTF8, true, 1024);
 
                 string line = null;
-                LogEntry foundEntry = null;
+                BaseLogEntry foundEntry = null;
                 do
                 {
                     line = streamReader.ReadLine();
                     if (line != null)
                     {
-                        (LogEntry entry, ParserOperation operation) = logParser.Parse(line, null);
+                        (BaseLogEntry entry, ParserOperation operation) = logParser.Parse(line, null);
 
                         if (entry != null && operation == ParserOperation.AddNew)
                             foundEntry = entry;
@@ -58,12 +58,12 @@ namespace FilesLogSource
 
         private void SortFiles(ref List<string> files, ILogParser logParser)
         {
-            List<Tuple<string, LogEntry>> fileData = new List<Tuple<string, LogEntry>>();
+            List<Tuple<string, BaseLogEntry>> fileData = new List<Tuple<string, BaseLogEntry>>();
 
             for (int i = 0; i < files.Count; i++)
             {
-                LogEntry entry = GetLogEntry(files[i], logParser);
-                fileData.Add(new Tuple<string, LogEntry>(files[i], entry));
+                BaseLogEntry entry = GetLogEntry(files[i], logParser);
+                fileData.Add(new Tuple<string, BaseLogEntry>(files[i], entry));
             }
 
             fileData.Sort((file1, file2) =>

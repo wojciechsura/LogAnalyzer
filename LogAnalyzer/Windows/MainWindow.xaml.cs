@@ -89,7 +89,7 @@ namespace LogAnalyzer.Windows
             GridView gridView = new GridView();
 
             // Line number
-            string columnXaml = String.Format(commonColumnXaml, $"{nameof(HighlightedLogRecord.Meta)}.{nameof(LogMetadata.Index)}");
+            string columnXaml = String.Format(commonColumnXaml, $"{nameof(LogRecord.LogEntry)}.{nameof(LogEntry.Index)}");
             DataTemplate dataTemplate = (DataTemplate)XamlReader.Load(XmlReader.Create(new StringReader(columnXaml)));
 
             CreateLineNumberColumn(gridView, dataTemplate);
@@ -109,7 +109,7 @@ namespace LogAnalyzer.Windows
             SetupListView(lvSearchResults, columns);
         }
 
-        public void NavigateTo(HighlightedLogRecord selectedSearchResult)
+        public void NavigateTo(LogRecord selectedSearchResult)
         {
             lvMain.SelectedItem = selectedSearchResult;
             lvMain.ScrollIntoView(selectedSearchResult);

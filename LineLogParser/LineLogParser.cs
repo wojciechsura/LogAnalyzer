@@ -11,9 +11,9 @@ namespace LineLogParser
 {
     class LineLogParser : ILogParser
     {
-        (LogEntry, ParserOperation) ILogParser.Parse(string line, LogEntry lastEntry)
+        (BaseLogEntry, ParserOperation) ILogParser.Parse(string line, BaseLogEntry lastEntry)
         {
-            return (new LogEntry(DateTime.MinValue, null, line, null), ParserOperation.AddNew);
+            return (new BaseLogEntry(DateTime.MinValue, null, line, null), ParserOperation.AddNew);
         }
         
         public List<BaseColumnInfo> GetColumnInfos()

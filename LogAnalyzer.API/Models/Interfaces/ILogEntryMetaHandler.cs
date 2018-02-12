@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.Models.Interfaces
 {
-    public interface ILogEntry
+    public interface ILogEntryMetaHandler
     {
-        DateTime Date { get; }
-        string Severity { get; }
-        string Message { get; }
-        IReadOnlyList<string> CustomFields { get; }
     }
 }

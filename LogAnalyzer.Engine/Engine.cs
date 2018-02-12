@@ -16,10 +16,11 @@ using LogAnalyzer.API.Models;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Engine.Infrastructure.Processing;
 using LogAnalyzer.Models.Types;
+using LogAnalyzer.API.Models.Interfaces;
 
 namespace LogAnalyzer.Engine
 {
-    class Engine : IEngine
+    class Engine : IEngine, ILogEntryMetaHandler
     {
         // Private types ------------------------------------------------------
 
@@ -99,7 +100,7 @@ namespace LogAnalyzer.Engine
         {
             eventBus = new EventBus();
             data = new EngineData();
-            logReader = new LogReader(logSource, logParser, eventBus, data);
+            logReader = new LogReader(logSource, logParser, eventBus, data, this);
             logProcessor = new LogProcessor(eventBus, data);
 
             highlightConfig = new HighlightConfig
@@ -154,16 +155,16 @@ namespace LogAnalyzer.Engine
                 return DateTime.Now;
         }
 
-        public HighlightedLogRecord FindFirstRecordAfter(DateTime resultDate)
+        public LogRecord FindFirstRecordAfter(DateTime resultDate)
         {
             return data.HighlightedLogEntries.FirstOrDefault(e => e.LogEntry.Date.CompareTo(resultDate) >= 0);            
         }
 
         // Public properties --------------------------------------------------
 
-        public ObservableRangeCollection<HighlightedLogRecord> LogEntries => data.HighlightedLogEntries;
+        public ObservableRangeCollection<LogRecord> LogEntries => data.HighlightedLogEntries;
 
-        public ObservableRangeCollection<HighlightedLogRecord> SearchResults => data.FoundEntries;
+        public ObservableRangeCollection<LogRecord> SearchResults => data.FoundEntries;
 
         public HighlightConfig HighlightConfig
         {

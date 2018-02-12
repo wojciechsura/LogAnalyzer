@@ -24,8 +24,8 @@ namespace LogAnalyzer.Services.Interfaces
     public interface IEngine
     {
         void NotifySourceReady();
-        ObservableRangeCollection<HighlightedLogRecord> LogEntries { get; }
-        ObservableRangeCollection<HighlightedLogRecord> SearchResults { get; }
+        ObservableRangeCollection<LogRecord> LogEntries { get; }
+        ObservableRangeCollection<LogRecord> SearchResults { get; }
         void Stop(Action stopAction);
         List<BaseColumnInfo> GetColumnInfos();
 
@@ -34,6 +34,6 @@ namespace LogAnalyzer.Services.Interfaces
         SearchConfig SearchConfig { get; set; }
 
         DateTime GetFirstFilteredTime();
-        HighlightedLogRecord FindFirstRecordAfter(DateTime resultDate);
+        LogRecord FindFirstRecordAfter(DateTime resultDate);
     }
 }

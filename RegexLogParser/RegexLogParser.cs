@@ -16,9 +16,9 @@ namespace RegexLogParser
     {
         private class LogEntryBuilder
         {
-            public LogEntry Build()
+            public BaseLogEntry Build()
             {
-                return new LogEntry(Date, Severity, Message, CustomFields);
+                return new BaseLogEntry(Date, Severity, Message, CustomFields);
             }
 
             public DateTime Date { get; set; } = DateTime.MinValue;
@@ -105,7 +105,7 @@ namespace RegexLogParser
             return result;
         }
 
-        public (LogEntry, ParserOperation) Parse(string line, LogEntry lastEntry)
+        public (BaseLogEntry, ParserOperation) Parse(string line, BaseLogEntry lastEntry)
         {
             Match match = regex.Match(line);
             if (match.Success)
@@ -128,7 +128,7 @@ namespace RegexLogParser
             {
                 if (lastEntry != null)
                 {
-                    var newLastEntry = new LogEntry(lastEntry.Date,
+                    var newLastEntry = new BaseLogEntry(lastEntry.Date,
                         lastEntry.Severity,
                         lastEntry.Message + "\n" + line,
                         lastEntry.CustomFields);

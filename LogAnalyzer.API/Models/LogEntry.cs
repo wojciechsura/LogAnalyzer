@@ -9,20 +9,17 @@ using System.Threading.Tasks;
 namespace LogAnalyzer.API.Models
 {
     // For thread-safety this object must stay read-only
-    public class LogEntry : ILogEntry
+    public class LogEntry : BaseLogEntry
     {
-        public LogEntry(DateTime date, string severity, string message, IReadOnlyList<string> customFields)
+        private readonly ILogEntryMetaHandler handler;
+
+        public LogEntry(BaseLogEntry source, int index, ILogEntryMetaHandler handler)
+            : base(source.Date, source.Severity, source.Message, source.CustomFields)
         {
-            Date = date;
-            Severity = severity;
-            Message = message;
-            CustomFields = customFields;
+            Index = index;
+            this.handler = handler;
         }
 
-        public DateTime Date { get; }
-        public string DisplayDate => Date.ToString("yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture);
-        public string Severity { get; }
-        public string Message { get; }
-        public IReadOnlyList<string> CustomFields { get; }
+        public int Index { get; }
     }
 }

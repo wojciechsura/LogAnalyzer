@@ -1,21 +1,49 @@
-﻿using LogAnalyzer.API.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LogAnalyzer.API.Models
 {
-    public class LogRecord
+    public class LogRecord : INotifyPropertyChanged
     {
-        public LogRecord(LogEntry logEntry, LogMetadata meta)
+        // Private methods ----------------------------------------------------
+
+        private HighlightInfo highlight;
+
+        // Protected methods --------------------------------------------------
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        // Public methods -----------------------------------------------------
+
+        public LogRecord(LogEntry logEntry)            
         {
             LogEntry = logEntry;
-            Meta = meta;
+        }
+
+        // Public properties --------------------------------------------------
+
+        public HighlightInfo Highlight
+        {
+            get
+            {
+                return highlight;
+            }
+            set
+            {
+                highlight = value;
+                OnPropertyChanged(nameof(Highlight));
+            }
         }
 
         public LogEntry LogEntry { get; }
-        public LogMetadata Meta { get; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }
