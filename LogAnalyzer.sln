@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2026
+VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer", "LogAnalyzer\LogAnalyzer.csproj", "{77BA0984-FD8F-4BD1-AE31-4DEC3459D73C}"
 EndProject
@@ -38,6 +38,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegexLogParser", "RegexLogParser\RegexLogParser.csproj", "{39B4D915-C6B6-46C6-93A9-A4AC7763A5BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilesLogSource", "FilesLogSource\FilesLogSource.csproj", "{FD4113DD-4CEC-48C4-B15B-290D57F88804}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClipboardLogSource", "ClipboardLogSource\ClipboardLogSource.csproj", "{711560D2-F2E0-4F9A-A3C9-A571D0BFA53E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,10 @@ Global
 		{FD4113DD-4CEC-48C4-B15B-290D57F88804}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD4113DD-4CEC-48C4-B15B-290D57F88804}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD4113DD-4CEC-48C4-B15B-290D57F88804}.Release|Any CPU.Build.0 = Release|Any CPU
+		{711560D2-F2E0-4F9A-A3C9-A571D0BFA53E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{711560D2-F2E0-4F9A-A3C9-A571D0BFA53E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{711560D2-F2E0-4F9A-A3C9-A571D0BFA53E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{711560D2-F2E0-4F9A-A3C9-A571D0BFA53E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -118,6 +124,7 @@ Global
 		{897C5F60-27CC-43CC-8E66-8718B8822D60} = {51820161-F76F-4C86-9A98-F81A97CAD616}
 		{39B4D915-C6B6-46C6-93A9-A4AC7763A5BE} = {51820161-F76F-4C86-9A98-F81A97CAD616}
 		{FD4113DD-4CEC-48C4-B15B-290D57F88804} = {F34EB931-8299-4882-BCF9-05F05183926E}
+		{711560D2-F2E0-4F9A-A3C9-A571D0BFA53E} = {F34EB931-8299-4882-BCF9-05F05183926E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8A01F61-35D1-4F28-9DDC-4593A57402D7}
