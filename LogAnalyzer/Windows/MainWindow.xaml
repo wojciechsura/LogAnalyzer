@@ -156,7 +156,7 @@
                       SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Copy" Command="{Binding CopyCommand}">
+                        <MenuItem Header="Copy" Command="{Binding CopyCommand}" InputGestureText="Ctrl+C">
                             <MenuItem.Icon>
                                 <Image Source="/Resources/Images/Copy16.png" />
                             </MenuItem.Icon>
@@ -166,31 +166,31 @@
                             <MenuItem.Icon>
                                 <Image Source="/Resources/Images/Bookmark16.png" />
                             </MenuItem.Icon>
-                            <MenuItem Header="Bookmark 1" Command="{Binding SetBookmarkCommand}" CommandParameter="1"/>
-                            <MenuItem Header="Bookmark 2" Command="{Binding SetBookmarkCommand}" CommandParameter="2"/>
-                            <MenuItem Header="Bookmark 3" Command="{Binding SetBookmarkCommand}" CommandParameter="3"/>
-                            <MenuItem Header="Bookmark 4" Command="{Binding SetBookmarkCommand}" CommandParameter="4"/>
-                            <MenuItem Header="Bookmark 5" Command="{Binding SetBookmarkCommand}" CommandParameter="5"/>
-                            <MenuItem Header="Bookmark 6" Command="{Binding SetBookmarkCommand}" CommandParameter="6"/>
-                            <MenuItem Header="Bookmark 7" Command="{Binding SetBookmarkCommand}" CommandParameter="7"/>
-                            <MenuItem Header="Bookmark 8" Command="{Binding SetBookmarkCommand}" CommandParameter="8"/>
-                            <MenuItem Header="Bookmark 9" Command="{Binding SetBookmarkCommand}" CommandParameter="9"/>
-                            <MenuItem Header="Bookmark 0" Command="{Binding SetBookmarkCommand}" CommandParameter="0"/>
+                            <MenuItem Header="Bookmark 1" Command="{Binding SetBookmarkCommand}" CommandParameter="1" InputGestureText="Ctrl+Shift+1"/>
+                            <MenuItem Header="Bookmark 2" Command="{Binding SetBookmarkCommand}" CommandParameter="2" InputGestureText="Ctrl+Shift+2"/>
+                            <MenuItem Header="Bookmark 3" Command="{Binding SetBookmarkCommand}" CommandParameter="3" InputGestureText="Ctrl+Shift+3"/>
+                            <MenuItem Header="Bookmark 4" Command="{Binding SetBookmarkCommand}" CommandParameter="4" InputGestureText="Ctrl+Shift+4"/>
+                            <MenuItem Header="Bookmark 5" Command="{Binding SetBookmarkCommand}" CommandParameter="5" InputGestureText="Ctrl+Shift+5"/>
+                            <MenuItem Header="Bookmark 6" Command="{Binding SetBookmarkCommand}" CommandParameter="6" InputGestureText="Ctrl+Shift+6"/>
+                            <MenuItem Header="Bookmark 7" Command="{Binding SetBookmarkCommand}" CommandParameter="7" InputGestureText="Ctrl+Shift+7"/>
+                            <MenuItem Header="Bookmark 8" Command="{Binding SetBookmarkCommand}" CommandParameter="8" InputGestureText="Ctrl+Shift+8"/>
+                            <MenuItem Header="Bookmark 9" Command="{Binding SetBookmarkCommand}" CommandParameter="9" InputGestureText="Ctrl+Shift+9"/>
+                            <MenuItem Header="Bookmark 0" Command="{Binding SetBookmarkCommand}" CommandParameter="0" InputGestureText="Ctrl+Shift+0"/>
                         </MenuItem>
                         <MenuItem Header="Go to bookmark">
                             <MenuItem.Icon>
                                 <Image Source="/Resources/Images/Bookmark16.png" />
                             </MenuItem.Icon>
-                            <MenuItem Header="Bookmark 1" Command="{Binding GotoBookmarkCommand}" CommandParameter="1"/>
-                            <MenuItem Header="Bookmark 2" Command="{Binding GotoBookmarkCommand}" CommandParameter="2"/>
-                            <MenuItem Header="Bookmark 3" Command="{Binding GotoBookmarkCommand}" CommandParameter="3"/>
-                            <MenuItem Header="Bookmark 4" Command="{Binding GotoBookmarkCommand}" CommandParameter="4"/>
-                            <MenuItem Header="Bookmark 5" Command="{Binding GotoBookmarkCommand}" CommandParameter="5"/>
-                            <MenuItem Header="Bookmark 6" Command="{Binding GotoBookmarkCommand}" CommandParameter="6"/>
-                            <MenuItem Header="Bookmark 7" Command="{Binding GotoBookmarkCommand}" CommandParameter="7"/>
-                            <MenuItem Header="Bookmark 8" Command="{Binding GotoBookmarkCommand}" CommandParameter="8"/>
-                            <MenuItem Header="Bookmark 9" Command="{Binding GotoBookmarkCommand}" CommandParameter="9"/>
-                            <MenuItem Header="Bookmark 0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0"/>
+                            <MenuItem Header="Bookmark 1" Command="{Binding GotoBookmarkCommand}" CommandParameter="1" InputGestureText="Ctrl+1"/>
+                            <MenuItem Header="Bookmark 2" Command="{Binding GotoBookmarkCommand}" CommandParameter="2" InputGestureText="Ctrl+2"/>
+                            <MenuItem Header="Bookmark 3" Command="{Binding GotoBookmarkCommand}" CommandParameter="3" InputGestureText="Ctrl+3"/>
+                            <MenuItem Header="Bookmark 4" Command="{Binding GotoBookmarkCommand}" CommandParameter="4" InputGestureText="Ctrl+4"/>
+                            <MenuItem Header="Bookmark 5" Command="{Binding GotoBookmarkCommand}" CommandParameter="5" InputGestureText="Ctrl+5"/>
+                            <MenuItem Header="Bookmark 6" Command="{Binding GotoBookmarkCommand}" CommandParameter="6" InputGestureText="Ctrl+6"/>
+                            <MenuItem Header="Bookmark 7" Command="{Binding GotoBookmarkCommand}" CommandParameter="7" InputGestureText="Ctrl+7"/>
+                            <MenuItem Header="Bookmark 8" Command="{Binding GotoBookmarkCommand}" CommandParameter="8" InputGestureText="Ctrl+8"/>
+                            <MenuItem Header="Bookmark 9" Command="{Binding GotoBookmarkCommand}" CommandParameter="9" InputGestureText="Ctrl+9"/>
+                            <MenuItem Header="Bookmark 0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0" InputGestureText="Ctrl+0"/>
                         </MenuItem>
                     </ContextMenu>
                 </ListView.ContextMenu>
