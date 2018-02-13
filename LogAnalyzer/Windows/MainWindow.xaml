@@ -153,7 +153,48 @@
 
             <ListView Grid.Row="0" x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended" VerticalContentAlignment="Top"
                       ItemContainerStyle="{StaticResource ListViewItemStyle}" SelectedIndex="{Binding SelectedEntryIndex, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                      SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy" Command="{Binding CopyCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/Images/Copy16.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Set bookmark">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/Images/Bookmark16.png" />
+                            </MenuItem.Icon>
+                            <MenuItem Header="Bookmark 1" Command="{Binding SetBookmarkCommand}" CommandParameter="1"/>
+                            <MenuItem Header="Bookmark 2" Command="{Binding SetBookmarkCommand}" CommandParameter="2"/>
+                            <MenuItem Header="Bookmark 3" Command="{Binding SetBookmarkCommand}" CommandParameter="3"/>
+                            <MenuItem Header="Bookmark 4" Command="{Binding SetBookmarkCommand}" CommandParameter="4"/>
+                            <MenuItem Header="Bookmark 5" Command="{Binding SetBookmarkCommand}" CommandParameter="5"/>
+                            <MenuItem Header="Bookmark 6" Command="{Binding SetBookmarkCommand}" CommandParameter="6"/>
+                            <MenuItem Header="Bookmark 7" Command="{Binding SetBookmarkCommand}" CommandParameter="7"/>
+                            <MenuItem Header="Bookmark 8" Command="{Binding SetBookmarkCommand}" CommandParameter="8"/>
+                            <MenuItem Header="Bookmark 9" Command="{Binding SetBookmarkCommand}" CommandParameter="9"/>
+                            <MenuItem Header="Bookmark 0" Command="{Binding SetBookmarkCommand}" CommandParameter="0"/>
+                        </MenuItem>
+                        <MenuItem Header="Go to bookmark">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/Images/Bookmark16.png" />
+                            </MenuItem.Icon>
+                            <MenuItem Header="Bookmark 1" Command="{Binding GotoBookmarkCommand}" CommandParameter="1"/>
+                            <MenuItem Header="Bookmark 2" Command="{Binding GotoBookmarkCommand}" CommandParameter="2"/>
+                            <MenuItem Header="Bookmark 3" Command="{Binding GotoBookmarkCommand}" CommandParameter="3"/>
+                            <MenuItem Header="Bookmark 4" Command="{Binding GotoBookmarkCommand}" CommandParameter="4"/>
+                            <MenuItem Header="Bookmark 5" Command="{Binding GotoBookmarkCommand}" CommandParameter="5"/>
+                            <MenuItem Header="Bookmark 6" Command="{Binding GotoBookmarkCommand}" CommandParameter="6"/>
+                            <MenuItem Header="Bookmark 7" Command="{Binding GotoBookmarkCommand}" CommandParameter="7"/>
+                            <MenuItem Header="Bookmark 8" Command="{Binding GotoBookmarkCommand}" CommandParameter="8"/>
+                            <MenuItem Header="Bookmark 9" Command="{Binding GotoBookmarkCommand}" CommandParameter="9"/>
+                            <MenuItem Header="Bookmark 0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0"/>
+                        </MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
+            </ListView>
         </DockPanel>
     </DockPanel>
 </f:RibbonWindow>

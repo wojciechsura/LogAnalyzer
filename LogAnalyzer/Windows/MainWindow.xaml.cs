@@ -76,6 +76,7 @@ namespace LogAnalyzer.Windows
             GridViewColumn lineNumberColumn = new GridViewColumn
             {
                 Header = "Index",
+                Width = 64,
                 CellTemplate = dataTemplate
             };
             gridView.Columns.Add(lineNumberColumn);
