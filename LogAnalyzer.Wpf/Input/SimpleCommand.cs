@@ -57,7 +57,8 @@ namespace LogAnalyzer.Wpf.Input
 
         public void Execute(object parameter)
         {
-            action(parameter);
+            if (CanExecute(parameter))
+                action(parameter);
         }
 
         public event EventHandler CanExecuteChanged;
