@@ -9,6 +9,18 @@ namespace LogAnalyzer.Models.Types
 {
     public enum ComparisonMethod
     {
+        [Description("Contains")]
+        [SummaryDisplay("containing")]
+        Contains,
+        [Description("Not contains")]
+        [SummaryDisplay("not containing")]
+        NotContains,
+        [Description("Matches")]
+        [SummaryDisplay("matching regular expression")]
+        Matches,
+        [Description("Not matches")]
+        [SummaryDisplay("not matching regular expression")]
+        NotMatches,
         [Description("Less than")]
         [SummaryDisplay("less than")]
         LessThan,
@@ -23,18 +35,6 @@ namespace LogAnalyzer.Models.Types
         MoreThanOrEqual,
         [Description("More than")]
         [SummaryDisplay("more than")]
-        MoreThan,
-        [Description("Contains")]
-        [SummaryDisplay("containing")]
-        Contains,
-        [Description("Not contains")]
-        [SummaryDisplay("not containing")]
-        NotContains,
-        [Description("Matches")]
-        [SummaryDisplay("matching regular expression")]
-        Matches,
-        [Description("Not matches")]
-        [SummaryDisplay("not matching regular expression")]
-        NotMatches
+        MoreThan
     }
 }
