@@ -98,12 +98,12 @@
                                     <Label Grid.Column="0">Style</Label>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                         <Label Width="80">Foreground</Label>
-                                        <xwt:ColorPicker Width="100" 
-                                                         ColorMode="ColorCanvas" 
+                                        <xwt:ColorPicker Width="100"                                                          
                                                          SelectedColor="{Binding Foreground}" 
                                                          Margin="0,2,4,2"/>
                                         <Label Width="80">Background</Label>
-                                        <xwt:ColorPicker ColorMode="ColorCanvas" SelectedColor="{Binding Background}" 
+                                        <xwt:ColorPicker SelectedColor="{Binding Background}" 
+                                                         Width="100"
                                                          Margin="0,2,4,2"/>
                                     </StackPanel>
                                 </Grid>
@@ -116,8 +116,8 @@
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
-            <Button Width="120" Margin="4" Content="Cancel" Command="{Binding CancelCommand}" />
-            <Button Width="120" Margin="4" Content="OK" Command="{Binding OkCommand}" />
+            <Button Width="120" Margin="4" Padding="4" Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
+            <Button Width="120" Margin="4" Padding="4" Content="OK" Command="{Binding OkCommand}" IsDefault="True"/>
         </StackPanel>
 
     </StackPanel>

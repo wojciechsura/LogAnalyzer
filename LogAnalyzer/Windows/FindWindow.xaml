@@ -36,8 +36,8 @@
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Vertical">
-            <Button Margin="4" Padding="4" Width="100" Command="{Binding FindAllCommand}">Find all</Button>
-            <Button Margin="4" Padding="4" Width="100" Command="{Binding CancelCommand}">Cancel</Button>
+            <Button Margin="4" Padding="4" Width="100" Command="{Binding FindAllCommand}" IsDefault="True">Find all</Button>
+            <Button Margin="4" Padding="4" Width="100" Command="{Binding CancelCommand}" IsCancel="True">Cancel</Button>
         </StackPanel>
     </StackPanel>
 </Window>
