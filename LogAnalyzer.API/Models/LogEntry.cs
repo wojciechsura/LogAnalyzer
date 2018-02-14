@@ -36,6 +36,7 @@ namespace LogAnalyzer.API.Models
             OnPropertyChanged(nameof(IsProfilingPoint));
             OnPropertyChanged(nameof(TimeSpanFromStart));
             OnPropertyChanged(nameof(TimeSpanFromPrevious));
+            OnPropertyChanged(nameof(ProfilingStep));
         }
 
         public int Index { get; }
@@ -58,19 +59,19 @@ namespace LogAnalyzer.API.Models
             }
         }
 
-        public TimeSpan TimeSpanFromStart
+        public string TimeSpanFromStart
         {
             get
             {
-                return handler.TimeSpanFromStart(this);
+                return handler.TimeSpanFromStart(this).ToString(@"d\ hh\:mm\:ss\.fff");
             }
         }
 
-        public TimeSpan TimeSpanFromPrevious
+        public string TimeSpanFromPrevious
         {
             get
             {
-                return handler.TimeSpanFromPrevious(this);
+                return handler.TimeSpanFromPrevious(this).ToString(@"d\ hh\:mm\:ss\.fff");
             }
         }
 

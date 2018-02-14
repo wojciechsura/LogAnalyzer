@@ -133,6 +133,8 @@ namespace LogAnalyzer.Engine
 
                 current.Step = startIndex + 1;
                 current.Entry.NotifyProfilingChanged();
+
+                startIndex++;
             }
         }
 
@@ -154,17 +156,17 @@ namespace LogAnalyzer.Engine
 
         TimeSpan ILogEntryMetaHandler.TimeSpanFromStart(LogEntry logEntry)
         {
-            return profilingEntries[logEntry.Index]?.FromStart ?? TimeSpan.Zero;
+            return profilingEntries.ContainsKey(logEntry.Index) ? profilingEntries[logEntry.Index].FromStart : TimeSpan.Zero;
         }
 
         TimeSpan ILogEntryMetaHandler.TimeSpanFromPrevious(LogEntry logEntry)
         {
-            return profilingEntries[logEntry.Index]?.FromPrevious ?? TimeSpan.Zero;
+            return profilingEntries.ContainsKey(logEntry.Index) ? profilingEntries[logEntry.Index].FromPrevious : TimeSpan.Zero;
         }
 
         int ILogEntryMetaHandler.GetProfilingStep(LogEntry logEntry)
         {
-            return profilingEntries[logEntry.Index]?.Step ?? -1;
+            return profilingEntries.ContainsKey(logEntry.Index) ? profilingEntries[logEntry.Index].Step : -1;
         }
 
         // Public methods -----------------------------------------------------
