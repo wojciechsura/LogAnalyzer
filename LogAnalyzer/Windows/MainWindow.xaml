@@ -193,8 +193,16 @@
                             <MenuItem Header="Bookmark 0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0" InputGestureText="Ctrl+0"/>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="Add highlighting rule..." Command="{Binding AddHighlightingRuleCommand}" />
-                        <MenuItem Header="Add filtering rule..." Command="{Binding AddFilteringRuleCommand}" />
+                        <MenuItem Header="Add highlighting rule..." Command="{Binding AddHighlightingRuleCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/Images/Highlight16.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="Add filtering rule..." Command="{Binding AddFilteringRuleCommand}">
+                            <MenuItem.Icon>
+                                <Image Source="/Resources/Images/Filter16.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>

@@ -24,6 +24,9 @@ using System.Windows;
 using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Models.Views.JumpToTime;
 using LogAnalyzer.Models.Views.ColumnSelectionWindow;
+using LogAnalyzer.Models.Engine;
+using LogAnalyzer.Models.Engine.PredicateDescriptions;
+using LogAnalyzer.Models.Types;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -119,20 +122,30 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
-        private void DoHighlightConfig()
+        private void OpenHighlightConfig(HighlightEntry newEntry = null)
         {
-            HighlightConfigModel model = new HighlightConfigModel(engine.HighlightConfig, engine.GetColumnInfos());
+            HighlightConfigModel model = new HighlightConfigModel(engine.HighlightConfig, engine.GetColumnInfos(), newEntry);
             var result = dialogService.ConfigHighlighting(model);
             if (result.DialogResult)
                 engine.HighlightConfig = result.Result;
         }
 
-        private void DoFilterConfig()
+        private void OpenFilterConfig(FilterEntry newEntry = null)
         {
-            FilterConfigModel model = new FilterConfigModel(engine.FilterConfig, engine.GetColumnInfos());
+            FilterConfigModel model = new FilterConfigModel(engine.FilterConfig, engine.GetColumnInfos(), newEntry);
             var result = dialogService.ConfigFiltering(model);
             if (result.DialogResult)
                 engine.FilterConfig = result.Result;
+        }
+
+        private void DoHighlightConfig()
+        {
+            OpenHighlightConfig();
+        }
+
+        private void DoFilterConfig()
+        {
+            OpenFilterConfig(null);
         }
 
         private void DoSearch()
@@ -246,7 +259,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             var result = dialogService.SelectColumn(model);
             if (result.DialogResult)
             {
-                // ...
+                FilterEntry entry = CreateFilterEntryFromSelectedEntry(result.Result.SelectedColumn);
+
+                OpenFilterConfig(entry);
             }
         }
 
@@ -256,8 +271,79 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             var result = dialogService.SelectColumn(model);
             if (result.DialogResult)
             {
-                // ...
+                HighlightEntry entry = CreateHighlightEntryFromSelectedEntry(result.Result.SelectedColumn);
+
+                OpenHighlightConfig(entry);
             }
+        }
+
+        private HighlightEntry CreateHighlightEntryFromSelectedEntry(BaseColumnInfo columnInfo)
+        {
+            PredicateDescription predicate = CreatePredicateFromSelectedEntry(columnInfo);
+
+            return new HighlightEntry
+            {
+                PredicateDescription = predicate
+            };
+        }
+
+        private FilterEntry CreateFilterEntryFromSelectedEntry(BaseColumnInfo columnInfo)
+        {
+            PredicateDescription predicate = CreatePredicateFromSelectedEntry(columnInfo);
+
+            return new FilterEntry
+            {
+                PredicateDescription = predicate
+            };
+        }
+
+        private PredicateDescription CreatePredicateFromSelectedEntry(BaseColumnInfo columnInfo)
+        {
+            if (columnInfo is CommonColumnInfo commonColumn)
+            {
+                switch (commonColumn.Column)
+                {
+                    case API.Types.LogEntryColumn.Date:
+                        {
+                            return new DatePredicateDescription
+                            {
+                                Argument = selectedLogEntry.LogEntry.Date,
+                                Comparison = ComparisonMethod.MoreThan
+                            };
+                        }
+                    case API.Types.LogEntryColumn.Severity:
+                        {
+                            return new SeverityPredicateDescription
+                            {
+                                Argument = selectedLogEntry.LogEntry.Severity,
+                                Comparison = ComparisonMethod.Contains
+                            };
+                        }
+                    case API.Types.LogEntryColumn.Message:
+                        {
+                            return new MessagePredicateDescription
+                            {
+                                Argument = selectedLogEntry.LogEntry.Message,
+                                Comparison = ComparisonMethod.Contains
+                            };
+                        }
+                    case API.Types.LogEntryColumn.Custom:
+                        throw new InvalidOperationException("Custom column should not be present in CommonColumnInfo!");
+                    default:
+                        throw new InvalidOperationException("Unsupported column!");
+                }
+            }
+            else if (columnInfo is CustomColumnInfo customColumn)
+            {
+                return new CustomPredicateDescription
+                {
+                    Argument = selectedLogEntry.LogEntry.CustomFields[customColumn.Index],
+                    Comparison = ComparisonMethod.Contains,
+                    Name = customColumn.Name
+                };
+            }
+            else
+                throw new InvalidOperationException("Invalid column info!");
         }
 
         // Protected methods --------------------------------------------------

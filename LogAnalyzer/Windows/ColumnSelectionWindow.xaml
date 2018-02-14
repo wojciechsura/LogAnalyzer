@@ -11,7 +11,7 @@
         WindowStyle="SingleBorderWindow">
     <StackPanel Orientation="Vertical">
         <GroupBox Header="Select column" Margin="4" Padding="4">
-            <ListBox ItemsSource="{Binding Columns}" DisplayMemberPath="Display" SelectedItem="{Binding SelectedColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ListBox ItemsSource="{Binding Columns}" DisplayMemberPath="PredicateDescription" SelectedItem="{Binding SelectedColumn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">
             <Button Width="120" Margin="4" Padding="4" Content="Cancel" Command="{Binding CancelCommand}" IsCancel="True" />
