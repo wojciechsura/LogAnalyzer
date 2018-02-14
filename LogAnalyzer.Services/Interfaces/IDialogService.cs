@@ -11,6 +11,7 @@ using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Models.Views.JumpToTime;
+using LogAnalyzer.Models.Views.ColumnSelectionWindow;
 
 namespace LogAnalyzer.Services.Interfaces
 {
@@ -23,5 +24,6 @@ namespace LogAnalyzer.Services.Interfaces
         ModalDialogResult<FilterConfig> ConfigFiltering(FilterConfigModel model);
         ModalDialogResult<SearchConfig> OpenFind(FindModel model);
         ModalDialogResult<JumpToTimeResult> OpenJumpToTime(JumpToTimeModel model);
+        ModalDialogResult<ColumnSelectionResult> SelectColumn(ColumnSelectionModel model);
     }
 }

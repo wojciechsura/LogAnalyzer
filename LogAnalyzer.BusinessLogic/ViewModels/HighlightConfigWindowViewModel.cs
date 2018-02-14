@@ -91,7 +91,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             access.Close(false);
         }
 
-        private void LoadCurrentConfig(HighlightConfig currentConfig)
+        private void LoadCurrentConfig(HighlightConfig currentConfig, HighlightEntry newEntry)
         {
             for (int i = 0; i < currentConfig.HighlightEntries.Count; i++)
             {
@@ -99,7 +99,16 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 Rules.Add(rule);
             }
 
-            SelectedRule = Rules.FirstOrDefault();
+            if (newEntry != null)
+            {
+                HighlightingRuleEditorViewModel rule = new HighlightingRuleEditorViewModel(availableCustomColumns, newEntry);
+                Rules.Add(rule);
+                SelectedRule = Rules.LastOrDefault();
+            }
+            else
+            {
+                SelectedRule = Rules.FirstOrDefault();
+            }
         }
 
         protected void OnPropertyChanged(string name)
@@ -133,7 +142,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             Rules = new ObservableCollection<HighlightingRuleEditorViewModel>();
 
             if (model.CurrentConfig != null)
-                LoadCurrentConfig(model.CurrentConfig);
+                LoadCurrentConfig(model.CurrentConfig, model.NewEntry);
         }
 
         public ObservableCollection<HighlightingRuleEditorViewModel> Rules { get; }

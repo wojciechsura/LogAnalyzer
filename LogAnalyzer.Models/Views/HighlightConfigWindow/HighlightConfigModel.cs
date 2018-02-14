@@ -10,13 +10,15 @@ namespace LogAnalyzer.Models.Views.HighlightConfigWindow
 {
     public class HighlightConfigModel
     {
-        public HighlightConfigModel(HighlightConfig currentConfig, List<BaseColumnInfo> currentColumns)
+        public HighlightConfigModel(HighlightConfig currentConfig, List<BaseColumnInfo> currentColumns, HighlightEntry newEntry = null)
         {
             CurrentConfig = currentConfig;
             CurrentColumns = currentColumns;
+            NewEntry = newEntry;
         }
 
         public HighlightConfig CurrentConfig { get; }
         public List<BaseColumnInfo> CurrentColumns { get; }
+        public HighlightEntry NewEntry { get; }
     }
 }

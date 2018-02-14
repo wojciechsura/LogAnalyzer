@@ -13,6 +13,7 @@ using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Models.Views.FindWindow;
 using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Models.Views.JumpToTime;
+using LogAnalyzer.Models.Views.ColumnSelectionWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -65,6 +66,13 @@ namespace LogAnalyzer.Services
             JumpToTimeWindow jumpToTimeWindow = new JumpToTimeWindow(model);
             jumpToTimeWindow.ShowDialog();
             return jumpToTimeWindow.DataResult;
+        }
+
+        public ModalDialogResult<ColumnSelectionResult> SelectColumn(ColumnSelectionModel model)
+        {
+            ColumnSelectionWindow window = new ColumnSelectionWindow(model);
+            window.ShowDialog();
+            return window.DataResult;
         }
     }
 }

@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\File.cs" />
+    <Compile Include="DialogResults\ColumnSelectionResult.cs" />
     <Compile Include="DialogResults\JumpToTimeResult.cs" />
     <Compile Include="DialogResults\LogParserProfileEditorResult.cs" />
     <Compile Include="DialogResults\OpenResult.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Types\ComparisonMethod.cs" />
     <Compile Include="Types\FilterAction.cs" />
     <Compile Include="Types\SummaryDisplayAttribute.cs" />
+    <Compile Include="Views\ColumnSelectionWindow\ColumnSelectionModel.cs" />
     <Compile Include="Views\FilterConfigWindow\FilterConfigModel.cs" />
     <Compile Include="Views\FindWindow\FindModel.cs" />
     <Compile Include="Views\HighlightConfigWindow\HighlightConfigModel.cs" />

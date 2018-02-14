@@ -106,7 +106,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             access.Close(false);
         }
 
-        private void LoadCurrentConfig(FilterConfig currentConfig)
+        private void LoadCurrentConfig(FilterConfig currentConfig, FilterEntry newEntry)
         {
             SelectedDefaultAction = AvailableDefaultActions.Single(a => a.Action == currentConfig.DefaultAction);
 
@@ -116,7 +116,16 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 Rules.Add(rule);
             }
 
-            SelectedRule = Rules.FirstOrDefault();
+            if (newEntry != null)
+            {
+                FilteringRuleEditorViewModel rule = new FilteringRuleEditorViewModel(availableCustomColumns, newEntry);
+                Rules.Add(rule);
+                SelectedRule = Rules.LastOrDefault();
+            }
+            else
+            {
+                SelectedRule = Rules.FirstOrDefault();
+            }
         }
 
         protected void OnPropertyChanged(string name)
@@ -157,7 +166,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             Rules = new ObservableCollection<FilteringRuleEditorViewModel>();
 
             if (model.CurrentConfig != null)
-                LoadCurrentConfig(model.CurrentConfig);
+                LoadCurrentConfig(model.CurrentConfig, model.NewEntry);
         }
 
         public ObservableCollection<FilteringRuleEditorViewModel> Rules { get; }

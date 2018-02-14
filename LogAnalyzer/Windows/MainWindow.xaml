@@ -192,6 +192,9 @@
                             <MenuItem Header="Bookmark 9" Command="{Binding GotoBookmarkCommand}" CommandParameter="9" InputGestureText="Ctrl+9"/>
                             <MenuItem Header="Bookmark 0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0" InputGestureText="Ctrl+0"/>
                         </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Add highlighting rule..." Command="{Binding AddHighlightingRuleCommand}" />
+                        <MenuItem Header="Add filtering rule..." Command="{Binding AddFilteringRuleCommand}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>

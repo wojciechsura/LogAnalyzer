@@ -23,6 +23,7 @@ using LogAnalyzer.Models.Views.FindWindow;
 using System.Windows;
 using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Models.Views.JumpToTime;
+using LogAnalyzer.Models.Views.ColumnSelectionWindow;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -239,6 +240,26 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             engine.AddBookmark(id, selectedLogEntry);
         }
 
+        private void DoAddFilteringRule()
+        {
+            var model = new ColumnSelectionModel(engine.GetColumnInfos());
+            var result = dialogService.SelectColumn(model);
+            if (result.DialogResult)
+            {
+                // ...
+            }
+        }
+
+        private void DoAddHighlightingRule()
+        {
+            var model = new ColumnSelectionModel(engine.GetColumnInfos());
+            var result = dialogService.SelectColumn(model);
+            if (result.DialogResult)
+            {
+                // ...
+            }
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -278,6 +299,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             JumpToTimeCommand = new SimpleCommand((obj) => DoJumpToTime(), enginePresentCondition);
             SetBookmarkCommand = new SimpleCommand((obj) => DoSetBookmark((string)obj), enginePresentCondition & itemSelectedCondition);
             GotoBookmarkCommand = new SimpleCommand((obj) => DoGotoBookmark((string)obj), enginePresentCondition);
+            AddHighlightingRuleCommand = new SimpleCommand((obj) => DoAddHighlightingRule(), enginePresentCondition & itemSelectedCondition);
+            AddFilteringRuleCommand = new SimpleCommand((obj) => DoAddFilteringRule(), enginePresentCondition & itemSelectedCondition);
         }
 
         public bool HandleClosing()
@@ -341,6 +364,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand SetBookmarkCommand { get; }
 
         public ICommand GotoBookmarkCommand { get; }
+
+        public ICommand AddHighlightingRuleCommand { get; }
+
+        public ICommand AddFilteringRuleCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 
