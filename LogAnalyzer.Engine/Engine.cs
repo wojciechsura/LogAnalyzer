@@ -57,6 +57,7 @@ namespace LogAnalyzer.Engine
         private SearchConfig searchConfig;
 
         private readonly List<BookmarkEntry> bookmarks;
+        private readonly SortedList<int, ProfilingEntry> profilingEntries;
 
         private State state = State.Working;
         private StopToken stopToken = null;
@@ -106,6 +107,66 @@ namespace LogAnalyzer.Engine
             }
         }
 
+        private void RecalcProfiling(int startIndex)
+        {
+            if (profilingEntries.Count == 0)
+                return;
+
+            ProfilingEntry first = profilingEntries.First().Value;
+
+            while (startIndex < profilingEntries.Count)
+            {
+                ProfilingEntry current = profilingEntries.Values[startIndex];
+
+                if (startIndex == 0)
+                {
+                    current.FromPrevious = TimeSpan.Zero;
+                    current.FromStart = TimeSpan.Zero;
+                }
+                else
+                {
+                    ProfilingEntry previous = profilingEntries.Values[startIndex - 1];
+
+                    current.FromPrevious = current.Entry.Date - previous.Entry.Date;
+                    current.FromStart = current.Entry.Date - first.Entry.Date;
+                }
+
+                current.Step = startIndex + 1;
+                current.Entry.NotifyProfilingChanged();
+            }
+        }
+
+        // ILogEntryMetaHandler implementation --------------------------------
+
+        IEnumerable<string> ILogEntryMetaHandler.GetBookmarks(LogEntry logEntry)
+        {
+            return bookmarks
+                .Where(b => b.LogEntry == logEntry)
+                .OrderBy(b => b.Name)
+                .Select(b => b.Name)
+                .ToList();
+        }
+
+        bool ILogEntryMetaHandler.IsProfilingPoint(LogEntry logEntry)
+        {
+            return profilingEntries.ContainsKey(logEntry.Index);
+        }
+
+        TimeSpan ILogEntryMetaHandler.TimeSpanFromStart(LogEntry logEntry)
+        {
+            return profilingEntries[logEntry.Index]?.FromStart ?? TimeSpan.Zero;
+        }
+
+        TimeSpan ILogEntryMetaHandler.TimeSpanFromPrevious(LogEntry logEntry)
+        {
+            return profilingEntries[logEntry.Index]?.FromPrevious ?? TimeSpan.Zero;
+        }
+
+        int ILogEntryMetaHandler.GetProfilingStep(LogEntry logEntry)
+        {
+            return profilingEntries[logEntry.Index]?.Step ?? -1;
+        }
+
         // Public methods -----------------------------------------------------
 
         public Engine(ILogSource logSource, ILogParser logParser)
@@ -127,6 +188,7 @@ namespace LogAnalyzer.Engine
             };
 
             bookmarks = new List<BookmarkEntry>();
+            profilingEntries = new SortedList<int, ProfilingEntry>();
         }
 
         public void NotifySourceReady()
@@ -175,15 +237,6 @@ namespace LogAnalyzer.Engine
             return data.HighlightedLogEntries.FirstOrDefault(e => e.LogEntry.Date.CompareTo(resultDate) >= 0);            
         }
 
-        public IEnumerable<string> GetBookmarks(LogEntry logEntry)
-        {
-            return bookmarks
-                .Where(b => b.LogEntry == logEntry)
-                .OrderBy(b => b.Name)
-                .Select(b => b.Name)
-                .ToList();
-        }
-
         public void AddBookmark(string name, LogRecord logRecord)
         {
             if (!data.ResultLogEntries.Any(le => le == logRecord.LogEntry))
@@ -208,6 +261,47 @@ namespace LogAnalyzer.Engine
             return data.HighlightedLogEntries
                 .Where(r => r.LogEntry == entry)
                 .SingleOrDefault();
+        }
+
+        public void AddProfilingEntry(LogEntry entry)
+        {
+            if (profilingEntries.ContainsKey(entry.Index))
+            {
+                return;
+            }
+            else
+            {
+                ProfilingEntry profilingEntry = new ProfilingEntry(entry);
+                profilingEntries.Add(entry.Index, profilingEntry);
+                int newEntryIndex = profilingEntries.IndexOfKey(entry.Index);
+                RecalcProfiling(newEntryIndex);
+            }
+        }
+
+        public void RemoveProfilingEntry(LogEntry entry)
+        {
+            int index = profilingEntries.IndexOfKey(entry.Index);
+            profilingEntries.RemoveAt(index);
+
+            entry.NotifyProfilingChanged();
+            RecalcProfiling(index);
+        }
+
+        public bool IsProfilingEntry(LogEntry entry)
+        {
+            return profilingEntries.ContainsKey(entry.Index);
+        }
+
+        public void ClearProfilingEntries()
+        {
+            List<LogEntry> entries = profilingEntries
+                .Select(kv => kv.Value.Entry)
+                .ToList();
+
+            profilingEntries.Clear();
+
+            foreach (var entry in entries)
+                entry.NotifyProfilingChanged();
         }
 
         // Public properties --------------------------------------------------

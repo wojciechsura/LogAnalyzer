@@ -346,6 +346,19 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 throw new InvalidOperationException("Invalid column info!");
         }
 
+        private void DoToggleProfilingPointCommand()
+        {
+            if (engine.IsProfilingEntry(selectedLogEntry.LogEntry))
+                engine.RemoveProfilingEntry(selectedLogEntry.LogEntry);
+            else
+                engine.AddProfilingEntry(selectedLogEntry.LogEntry);
+        }
+
+        private void DoClearProfilingPointsCommand()
+        {
+            engine.ClearProfilingEntries();
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -387,6 +400,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             GotoBookmarkCommand = new SimpleCommand((obj) => DoGotoBookmark((string)obj), enginePresentCondition);
             AddHighlightingRuleCommand = new SimpleCommand((obj) => DoAddHighlightingRule(), enginePresentCondition & itemSelectedCondition);
             AddFilteringRuleCommand = new SimpleCommand((obj) => DoAddFilteringRule(), enginePresentCondition & itemSelectedCondition);
+            ToggleProfilingPointCommand = new SimpleCommand((obj) => DoToggleProfilingPointCommand(), enginePresentCondition & itemSelectedCondition);
+            ClearProfilingPointsCommand = new SimpleCommand((obj) => DoClearProfilingPointsCommand(), enginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -454,6 +469,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand AddHighlightingRuleCommand { get; }
 
         public ICommand AddFilteringRuleCommand { get; }
+
+        public ICommand ToggleProfilingPointCommand { get; }
+
+        public ICommand ClearProfilingPointsCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

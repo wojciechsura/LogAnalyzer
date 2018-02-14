@@ -31,6 +31,13 @@ namespace LogAnalyzer.API.Models
             OnPropertyChanged(nameof(Bookmarks));
         }
 
+        public void NotifyProfilingChanged()
+        {
+            OnPropertyChanged(nameof(IsProfilingPoint));
+            OnPropertyChanged(nameof(TimeSpanFromStart));
+            OnPropertyChanged(nameof(TimeSpanFromPrevious));
+        }
+
         public int Index { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,6 +47,38 @@ namespace LogAnalyzer.API.Models
             get
             {
                 return handler.GetBookmarks(this);
+            }
+        }
+
+        public bool IsProfilingPoint
+        {
+            get
+            {
+                return handler.IsProfilingPoint(this);
+            }
+        }
+
+        public TimeSpan TimeSpanFromStart
+        {
+            get
+            {
+                return handler.TimeSpanFromStart(this);
+            }
+        }
+
+        public TimeSpan TimeSpanFromPrevious
+        {
+            get
+            {
+                return handler.TimeSpanFromPrevious(this);
+            }
+        }
+
+        public int ProfilingStep
+        {
+            get
+            {
+                return handler.GetProfilingStep(this);
             }
         }
     }

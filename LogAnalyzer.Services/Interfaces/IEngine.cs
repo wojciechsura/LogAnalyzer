@@ -32,6 +32,11 @@ namespace LogAnalyzer.Services.Interfaces
         void AddBookmark(string name, LogRecord logRecord);
         LogRecord GetLogRecordForBookmark(string name);
 
+        void AddProfilingEntry(LogEntry entry);
+        void RemoveProfilingEntry(LogEntry entry);
+        bool IsProfilingEntry(LogEntry entry);
+        void ClearProfilingEntries();
+
         HighlightConfig HighlightConfig { get; set; }
         FilterConfig FilterConfig { get; set; }
         SearchConfig SearchConfig { get; set; }
