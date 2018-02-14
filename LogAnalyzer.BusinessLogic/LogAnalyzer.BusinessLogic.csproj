@@ -102,6 +102,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClipboardLogSource\ClipboardLogSource.csproj">
+      <Project>{711560D2-F2E0-4F9A-A3C9-A571D0BFA53E}</Project>
+      <Name>ClipboardLogSource</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
       <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
       <Name>FileLogSource</Name>

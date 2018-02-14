@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ClipboardLogSource.Editor
@@ -17,35 +18,16 @@ namespace ClipboardLogSource.Editor
     {
         // Private constants --------------------------------------------------
 
-        private const string DISPLAY_NAME = "Single file";
-        private const string EDITOR_RESOURCE = "FileLogEditorDataTemplate";
+        private const string DISPLAY_NAME = "Clipboard";
+        private const string EDITOR_RESOURCE = "ClipboardLogEditorDataTemplate";
 
         // Private fields -----------------------------------------------------
-
-        private IWinApiService winApiService;
-        private string filename;
 
         // ILogSourceEditorVoewModel implementation ---------------------------
 
         public ILogSourceConfiguration BuildConfiguration()
         {
-            return new ClipboardLogSourceConfiguration(filename);
-        }
-
-        // Private methods ----------------------------------------------------
-
-        private void DoOpenFile()
-        {
-            string filename = winApiService.OpenFile(LogAnalyzer.Models.Constants.File.LogFilterDefinitions);
-            if (filename != null) {
-                this.filename = filename;
-                OnPropertyChanged(nameof(Filename));
-            }
-        }
-
-        private void LoadConfig(ClipboardLogSourceConfiguration config)
-        {
-            Filename = config.Filename;
+            return new ClipboardLogSourceConfiguration();
         }
 
         // Protected methods --------------------------------------------------
@@ -57,30 +39,22 @@ namespace ClipboardLogSource.Editor
 
         public ValidationResult Validate()
         {
-            if (String.IsNullOrEmpty(filename))
-                return new ValidationResult(false, "Choose log file");
-            if (!File.Exists(filename))
-                return new ValidationResult(false, "File does not exist!");
+            if (Clipboard.ContainsText(TextDataFormat.Text) || Clipboard.ContainsText(TextDataFormat.CommaSeparatedValue))
+                return new ValidationResult(true, null);
 
-            return new ValidationResult(true, null);
+            return new ValidationResult(false, "Clipboard does not contain text!");
         }
 
         // Public methods -----------------------------------------------------
 
-        public ClipboardLogSourceEditorViewModel(ILogSourceProvider provider, IWinApiService winApiService)
+        public ClipboardLogSourceEditorViewModel(ILogSourceProvider provider)
         {
             this.Provider = provider;
-            this.winApiService = winApiService;
-
-            OpenFileCommand = new SimpleCommand((obj) => DoOpenFile());
         }
 
         public void LoadConfiguration(ILogSourceConfiguration configuration)
         {
-            if (configuration is ClipboardLogSourceConfiguration config)
-                LoadConfig(config);
-            else
-                throw new ArgumentException("Invalid configuration!");
+            
         }
 
         // Public properties --------------------------------------------------
@@ -88,20 +62,6 @@ namespace ClipboardLogSource.Editor
         public string DisplayName => DISPLAY_NAME;
 
         public string EditorResource => EDITOR_RESOURCE;
-
-        public ICommand OpenFileCommand { get; private set; }
-
-        public string Filename
-        {
-            get
-            {
-                return filename;
-            }
-            set
-            {
-                filename = value;
-            }
-        }
 
         public ILogSourceProvider Provider { get; }
 

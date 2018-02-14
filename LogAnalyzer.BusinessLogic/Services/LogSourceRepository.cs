@@ -1,4 +1,5 @@
-﻿using FileLogSource;
+﻿using ClipboardLogSource;
+using FileLogSource;
 using FilesLogSource;
 using LogAnalyzer.API.LogSource;
 using LogAnalyzer.Services.Interfaces;
@@ -20,7 +21,8 @@ namespace LogAnalyzer.BusinessLogic.Services
             logSourceProviders = new List<ILogSourceProvider>
             {
                 new FileLogSourceProvider(),
-                new FilesLogSourceProvider()
+                new FilesLogSourceProvider(),
+                new ClipboardLogSourceProvider()
             };
 
             // Verifying uniqueness of names

@@ -6,34 +6,31 @@ using System.Text;
 using System.Threading.Tasks;
 using LogAnalyzer.API.LogParser;
 using System.IO;
+using System.Windows;
 
 namespace ClipboardLogSource
 {
     class ClipboardLogSource : ILogSource
     {
         private ClipboardLogSourceConfiguration configuration;
-        private FileStream fileStream;
-        private StreamReader streamReader;
+        private StringReader reader;
 
         public ClipboardLogSource(ILogSourceConfiguration configuration)
         {
             this.configuration = configuration as ClipboardLogSourceConfiguration ?? throw new ArgumentException(nameof(configuration));
 
-            fileStream = new FileStream(this.configuration.Filename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            streamReader = new StreamReader(fileStream, Encoding.UTF8, true, 1024);
+            string clipboard = Clipboard.GetText(TextDataFormat.Text);
+            reader = new StringReader(clipboard);
         }
 
         public void Dispose()
         {
-            streamReader.Close();
-
-            fileStream = null;
-            streamReader = null;
+            reader.Close();
         }
 
         public string GetLine()
         {
-            return streamReader.ReadLine();
+            return reader.ReadLine();
         }
     }
 }

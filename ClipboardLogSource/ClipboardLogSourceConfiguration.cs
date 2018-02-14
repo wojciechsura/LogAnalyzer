@@ -9,11 +9,6 @@ namespace ClipboardLogSource
 {
     public class ClipboardLogSourceConfiguration : ILogSourceConfiguration
     {
-        public ClipboardLogSourceConfiguration(string filename)
-        {
-            Filename = filename;
-        }
-
-        public string Filename { get; private set; }
+        
     }
 }

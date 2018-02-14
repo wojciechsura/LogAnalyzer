@@ -25,12 +25,7 @@ namespace ClipboardLogSource
 
         public ILogSourceConfiguration CreateFromLocalPaths(List<string> files)
         {
-            if (files.Count == 1)
-            {
-                return new ClipboardLogSourceConfiguration(files[0]);
-            }
-            else
-                return null;
+            return null;
         }
 
         public string UniqueName => Common.Consts.UNIQUE_NAME;

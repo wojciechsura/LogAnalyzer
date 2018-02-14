@@ -8,6 +8,6 @@ namespace ClipboardLogSource.Common
 {
     class Consts
     {
-        public static readonly string UNIQUE_NAME = "LogSource.File";
+        public static readonly string UNIQUE_NAME = "LogSource.Clipboard";
     }
 }
