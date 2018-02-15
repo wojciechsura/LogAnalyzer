@@ -18,7 +18,7 @@
         <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         <c:TransparentColorConverter x:Key="TransparentColorConverter" />
         <sc:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        
+
         <Style TargetType="ListViewItem" x:Key="ListViewItemStyle">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Top"/>
@@ -34,23 +34,22 @@
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Style.Setters>
                                                 <Setter Property="VerticalAlignment" Value="Center" />
-                                                <Setter Property="Foreground" Value="{x:Static SystemColors.ControlTextBrush}" />
                                             </Style.Setters>
                                         </Style>
                                     </StackPanel.Resources>
                                     <Image Margin="2,2,6,2" Width="16" Height="16" Source="/Resources/Images/Stopwatch16.png" />
                                     <StackPanel Orientation="Horizontal" Margin="0,0,6,0">
-                                        <TextBlock Text="Step " />
-                                        <TextBlock Text="{Binding LogEntry.ProfilingStep}" />
-                                        <TextBlock Text="."/>
+                                        <TextBlock Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" Text="Step " />
+                                        <TextBlock Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" Text="{Binding LogEntry.ProfilingStep}" />
+                                        <TextBlock Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" Text="."/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Width="200">
-                                        <TextBlock Text="Since previous: " />
-                                        <TextBlock Text="{Binding LogEntry.TimeSpanFromPrevious}" FontWeight="Bold"/>
+                                        <TextBlock Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" Text="Since previous: " />
+                                        <TextBlock Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" Text="{Binding LogEntry.TimeSpanFromPrevious}" FontWeight="Bold"/>
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal" Width="200">
-                                        <TextBlock Text="Elapsed: " />
-                                        <TextBlock Text="{Binding LogEntry.TimeSpanFromStart}" FontWeight="Bold"/>
+                                        <TextBlock Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" Text="Elapsed: " />
+                                        <TextBlock Foreground="{Binding Highlight.Foreground, Converter={StaticResource ColorToBrushConverter}}" Text="{Binding LogEntry.TimeSpanFromStart}" FontWeight="Bold"/>
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
