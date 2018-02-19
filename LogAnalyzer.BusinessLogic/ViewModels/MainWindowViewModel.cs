@@ -174,8 +174,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             BottomPaneVisible = false;
         }
 
-        private void DoCopy(IList<object> items)
+        private void DoCopy()
         {
+            System.Collections.IList items = access.GetMainSelectedItems();
+
             if (items.Count == 0)
                 return;
 
@@ -394,7 +396,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             SearchCommand = new SimpleCommand((obj) => DoSearch(), generalEnginePresentCondition);
             ToggleBottomPaneCommand = new SimpleCommand((obj) => DoToggleBottomPane());
             CloseBottomPaneCommand = new SimpleCommand((obj) => DoCloseBootomPane());
-            CopyCommand = new SimpleCommand((obj) => DoCopy((IList<object>)obj), enginePresentCondition);
+            CopyCommand = new SimpleCommand((obj) => DoCopy(), enginePresentCondition);
             JumpToTimeCommand = new SimpleCommand((obj) => DoJumpToTime(), enginePresentCondition);
             SetBookmarkCommand = new SimpleCommand((obj) => DoSetBookmark((string)obj), enginePresentCondition & itemSelectedCondition);
             GotoBookmarkCommand = new SimpleCommand((obj) => DoGotoBookmark((string)obj), enginePresentCondition);

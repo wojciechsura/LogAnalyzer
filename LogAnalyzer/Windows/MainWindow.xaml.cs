@@ -162,5 +162,15 @@ namespace LogAnalyzer.Windows
                 e.Effects = DragDropEffects.None;
             }
         }
+
+        public System.Collections.IList GetMainSelectedItems()
+        {
+            if (lvMain.SelectedItems != null)
+                return lvMain.SelectedItems;
+            else if (lvMain.SelectedItem != null)
+                return new List<object> { lvMain.SelectedItem };
+            else
+                return new List<object>();
+        }
     }
 }

@@ -70,9 +70,10 @@
     </f:RibbonWindow.Resources>
     <f:RibbonWindow.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenCommand}" />
-        <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyCommand}" CommandParameter="{Binding ElementName=lvMain, Path=SelectedItems}"/>
+        <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="F" Command="{Binding SearchCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="J" Command="{Binding JumpToTimeCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="T" Command="{Binding ToggleProfilingPointCommand}" />
 
         <KeyBinding Modifiers="Ctrl+Shift" Key="D1" Command="{Binding SetBookmarkCommand}" CommandParameter="1" />
         <KeyBinding Modifiers="Ctrl+Shift" Key="D2" Command="{Binding SetBookmarkCommand}" CommandParameter="2" />
@@ -116,7 +117,7 @@
                     <f:Button Header="Copy"
                               LargeIcon="/Resources/Images/Copy32.png"
                               Icon="/Resources/Images/Copy16.png"
-                              Command="{Binding CopyCommand}" CommandParameter="{Binding ElementName=lvMain, Path=SelectedItems}"/>
+                              Command="{Binding CopyCommand}" />
                 </f:RibbonGroupBox>
                 <f:RibbonGroupBox Header="Navigation">
                     <f:Button Header="Search"
@@ -190,7 +191,7 @@
                       SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ListView.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Copy" Command="{Binding CopyCommand}" CommandParameter="{Binding ElementName=lvMain, Path=SelectedItems}" InputGestureText="Ctrl+C">
+                        <MenuItem Header="Copy" Command="{Binding CopyCommand}" InputGestureText="Ctrl+C">
                             <MenuItem.Icon>
                                 <Image Width="16" Height="16" Source="/Resources/Images/Copy16.png" />
                             </MenuItem.Icon>
@@ -238,7 +239,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator />
-                        <MenuItem Header="Toggle time step" Command="{Binding ToggleProfilingPointCommand}">
+                        <MenuItem Header="Toggle time step" Command="{Binding ToggleProfilingPointCommand}" InputGestureText="Ctrl+T">
                             <MenuItem.Icon>
                                 <Image Width="16" Height="16" Source="/Resources/Images/Stopwatch16.png" />
                             </MenuItem.Icon>
