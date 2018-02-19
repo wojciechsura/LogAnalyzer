@@ -79,7 +79,9 @@
     <Compile Include="ViewModels\Interfaces\IColumnSelectionWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IFindWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IJumpToTimeWindowAccess.cs" />
+    <Compile Include="ViewModels\Interfaces\INoteWindowAccess.cs" />
     <Compile Include="ViewModels\JumpToTimeWindowViewModel.cs" />
+    <Compile Include="ViewModels\NoteWindowViewModel.cs" />
     <Compile Include="ViewModels\Processing\BaseRuleEditorViewModel.cs" />
     <Compile Include="ViewModels\Processing\FilteringRuleEditorViewModel.cs" />
     <Compile Include="ViewModels\HighlightConfigWindowViewModel.cs" />

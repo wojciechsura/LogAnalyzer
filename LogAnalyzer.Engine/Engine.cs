@@ -58,6 +58,7 @@ namespace LogAnalyzer.Engine
 
         private readonly List<BookmarkEntry> bookmarks;
         private readonly SortedList<int, ProfilingEntry> profilingEntries;
+        private readonly SortedList<int, string> notes;
 
         private State state = State.Working;
         private StopToken stopToken = null;
@@ -169,6 +170,19 @@ namespace LogAnalyzer.Engine
             return profilingEntries.ContainsKey(logEntry.Index) ? profilingEntries[logEntry.Index].Step : -1;
         }
 
+        bool ILogEntryMetaHandler.HasNote(LogEntry logEntry)
+        {
+            return notes.ContainsKey(logEntry.Index);
+        }
+
+        string ILogEntryMetaHandler.Note(LogEntry logEntry)
+        {
+            if (notes.ContainsKey(logEntry.Index))
+                return notes[logEntry.Index];
+
+            return null;
+        }
+
         // Public methods -----------------------------------------------------
 
         public Engine(ILogSource logSource, ILogParser logParser)
@@ -191,6 +205,7 @@ namespace LogAnalyzer.Engine
 
             bookmarks = new List<BookmarkEntry>();
             profilingEntries = new SortedList<int, ProfilingEntry>();
+            notes = new SortedList<int, string>();
         }
 
         public void NotifySourceReady()
@@ -304,6 +319,41 @@ namespace LogAnalyzer.Engine
 
             foreach (var entry in entries)
                 entry.NotifyProfilingChanged();
+        }
+
+        public void AddNote(string note, LogRecord logRecord)
+        {
+            if (!data.ResultLogEntries.Any(le => le == logRecord.LogEntry))
+                throw new ArgumentException("Invalid log entry!");
+
+            if (string.IsNullOrEmpty(note.Trim()))
+            {
+                RemoveNote(logRecord);
+            }
+            else
+            {
+                notes[logRecord.LogEntry.Index] = note;
+                logRecord.LogEntry.NotifyNoteChanged();
+            }
+        }
+
+        public string GetNote(LogRecord logRecord)
+        {
+            if (notes.ContainsKey(logRecord.LogEntry.Index))
+                return notes[logRecord.LogEntry.Index];
+            else
+                return null;
+        }
+
+        public void RemoveNote(LogRecord logRecord)
+        {
+            if (!data.ResultLogEntries.Any(le => le == logRecord.LogEntry))
+                throw new ArgumentException("Invalid log entry!");
+
+            if (notes.ContainsKey(logRecord.LogEntry.Index))
+                notes.Remove(logRecord.LogEntry.Index);
+
+            logRecord.LogEntry.NotifyNoteChanged();
         }
 
         // Public properties --------------------------------------------------

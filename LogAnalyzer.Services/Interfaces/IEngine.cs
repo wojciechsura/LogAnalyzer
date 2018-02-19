@@ -37,6 +37,10 @@ namespace LogAnalyzer.Services.Interfaces
         bool IsProfilingEntry(LogEntry entry);
         void ClearProfilingEntries();
 
+        void AddNote(string note, LogRecord logRecord);
+        void RemoveNote(LogRecord logRecord);
+        string GetNote(LogRecord selectedLogEntry);
+
         HighlightConfig HighlightConfig { get; set; }
         FilterConfig FilterConfig { get; set; }
         SearchConfig SearchConfig { get; set; }

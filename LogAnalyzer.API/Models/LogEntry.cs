@@ -31,6 +31,12 @@ namespace LogAnalyzer.API.Models
             OnPropertyChanged(nameof(Bookmarks));
         }
 
+        public void NotifyNoteChanged()
+        {
+            OnPropertyChanged(nameof(HasNote));
+            OnPropertyChanged(nameof(Note));
+        }
+
         public void NotifyProfilingChanged()
         {
             OnPropertyChanged(nameof(IsProfilingPoint));
@@ -80,6 +86,22 @@ namespace LogAnalyzer.API.Models
             get
             {
                 return handler.GetProfilingStep(this);
+            }
+        }
+
+        public bool HasNote
+        {
+            get
+            {
+                return handler.HasNote(this);
+            }
+        }
+
+        public string Note
+        {
+            get
+            {
+                return handler.Note(this);
             }
         }
     }

@@ -27,6 +27,7 @@ using LogAnalyzer.Models.Views.ColumnSelectionWindow;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using LogAnalyzer.Models.Types;
+using LogAnalyzer.Models.Views.NoteWindow;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -361,6 +362,16 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             engine.ClearProfilingEntries();
         }
 
+        private void DoAnnotate()
+        {
+            NoteModel model = new NoteModel { Note = engine.GetNote(selectedLogEntry) };
+            var result = dialogService.EditAnnotations(model);
+            if (result.DialogResult)
+            {
+                engine.AddNote(result.Result.Note, selectedLogEntry);
+            }
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -370,10 +381,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         // Public methods -----------------------------------------------------
 
-        public MainWindowViewModel(IMainWindowAccess access, 
-            IDialogService dialogService, 
-            IEngineFactory engineFactory, 
-            ILogParserRepository logParserRepository, 
+        public MainWindowViewModel(IMainWindowAccess access,
+            IDialogService dialogService,
+            IEngineFactory engineFactory,
+            ILogParserRepository logParserRepository,
             ILogSourceRepository logSourceRepository,
             IConfigurationService configurationService)
         {
@@ -404,6 +415,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             AddFilteringRuleCommand = new SimpleCommand((obj) => DoAddFilteringRule(), enginePresentCondition & itemSelectedCondition);
             ToggleProfilingPointCommand = new SimpleCommand((obj) => DoToggleProfilingPointCommand(), enginePresentCondition & itemSelectedCondition);
             ClearProfilingPointsCommand = new SimpleCommand((obj) => DoClearProfilingPointsCommand(), enginePresentCondition);
+            AnnotateCommand = new SimpleCommand((obj) => DoAnnotate(), enginePresentCondition & itemSelectedCondition);
         }
 
         public bool HandleClosing()
@@ -475,6 +487,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand ToggleProfilingPointCommand { get; }
 
         public ICommand ClearProfilingPointsCommand { get; }
+
+        public ICommand AnnotateCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

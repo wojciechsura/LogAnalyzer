@@ -47,6 +47,7 @@
     <Compile Include="DialogResults\ColumnSelectionResult.cs" />
     <Compile Include="DialogResults\JumpToTimeResult.cs" />
     <Compile Include="DialogResults\LogParserProfileEditorResult.cs" />
+    <Compile Include="DialogResults\NoteResult.cs" />
     <Compile Include="DialogResults\OpenResult.cs" />
     <Compile Include="Engine\BookmarkEntry.cs" />
     <Compile Include="Engine\FilterConfig.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Views\FindWindow\FindModel.cs" />
     <Compile Include="Views\HighlightConfigWindow\HighlightConfigModel.cs" />
     <Compile Include="Views\JumpToTime\JumpToTimeModel.cs" />
+    <Compile Include="Views\NoteWindow\NoteModel.cs" />
     <Compile Include="Views\OpenWindow\LogParserProfileInfo.cs" />
     <Compile Include="Views\OpenWindow\OpenFilesModel.cs" />
   </ItemGroup>

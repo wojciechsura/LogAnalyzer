@@ -14,6 +14,7 @@ using LogAnalyzer.Models.Views.FindWindow;
 using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Models.Views.JumpToTime;
 using LogAnalyzer.Models.Views.ColumnSelectionWindow;
+using LogAnalyzer.Models.Views.NoteWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -71,6 +72,13 @@ namespace LogAnalyzer.Services
         public ModalDialogResult<ColumnSelectionResult> SelectColumn(ColumnSelectionModel model)
         {
             ColumnSelectionWindow window = new ColumnSelectionWindow(model);
+            window.ShowDialog();
+            return window.DataResult;
+        }
+
+        public ModalDialogResult<NoteResult> EditAnnotations(NoteModel model)
+        {
+            NoteWindow window = new NoteWindow(model);
             window.ShowDialog();
             return window.DataResult;
         }

@@ -14,5 +14,8 @@ namespace LogAnalyzer.API.Models.Interfaces
         TimeSpan TimeSpanFromStart(LogEntry logEntry);
         TimeSpan TimeSpanFromPrevious(LogEntry logEntry);
         int GetProfilingStep(LogEntry logEntry);
+
+        bool HasNote(LogEntry logEntry);
+        string Note(LogEntry logEntry);
     }
 }

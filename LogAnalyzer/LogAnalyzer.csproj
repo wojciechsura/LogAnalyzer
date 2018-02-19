@@ -152,6 +152,9 @@
     <Compile Include="Windows\JumpToTimeWindow.xaml.cs">
       <DependentUpon>JumpToTimeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\NoteWindow.xaml.cs">
+      <DependentUpon>NoteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\OpenWindow.xaml.cs">
       <DependentUpon>OpenWindow.xaml</DependentUpon>
     </Compile>
@@ -203,6 +206,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\NoteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\OpenWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -652,6 +659,8 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\Note16.png" />
+    <Resource Include="Resources\Images\Note32.png" />
     <Resource Include="Resources\Images\Clear16.png" />
     <Resource Include="Resources\Images\Clear32.png" />
     <Resource Include="Resources\Images\Stopwatch16.png" />
