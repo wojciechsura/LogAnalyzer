@@ -174,17 +174,8 @@ namespace LogAnalyzer.TextParser
 
             StringBuilder builder = new StringBuilder();
             builder.Append("<!DOCTYPE html>")
-                .Append("<html>");
-
-            /*
-            builder.Append("<head>")
-                .Append("<style type=\"text/css\">")
-                .Append(ReadResource("vs.css"))
-                .Append("</style>")
-                .Append("</head>");
-            */
-
-            builder.Append("<body>");
+                .Append("<html>")
+                .Append("<body>");
 
             for (int i = 0; i < items.Count; i++)
             {
@@ -214,13 +205,6 @@ namespace LogAnalyzer.TextParser
                 else
                     throw new InvalidOperationException("Invalid text part!");
             }
-
-            /*
-            builder.Append("<script>")
-                .Append(ReadResource("highlight.pack.js"))
-                .Append("</script>")
-                .Append("<script>hljs.initHighlightingOnLoad();</script>");
-            */
 
             builder.Append("</body></html>");
 

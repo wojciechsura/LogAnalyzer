@@ -90,10 +90,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\highlight.pack.js" />
-    <EmbeddedResource Include="Resources\vs.css" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
