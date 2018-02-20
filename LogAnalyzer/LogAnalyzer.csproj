@@ -751,6 +751,8 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\Export16.png" />
+    <Resource Include="Resources\Images\Export32.png" />
     <Resource Include="Lib\site-packages\README.txt" />
     <Content Include="Lib\site.py" />
     <Content Include="Lib\smtpd.py" />
