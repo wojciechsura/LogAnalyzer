@@ -10,12 +10,13 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Xml;
 using System.Web;
+using System.Reflection;
 
 namespace LogAnalyzer.TextParser
 {
     public class TextParser : ITextParser
     {
-        int Move(string text, int current, int line, int position)
+        private int Move(string text, int current, int line, int position)
         {
             while (current < text.Length && (line > 1 || position > 1))
             {
@@ -155,12 +156,35 @@ namespace LogAnalyzer.TextParser
             return result;
         }
 
+        private string ReadResource(string name)
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var resourceName = $"LogAnalyzer.TextParser.Resources.{name}";
+
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
         public string ParseToHtml(string logMessage)
         {
             var items = Parse(logMessage);
 
             StringBuilder builder = new StringBuilder();
-            builder.Append("<html><body>");
+            builder.Append("<!DOCTYPE html>")
+                .Append("<html>");
+
+            /*
+            builder.Append("<head>")
+                .Append("<style type=\"text/css\">")
+                .Append(ReadResource("vs.css"))
+                .Append("</style>")
+                .Append("</head>");
+            */
+
+            builder.Append("<body>");
 
             for (int i = 0; i < items.Count; i++)
             {
@@ -170,7 +194,7 @@ namespace LogAnalyzer.TextParser
                 }
                 else if (items[i] is JsonTextPart jsonTextPart)
                 {
-                    builder.Append("<code><pre>" + HttpUtility.HtmlEncode(jsonTextPart.Json.ToString(Newtonsoft.Json.Formatting.Indented)) + "</pre></code>");
+                    builder.Append("<pre><code class=\"json\">" + HttpUtility.HtmlEncode(jsonTextPart.Json.ToString(Newtonsoft.Json.Formatting.Indented)) + "</code></pre>");
                 }
                 else if (items[i] is XmlTextPart xmlTextPart)
                 {
@@ -185,11 +209,18 @@ namespace LogAnalyzer.TextParser
                     StreamReader reader = new StreamReader(ms);
                     string formattedXml = reader.ReadToEnd();
 
-                    builder.Append("<code><pre>" + HttpUtility.HtmlEncode(formattedXml) + "</pre></code>");
+                    builder.Append("<pre><code class=\"xml\">" + HttpUtility.HtmlEncode(formattedXml) + "</code></pre>");
                 }
                 else
                     throw new InvalidOperationException("Invalid text part!");
             }
+
+            /*
+            builder.Append("<script>")
+                .Append(ReadResource("highlight.pack.js"))
+                .Append("</script>")
+                .Append("<script>hljs.initHighlightingOnLoad();</script>");
+            */
 
             builder.Append("</body></html>");
 
