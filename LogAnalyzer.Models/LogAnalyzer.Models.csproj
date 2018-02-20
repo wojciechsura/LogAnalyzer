@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -63,6 +66,9 @@
     <Compile Include="Engine\ProfilingEntry.cs" />
     <Compile Include="Engine\SearchConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\TextParser\BaseTextPart.cs" />
+    <Compile Include="Services\TextParser\JsonTextPart.cs" />
+    <Compile Include="Services\TextParser\SimpleTextPart.cs" />
     <Compile Include="Services\WinApiService\FilterDefinition.cs" />
     <Compile Include="Types\ComparisonMethod.cs" />
     <Compile Include="Types\FilterAction.cs" />
@@ -85,6 +91,9 @@
       <Project>{1c717240-85a8-455c-992d-7546ae7526ad}</Project>
       <Name>LogAnalyzer.Types</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
