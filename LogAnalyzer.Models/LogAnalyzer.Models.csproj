@@ -69,6 +69,7 @@
     <Compile Include="Services\TextParser\BaseTextPart.cs" />
     <Compile Include="Services\TextParser\JsonTextPart.cs" />
     <Compile Include="Services\TextParser\SimpleTextPart.cs" />
+    <Compile Include="Services\TextParser\XmlTextPart.cs" />
     <Compile Include="Services\WinApiService\FilterDefinition.cs" />
     <Compile Include="Types\ComparisonMethod.cs" />
     <Compile Include="Types\FilterAction.cs" />

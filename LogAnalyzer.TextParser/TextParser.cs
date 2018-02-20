@@ -7,104 +7,93 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.Xml;
 
 namespace LogAnalyzer.TextParser
 {
     public class TextParser : ITextParser
     {
-        private (bool jsonParseResult, BaseTextPart part, int newIndex) TryParseJson(string text, int current)
+        int Move(string text, int current, int line, int position)
         {
-            int start = current;
-
-            // Find end of JSON string
-
-            if (text[current] != '{')
-                throw new ArgumentException("Invalid JSON start char!");
-
-            Stack<char> braces = new Stack<char>();
-            braces.Push('{');
-            bool inQuotes = false;
-            bool escape = false;
-
-            while (current < text.Length && braces.Count > 0)
+            while (current < text.Length && line > 1 && position > 1)
             {
+                if (text[current] == '\n')
+                {
+                    if (line == 1)
+                        return -1;
+
+                    line--;
+                }
+                else if (line == 1)
+                {
+                    position--;
+                }
+
                 current++;
-
-                if (escape)
-                {
-                    escape = false;
-                    continue;
-                }
-
-                if (current < text.Length)
-                {
-                    if (inQuotes)
-                    {
-                        if (text[current] == '"' && !escape)
-                        {
-                            inQuotes = false;
-                        }
-                        else if (text[current] == '\\')
-                        {
-                            escape = true;
-                        }                        
-                    }
-                    else
-                    {
-                        if (text[current] == '{')
-                        {
-                            braces.Push('{');
-                        }
-                        else if (text[current] == '[')
-                        {
-                            braces.Push('[');
-                        }
-                        else if (text[current] == '}')
-                        {
-                            if (braces.Peek() == '{')
-                                braces.Pop();
-                            else
-                                return (false, null, 0);
-                        }
-                        else if (text[current] == ']')
-                        {
-                            if (braces.Peek() == '[')
-                                braces.Pop();
-                            else
-                                return (false, null, 0);
-                        }
-                        else if (text[current] == '"')
-                        {
-                            inQuotes = true;
-                        }
-                    }
-                }
             }
 
-            // Try to process JSON if possible
+            return current;
+        }
 
-            if (current < text.Length && braces.Count == 0)
+        private (bool jsonParseResult, BaseTextPart part, int newIndex) TryParseJson(string text, int current)
+        {
+            try
             {
+                string textPart = text.Substring(current);
+
+                JObject obj = JObject.Parse(textPart);
+
+                return (true, new JsonTextPart(obj), text.Length);
+            }
+            catch (JsonReaderException e)
+            {
+                int end = Move(text, current, e.LineNumber, e.LinePosition);
+
                 try
                 {
-                    JObject obj = JObject.Parse(text.Substring(start, current - start));
+                    string textPart = text.Substring(current, end - current);
 
-                    return (true, new JsonTextPart(obj), current);
+                    JObject obj = JObject.Parse(textPart);
+
+                    return (true, new JsonTextPart(obj), end);
                 }
-                catch 
+                catch (JsonReaderException)
                 {
                     return (false, null, 0);
                 }
-            }
-            else
-            {
-                return (false, null, 0);
             }
         }
 
         private (bool xmlParseResult, BaseTextPart part, int newIndex) TryParseXml(string text, int current)
         {
-            return (false, null, 0);
+            XmlDocument doc = new XmlDocument();
+
+            try
+            {
+                string textPart = text.Substring(current);
+
+                doc.Load(new StringReader(textPart));    
+
+                return (true, new XmlTextPart(doc), text.Length);
+            }
+            catch (XmlException e)
+            {
+                int end = Move(text, current, e.LineNumber, e.LinePosition);
+
+                try
+                {
+                    string textPart = text.Substring(current, end - current);
+
+                    doc.Load(new StringReader(textPart));
+
+                    return (true, new XmlTextPart(doc), end);
+                }
+                catch (JsonReaderException)
+                {
+                    return (false, null, 0);
+                }
+            }
         }
 
         public List<BaseTextPart> Parse(string text)
