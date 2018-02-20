@@ -36,8 +36,7 @@ namespace LogAnalyzer.Windows
 
         public void Display(string html)
         {
-            wbBrowser.Navigate(new Uri("http://whatsmybrowser.org"));
-            // wbBrowser.NavigateToString(html);
+            wbBrowser.NavigateToString(html);
         }
     }
 }

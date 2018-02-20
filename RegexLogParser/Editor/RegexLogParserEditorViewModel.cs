@@ -192,13 +192,13 @@ namespace RegexLogParser.Editor
             ValidationResult validationResult = Validate();
             if (!validationResult.Valid)
             {
-                messagingService.Inform(validationResult.Message);
+                messagingService.Warn(validationResult.Message);
                 return;
             }
 
             if (String.IsNullOrEmpty(SampleData))
             {
-                messagingService.Inform("Enter sample data first!");
+                messagingService.Warn("Enter sample data first!");
                 return;
             }
 

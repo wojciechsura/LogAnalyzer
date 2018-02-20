@@ -77,9 +77,27 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 if (!result.Valid)
                 {
                     SelectedRule = Rules[i];
-                    messagingService.Inform(result.Message);
+                    messagingService.Warn(result.Message);
                     return;
                 }
+            }
+
+            if (selectedDefaultAction.Action == FilterAction.Exclude && Rules.Count == 0)
+            {
+                messagingService.Warn("Exclude as default action with no additional rules will yield no results.\nAdd rules or change default action to Include.");
+                return;
+            }
+
+            if (selectedDefaultAction.Action == FilterAction.Include && Rules.Any() && Rules.All(r => r.SelectedFilterAction.Action == FilterAction.Include))
+            {
+                if (!messagingService.Ask("Filter will return all entries.\nYou may want to set default rule to Exclude.\n\nContinue anyway?"))
+                    return;
+            }
+
+            if (selectedDefaultAction.Action == FilterAction.Exclude && Rules.Any() && Rules.All(r => r.SelectedFilterAction.Action == FilterAction.Exclude))
+            {
+                if (!messagingService.Ask("Filter will return no entries.\nYou may want to set default rule to Include.\n\nContinue anyway?"))
+                    return;
             }
 
             List<FilterEntry> entries = new List<FilterEntry>();

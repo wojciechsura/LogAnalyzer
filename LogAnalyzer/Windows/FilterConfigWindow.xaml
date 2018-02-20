@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </Window.Resources>
     <StackPanel Orientation="Vertical">
-        <GroupBox Header="Default action" Margin="4" Padding="4">
+        <GroupBox Header="Default rule" Margin="4" Padding="4">
             <StackPanel Orientation="Vertical">
                 <Label>This action is applied when no rule matches.</Label>
                 <ComboBox Width="150" HorizontalAlignment="Left" DisplayMemberPath="Display" ItemsSource="{Binding AvailableDefaultActions}" SelectedItem="{Binding SelectedDefaultAction, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

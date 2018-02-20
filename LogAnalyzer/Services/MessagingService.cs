@@ -12,12 +12,22 @@ namespace LogAnalyzer.Services
     {
         public bool Ask(string message)
         {
-            return MessageBox.Show(message, null, MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+            return MessageBox.Show(message, "Log Analyzer", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes;
         }
 
         public void Inform(string message)
         {
-            MessageBox.Show(message);
+            MessageBox.Show(message, "Log Analyzer", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public void Warn(string message)
+        {
+            MessageBox.Show(message, "Log Analyzer", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        public void Stop(string message)
+        {
+            MessageBox.Show(message, "Log Analyzer", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

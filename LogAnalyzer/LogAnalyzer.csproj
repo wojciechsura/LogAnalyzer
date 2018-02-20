@@ -40,41 +40,40 @@
     <Reference Include="CommonServiceLocator, Version=2.0.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.6.0\lib\net45\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="ControlzEx, Version=2.2.0.4, Culture=neutral, PublicKeyToken=f08b075e934b7045, processorArchitecture=MSIL">
-      <HintPath>..\packages\ControlzEx.2.2.0.4\lib\net45\ControlzEx.dll</HintPath>
+    <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
-    <Reference Include="Fluent, Version=5.0.2.46, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fluent.Ribbon.5.0.2.46\lib\net45\Fluent.dll</HintPath>
+    <Reference Include="Fluent, Version=6.1.0.233, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fluent.Ribbon.6.1.0.233\lib\net45\Fluent.dll</HintPath>
     </Reference>
-    <Reference Include="IronPython, Version=2.7.7.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronPython.2.7.7\lib\Net45\IronPython.dll</HintPath>
+    <Reference Include="IronPython, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.8\lib\net45\IronPython.dll</HintPath>
     </Reference>
-    <Reference Include="IronPython.Modules, Version=2.7.7.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronPython.2.7.7\lib\Net45\IronPython.Modules.dll</HintPath>
+    <Reference Include="IronPython.Modules, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.8\lib\net45\IronPython.Modules.dll</HintPath>
     </Reference>
-    <Reference Include="IronPython.SQLite, Version=2.7.7.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronPython.2.7.7\lib\Net45\IronPython.SQLite.dll</HintPath>
+    <Reference Include="IronPython.SQLite, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.8\lib\net45\IronPython.SQLite.dll</HintPath>
     </Reference>
-    <Reference Include="IronPython.Wpf, Version=2.7.7.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\IronPython.2.7.7\lib\Net45\IronPython.Wpf.dll</HintPath>
+    <Reference Include="IronPython.Wpf, Version=2.7.8.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.8\lib\net45\IronPython.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Dynamic, Version=1.1.2.22, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\DynamicLanguageRuntime.1.1.2\lib\Net45\Microsoft.Dynamic.dll</HintPath>
+    <Reference Include="Microsoft.Dynamic, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Dynamic.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Scripting, Version=1.1.2.22, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\DynamicLanguageRuntime.1.1.2\lib\Net45\Microsoft.Scripting.dll</HintPath>
+    <Reference Include="Microsoft.Scripting, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Scripting.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Scripting.AspNet, Version=1.1.1.21, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\DynamicLanguageRuntime.1.1.2\lib\Net45\Microsoft.Scripting.AspNet.dll</HintPath>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.2.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Scripting.Metadata, Version=1.1.2.22, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\DynamicLanguageRuntime.1.1.2\lib\Net45\Microsoft.Scripting.Metadata.dll</HintPath>
+    <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\ControlzEx.2.2.0.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -256,6 +255,92 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Images\Note16.png" />
+    <Resource Include="Resources\Images\Note32.png" />
+    <Resource Include="Resources\Images\Clear16.png" />
+    <Resource Include="Resources\Images\Clear32.png" />
+    <Resource Include="Resources\Images\Stopwatch16.png" />
+    <Resource Include="Resources\Images\Stopwatch32.png" />
+    <Resource Include="Resources\Images\Bookmark16.png" />
+    <Resource Include="Resources\Images\Bookmark32.png" />
+    <Resource Include="Resources\Images\Copy16.png" />
+    <Resource Include="Resources\Images\Copy32.png" />
+    <Resource Include="Resources\Images\BottomPane32.png" />
+    <Resource Include="Resources\Images\BottomPane16.png" />
+    <Resource Include="Resources\Images\Search16.png" />
+    <Resource Include="Resources\Images\Search32.png" />
+    <Resource Include="Resources\Images\Clock16.png" />
+    <Resource Include="Resources\Images\Clock32.png" />
+    <Resource Include="LogAnalyzer.ico" />
+    <Resource Include="Resources\Images\LogAnalyzer.ico" />
+    <Resource Include="Resources\Images\Highlight16.png" />
+    <Resource Include="Resources\Images\Highlight32.png" />
+    <Resource Include="Resources\Images\Filter16.png" />
+    <Resource Include="Resources\Images\Filter32.png" />
+    <Resource Include="Resources\Images\Down16.png" />
+    <Resource Include="Resources\Images\Up16.png" />
+    <Resource Include="Resources\Images\Help16.png" />
+    <Resource Include="Resources\Images\Delete16.png" />
+    <Resource Include="Resources\Images\Right16.png" />
+    <Resource Include="Resources\Images\Left16.png" />
+    <Resource Include="Resources\Images\Minus16.png" />
+    <Resource Include="Resources\Images\Minus32.png" />
+    <Resource Include="Resources\Images\Plus16.png" />
+    <Resource Include="Resources\Images\Plus32.png" />
+    <Resource Include="Resources\Images\New16.png" />
+    <Resource Include="Resources\Images\New32.png" />
+    <Resource Include="Resources\Images\Edit16.png" />
+    <Resource Include="Resources\Images\Edit32.png" />
+    <Resource Include="Resources\Images\Open16.png" />
+    <Resource Include="Resources\Images\Open32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
+      <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
+      <Name>FileLogSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FilesLogSource\FilesLogSource.csproj">
+      <Project>{fd4113dd-4cec-48c4-b15b-290d57f88804}</Project>
+      <Name>FilesLogSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LineLogParser\LineLogParser.csproj">
+      <Project>{897c5f60-27cc-43cc-8e66-8718b8822d60}</Project>
+      <Name>LineLogParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
+      <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
+      <Name>LogAnalyzer.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.BusinessLogic\LogAnalyzer.BusinessLogic.csproj">
+      <Project>{ED8AF742-2431-40D8-A8CC-295A8BDA2423}</Project>
+      <Name>LogAnalyzer.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">
+      <Project>{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}</Project>
+      <Name>LogAnalyzer.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
+      <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
+      <Name>LogAnalyzer.Dependencies</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
+      <Project>{5B2CEEC9-3261-400F-B198-831743AE86CC}</Project>
+      <Name>LogAnalyzer.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
+      <Project>{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}</Project>
+      <Name>LogAnalyzer.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
+      <Project>{47fc3aa3-69ca-424a-8f09-fa2c89c5995f}</Project>
+      <Name>LogAnalyzer.Wpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RegexLogParser\RegexLogParser.csproj">
+      <Project>{39b4d915-c6b6-46c6-93a9-a4ac7763a5be}</Project>
+      <Name>RegexLogParser</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Lib\abc.py" />
     <Content Include="Lib\aifc.py" />
     <Content Include="Lib\antigravity.py" />
@@ -277,6 +362,7 @@
     <Content Include="Lib\CGIHTTPServer.py" />
     <Content Include="Lib\cgitb.py" />
     <Content Include="Lib\chunk.py" />
+    <Content Include="Lib\clrtype.py" />
     <Content Include="Lib\cmd.py" />
     <Content Include="Lib\code.py" />
     <Content Include="Lib\codecs.py" />
@@ -521,7 +607,6 @@
     <Content Include="Lib\lib2to3\fixes\fix_asserts.py" />
     <Content Include="Lib\lib2to3\fixes\fix_basestring.py" />
     <Content Include="Lib\lib2to3\fixes\fix_buffer.py" />
-    <Content Include="Lib\lib2to3\fixes\fix_callable.py" />
     <Content Include="Lib\lib2to3\fixes\fix_dict.py" />
     <Content Include="Lib\lib2to3\fixes\fix_except.py" />
     <Content Include="Lib\lib2to3\fixes\fix_exec.py" />
@@ -666,54 +751,16 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
-    <Resource Include="Resources\Images\Note16.png" />
-    <Resource Include="Resources\Images\Note32.png" />
-    <Resource Include="Resources\Images\Clear16.png" />
-    <Resource Include="Resources\Images\Clear32.png" />
-    <Resource Include="Resources\Images\Stopwatch16.png" />
-    <Resource Include="Resources\Images\Stopwatch32.png" />
-    <Resource Include="Resources\Images\Bookmark16.png" />
-    <Resource Include="Resources\Images\Bookmark32.png" />
-    <Resource Include="Resources\Images\Copy16.png" />
-    <Resource Include="Resources\Images\Copy32.png" />
-    <Resource Include="Resources\Images\BottomPane32.png" />
-    <Resource Include="Resources\Images\BottomPane16.png" />
-    <Resource Include="Resources\Images\Search16.png" />
-    <Resource Include="Resources\Images\Search32.png" />
-    <Resource Include="Resources\Images\Clock16.png" />
-    <Resource Include="Resources\Images\Clock32.png" />
-    <Resource Include="LogAnalyzer.ico" />
-    <Resource Include="Resources\Images\LogAnalyzer.ico" />
-    <Resource Include="Resources\Images\Highlight16.png" />
-    <Resource Include="Resources\Images\Highlight32.png" />
-    <Resource Include="Resources\Images\Filter16.png" />
-    <Resource Include="Resources\Images\Filter32.png" />
-    <Resource Include="Resources\Images\Down16.png" />
-    <Resource Include="Resources\Images\Up16.png" />
-    <Resource Include="Resources\Images\Help16.png" />
-    <Resource Include="Resources\Images\Delete16.png" />
-    <Resource Include="Resources\Images\Right16.png" />
-    <Resource Include="Resources\Images\Left16.png" />
-    <Resource Include="Resources\Images\Minus16.png" />
-    <Resource Include="Resources\Images\Minus32.png" />
-    <Resource Include="Resources\Images\Plus16.png" />
-    <Resource Include="Resources\Images\Plus32.png" />
-    <Resource Include="Resources\Images\New16.png" />
-    <Resource Include="Resources\Images\New32.png" />
-    <Resource Include="Resources\Images\Edit16.png" />
-    <Resource Include="Resources\Images\Edit32.png" />
-    <Resource Include="Resources\Images\Open16.png" />
-    <Resource Include="Resources\Images\Open32.png" />
     <Resource Include="Lib\site-packages\README.txt" />
     <Content Include="Lib\site.py" />
     <Content Include="Lib\smtpd.py" />
     <Content Include="Lib\smtplib.py" />
     <Content Include="Lib\sndhdr.py" />
+    <Content Include="Lib\socket.py" />
     <Content Include="Lib\SocketServer.py" />
     <Content Include="Lib\sqlite3\dbapi2.py" />
     <Content Include="Lib\sqlite3\dump.py" />
     <Content Include="Lib\sqlite3\__init__.py" />
-    <Content Include="Lib\sre_compile.py" />
     <Content Include="Lib\sre_constants.py" />
     <Content Include="Lib\sre_parse.py" />
     <Content Include="Lib\ssl.py" />
@@ -767,6 +814,7 @@
     <Content Include="Lib\weakref.py" />
     <Content Include="Lib\webbrowser.py" />
     <Content Include="Lib\whichdb.py" />
+    <Content Include="Lib\wpf.py" />
     <Content Include="Lib\wsgiref\handlers.py" />
     <Content Include="Lib\wsgiref\headers.py" />
     <Content Include="Lib\wsgiref\simple_server.py" />
@@ -807,52 +855,5 @@
     <Content Include="Lib\__future__.py" />
     <Content Include="Lib\__phello__.foo.py" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
-      <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
-      <Name>FileLogSource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FilesLogSource\FilesLogSource.csproj">
-      <Project>{fd4113dd-4cec-48c4-b15b-290d57f88804}</Project>
-      <Name>FilesLogSource</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LineLogParser\LineLogParser.csproj">
-      <Project>{897c5f60-27cc-43cc-8e66-8718b8822d60}</Project>
-      <Name>LineLogParser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
-      <Project>{5cfd58bc-167e-4bd1-8c9b-93f04175601c}</Project>
-      <Name>LogAnalyzer.API</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.BusinessLogic\LogAnalyzer.BusinessLogic.csproj">
-      <Project>{ED8AF742-2431-40D8-A8CC-295A8BDA2423}</Project>
-      <Name>LogAnalyzer.BusinessLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">
-      <Project>{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}</Project>
-      <Name>LogAnalyzer.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Dependencies\LogAnalyzer.Dependencies.csproj">
-      <Project>{13923f4e-adf0-46dc-84ca-965f25245a9d}</Project>
-      <Name>LogAnalyzer.Dependencies</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
-      <Project>{5B2CEEC9-3261-400F-B198-831743AE86CC}</Project>
-      <Name>LogAnalyzer.Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
-      <Project>{3BB6CDC4-0642-4A68-9557-9EF4D81EB0F9}</Project>
-      <Name>LogAnalyzer.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
-      <Project>{47fc3aa3-69ca-424a-8f09-fa2c89c5995f}</Project>
-      <Name>LogAnalyzer.Wpf</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\RegexLogParser\RegexLogParser.csproj">
-      <Project>{39b4d915-c6b6-46c6-93a9-a4ac7763a5be}</Project>
-      <Name>RegexLogParser</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

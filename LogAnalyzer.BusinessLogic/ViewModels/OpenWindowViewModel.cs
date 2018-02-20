@@ -103,20 +103,20 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             if (selectedLogSource == null)
             {
-                messagingService.Inform("Choose the log source!");
+                messagingService.Warn("Choose the log source!");
                 return;
             }
 
             ValidationResult validationResult = selectedLogSource.Validate();
             if (!validationResult.Valid)
             {
-                messagingService.Inform(validationResult.Message);
+                messagingService.Warn(validationResult.Message);
                 return;
             }
 
             if (selectedParserProfile == null)
             {
-                messagingService.Inform("Choose parser profile first!");
+                messagingService.Warn("Choose parser profile first!");
                 return;
             }
 

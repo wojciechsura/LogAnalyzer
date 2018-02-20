@@ -100,7 +100,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ValidationResult result = selectedLogParserViewModel.Validate();
             if (!result.Valid)
             {
-                messagingService.Inform(result.Message);
+                messagingService.Warn(result.Message);
                 return;
             }
 

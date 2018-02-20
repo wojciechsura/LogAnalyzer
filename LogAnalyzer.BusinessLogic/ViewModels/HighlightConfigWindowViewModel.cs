@@ -63,7 +63,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 if (!result.Valid)
                 {
                     SelectedRule = Rules[i];
-                    messagingService.Inform(result.Message);
+                    messagingService.Warn(result.Message);
                     return;
                 }
             }

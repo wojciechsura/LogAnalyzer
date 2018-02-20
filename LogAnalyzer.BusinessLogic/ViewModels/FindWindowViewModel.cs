@@ -36,7 +36,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ValidationResult validationResult = Validate();
             if (!validationResult.Valid)
             {
-                messagingService.Inform(validationResult.Message);
+                messagingService.Warn(validationResult.Message);
                 return;
             }
 

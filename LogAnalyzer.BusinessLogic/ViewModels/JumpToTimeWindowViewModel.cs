@@ -50,7 +50,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
             catch
             {
-                messagingService.Inform("Invalid date!");
+                messagingService.Warn("Invalid date!");
             }
         }
 

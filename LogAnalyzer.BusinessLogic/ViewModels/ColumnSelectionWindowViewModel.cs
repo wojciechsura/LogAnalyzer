@@ -49,7 +49,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             if (selectedColumn == null)
             {
-                messagingService.Inform("Please select column!");
+                messagingService.Warn("Please select column!");
                 return;
             }
 
