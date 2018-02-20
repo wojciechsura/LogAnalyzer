@@ -10,7 +10,7 @@ namespace LogAnalyzer.Models.Services.TextParser
     {
         public SimpleTextPart(string text)
         {
-
+            Text = text;
         }
 
         public string Text { get; }

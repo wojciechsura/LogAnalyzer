@@ -28,6 +28,7 @@ using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using LogAnalyzer.Models.Types;
 using LogAnalyzer.Models.Views.NoteWindow;
+using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -46,6 +47,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly ILogParserRepository logParserRepository;
         private readonly IConfigurationService configurationService;
         private readonly IEngineFactory engineFactory;
+        private readonly ITextParser textParser;
 
         private IEngine engine;
 
@@ -372,6 +374,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        private void DoVisualizeMessage()
+        {
+            var html = textParser.ParseToHtml(selectedLogEntry.LogEntry.Message);
+            dialogService.VisualizeMessage(new LogMessageVisualizerModel { Html = html });
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -386,7 +394,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             IEngineFactory engineFactory,
             ILogParserRepository logParserRepository,
             ILogSourceRepository logSourceRepository,
-            IConfigurationService configurationService)
+            IConfigurationService configurationService,
+            ITextParser textParser)
         {
             this.access = access;
             this.dialogService = dialogService;
@@ -394,6 +403,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.logParserRepository = logParserRepository;
             this.logSourceRepository = logSourceRepository;
             this.configurationService = configurationService;
+            this.textParser = textParser;
 
             engineStoppingCondition = new Wpf.Input.Condition(false);
             generalCommandCondition = !engineStoppingCondition;
@@ -416,6 +426,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ToggleProfilingPointCommand = new SimpleCommand((obj) => DoToggleProfilingPointCommand(), enginePresentCondition & itemSelectedCondition);
             ClearProfilingPointsCommand = new SimpleCommand((obj) => DoClearProfilingPointsCommand(), enginePresentCondition);
             AnnotateCommand = new SimpleCommand((obj) => DoAnnotate(), enginePresentCondition & itemSelectedCondition);
+            VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), enginePresentCondition & itemSelectedCondition);
         }
 
         public bool HandleClosing()
@@ -489,6 +500,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand ClearProfilingPointsCommand { get; }
 
         public ICommand AnnotateCommand { get; }
+
+        public ICommand VisualizeMessageCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

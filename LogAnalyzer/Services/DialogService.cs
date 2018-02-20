@@ -15,6 +15,7 @@ using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Models.Views.JumpToTime;
 using LogAnalyzer.Models.Views.ColumnSelectionWindow;
 using LogAnalyzer.Models.Views.NoteWindow;
+using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -81,6 +82,12 @@ namespace LogAnalyzer.Services
             NoteWindow window = new NoteWindow(model);
             window.ShowDialog();
             return window.DataResult;
+        }
+
+        public void VisualizeMessage(LogMessageVisualizerModel model)
+        {
+            LogMessageVisualizerWindow window = new LogMessageVisualizerWindow(model);
+            window.ShowDialog();
         }
     }
 }

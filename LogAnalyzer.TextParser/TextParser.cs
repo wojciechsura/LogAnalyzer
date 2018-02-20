@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.Xml;
+using System.Web;
 
 namespace LogAnalyzer.TextParser
 {
@@ -16,7 +17,7 @@ namespace LogAnalyzer.TextParser
     {
         int Move(string text, int current, int line, int position)
         {
-            while (current < text.Length && line > 1 && position > 1)
+            while (current < text.Length && (line > 1 || position > 1))
             {
                 if (text[current] == '\n')
                 {
@@ -89,14 +90,14 @@ namespace LogAnalyzer.TextParser
 
                     return (true, new XmlTextPart(doc), end);
                 }
-                catch (JsonReaderException)
+                catch (XmlException)
                 {
                     return (false, null, 0);
                 }
             }
         }
 
-        public List<BaseTextPart> Parse(string text)
+        private List<BaseTextPart> Parse(string text)
         {
             var result = new List<BaseTextPart>();
 
@@ -121,7 +122,8 @@ namespace LogAnalyzer.TextParser
                         continue;
                     }
                 }
-                else if (text[current] == '<')
+
+                if (text[current] == '<')
                 {
                     (bool xmlParseResult, BaseTextPart part, int newIndex) = TryParseXml(text, current);
 
@@ -138,12 +140,10 @@ namespace LogAnalyzer.TextParser
                         continue;
                     }
                 }
-                else
-                {
-                    buffer.Append(text[current]);
-                    current++;
-                    continue;
-                }
+
+                buffer.Append(text[current]);
+                current++;
+                continue;
             }
 
             if (buffer.Length > 0)
@@ -153,6 +153,47 @@ namespace LogAnalyzer.TextParser
             }
 
             return result;
+        }
+
+        public string ParseToHtml(string logMessage)
+        {
+            var items = Parse(logMessage);
+
+            StringBuilder builder = new StringBuilder();
+            builder.Append("<html><body>");
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i] is SimpleTextPart simpleTextPart)
+                {
+                    builder.Append("<pre>" + HttpUtility.HtmlEncode(simpleTextPart.Text) + "</pre>");
+                }
+                else if (items[i] is JsonTextPart jsonTextPart)
+                {
+                    builder.Append("<code><pre>" + HttpUtility.HtmlEncode(jsonTextPart.Json.ToString(Newtonsoft.Json.Formatting.Indented)) + "</pre></code>");
+                }
+                else if (items[i] is XmlTextPart xmlTextPart)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    XmlTextWriter writer = new XmlTextWriter(ms, Encoding.Unicode);
+                    writer.Formatting = System.Xml.Formatting.Indented;
+                    xmlTextPart.Document.WriteContentTo(writer);
+                    writer.Flush();
+                    ms.Flush();
+
+                    ms.Position = 0;
+                    StreamReader reader = new StreamReader(ms);
+                    string formattedXml = reader.ReadToEnd();
+
+                    builder.Append("<code><pre>" + HttpUtility.HtmlEncode(formattedXml) + "</pre></code>");
+                }
+                else
+                    throw new InvalidOperationException("Invalid text part!");
+            }
+
+            builder.Append("</body></html>");
+
+            return builder.ToString();
         }
     }
 }

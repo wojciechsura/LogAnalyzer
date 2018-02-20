@@ -13,6 +13,7 @@ using LogAnalyzer.Services.Common;
 using LogAnalyzer.Models.Views.JumpToTime;
 using LogAnalyzer.Models.Views.ColumnSelectionWindow;
 using LogAnalyzer.Models.Views.NoteWindow;
+using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
 
 namespace LogAnalyzer.Services.Interfaces
 {
@@ -27,5 +28,6 @@ namespace LogAnalyzer.Services.Interfaces
         ModalDialogResult<JumpToTimeResult> OpenJumpToTime(JumpToTimeModel model);
         ModalDialogResult<ColumnSelectionResult> SelectColumn(ColumnSelectionModel model);
         ModalDialogResult<NoteResult> EditAnnotations(NoteModel model);
+        void VisualizeMessage(LogMessageVisualizerModel model);
     }
 }

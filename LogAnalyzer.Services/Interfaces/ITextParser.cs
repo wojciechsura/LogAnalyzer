@@ -8,5 +8,6 @@ namespace LogAnalyzer.Services.Interfaces
 {
     public interface ITextParser
     {
+        string ParseToHtml(string logMessage);
     }
 }

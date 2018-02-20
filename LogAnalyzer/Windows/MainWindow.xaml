@@ -270,12 +270,13 @@
                                 <Image Width="16" Height="16" Source="/Resources/Images/Stopwatch16.png" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <Separator />
                         <MenuItem Header="Annotate" Command="{Binding AnnotateCommand}" InputGestureText="Ctrl+N">
                             <MenuItem.Icon>
                                 <Image Width="16" Height="16" Source="/Resources/Images/Note16.png" />
                             </MenuItem.Icon>
                         </MenuItem>
+                        <Separator />
+                        <MenuItem Header="Visualize message" Command="{Binding VisualizeMessageCommand}" />
                     </ContextMenu>
                 </ListView.ContextMenu>
             </ListView>
