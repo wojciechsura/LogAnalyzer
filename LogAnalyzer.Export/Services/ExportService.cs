@@ -85,6 +85,40 @@ namespace LogAnalyzer.Export.Services
                 }
             }
 
+            if (logRecord.LogEntry.HasNote)
+            {
+                using (HtmlTag.Open(builder, "tr", $"class=\"{(style != null ? style + " " : "")}\"single-row"))
+                using (HtmlTag.Open(builder, "td", $"colspan=\"{columns.Count}\""))
+                {
+                    builder.Append("<i class=\"note\"></i>");
+                    using (HtmlTag.Open(builder, "span", "class=\"single-row-content\""))
+                    {
+                        builder.Append(logRecord.LogEntry.Note);
+                    }
+                }
+            }
+
+            if (logRecord.LogEntry.IsProfilingPoint)
+            {
+                using (HtmlTag.Open(builder, "tr", $"class=\"{(style != null ? style + " " : "")}\"single-row"))
+                using (HtmlTag.Open(builder, "td", $"colspan=\"{columns.Count}\""))
+                {
+                    builder.Append("<i class=\"stopwatch\"></i>");
+                    using (HtmlTag.Open(builder, "span", "class=\"content\""))
+                    {
+                        builder.Append("Step ")
+                            .Append(logRecord.LogEntry.ProfilingStep)
+                            .Append(". Since previous: ");
+                        using (HtmlTag.Open(builder, "span", "class=\"emphasize\""))
+                            builder.Append(logRecord.LogEntry.TimeSpanFromPrevious);
+
+                        builder.Append("Elapsed: ");
+
+                        using (HtmlTag.Open(builder, "span", "class=\"emphasize\""))
+                            builder.Append(logRecord.LogEntry.TimeSpanFromStart);
+                    }
+                }
+            }
         }
 
         private void BuildTable(IList<LogRecord> records, List<BaseColumnInfo> columns, StringBuilder builder, Action<LogRecord, List<BaseColumnInfo>, StringBuilder> buildRowAction)

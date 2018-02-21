@@ -1,22 +1,54 @@
-﻿table.logs {
+﻿i {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    padding-right: 5px;
+    background-repeat: no-repeat;
+}
+
+    i.stopwatch {
+        background-image: url('data:image/png;base64,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');
+    }
+
+    i.note {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAt0lEQVQ4ja2SsQ2DMBREz1ZETUVNR5sV0noyROVpPmVWyAJUDOB00JhLE1uYAgzJq/xl3fPXyYok+r4njnkDeBhjXgBAfiMkISLcQ0Q4DANFxInIPeRIQme8DACo6xpN05QAnkECIE/gnIPWOpGEu1uOYBxHtG0b56qqyjjkdLCl6zqe7mCN9z6eLwnW/CxISoyfYwel1HXBNvz/DZZlOQxrndZ2eoMtiaAoimuCaZpgrcU8z6cFH463oU6M2P/DAAAAAElFTkSuQmCC');
+    }
+
+table.logs {
     font-family: Consolas, Courier new, courier, monospace, generic;
     font-size: 10pt;
     border-collapse: collapse;
     border-spacing: 0;
 }
 
-table.logs tr {
+    table.logs tr {
+    }
 
+        table.logs tr td, table.logs tr th {
+            padding: 2px;
+            padding-right: 15px;
+        }
+
+        table.logs tr th {
+            border-bottom: 1px solid black;
+        }
+
+        table.logs tr td {
+        }
+
+        table.logs tr.single-row {
+            font-family: Calibri, Arial, Generic;
+            font-size: 11pt;
+        }
+
+            table.logs tr.single-row i {
+                vertical-align: middle;
+            }
+
+span.emphasize {
+    font-weight: bold;
 }
 
-table.logs tr td, table.logs tr th {
-    padding: 2px;
-}
-
-table.logs tr th {
-
-}
-
-table.logs tr td {
-
+table.logs tr.single-row span.content {
+    vertical-align: middle;
 }
