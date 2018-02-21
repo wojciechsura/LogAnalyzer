@@ -251,7 +251,7 @@ namespace LogAnalyzer.Engine.Components
                 {
                     var entry = highlightArgument.InputEntries[i];
 
-                    HighlightInfo info = new HighlightInfo(Colors.Black, Colors.Transparent);
+                    HighlightInfo info = new HighlightInfo(HighlightInfo.DefaultForeground, HighlightInfo.DefaultBackground);
 
                     if (highlightArgument.Config != null)
                     {

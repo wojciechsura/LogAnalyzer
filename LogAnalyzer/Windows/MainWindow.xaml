@@ -137,7 +137,8 @@
                               LargeIcon="/Resources/Images/Export32.png"
                               Icon="/Resources/Images/Export16.png"                              
                               SizeDefinition="Middle,Middle,Middle">
-                        <f:MenuItem Header="Html" Command="{Binding ExportToHtmlCommand}" />
+                        <f:MenuItem Header="Html, plain" Command="{Binding ExportToHtmlCommand}" />
+                        <f:MenuItem Header="Html, styled" Command="{Binding ExportToStyledHtmlCommand}" />
                     </f:DropDownButton>
                 </f:RibbonGroupBox>
                 <f:RibbonGroupBox Header="Edit">

@@ -10,5 +10,6 @@ namespace LogAnalyzer.Services.Interfaces
     public interface IExportService
     {
         string ExportToHtml(IList<LogRecord> records, List<BaseColumnInfo> columns);
+        string ExportToStyledHtml(IList<LogRecord> recordsToExport, List<BaseColumnInfo> list);
     }
 }

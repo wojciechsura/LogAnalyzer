@@ -19,9 +19,9 @@ namespace LogAnalyzer.Common.Tools
             this.lineBreak = lineBreak;
 
             if (lineBreak)
-                builder.AppendLine($"<{tag}{(attributes != null? " " + attributes : "")}>");
+                builder.AppendLine($"<{tag}{(attributes != null ? " " + attributes : "")}>");
             else
-                builder.Append($"<{tag}>");
+                builder.Append($"<{tag}{(attributes != null ? " " + attributes : "")}>");
         }
 
         public static HtmlTag Open(StringBuilder builder, string tag, string attributes = null, bool lineBreak = true)

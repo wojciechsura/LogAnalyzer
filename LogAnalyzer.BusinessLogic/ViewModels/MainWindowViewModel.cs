@@ -385,23 +385,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoExportToHtml()
         {
-            System.Collections.IList items = access.GetMainSelectedItems();
-
-            IList<LogRecord> recordsToExport;
-
-            if (items.Count == 0)
-            {
-                if (!messagingService.Ask("No entries selected - you will export all visible items. Are you sure?"))
-                    return;
-
-                recordsToExport = engine.LogEntries;
-            }
-            else
-            {
-                recordsToExport = items
-                    .Cast<LogRecord>()
-                    .ToList();
-            }
+            IList<LogRecord> recordsToExport = GetItemsToExport();
+            if (recordsToExport == null)
+                return;
 
             string filename = winApiService.SaveFile(LogAnalyzer.Models.Constants.File.HtmlExportFilterDefinitions);
             if (filename != null)
@@ -412,6 +398,43 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        private IList<LogRecord> GetItemsToExport()
+        {
+            System.Collections.IList items = access.GetMainSelectedItems();
+
+            IList<LogRecord> recordsToExport;
+
+            if (items.Count == 0)
+            {
+                if (!messagingService.Ask("No entries selected - you will export all visible items. Are you sure?"))
+                    recordsToExport = null;
+                else
+                    recordsToExport = engine.LogEntries;
+            }
+            else
+            {
+                recordsToExport = items
+                    .Cast<LogRecord>()
+                    .ToList();
+            }
+
+            return recordsToExport;
+        }
+
+        private void DoExportToStyledHtml()
+        {
+            IList<LogRecord> recordsToExport = GetItemsToExport();
+            if (recordsToExport == null)
+                return;
+
+            string filename = winApiService.SaveFile(LogAnalyzer.Models.Constants.File.HtmlExportFilterDefinitions);
+            if (filename != null)
+            {
+                string exported = exportService.ExportToStyledHtml(recordsToExport, engine.GetColumnInfos());
+
+                System.IO.File.WriteAllText(filename, exported);
+            }
+        }
 
         // Protected methods --------------------------------------------------
 
@@ -467,6 +490,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             AnnotateCommand = new SimpleCommand((obj) => DoAnnotate(), enginePresentCondition & itemSelectedCondition);
             VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), enginePresentCondition & itemSelectedCondition);
             ExportToHtmlCommand = new SimpleCommand((obj) => DoExportToHtml(), enginePresentCondition);
+            ExportToStyledHtmlCommand = new SimpleCommand((obj) => DoExportToStyledHtml(), enginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -544,6 +568,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand VisualizeMessageCommand { get; }
 
         public ICommand ExportToHtmlCommand { get; }
+
+        public ICommand ExportToStyledHtmlCommand { get; }
+
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 
         public ObservableRangeCollection<LogRecord> SearchResults { get; private set; }
