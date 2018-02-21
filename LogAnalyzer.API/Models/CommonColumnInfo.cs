@@ -18,6 +18,21 @@ namespace LogAnalyzer.API.Models
             Column = column;
         }
 
+        public override string GetStringValue(LogEntry logEntry)
+        {
+            switch (Column)
+            {
+                case LogEntryColumn.Date:
+                    return logEntry.DisplayDate;
+                case LogEntryColumn.Message:
+                    return logEntry.Message;
+                case LogEntryColumn.Severity:
+                    return logEntry.Severity;
+                default:
+                    throw new InvalidOperationException("Invalid column type!");
+            }
+        }
+
         public LogEntryColumn Column { get; }
         public override string Header => Column.GetAttribute<ColumnHeaderAttribute>().Header;
         public override string Member => Column.GetAttribute<LogRecordMemberNameAttribute>().Member;

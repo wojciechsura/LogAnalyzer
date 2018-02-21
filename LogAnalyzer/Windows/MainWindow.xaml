@@ -132,7 +132,13 @@
                     <f:Button Header="Open" 
                               LargeIcon="/Resources/Images/Open32.png" 
                               Icon="/Resources/Images/Open16.png" 
-                              Command="{Binding OpenCommand}"/>
+                              Command="{Binding OpenCommand}" />
+                    <f:DropDownButton Header="Export"
+                              LargeIcon="/Resources/Images/Export32.png"
+                              Icon="/Resources/Images/Export16.png"                              
+                              SizeDefinition="Middle,Middle,Middle">
+                        <f:MenuItem Header="Html" Command="{Binding ExportToHtmlCommand}" />
+                    </f:DropDownButton>
                 </f:RibbonGroupBox>
                 <f:RibbonGroupBox Header="Edit">
                     <f:Button Header="Copy"

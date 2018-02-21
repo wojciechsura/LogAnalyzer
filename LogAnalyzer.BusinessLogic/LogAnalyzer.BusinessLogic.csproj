@@ -144,6 +144,10 @@
       <Project>{055946e5-d9f3-42ef-9a4e-98e32ff1769b}</Project>
       <Name>LogAnalyzer.Engine</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Export\LogAnalyzer.Export.csproj">
+      <Project>{aed134b5-4766-4880-b984-80cd324cc6d4}</Project>
+      <Name>LogAnalyzer.Export</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Mapper\LogAnalyzer.Mapper.csproj">
       <Project>{677955a9-5cd0-491b-8ebc-70f0597c1427}</Project>
       <Name>LogAnalyzer.Mapper</Name>

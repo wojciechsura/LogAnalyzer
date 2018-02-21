@@ -16,5 +16,10 @@ namespace LogAnalyzer.Models.Constants
             new FilterDefinition("*.txt", "Text files (*.txt)"),
             new FilterDefinition("*.*", "All files (*.*)")
         };
+
+        public static readonly List<FilterDefinition> HtmlExportFilterDefinitions = new List<FilterDefinition>
+        {
+            new FilterDefinition("*.html", "HTML files (*.html)")
+        };
     }
 }

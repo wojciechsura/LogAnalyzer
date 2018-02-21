@@ -168,14 +168,11 @@ namespace LogAnalyzer.TextParser
             }
         }
 
-        public string ParseToHtml(string logMessage)
+        private string ParseMessageToHtml(string logMessage)
         {
-            var items = Parse(logMessage);
-
             StringBuilder builder = new StringBuilder();
-            builder.Append("<!DOCTYPE html>")
-                .Append("<html>")
-                .Append("<body>");
+
+            var items = Parse(logMessage);
 
             for (int i = 0; i < items.Count; i++)
             {
@@ -190,8 +187,10 @@ namespace LogAnalyzer.TextParser
                 else if (items[i] is XmlTextPart xmlTextPart)
                 {
                     MemoryStream ms = new MemoryStream();
-                    XmlTextWriter writer = new XmlTextWriter(ms, Encoding.Unicode);
-                    writer.Formatting = System.Xml.Formatting.Indented;
+                    XmlTextWriter writer = new XmlTextWriter(ms, Encoding.Unicode)
+                    {
+                        Formatting = System.Xml.Formatting.Indented                        
+                    };
                     xmlTextPart.Document.WriteContentTo(writer);
                     writer.Flush();
                     ms.Flush();
@@ -205,6 +204,18 @@ namespace LogAnalyzer.TextParser
                 else
                     throw new InvalidOperationException("Invalid text part!");
             }
+
+            return builder.ToString();
+        }
+
+        public string ParseToHtmlPage(string logMessage)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append("<!DOCTYPE html>")
+                .Append("<html>")
+                .Append("<body>");
+
+            builder.Append(ParseMessageToHtml(logMessage));
 
             builder.Append("</body></html>");
 

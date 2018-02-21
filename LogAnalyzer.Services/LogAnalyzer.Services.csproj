@@ -74,6 +74,7 @@
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Interfaces\IEngine.cs" />
     <Compile Include="Interfaces\IEngineFactory.cs" />
+    <Compile Include="Interfaces\IExportService.cs" />
     <Compile Include="Interfaces\ILogParserRepository.cs" />
     <Compile Include="Interfaces\ILogSourceRepository.cs" />
     <Compile Include="Interfaces\IMessagingService.cs" />

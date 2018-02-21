@@ -24,6 +24,19 @@ namespace LogAnalyzer.Services
                 return null;
         }
 
+        public string SaveFile(IEnumerable<FilterDefinition> filter)
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Filter = String.Join("|", filter.Select(f => $"{f.Text}|{f.Filter}"))
+            };
+
+            if (dialog.ShowDialog() == true)
+                return dialog.FileName;
+            else
+                return null;
+        }
+
         public List<string> OpenFiles(List<FilterDefinition> filter)
         {
             OpenFileDialog dialog = new OpenFileDialog

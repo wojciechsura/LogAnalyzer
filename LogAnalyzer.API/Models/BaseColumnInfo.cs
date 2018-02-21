@@ -11,5 +11,7 @@ namespace LogAnalyzer.API.Models
     {
         public abstract string Header { get; }
         public abstract string Member { get; }
+
+        public abstract string GetStringValue(LogEntry logEntry);
     }
 }

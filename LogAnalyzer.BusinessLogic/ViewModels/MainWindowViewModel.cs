@@ -48,6 +48,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IConfigurationService configurationService;
         private readonly IEngineFactory engineFactory;
         private readonly ITextParser textParser;
+        private readonly IMessagingService messagingService;
+        private readonly IWinApiService winApiService;
+        private readonly IExportService exportService;
 
         private IEngine engine;
 
@@ -376,9 +379,39 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoVisualizeMessage()
         {
-            var html = textParser.ParseToHtml(selectedLogEntry.LogEntry.Message);
+            var html = textParser.ParseToHtmlPage(selectedLogEntry.LogEntry.Message);
             dialogService.VisualizeMessage(new LogMessageVisualizerModel { Html = html });
         }
+
+        private void DoExportToHtml()
+        {
+            System.Collections.IList items = access.GetMainSelectedItems();
+
+            IList<LogRecord> recordsToExport;
+
+            if (items.Count == 0)
+            {
+                if (!messagingService.Ask("No entries selected - you will export all visible items. Are you sure?"))
+                    return;
+
+                recordsToExport = engine.LogEntries;
+            }
+            else
+            {
+                recordsToExport = items
+                    .Cast<LogRecord>()
+                    .ToList();
+            }
+
+            string filename = winApiService.SaveFile(LogAnalyzer.Models.Constants.File.HtmlExportFilterDefinitions);
+            if (filename != null)
+            {
+                string exported = exportService.ExportToHtml(recordsToExport, engine.GetColumnInfos());
+
+                System.IO.File.WriteAllText(filename, exported);
+            }
+        }
+
 
         // Protected methods --------------------------------------------------
 
@@ -395,7 +428,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ILogParserRepository logParserRepository,
             ILogSourceRepository logSourceRepository,
             IConfigurationService configurationService,
-            ITextParser textParser)
+            ITextParser textParser,
+            IMessagingService messagingService,
+            IWinApiService winApiService,
+            IExportService exportService)
         {
             this.access = access;
             this.dialogService = dialogService;
@@ -404,6 +440,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.logSourceRepository = logSourceRepository;
             this.configurationService = configurationService;
             this.textParser = textParser;
+            this.messagingService = messagingService;
+            this.winApiService = winApiService;
+            this.exportService = exportService;
 
             engineStoppingCondition = new Wpf.Input.Condition(false);
             generalCommandCondition = !engineStoppingCondition;
@@ -427,6 +466,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ClearProfilingPointsCommand = new SimpleCommand((obj) => DoClearProfilingPointsCommand(), enginePresentCondition);
             AnnotateCommand = new SimpleCommand((obj) => DoAnnotate(), enginePresentCondition & itemSelectedCondition);
             VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), enginePresentCondition & itemSelectedCondition);
+            ExportToHtmlCommand = new SimpleCommand((obj) => DoExportToHtml(), enginePresentCondition);
         }
 
         public bool HandleClosing()
@@ -503,6 +543,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public ICommand VisualizeMessageCommand { get; }
 
+        public ICommand ExportToHtmlCommand { get; }
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 
         public ObservableRangeCollection<LogRecord> SearchResults { get; private set; }
