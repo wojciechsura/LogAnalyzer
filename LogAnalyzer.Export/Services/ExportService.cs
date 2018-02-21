@@ -1,9 +1,11 @@
 ﻿using LogAnalyzer.API.Models;
+using LogAnalyzer.Common.Extensions;
 using LogAnalyzer.Common.Tools;
 using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
@@ -87,7 +89,7 @@ namespace LogAnalyzer.Export.Services
 
         private void BuildTable(IList<LogRecord> records, List<BaseColumnInfo> columns, StringBuilder builder, Action<LogRecord, List<BaseColumnInfo>, StringBuilder> buildRowAction)
         {
-            using (HtmlTag.Open(builder, "table"))
+            using (HtmlTag.Open(builder, "table", "class=\"logs\""))
             {
                 using (HtmlTag.Open(builder, "tr"))
                 {
@@ -115,9 +117,18 @@ namespace LogAnalyzer.Export.Services
             StringBuilder builder = new StringBuilder();
 
             using (HtmlTag.Open(builder, "html"))
-            using (HtmlTag.Open(builder, "body"))
             {
-                BuildTable(records, columns, builder, (record, cols, b) => BuildSimpleRow(record, cols, b));
+                using (HtmlTag.Open(builder, "Head"))
+                using (HtmlTag.Open(builder, "Style", "type=\"text/css\""))
+                {
+                    string css = ResourceReader.ReadEmbeddedResource(Assembly.GetExecutingAssembly(), "LogAnalyzer.Export.Resources.BasicStyles.css");
+                    builder.AppendLine(css);
+                }
+
+                using (HtmlTag.Open(builder, "body"))
+                {
+                    BuildTable(records, columns, builder, (record, cols, b) => BuildSimpleRow(record, cols, b));
+                }
             }
 
             return builder.ToString();
@@ -139,11 +150,14 @@ namespace LogAnalyzer.Export.Services
                 {
                     using (HtmlTag.Open(builder, "style", "type=\"text/css\""))
                     {
+                        string css = ResourceReader.ReadEmbeddedResource(Assembly.GetExecutingAssembly(), "LogAnalyzer.Export.Resources.BasicStyles.css");
+                        builder.AppendLine(css);
+
                         foreach (var kvp in styles)
                         {
                             builder.AppendLine($".{kvp.Value} {{")
-                                .AppendLine($"    color: {string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", kvp.Key.Foreground.R, kvp.Key.Foreground.G, kvp.Key.Foreground.B, kvp.Key.Foreground.A)};")
-                                .AppendLine($"    background-color: {string.Format("#{0:X2}{1:X2}{2:X2}{3:X2}", kvp.Key.Background.R, kvp.Key.Background.G, kvp.Key.Background.B, kvp.Key.Background.A)};")
+                                .AppendLine($"    color: {kvp.Key.Foreground.ToHtmlColor()};")
+                                .AppendLine($"    background-color: {kvp.Key.Background.ToHtmlColor()};")
                                 .AppendLine("}");
                         }
                     }

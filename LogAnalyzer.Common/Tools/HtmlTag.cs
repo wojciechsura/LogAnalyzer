@@ -10,28 +10,30 @@ namespace LogAnalyzer.Common.Tools
     {
         private readonly StringBuilder builder;
         private readonly string tag;
-        private readonly bool lineBreak;
+        private readonly bool lineBreakAfterOpen;
+        private readonly bool lineBreakAfterClose;
 
-        private HtmlTag(StringBuilder builder, string tag, string attributes, bool lineBreak)
+        private HtmlTag(StringBuilder builder, string tag, string attributes, bool lineBreakAfterOpen, bool lineBreakAfterClose)
         {
             this.builder = builder;
             this.tag = tag;
-            this.lineBreak = lineBreak;
+            this.lineBreakAfterOpen = lineBreakAfterOpen;
+            this.lineBreakAfterClose = lineBreakAfterClose;
 
-            if (lineBreak)
+            if (lineBreakAfterOpen)
                 builder.AppendLine($"<{tag}{(attributes != null ? " " + attributes : "")}>");
             else
                 builder.Append($"<{tag}{(attributes != null ? " " + attributes : "")}>");
         }
 
-        public static HtmlTag Open(StringBuilder builder, string tag, string attributes = null, bool lineBreak = true)
+        public static HtmlTag Open(StringBuilder builder, string tag, string attributes = null, bool lineBreakAfterOpen = false, bool lineBreakAfterClose = true)
         {
-            return new HtmlTag(builder, tag, attributes, lineBreak);
+            return new HtmlTag(builder, tag, attributes, lineBreakAfterOpen, lineBreakAfterClose);
         }
 
         public void Dispose()
         {
-            if (lineBreak)
+            if (lineBreakAfterClose)
                 builder.AppendLine($"</{tag}>");
             else
                 builder.Append($"</{tag}>");

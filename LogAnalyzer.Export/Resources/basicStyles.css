@@ -1,0 +1,22 @@
+﻿table.logs {
+    font-family: Consolas, Courier new, courier, monospace, generic;
+    font-size: 10pt;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+table.logs tr {
+
+}
+
+table.logs tr td, table.logs tr th {
+    padding: 2px;
+}
+
+table.logs tr th {
+
+}
+
+table.logs tr td {
+
+}
