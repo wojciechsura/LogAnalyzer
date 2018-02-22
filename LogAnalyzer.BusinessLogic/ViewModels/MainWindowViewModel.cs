@@ -503,6 +503,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        private void DoShowQuickSearch()
+        {
+            SearchBoxVisible = true;
+            access.FocusQuickSearchBox();
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -561,6 +567,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), enginePresentCondition);
             QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), enginePresentCondition);
             CloseQuickSearchCommand = new SimpleCommand((obj) => DoCloseQuickSearch());
+            ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
         }
 
         public bool HandleClosing()
@@ -646,6 +653,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand QuickSearchDownCommand { get; }
 
         public ICommand CloseQuickSearchCommand { get; }
+
+        public ICommand ShowQuickSearchCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

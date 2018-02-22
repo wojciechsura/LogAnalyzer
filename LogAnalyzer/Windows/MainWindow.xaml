@@ -92,7 +92,8 @@
         <KeyBinding Modifiers="Ctrl" Key="N" Command="{Binding AnnotateCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding OpenCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="C" Command="{Binding CopyCommand}" />
-        <KeyBinding Modifiers="Ctrl" Key="F" Command="{Binding SearchCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="F" Command="{Binding ShowQuickSearchCommand}" />
+        <KeyBinding Modifiers="Ctrl+Shift" Key="F" Command="{Binding SearchCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="J" Command="{Binding JumpToTimeCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="T" Command="{Binding ToggleProfilingPointCommand}" />
 
@@ -148,7 +149,8 @@
                               Command="{Binding CopyCommand}" />
                 </f:RibbonGroupBox>
                 <f:RibbonGroupBox Header="Navigation">
-                    <f:ToggleButton Header="Quick search"
+                    <f:ToggleButton x:Name="tbQuickSearchControl" Click="tbQuickSearchControl_Click"
+                                    Header="Quick search"
                                     LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Search32.png"
                                     Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Search16.png"
                                     SizeDefinition="Large,Middle,Middle" 
@@ -301,7 +303,7 @@
                         <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Search16.png" Margin="4,4,4,4"/>
                         <Border BorderThickness="1" BorderBrush="{x:Static SystemColors.ActiveBorderBrush}" Margin="4">
                             <StackPanel Orientation="Horizontal" Background="{x:Static SystemColors.WindowBrush}">
-                                <TextBox Width="200" Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox x:Name="tbQuickSearch" Width="200" Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" KeyDown="tbQuickSearch_KeyDown">
                                     <TextBox.Template>
                                         <ControlTemplate>
                                             <ScrollViewer x:Name="PART_ContentHost"/>

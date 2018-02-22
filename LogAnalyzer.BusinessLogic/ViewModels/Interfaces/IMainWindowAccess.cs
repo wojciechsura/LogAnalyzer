@@ -14,5 +14,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Interfaces
         void SetupListViews(List<BaseColumnInfo> columns);
         void NavigateTo(LogRecord selectedSearchResult);
         System.Collections.IList GetMainSelectedItems();
+        void FocusQuickSearchBox();
     }
 }

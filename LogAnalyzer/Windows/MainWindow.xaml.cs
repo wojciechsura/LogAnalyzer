@@ -172,5 +172,32 @@ namespace LogAnalyzer.Windows
             else
                 return new List<object>();
         }
+
+        public void FocusQuickSearchBox()
+        {
+            tbQuickSearch.Focus();
+        }
+
+        private void tbQuickSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                e.Handled = true;
+                if (viewModel.QuickSearchDownCommand.CanExecute(null))
+                    viewModel.QuickSearchDownCommand.Execute(null);
+            }
+            else if (e.Key == Key.Escape)
+            {
+                e.Handled = true;
+                if (viewModel.CloseQuickSearchCommand.CanExecute(null))
+                    viewModel.CloseQuickSearchCommand.Execute(null);
+            }
+        }
+
+        private void tbQuickSearchControl_Click(object sender, RoutedEventArgs e)
+        {
+            if (viewModel.SearchBoxVisible)
+                FocusQuickSearchBox();
+        }
     }
 }
