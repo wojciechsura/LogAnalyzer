@@ -47,5 +47,6 @@ namespace LogAnalyzer.Services.Interfaces
 
         DateTime GetFirstFilteredTime();
         LogRecord FindFirstRecordAfter(DateTime resultDate);
+        LogRecord QuickSearch(string phrase, LogRecord searchFrom, bool down, bool searchCaseSensitive, bool searchWholeWords, bool searchRegex);
     }
 }

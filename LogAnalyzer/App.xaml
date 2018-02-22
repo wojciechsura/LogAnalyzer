@@ -16,7 +16,7 @@
                 </Style.Setters>
             </Style>
 
-            <Style TargetType="Button" x:Key="FlatCloseButtonStyle">
+            <Style TargetType="Button" x:Key="FlatButtonStyle">
                 <Setter Property="OverridesDefaultStyle" Value="True" />
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="BorderThickness" Value="1" />
@@ -48,6 +48,43 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="ToggleButton" x:Key="FlatToggleButtonStyle">
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ToggleButton">
+                            <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Background="{TemplateBinding Background}"                                    
+                                Padding="{TemplateBinding Padding}"
+                                CornerRadius="0">
+                                <ContentControl x:Name="content" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{x:Static SystemColors.ActiveCaptionTextBrush}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{x:Static SystemColors.ControlBrush}" />
+                                    <Setter Property="BorderBrush" Value="{x:Static SystemColors.ControlDarkDarkBrush}" />
+                                    <Setter TargetName="content" Property="Foreground" Value="{x:Static SystemColors.ControlTextBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="{x:Static SystemColors.ControlDarkBrush}" />
+                                    <Setter Property="BorderBrush" Value="{x:Static SystemColors.ControlDarkDarkBrush}" />
+                                    <Setter TargetName="content" Property="Foreground" Value="{x:Static SystemColors.ControlTextBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="{x:Static SystemColors.ControlBrush}" />
+                                    <Setter Property="BorderBrush" Value="{x:Static SystemColors.ControlDarkDarkBrush}" />
+                                    <Setter TargetName="content" Property="Foreground" Value="{x:Static SystemColors.ControlTextBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            
             <Style TargetType="{x:Type ct:DockPanelSplitter}">
                 <Setter Property="Template">
                     <Setter.Value>

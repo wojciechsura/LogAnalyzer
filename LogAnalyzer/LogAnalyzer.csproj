@@ -751,6 +751,10 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\CaseSensitive16.png" />
+    <Resource Include="Resources\Images\Regex16.png" />
+    <Resource Include="Resources\Images\WholeWord16.png" />
+    <Resource Include="Resources\Images\Close16.png" />
     <Resource Include="Resources\Images\Export16.png" />
     <Resource Include="Resources\Images\Export32.png" />
     <Resource Include="Lib\site-packages\README.txt" />

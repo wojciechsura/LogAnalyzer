@@ -64,6 +64,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private LogRecord selectedSearchResult;
         private LogRecord selectedLogEntry;
 
+        private string searchString;
+        private bool searchBoxVisible;
+        private bool searchCaseSensitive;
+        private bool searchWholeWords;
+        private bool searchRegex;
+
         // Private methods ----------------------------------------------------
 
         private void DoCreateEngine(OpenResult result)
@@ -436,6 +442,67 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        private void DoCloseQuickSearch()
+        {
+            SearchBoxVisible = false;
+        }
+
+        private void DoQuickSearchDown()
+        {
+            LogRecord result = null;
+            LogRecord searchFrom = selectedLogEntry;
+
+            while (result == null)
+            {
+                result = engine.QuickSearch(searchFrom, true, searchCaseSensitive, searchWholeWords, searchRegex);
+
+                if (result == null)
+                {
+                    if (messagingService.Ask("No entries found. Do you want to continue search from beginning?"))
+                    {
+                        searchFrom = null;
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    access.NavigateTo(result);
+                }
+            }
+        }
+
+        private void DoQuickSearchUp()
+        {
+            LogRecord result = null;
+            LogRecord searchFrom = selectedLogEntry;
+
+            while (result == null)
+            {
+                result = engine.QuickSearch(searchFrom, false, searchCaseSensitive, searchWholeWords, searchRegex);
+
+                if (result == null)
+                {
+                    if (messagingService.Ask("No entries found. Do you want to continue search from end?"))
+                    {
+                        searchFrom = null;
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    access.NavigateTo(result);
+                }
+            }
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -491,6 +558,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), enginePresentCondition & itemSelectedCondition);
             ExportToHtmlCommand = new SimpleCommand((obj) => DoExportToHtml(), enginePresentCondition);
             ExportToStyledHtmlCommand = new SimpleCommand((obj) => DoExportToStyledHtml(), enginePresentCondition);
+            QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), enginePresentCondition & itemSelectedCondition);
+            QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), enginePresentCondition & itemSelectedCondition);
+            CloseQuickSearchCommand = new SimpleCommand((obj) => DoCloseQuickSearch());
         }
 
         public bool HandleClosing()
@@ -571,6 +641,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public ICommand ExportToStyledHtmlCommand { get; }
 
+        public ICommand QuickSearchUpCommand { get; }
+
+        public ICommand QuickSearchDownCommand { get; }
+
+        public ICommand CloseQuickSearchCommand { get; }
+
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 
         public ObservableRangeCollection<LogRecord> SearchResults { get; private set; }
@@ -612,6 +688,56 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             {
                 bottomPaneVisible = value;
                 OnPropertyChanged(nameof(BottomPaneVisible));
+            }
+        }
+
+        public string SearchString
+        {
+            get => searchString;
+            set
+            {
+                searchString = value;
+                OnPropertyChanged(nameof(SearchString));
+            }
+        }
+
+        public bool SearchBoxVisible
+        {
+            get => searchBoxVisible;
+            set
+            {
+                searchBoxVisible = value;
+                OnPropertyChanged(nameof(SearchBoxVisible));
+            }
+        }
+
+        public bool SearchCaseSensitive
+        {
+            get => searchCaseSensitive;
+            set
+            {
+                searchCaseSensitive = value;
+                OnPropertyChanged(nameof(SearchCaseSensitive));
+            }
+        }
+
+        public bool SearchWholeWords
+        {
+            get => searchWholeWords;
+            set
+            {
+                searchWholeWords = value;
+                OnPropertyChanged(nameof(SearchWholeWords));
+            }
+        }
+
+        public bool SearchRegex
+        {
+            get => searchRegex;
+            set
+            {
+                searchRegex = value;
+                OnPropertyChanged(nameof(SearchRegex));
             }
         }
     }

@@ -17,6 +17,7 @@ using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Engine.Infrastructure.Processing;
 using LogAnalyzer.Models.Types;
 using LogAnalyzer.API.Models.Interfaces;
+using System.Text.RegularExpressions;
 
 namespace LogAnalyzer.Engine
 {
@@ -137,6 +138,56 @@ namespace LogAnalyzer.Engine
 
                 startIndex++;
             }
+        }
+
+        private static Func<string, bool> BuildQuickSearchPredicate(string phrase, bool searchCaseSensitive, bool searchWholeWords, bool searchRegex)
+        {
+            Func<string, bool> predicate;
+            if (!searchCaseSensitive && !searchWholeWords && !searchRegex)
+            {
+                string lowerPhrase = phrase.ToLower();
+                predicate = (content) => content.ToLower().Contains(lowerPhrase);
+            }
+            else if (searchCaseSensitive && !searchWholeWords && !searchRegex)
+            {
+                predicate = (content) => content.Contains(phrase);
+            }
+            else if (!searchCaseSensitive && searchWholeWords && !searchRegex)
+            {
+                string regexPhrase = $"\b{Regex.Escape(phrase)}\b";
+                Regex regex = new Regex(regexPhrase, RegexOptions.IgnoreCase);
+
+                predicate = (content) => regex.IsMatch(content);
+            }
+            else if (searchCaseSensitive && searchWholeWords && !searchRegex)
+            {
+                string regexPhrase = $"\b{Regex.Escape(phrase)}\b";
+                Regex regex = new Regex(regexPhrase);
+
+                predicate = (content) => regex.IsMatch(content);
+            }
+            else if (!searchCaseSensitive && !searchWholeWords && searchRegex)
+            {
+                Regex regex = new Regex(phrase, RegexOptions.IgnoreCase);
+                predicate = (content) => regex.IsMatch(content);
+            }
+            else if (searchCaseSensitive && !searchWholeWords && searchRegex)
+            {
+                Regex regex = new Regex(phrase);
+                predicate = (content) => regex.IsMatch(content);
+            }
+            else if (!searchCaseSensitive && searchWholeWords && searchRegex)
+            {
+                Regex regex = new Regex($"\b{phrase}\b", RegexOptions.IgnoreCase);
+                predicate = (content) => regex.IsMatch(content);
+            }
+            else
+            {
+                Regex regex = new Regex($"\b{phrase}\b");
+                predicate = (content) => regex.IsMatch(content);
+            }
+
+            return predicate;
         }
 
         // ILogEntryMetaHandler implementation --------------------------------
@@ -354,6 +405,34 @@ namespace LogAnalyzer.Engine
                 notes.Remove(logRecord.LogEntry.Index);
 
             logRecord.LogEntry.NotifyNoteChanged();
+        }
+
+        public LogRecord QuickSearch(string phrase, LogRecord searchFrom, bool down, bool searchCaseSensitive, bool searchWholeWords, bool searchRegex)
+        {
+            int index = data.HighlightedLogEntries.IndexOf(searchFrom);
+            if (index == -1)
+            {
+                index = down ? -1 : data.HighlightedLogEntries.Count;
+            }
+
+            Func<string, bool> predicate = BuildQuickSearchPredicate(phrase, searchCaseSensitive, searchWholeWords, searchRegex);
+
+            Func<LogRecord, bool> logRecordPredicate = entry => (logReader.GetColumnInfos()
+                .Any(c => predicate(c.GetStringValue(entry.LogEntry))));
+
+            do
+            {
+                if (down)
+                    index++;
+                else
+                    index--;
+            }
+            while (index >= 0 && index < data.HighlightedLogEntries.Count && !logRecordPredicate(data.HighlightedLogEntries[index]));
+
+            if (index >= 0 && index < data.HighlightedLogEntries.Count)
+                return data.HighlightedLogEntries[index];
+            else
+                return null;
         }
 
         // Public properties --------------------------------------------------
