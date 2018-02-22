@@ -154,14 +154,14 @@ namespace LogAnalyzer.Engine
             }
             else if (!searchCaseSensitive && searchWholeWords && !searchRegex)
             {
-                string regexPhrase = $"\b{Regex.Escape(phrase)}\b";
+                string regexPhrase = $"\\b{Regex.Escape(phrase)}\\b";
                 Regex regex = new Regex(regexPhrase, RegexOptions.IgnoreCase);
 
                 predicate = (content) => regex.IsMatch(content);
             }
             else if (searchCaseSensitive && searchWholeWords && !searchRegex)
             {
-                string regexPhrase = $"\b{Regex.Escape(phrase)}\b";
+                string regexPhrase = $"\\b{Regex.Escape(phrase)}\\b";
                 Regex regex = new Regex(regexPhrase);
 
                 predicate = (content) => regex.IsMatch(content);
@@ -178,12 +178,12 @@ namespace LogAnalyzer.Engine
             }
             else if (!searchCaseSensitive && searchWholeWords && searchRegex)
             {
-                Regex regex = new Regex($"\b{phrase}\b", RegexOptions.IgnoreCase);
+                Regex regex = new Regex($"\\b{phrase}\\b", RegexOptions.IgnoreCase);
                 predicate = (content) => regex.IsMatch(content);
             }
             else
             {
-                Regex regex = new Regex($"\b{phrase}\b");
+                Regex regex = new Regex($"\\b{phrase}\\b");
                 predicate = (content) => regex.IsMatch(content);
             }
 

@@ -454,7 +454,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             while (result == null)
             {
-                result = engine.QuickSearch(searchFrom, true, searchCaseSensitive, searchWholeWords, searchRegex);
+                result = engine.QuickSearch(searchString, searchFrom, true, searchCaseSensitive, searchWholeWords, searchRegex);
 
                 if (result == null)
                 {
@@ -482,7 +482,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             while (result == null)
             {
-                result = engine.QuickSearch(searchFrom, false, searchCaseSensitive, searchWholeWords, searchRegex);
+                result = engine.QuickSearch(searchString, searchFrom, false, searchCaseSensitive, searchWholeWords, searchRegex);
 
                 if (result == null)
                 {
@@ -558,8 +558,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), enginePresentCondition & itemSelectedCondition);
             ExportToHtmlCommand = new SimpleCommand((obj) => DoExportToHtml(), enginePresentCondition);
             ExportToStyledHtmlCommand = new SimpleCommand((obj) => DoExportToStyledHtml(), enginePresentCondition);
-            QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), enginePresentCondition & itemSelectedCondition);
-            QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), enginePresentCondition & itemSelectedCondition);
+            QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), enginePresentCondition);
+            QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), enginePresentCondition);
             CloseQuickSearchCommand = new SimpleCommand((obj) => DoCloseQuickSearch());
         }
 

@@ -312,11 +312,11 @@
                             </StackPanel>
                         </Border>
                         <Button Style="{StaticResource FlatButtonStyle}" Width="24" Height="24" Margin="4,4,0,4"
-                                Command="{Binding QuickSearchUpCommand}">
+                                Command="{Binding QuickSearchDownCommand}">
                             <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Down16.png" />
                         </Button>
                         <Button Style="{StaticResource FlatButtonStyle}" Width="24" Height="24" Margin="4,4,0,4"
-                                Command="{Binding QuickSearchDownCommand}">
+                                Command="{Binding QuickSearchUpCommand}">
                             <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Up16.png" />
                         </Button>
                         <Button FontFamily="Marlett" Style="{StaticResource FlatButtonStyle}" Width="24" Height="24" Margin="4,4,0,4"
