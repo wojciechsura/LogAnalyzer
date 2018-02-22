@@ -87,7 +87,7 @@ namespace LogAnalyzer.Export.Services
 
             if (logRecord.LogEntry.HasNote)
             {
-                using (HtmlTag.Open(builder, "tr", $"class=\"{(style != null ? style + " " : "")}\"single-row"))
+                using (HtmlTag.Open(builder, "tr", $"class=\"{(style != null ? style + " " : "")}single-row\""))
                 using (HtmlTag.Open(builder, "td", $"colspan=\"{columns.Count}\""))
                 {
                     builder.Append("<i class=\"note\"></i>");
@@ -100,7 +100,7 @@ namespace LogAnalyzer.Export.Services
 
             if (logRecord.LogEntry.IsProfilingPoint)
             {
-                using (HtmlTag.Open(builder, "tr", $"class=\"{(style != null ? style + " " : "")}\"single-row"))
+                using (HtmlTag.Open(builder, "tr", $"class=\"{(style != null ? style + " " : "")}single-row\""))
                 using (HtmlTag.Open(builder, "td", $"colspan=\"{columns.Count}\""))
                 {
                     builder.Append("<i class=\"stopwatch\"></i>");
@@ -108,14 +108,21 @@ namespace LogAnalyzer.Export.Services
                     {
                         builder.Append("Step ")
                             .Append(logRecord.LogEntry.ProfilingStep)
-                            .Append(". Since previous: ");
-                        using (HtmlTag.Open(builder, "span", "class=\"emphasize\""))
-                            builder.Append(logRecord.LogEntry.TimeSpanFromPrevious);
+                            .Append(". ");
 
-                        builder.Append("Elapsed: ");
+                        using (HtmlTag.Open(builder, "span", "class=\"time-entry\""))
+                        {
+                            builder.Append("Since previous: ");
+                            using (HtmlTag.Open(builder, "span", "class=\"emphasize\""))
+                                builder.Append(logRecord.LogEntry.TimeSpanFromPrevious);
+                        }
 
-                        using (HtmlTag.Open(builder, "span", "class=\"emphasize\""))
-                            builder.Append(logRecord.LogEntry.TimeSpanFromStart);
+                        using (HtmlTag.Open(builder, "span", "class=\"time-entry\""))
+                        {
+                            builder.Append("Elapsed: ");
+                            using (HtmlTag.Open(builder, "span", "class=\"emphasize\""))
+                                builder.Append(logRecord.LogEntry.TimeSpanFromStart);
+                        }
                     }
                 }
             }

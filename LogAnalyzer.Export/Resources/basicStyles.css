@@ -15,8 +15,6 @@
     }
 
 table.logs {
-    font-family: Consolas, Courier new, courier, monospace, generic;
-    font-size: 10pt;
     border-collapse: collapse;
     border-spacing: 0;
 }
@@ -30,15 +28,24 @@ table.logs {
         }
 
         table.logs tr th {
+            text-align: left;
             border-bottom: 1px solid black;
+            font-family: Calibri, Arial, Generic;
+            font-size: 11pt;
         }
 
         table.logs tr td {
+            font-family: Consolas, Courier new, courier, monospace, generic;
+            font-size: 10pt;
         }
 
         table.logs tr.single-row {
             font-family: Calibri, Arial, Generic;
             font-size: 11pt;
+        }
+
+        table.logs tr.single-row span.time-entry {
+            padding-right: 40px;
         }
 
             table.logs tr.single-row i {
