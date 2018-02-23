@@ -21,6 +21,18 @@ namespace LogAnalyzer.Services.Interfaces
 
     public delegate void EngineStoppedDelegate(object sender, EngineStoppedEventArgs args);
 
+    public class StatusChangedEventArgs : EventArgs
+    {
+        public StatusChangedEventArgs(bool status)
+        {
+            Status = status;
+        }
+
+        public bool Status { get; }
+    }
+
+    public delegate void StatusChangedDelegate(object sender, StatusChangedEventArgs args);
+
     public interface IEngine
     {
         void NotifySourceReady();
@@ -48,5 +60,8 @@ namespace LogAnalyzer.Services.Interfaces
         DateTime GetFirstFilteredTime();
         LogRecord FindFirstRecordAfter(DateTime resultDate);
         LogRecord QuickSearch(string phrase, LogRecord searchFrom, bool down, bool searchCaseSensitive, bool searchWholeWords, bool searchRegex);
+
+        event StatusChangedDelegate LoadingStatusChanged;
+        event StatusChangedDelegate ProcessingStatusChanged;
     }
 }

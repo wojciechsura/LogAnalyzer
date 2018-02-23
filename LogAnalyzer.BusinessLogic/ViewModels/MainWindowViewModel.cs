@@ -59,6 +59,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private Wpf.Input.Condition enginePresentCondition;
         private BaseCondition generalEnginePresentCondition;
         private Wpf.Input.Condition itemSelectedCondition;
+        private Wpf.Input.Condition searchStringExists;
 
         private bool bottomPaneVisible;
         private LogRecord selectedSearchResult;
@@ -70,7 +71,22 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private bool searchWholeWords;
         private bool searchRegex;
 
+        private bool loadingStatus;
+        private string loadingStatusText;
+        private bool processingStatus;
+        private string processingStatusText;
+
         // Private methods ----------------------------------------------------
+
+        private void HandleEngineProcessingStatusChanged(object sender, StatusChangedEventArgs args)
+        {
+            LoadingStatus = args.Status;
+        }
+
+        private void HandleEngineLoadingStatusChanged(object sender, StatusChangedEventArgs args)
+        {
+            ProcessingStatus = args.Status;
+        }
 
         private void DoCreateEngine(OpenResult result)
         {
@@ -84,6 +100,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ILogSource source = logSourceProvider.CreateLogSource(result.LogSourceConfiguration, parser);
 
             engine = engineFactory.CreateEngine(source, parser);
+
+            engine.LoadingStatusChanged += HandleEngineLoadingStatusChanged;
+            engine.ProcessingStatusChanged += HandleEngineProcessingStatusChanged;
+
             access.SetupListViews(engine.GetColumnInfos());
             engine.NotifySourceReady();
 
@@ -99,6 +119,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private void DoStopEngine()
         {
             engineStoppingCondition.Value = false;
+            if (engine != null)
+            {
+                engine.LoadingStatusChanged -= HandleEngineLoadingStatusChanged;
+                engine.ProcessingStatusChanged -= HandleEngineProcessingStatusChanged;
+            }
             engine = null;
             access.ClearListView();
         }
@@ -545,6 +570,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             enginePresentCondition = new Wpf.Input.Condition(false);
             generalEnginePresentCondition = enginePresentCondition & !engineStoppingCondition;
             itemSelectedCondition = new Wpf.Input.Condition(false);
+            searchStringExists = new Wpf.Input.Condition(false);
+
+            loadingStatusText = "Loading...";
+            processingStatusText = "Processing...";
+            loadingStatus = false;
+            processingStatus = false;
 
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
@@ -564,8 +595,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), enginePresentCondition & itemSelectedCondition);
             ExportToHtmlCommand = new SimpleCommand((obj) => DoExportToHtml(), enginePresentCondition);
             ExportToStyledHtmlCommand = new SimpleCommand((obj) => DoExportToStyledHtml(), enginePresentCondition);
-            QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), enginePresentCondition);
-            QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), enginePresentCondition);
+            QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), enginePresentCondition & searchStringExists);
+            QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), enginePresentCondition & searchStringExists);
             CloseQuickSearchCommand = new SimpleCommand((obj) => DoCloseQuickSearch());
             ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
         }
@@ -706,6 +737,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             set
             {
                 searchString = value;
+                searchStringExists.Value = !string.IsNullOrEmpty(value);
                 OnPropertyChanged(nameof(SearchString));
             }
         }
@@ -747,6 +779,46 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             {
                 searchRegex = value;
                 OnPropertyChanged(nameof(SearchRegex));
+            }
+        }
+
+        public string LoadingStatusText
+        {
+            get => loadingStatusText;
+            set
+            {
+                loadingStatusText = value;
+                OnPropertyChanged(nameof(LoadingStatusText));
+            }
+        }
+
+        public bool LoadingStatus
+        {
+            get => loadingStatus;
+            set
+            {
+                loadingStatus = value;
+                OnPropertyChanged(nameof(LoadingStatus));
+            }
+        }
+
+        public string ProcessingStatusText
+        {
+            get => processingStatusText;
+            set
+            {
+                processingStatusText = value;
+                OnPropertyChanged(nameof(ProcessingStatusText));
+            }
+        }
+
+        public bool ProcessingStatus
+        {
+            get => processingStatus;
+            set
+            {
+                processingStatus = value;
+                OnPropertyChanged(nameof(ProcessingStatus));
             }
         }
     }

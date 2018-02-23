@@ -476,5 +476,29 @@ namespace LogAnalyzer.Engine
                 SetSearchConfig(value);
             }
         }
+
+        public event StatusChangedDelegate LoadingStatusChanged
+        {
+            add
+            {
+                logReader.StatusChanged += value;
+            }
+            remove
+            {
+                logReader.StatusChanged -= value;
+            }
+        }
+
+        public event StatusChangedDelegate ProcessingStatusChanged
+        {
+            add
+            {
+                logProcessor.StatusChanged += value;
+            }
+            remove
+            {
+                logReader.StatusChanged -= value;
+            }
+        }
     }
 }

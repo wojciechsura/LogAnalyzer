@@ -4,6 +4,7 @@ using LogAnalyzer.Engine.Infrastructure.Events;
 using LogAnalyzer.Engine.Infrastructure.Processing;
 using LogAnalyzer.Engine.Interfaces;
 using LogAnalyzer.Models.Types;
+using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -197,6 +198,8 @@ namespace LogAnalyzer.Engine.Components
 
         private void DoStopProcessor()
         {
+            StatusChanged?.Invoke(this, new StatusChangedEventArgs(false));
+
             queue.Clear();
             state = State.Stopped;
 
@@ -618,6 +621,7 @@ namespace LogAnalyzer.Engine.Components
             }
             else
             {
+                StatusChanged?.Invoke(this, new StatusChangedEventArgs(false));
 #if DEBUG
                 System.Diagnostics.Debug.WriteLine($"[ ]->[P  ] No more data to process.");
 #endif
@@ -626,6 +630,8 @@ namespace LogAnalyzer.Engine.Components
 
         private void ContinueWork()
         {
+            StatusChanged?.Invoke(this, new StatusChangedEventArgs(true));
+
             if (state == State.Stopping)
             {
                 DoStopProcessor();
@@ -763,5 +769,7 @@ namespace LogAnalyzer.Engine.Components
                 ContinueWork(); 
             }
         }
+
+        public event StatusChangedDelegate StatusChanged;
     }
 }

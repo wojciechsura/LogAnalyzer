@@ -18,6 +18,7 @@
         <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         <c:TransparentColorConverter x:Key="TransparentColorConverter" />
         <sc:BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <c:HideIfFalseConverter x:Key="HideIfFalseConverter" />
 
         <Style TargetType="ListViewItem" x:Key="ListViewItemStyle">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -201,13 +202,21 @@
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>
-
-        <Grid>
-            <Grid.ColumnDefinitions>
-            </Grid.ColumnDefinitions>
-        </Grid>
         
         <DockPanel>
+            <StatusBar DockPanel.Dock="Bottom">
+                <StatusBarItem MinWidth="150" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding LoadingStatusText}" Visibility="{Binding LoadingStatus, Converter={StaticResource HideIfFalseConverter}}"/>
+                    </StackPanel>
+                </StatusBarItem>
+                <StatusBarItem MinWidth="150" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ProcessingStatusText}" Visibility="{Binding ProcessingStatus, Converter={StaticResource HideIfFalseConverter}}"/>
+                    </StackPanel>
+                </StatusBarItem>
+            </StatusBar>
+
             <DockPanel DockPanel.Dock="Bottom" Visibility="{Binding BottomPaneVisible, Converter={StaticResource BoolToVisibilityConverter}}"
                        MinHeight="200" MaxHeight="600">
                 <Border DockPanel.Dock="Top" Background="{x:Static SystemColors.ActiveCaptionBrush}" Padding="4">

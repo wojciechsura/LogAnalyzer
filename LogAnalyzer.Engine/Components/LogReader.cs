@@ -6,6 +6,7 @@ using LogAnalyzer.API.Models.Interfaces;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.Engine.Infrastructure.Data.Interfaces;
 using LogAnalyzer.Engine.Infrastructure.Events;
+using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -144,6 +145,8 @@ namespace LogAnalyzer.Engine.Components
 
         private void RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            StatusChanged?.Invoke(this, new StatusChangedEventArgs(false));
+
             if (state == State.Stopping)
             {
                 DoStopReader();
@@ -217,10 +220,17 @@ namespace LogAnalyzer.Engine.Components
 
                     if (runAgain)
                         StartWorker();
+                    else
+                        LoadingFinished();
                 }
             }
             else
                 throw new InvalidOperationException("Invalid state!");
+        }
+
+        private void LoadingFinished()
+        {
+            StatusChanged?.Invoke(this, new StatusChangedEventArgs(false));
         }
 
         internal List<BaseColumnInfo> GetColumnInfos()
@@ -236,6 +246,8 @@ namespace LogAnalyzer.Engine.Components
             if (state == State.Stopping || state == State.Stopped)
                 throw new InvalidOperationException("Cannot start worker when stopped!");
 
+            StatusChanged?.Invoke(this, new StatusChangedEventArgs(true));
+
             workerRunning = true;
             backgroundWorker.RunWorkerAsync(new ProcessingArgument
             {
@@ -245,6 +257,8 @@ namespace LogAnalyzer.Engine.Components
 
         private void DoStopReader()
         {
+            StatusChanged?.Invoke(this, new StatusChangedEventArgs(false));
+
             logSource.Dispose();
             logParser.Dispose();
 
@@ -305,5 +319,7 @@ namespace LogAnalyzer.Engine.Components
                 StartWorker();
             }
         }
+
+        public StatusChangedDelegate StatusChanged;
     }
 }

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Controls\DockPanelSplitter.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Converters\HideIfFalseConverter.cs" />
     <Compile Include="Converters\HideIfNullConverter.cs" />
     <Compile Include="Converters\NullToBooleanConverter.cs" />
     <Compile Include="Converters\TransparentColorConverter.cs" />
