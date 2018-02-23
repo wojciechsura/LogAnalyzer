@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System.Xml;
 using System.Web;
 using System.Reflection;
+using LogAnalyzer.Common.Tools;
 
 namespace LogAnalyzer.TextParser
 {
@@ -178,11 +179,14 @@ namespace LogAnalyzer.TextParser
             {
                 if (items[i] is SimpleTextPart simpleTextPart)
                 {
-                    builder.Append("<pre>" + HttpUtility.HtmlEncode(simpleTextPart.Text) + "</pre>");
+                    using (HtmlTag.Open(builder, "pre"))
+                        builder.Append(HttpUtility.HtmlEncode(simpleTextPart.Text));
                 }
                 else if (items[i] is JsonTextPart jsonTextPart)
                 {
-                    builder.Append("<pre><code class=\"json\">" + HttpUtility.HtmlEncode(jsonTextPart.Json.ToString(Newtonsoft.Json.Formatting.Indented)) + "</code></pre>");
+                    using (HtmlTag.Open(builder, "pre"))
+                    using (HtmlTag.Open(builder, "code", "class=\"json\""))
+                        builder.Append(HttpUtility.HtmlEncode(jsonTextPart.Json.ToString(Newtonsoft.Json.Formatting.Indented)));
                 }
                 else if (items[i] is XmlTextPart xmlTextPart)
                 {
@@ -199,7 +203,9 @@ namespace LogAnalyzer.TextParser
                     StreamReader reader = new StreamReader(ms);
                     string formattedXml = reader.ReadToEnd();
 
-                    builder.Append("<pre><code class=\"xml\">" + HttpUtility.HtmlEncode(formattedXml) + "</code></pre>");
+                    using (HtmlTag.Open(builder, "pre"))
+                    using (HtmlTag.Open(builder, "code", "class=\"json\""))
+                        builder.Append(HttpUtility.HtmlEncode(formattedXml));
                 }
                 else
                     throw new InvalidOperationException("Invalid text part!");
@@ -211,13 +217,20 @@ namespace LogAnalyzer.TextParser
         public string ParseToHtmlPage(string logMessage)
         {
             StringBuilder builder = new StringBuilder();
-            builder.Append("<!DOCTYPE html>")
-                .Append("<html>")
-                .Append("<body>");
+            builder.Append("<!DOCTYPE html>");
 
-            builder.Append(ParseMessageToHtml(logMessage));
+            using (HtmlTag.Open(builder, "html"))
+            {
+                using (HtmlTag.Open(builder, "head"))
+                {
+                    builder.AppendLine("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge\" />");
+                }
 
-            builder.Append("</body></html>");
+                using (HtmlTag.Open(builder, "body"))
+                {
+                    builder.Append(ParseMessageToHtml(logMessage));
+                }
+            }
 
             return builder.ToString();
         }

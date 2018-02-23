@@ -80,6 +80,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">
+      <Project>{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}</Project>
+      <Name>LogAnalyzer.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
       <Project>{5B2CEEC9-3261-400F-B198-831743AE86CC}</Project>
       <Name>LogAnalyzer.Models</Name>
