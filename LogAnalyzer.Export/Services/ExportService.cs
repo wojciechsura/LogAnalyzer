@@ -70,7 +70,8 @@ namespace LogAnalyzer.Export.Services
                     style = styles[currentHighlight];
                 else
                 {
-                    styles.Add(currentHighlight, $"style" + styles.Count());
+                    style = $"style" + styles.Count();
+                    styles.Add(currentHighlight, style);
                 }
             }
 
