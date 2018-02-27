@@ -13,5 +13,6 @@ namespace LogAnalyzer.API.LogSource
         ILogSource CreateLogSource(ILogSourceConfiguration configuration, ILogParser logParser);
         string UniqueName { get; }
         ILogSourceConfiguration CreateFromLocalPaths(List<string> files);
+        ILogSourceConfiguration CreateFromClipboard();
     }
 }

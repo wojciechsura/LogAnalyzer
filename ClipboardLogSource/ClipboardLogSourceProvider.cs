@@ -28,6 +28,11 @@ namespace ClipboardLogSource
             return null;
         }
 
+        public ILogSourceConfiguration CreateFromClipboard()
+        {
+            return new ClipboardLogSourceConfiguration();
+        }
+
         public string UniqueName => Common.Consts.UNIQUE_NAME;
     }
 }

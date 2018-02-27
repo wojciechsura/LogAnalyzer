@@ -49,7 +49,7 @@ namespace LogAnalyzer.Services
             return editorWindow.DataResult;
         }
 
-        public ModalDialogResult<OpenResult> OpenLog(OpenFilesModel model)
+        public ModalDialogResult<OpenResult> OpenLog(BaseOpenFilesModel model)
         {
             OpenWindow openWindow = new OpenWindow(model);
             openWindow.ShowDialog();

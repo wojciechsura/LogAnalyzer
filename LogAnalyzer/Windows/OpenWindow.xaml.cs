@@ -30,7 +30,7 @@ namespace LogAnalyzer.Windows
     {
         private OpenWindowViewModel viewModel;
 
-        public OpenWindow(OpenFilesModel model)
+        public OpenWindow(BaseOpenFilesModel model)
         {
             InitializeComponent();
 

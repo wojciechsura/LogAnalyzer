@@ -152,7 +152,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         // Public methods -----------------------------------------------------
 
         public OpenWindowViewModel(IOpenWindowAccess access, 
-            OpenFilesModel model,
+            BaseOpenFilesModel model,
             ILogSourceRepository logSourceRepository, 
             ILogParserRepository logParserRepository, 
             IConfigurationService configurationService,
@@ -185,11 +185,29 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 .ForEach(vm => logSourceViewModels.Add(vm));
 
             bool bestSourceFound = false;
-            if (model.DroppedFiles != null && model.DroppedFiles.Count > 0)
+
+            if (model is OpenFilesModel openFilesModel)
+            {
+                if (openFilesModel.DroppedFiles != null && openFilesModel.DroppedFiles.Count > 0)
+                {
+                    foreach (var viewmodel in logSourceViewModels)
+                    {
+                        var config = viewmodel.Provider.CreateFromLocalPaths(openFilesModel.DroppedFiles);
+                        if (config != null)
+                        {
+                            viewmodel.LoadConfiguration(config);
+                            selectedLogSource = viewmodel;
+                            bestSourceFound = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (model is OpenClipboardModel)
             {
                 foreach (var viewmodel in logSourceViewModels)
                 {
-                    var config = viewmodel.Provider.CreateFromLocalPaths(model.DroppedFiles);
+                    var config = viewmodel.Provider.CreateFromClipboard();
                     if (config != null)
                     {
                         viewmodel.LoadConfiguration(config);

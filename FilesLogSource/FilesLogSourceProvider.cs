@@ -21,6 +21,11 @@ namespace FilesLogSource
             return LogAnalyzer.Dependencies.Container.Instance.Resolve<FilesLogSourceEditorViewModel>(new ParameterOverride("provider", this));
         }
 
+        public ILogSourceConfiguration CreateFromClipboard()
+        {
+            return null;
+        }
+
         public ILogSourceConfiguration CreateFromLocalPaths(List<string> files)
         {
             return new FilesLogSourceConfiguration
@@ -40,5 +45,6 @@ namespace FilesLogSource
 
             return new FilesLogSource(filesConfiguration, logParser);
         }
+
     }
 }

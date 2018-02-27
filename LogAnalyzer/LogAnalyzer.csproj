@@ -754,6 +754,8 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\Paste16.png" />
+    <Resource Include="Resources\Images\Paste32.png" />
     <Resource Include="Resources\Images\CaseSensitive16.png" />
     <Resource Include="Resources\Images\Regex16.png" />
     <Resource Include="Resources\Images\WholeWord16.png" />

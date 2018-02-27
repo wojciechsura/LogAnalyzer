@@ -33,6 +33,11 @@ namespace FileLogSource
                 return null;
         }
 
+        public ILogSourceConfiguration CreateFromClipboard()
+        {
+            return null;
+        }
+
         public string UniqueName => Common.Consts.UNIQUE_NAME;
     }
 }

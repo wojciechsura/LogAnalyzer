@@ -97,6 +97,7 @@
         <KeyBinding Modifiers="Ctrl+Shift" Key="F" Command="{Binding SearchCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="J" Command="{Binding JumpToTimeCommand}" />
         <KeyBinding Modifiers="Ctrl" Key="T" Command="{Binding ToggleProfilingPointCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="V" Command="{Binding OpenFromClipboardCommand}" />
 
         <KeyBinding Modifiers="Ctrl+Shift" Key="D1" Command="{Binding SetBookmarkCommand}" CommandParameter="1" />
         <KeyBinding Modifiers="Ctrl+Shift" Key="D2" Command="{Binding SetBookmarkCommand}" CommandParameter="2" />
@@ -135,6 +136,11 @@
                               LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Open32.png"                              
                               Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Open16.png" 
                               Command="{Binding OpenCommand}" />
+                    <f:Button Header="From clipboard"
+                              LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Paste32.png"
+                              Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Paste16.png"
+                              SizeDefinition="Middle,Middle,Middle"
+                              Command="{Binding OpenFromClipboardCommand}" />
                     <f:DropDownButton Header="Export"
                               LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Export32.png"
                               Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Export16.png"                              

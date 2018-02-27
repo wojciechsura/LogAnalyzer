@@ -141,21 +141,36 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 access.Close();
         }
 
+        private void InternalOpen(OpenResult result)
+        {
+            if (engine != null)
+            {
+                engineStoppingCondition.Value = true;
+                engine.Stop(() => EngineStoppedWithOpenCallback(result));
+            }
+            else
+            {
+                DoCreateEngine(result);
+            }
+        }
+
         private void DoOpen(List<string> droppedFiles = null)
         {
             var result = dialogService.OpenLog(new OpenFilesModel { DroppedFiles = droppedFiles });
 
             if (result.DialogResult)
             {
-                if (engine != null)
-                {
-                    engineStoppingCondition.Value = true;
-                    engine.Stop(() => EngineStoppedWithOpenCallback(result.Result));
-                }
-                else
-                {
-                    DoCreateEngine(result.Result);
-                }
+                InternalOpen(result.Result);
+            }
+        }
+
+        private void DoOpenFromClipboard()
+        {
+            var result = dialogService.OpenLog(new OpenClipboardModel());
+
+            if (result.DialogResult)
+            {
+                InternalOpen(result.Result);
             }
         }
 
@@ -599,6 +614,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), enginePresentCondition & searchStringExists);
             CloseQuickSearchCommand = new SimpleCommand((obj) => DoCloseQuickSearch());
             ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
+            OpenFromClipboardCommand = new SimpleCommand((obj) => DoOpenFromClipboard());
         }
 
         public bool HandleClosing()
@@ -686,6 +702,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand CloseQuickSearchCommand { get; }
 
         public ICommand ShowQuickSearchCommand { get; }
+
+        public ICommand OpenFromClipboardCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

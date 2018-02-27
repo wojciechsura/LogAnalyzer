@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Models.Views.OpenWindow
 {
-    public class OpenFilesModel : BaseOpenFilesModel
+    public class OpenClipboardModel : BaseOpenFilesModel
     {
-        public List<string> DroppedFiles { get; set; }
     }
 }
