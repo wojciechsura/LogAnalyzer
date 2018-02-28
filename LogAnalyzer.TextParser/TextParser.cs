@@ -17,9 +17,9 @@ namespace LogAnalyzer.TextParser
 {
     public class TextParser : ITextParser
     {
-        private int Move(string text, int current, int line, int position)
+        private int Move(string text, int current, int line, int position, bool zeroBasedPosition = false)
         {
-            while (current < text.Length && (line > 1 || position > 1))
+            while (current < text.Length && (line > 1 || (!zeroBasedPosition && position > 1) || (zeroBasedPosition && position > 0)))
             {
                 if (text[current] == '\n')
                 {
@@ -51,7 +51,7 @@ namespace LogAnalyzer.TextParser
             }
             catch (JsonReaderException e)
             {
-                int end = Move(text, current, e.LineNumber, e.LinePosition);
+                int end = Move(text, current, e.LineNumber, e.LinePosition, true);
 
                 try
                 {
