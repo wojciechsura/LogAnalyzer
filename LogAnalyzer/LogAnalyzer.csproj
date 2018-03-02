@@ -166,6 +166,9 @@
     <Compile Include="Windows\ParserProfileEditorWindow.xaml.cs">
       <DependentUpon>ParserProfileEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\PreferencesWindow.xaml.cs">
+      <DependentUpon>PreferencesWindow.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Resources\Xaml\RegularColumn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -224,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ParserProfileEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\PreferencesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
