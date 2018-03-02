@@ -44,7 +44,15 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <ComboBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" ItemsSource="{Binding LogParserProfiles}" SelectedItem="{Binding SelectedLogParserProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Name" />
+                    <ComboBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" 
+                              ItemsSource="{Binding LogParserProfiles}" 
+                              SelectedItem="{Binding SelectedLogParserProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <Button Width="24" Height="24" Grid.Column="1" Margin="4" Command="{Binding NewParserProfileCommand}">
                         <Image Width="16" Height="16" Source="/Resources/Images/New16.png" />
                     </Button>

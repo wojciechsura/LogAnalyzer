@@ -1,4 +1,6 @@
-﻿using LogAnalyzer.API.LogSource;
+﻿using LogAnalyzer.API.LogParser;
+using LogAnalyzer.API.LogSource;
+using LogAnalyzer.API.Models;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.BusinessLogic.Models.Views.OpenWindow;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
@@ -44,10 +46,21 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             logParserProfiles.Clear();
             configurationService.Configuration.LogParserProfiles
-                .Select(pp => new LogParserProfileInfo
+                .Select(pp => 
                 {
-                    Name = pp.Name.Value,
-                    Guid = pp.Guid.Value
+                    // Build parser if it is possible
+                    ILogParser parser = null;
+                    var provider = logParserRepository.LogParserProviders.FirstOrDefault(p => p.UniqueName == pp.ParserUniqueName.Value);
+                    if (provider != null)
+                    {
+                        var configuration = provider.DeserializeConfiguration(pp.SerializedParserConfiguration.Value);
+                        if (configuration != null)
+                        {
+                            parser = provider.CreateParser(configuration);
+                        }
+                    }
+
+                    return new LogParserProfileInfo(pp.Name.Value, pp.Guid.Value, parser);
                 })
                 .ToList()
                 .ForEach(pp => logParserProfiles.Add(pp));
@@ -69,6 +82,30 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private void OnSelectedParserChanged()
         {
             OnPropertyChanged(nameof(SelectedLogParserProfile));
+        }
+
+        private void CheckCompatibleParsers()
+        {
+            for (int i = 0; i < logParserProfiles.Count; i++)
+            {
+                logParserProfiles[i].Compatible = false;
+            }
+
+            if (selectedLogSource == null || !selectedLogSource.ProvidesSampleLines)
+                return;
+
+            List<string> sampleLines = selectedLogSource.ProvideSampleLines();
+
+            for (int parser = 0; parser < logParserProfiles.Count; parser++)
+            {
+                logParserProfiles[parser].Compatible = sampleLines
+                    .FirstOrDefault(s =>
+                    {
+                        (BaseLogEntry entry, ParserOperation op) = logParserProfiles[parser].Parser.Parse(s, null);
+
+                        return (entry != null && op == ParserOperation.AddNew);
+                    }) != null;
+            }
         }
 
         private void DoEditParserProfile()
@@ -238,6 +275,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             LogParserProfileInfo lastProfile = logParserProfiles.FirstOrDefault(p => p.Guid.Equals(configurationService.Configuration.Session.LastParserProfile.Value));
             SelectedLogParserProfile = lastProfile ?? logParserProfiles.FirstOrDefault();
+
+            CheckCompatibleParsers();
         }
 
         // Public properties --------------------------------------------------
