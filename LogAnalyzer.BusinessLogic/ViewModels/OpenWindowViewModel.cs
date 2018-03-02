@@ -53,6 +53,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 .ForEach(pp => logParserProfiles.Add(pp));
         }
 
+        private List<string> GetSampleLines()
+        {
+            if (selectedLogSource.ProvidesSampleLines)
+                return selectedLogSource.ProvideSampleLines();
+            else
+                return new List<string>();
+        }
+
         private void OnSelectedLogSourceChanged()
         {
             OnPropertyChanged(nameof(SelectedLogSource));
@@ -65,7 +73,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoEditParserProfile()
         {
-            ModalDialogResult<LogParserProfileEditorResult> result = dialogService.EditLogParserProfile(selectedParserProfile.Guid);
+            var sampleLines = GetSampleLines();
+
+            ModalDialogResult<LogParserProfileEditorResult> result = dialogService.EditLogParserProfile(selectedParserProfile.Guid, sampleLines);
             if (result.DialogResult)
             {
                 BuildLogParserProfileInfos();
@@ -77,7 +87,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoNewParserProfile()
         {
-            ModalDialogResult<LogParserProfileEditorResult> result = dialogService.NewLogParserProfile();
+            var sampleLines = GetSampleLines();
+
+            ModalDialogResult<LogParserProfileEditorResult> result = dialogService.NewLogParserProfile(sampleLines);
             if (result.DialogResult)
             {
                 BuildLogParserProfileInfos();

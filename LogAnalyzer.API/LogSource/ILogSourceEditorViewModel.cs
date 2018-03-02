@@ -12,9 +12,11 @@ namespace LogAnalyzer.API.LogSource
         ILogSourceConfiguration BuildConfiguration();
         void LoadConfiguration(ILogSourceConfiguration configuration);
         ValidationResult Validate();
+        List<string> ProvideSampleLines();
 
         string DisplayName { get; }
         string EditorResource { get; }
+        bool ProvidesSampleLines { get; }
 
         ILogSourceProvider Provider { get; }
     }

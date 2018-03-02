@@ -57,6 +57,13 @@ namespace ClipboardLogSource.Editor
             
         }
 
+        public List<string> ProvideSampleLines()
+        {
+            return Clipboard.GetText(TextDataFormat.UnicodeText).Split('\n')
+                .Take(10)
+                .ToList();
+        }
+
         // Public properties --------------------------------------------------
 
         public string DisplayName => DISPLAY_NAME;
@@ -64,6 +71,8 @@ namespace ClipboardLogSource.Editor
         public string EditorResource => EDITOR_RESOURCE;
 
         public ILogSourceProvider Provider { get; }
+
+        public bool ProvidesSampleLines => true;
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

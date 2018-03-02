@@ -27,13 +27,14 @@ namespace LogAnalyzer.Windows
     {
         private ParserProfileEditorWindowViewModel viewModel;
 
-        public ParserProfileEditorWindow(Guid editedProfileGuid)
+        public ParserProfileEditorWindow(Guid editedProfileGuid, List<string> sampleLines)
         {
             InitializeComponent();
 
             viewModel = Dependencies.Container.Instance.Resolve<ParserProfileEditorWindowViewModel>(
                 new ParameterOverride("access", this),
-                new ParameterOverride("editedProfileGuid", editedProfileGuid));
+                new ParameterOverride("editedProfileGuid", editedProfileGuid),
+                new ParameterOverride("sampleLines", sampleLines));
 
             DataContext = viewModel;
         }

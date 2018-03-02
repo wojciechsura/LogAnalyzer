@@ -35,16 +35,16 @@ namespace LogAnalyzer.Services
             return window.DataResult;
         }
 
-        public ModalDialogResult<LogParserProfileEditorResult> EditLogParserProfile(Guid guid)
+        public ModalDialogResult<LogParserProfileEditorResult> EditLogParserProfile(Guid guid, List<string> sampleLines)
         {
-            ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(guid);
+            ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(guid, sampleLines);
             editorWindow.ShowDialog();
             return editorWindow.DataResult;
         }
 
-        public ModalDialogResult<LogParserProfileEditorResult> NewLogParserProfile()
+        public ModalDialogResult<LogParserProfileEditorResult> NewLogParserProfile(List<string> sampleLines)
         {
-            ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(Guid.Empty);
+            ParserProfileEditorWindow editorWindow = new ParserProfileEditorWindow(Guid.Empty, sampleLines);
             editorWindow.ShowDialog();
             return editorWindow.DataResult;
         }

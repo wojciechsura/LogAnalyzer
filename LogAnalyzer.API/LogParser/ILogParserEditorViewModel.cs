@@ -11,6 +11,7 @@ namespace LogAnalyzer.API.LogParser
     {
         void SetConfiguration(ILogParserConfiguration configuration);
         ILogParserConfiguration GetConfiguration();
+        void SetSampleLines(List<string> sampleLines);
 
         string DisplayName { get; }
         string EditorResource { get; }

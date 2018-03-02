@@ -20,8 +20,8 @@ namespace LogAnalyzer.Services.Interfaces
     public interface IDialogService
     {
         ModalDialogResult<OpenResult> OpenLog(BaseOpenFilesModel files);
-        ModalDialogResult<LogParserProfileEditorResult> EditLogParserProfile(Guid guid);
-        ModalDialogResult<LogParserProfileEditorResult> NewLogParserProfile();
+        ModalDialogResult<LogParserProfileEditorResult> EditLogParserProfile(Guid guid, List<string> sampleLines);
+        ModalDialogResult<LogParserProfileEditorResult> NewLogParserProfile(List<string> sampleLines);
         ModalDialogResult<HighlightConfig> ConfigHighlighting(HighlightConfigModel model);
         ModalDialogResult<FilterConfig> ConfigFiltering(FilterConfigModel model);
         ModalDialogResult<SearchConfig> OpenFind(FindModel model);

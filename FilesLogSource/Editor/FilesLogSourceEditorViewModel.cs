@@ -143,6 +143,42 @@ namespace FilesLogSource.Editor
                 throw new ArgumentException("Invalid configuration!");
         }
 
+        public List<string> ProvideSampleLines()
+        {
+            List<string> result = new List<string>();
+
+            int maxLines = Math.Max(3, files.Count / 10);
+
+            for (int j = 0; j < files.Count; j++)
+            {
+                try
+                {
+                    using (FileStream fs = new FileStream(files[j].Filename, FileMode.Open, FileAccess.Read))
+                    using (TextReader reader = new StreamReader(fs))
+                    {
+                        int i = 0;
+                        string line;
+                        do
+                        {
+                            line = reader.ReadLine();
+                            if (line != null)
+                            {
+                                result.Add(line);
+                                i++;
+                            }
+                        }
+                        while (i < maxLines && line != null);
+                    }
+                }
+                catch
+                {
+                    return new List<string>();
+                }
+            }
+
+            return result;
+        }
+
         // Public properties --------------------------------------------------
 
         public string DisplayName => DISPLAY_NAME;
@@ -188,6 +224,8 @@ namespace FilesLogSource.Editor
         public ICommand RemoveFileCommand { get; }
         public ICommand MoveFileUpCommand { get; }
         public ICommand MoveFileDownCommand { get; }
+
+        public bool ProvidesSampleLines => true;
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

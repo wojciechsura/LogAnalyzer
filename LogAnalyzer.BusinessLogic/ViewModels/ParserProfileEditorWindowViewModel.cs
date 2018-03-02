@@ -127,7 +127,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ILogParserRepository logParserRepository,
             IConfigurationService configurationService,
             IMessagingService messagingService,
-            Guid editedProfileGuid)
+            Guid editedProfileGuid,
+            List<string> sampleLines)
         {
             this.access = access;
             this.editedProfileGuid = editedProfileGuid;
@@ -148,6 +149,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             foreach (var provider in logParserRepository.LogParserProviders)
             {
                 var vm = provider.CreateEditorViewModel();
+                vm.SetSampleLines(sampleLines);
                 logParserEditorViewModels.Add(vm);
 
                 if (editedProfile != null && provider.UniqueName == editedProfile.ParserUniqueName.Value)

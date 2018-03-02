@@ -20,7 +20,7 @@ namespace LineLogParser.Editor
 
         public void SetConfiguration(ILogParserConfiguration configuration)
         {
-            
+            // Do nothing
         }
 
         public ILogParserConfiguration GetConfiguration()
@@ -31,6 +31,11 @@ namespace LineLogParser.Editor
         public ValidationResult Validate()
         {
             return new ValidationResult(true, null);
+        }
+
+        public void SetSampleLines(List<string> sampleLines)
+        {
+            // Do nothing
         }
 
         public string DisplayName => DISPLAY_NAME;

@@ -39,6 +39,7 @@ namespace RegexLogParser.Editor
         private readonly Condition lastItemSelectedCondition;
 
         private TableData resultData;
+        private string sampleData;
 
         // Private methods ----------------------------------------------------
 
@@ -321,6 +322,11 @@ namespace RegexLogParser.Editor
             return new ValidationResult(true, null);
         }
 
+        public void SetSampleLines(List<string> sampleLines)
+        {
+            SampleData = String.Join("\n", sampleLines);
+        }
+
         // Public properties --------------------------------------------------
 
         public ILogParserProvider Provider { get; }
@@ -373,7 +379,15 @@ namespace RegexLogParser.Editor
             }
         }
 
-        public string SampleData { get; set; }
+        public string SampleData
+        {
+            get => sampleData;
+            set
+            {
+                sampleData = value;
+                OnPropertyChanged(nameof(SampleData));
+            }
+        }
 
         public ICommand AddGroupDefinitionCommand { get; }
         public ICommand RemoveGroupDefinitionCommand { get; }

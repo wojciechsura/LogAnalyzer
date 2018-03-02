@@ -83,6 +83,37 @@ namespace FileLogSource.Editor
                 throw new ArgumentException("Invalid configuration!");
         }
 
+        public List<string> ProvideSampleLines()
+        {
+            try
+            {
+                List<string> result = new List<string>();
+
+                using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
+                using (TextReader reader = new StreamReader(fs))
+                {
+                    int i = 0;
+                    string line;
+                    do
+                    {
+                        line = reader.ReadLine();
+                        if (line != null)
+                        {
+                            result.Add(line);
+                            i++;
+                        }
+                    }
+                    while (i < 10 && line != null);
+                }
+
+                return result;
+            }
+            catch
+            {
+                return new List<string>();
+            }
+        }
+
         // Public properties --------------------------------------------------
 
         public string DisplayName => DISPLAY_NAME;
@@ -104,6 +135,8 @@ namespace FileLogSource.Editor
         }
 
         public ILogSourceProvider Provider { get; }
+
+        public bool ProvidesSampleLines => true;
 
         public event PropertyChangedEventHandler PropertyChanged;
     }
