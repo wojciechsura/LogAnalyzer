@@ -19,5 +19,7 @@ namespace LogAnalyzer.API.LogSource
         bool ProvidesSampleLines { get; }
 
         ILogSourceProvider Provider { get; }
+
+        event EventHandler SourceChanged;
     }
 }

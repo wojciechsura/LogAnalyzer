@@ -13,6 +13,7 @@
     <Window.Resources>
         <i:LogSourceTemplateSelector x:Key="LogSourceTemplateSelector" />
         <c:NullToBooleanConverter x:Key="NullToBooleanConverter" />
+        <c:HideIfFalseConverter x:Key="HideIfFalseConverter" />
     </Window.Resources>
     <StackPanel Orientation="Vertical">
         <GroupBox Header="Log source" Padding="4" Margin="4">
@@ -49,7 +50,11 @@
                               SelectedItem="{Binding SelectedLogParserProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Name}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16" VerticalAlignment="Center" Margin="2" Source="/Resources/Images/Tick16.png" 
+                                           Visibility="{Binding Compatible, Converter={StaticResource HideIfFalseConverter}}"/>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="2" />
+                                </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>

@@ -54,6 +54,38 @@ namespace FilesLogSource.Editor
             AutoSort = config.AutoSort;
         }
 
+        private void OnSourceChanged()
+        {
+            SourceChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void DoMoveFileDown()
+        {
+            files.Move(selectedFileIndex, selectedFileIndex + 1);
+        }
+
+        private void DoMoveFileUp()
+        {
+            files.Move(selectedFileIndex, selectedFileIndex - 1);
+        }
+
+        private void DoRemoveFile()
+        {
+            files.RemoveAt(selectedFileIndex);
+            OnSourceChanged();
+        }
+
+        private void DoAddFiles()
+        {
+            List<string> newFiles = winApiService.OpenFiles(LogAnalyzer.Models.Constants.File.LogFilterDefinitions);
+            if (newFiles != null)
+            {
+                foreach (var file in newFiles)
+                    files.Add(new FileInfo { Filename = file });
+                OnSourceChanged();
+            }
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -79,31 +111,6 @@ namespace FilesLogSource.Editor
             RemoveFileCommand = new SimpleCommand((obj) => DoRemoveFile(), fileSelectedCondition);
             MoveFileUpCommand = new SimpleCommand((obj) => DoMoveFileUp(), fileSelectedCondition & !firstFileSelectedCondition);
             MoveFileDownCommand = new SimpleCommand((obj) => DoMoveFileDown(), fileSelectedCondition & !lastFileSelectedCondition);
-        }
-
-        private void DoMoveFileDown()
-        {
-            files.Move(selectedFileIndex, selectedFileIndex + 1);
-        }
-
-        private void DoMoveFileUp()
-        {
-            files.Move(selectedFileIndex, selectedFileIndex - 1);
-        }
-
-        private void DoRemoveFile()
-        {
-            files.RemoveAt(selectedFileIndex);
-        }
-
-        private void DoAddFiles()
-        {
-            List<string> newFiles = winApiService.OpenFiles(LogAnalyzer.Models.Constants.File.LogFilterDefinitions);
-            if (newFiles != null)
-            {
-                foreach (var file in newFiles)
-                    files.Add(new FileInfo { Filename = file });
-            }
         }
 
         public ILogSourceConfiguration BuildConfiguration()
@@ -147,33 +154,28 @@ namespace FilesLogSource.Editor
         {
             List<string> result = new List<string>();
 
-            int maxLines = Math.Max(3, files.Count / 10);
-
-            for (int j = 0; j < files.Count; j++)
+            try
             {
-                try
+                using (FileStream fs = new FileStream(files[0].Filename, FileMode.Open, FileAccess.Read))
+                using (TextReader reader = new StreamReader(fs))
                 {
-                    using (FileStream fs = new FileStream(files[j].Filename, FileMode.Open, FileAccess.Read))
-                    using (TextReader reader = new StreamReader(fs))
+                    int i = 0;
+                    string line;
+                    do
                     {
-                        int i = 0;
-                        string line;
-                        do
+                        line = reader.ReadLine();
+                        if (line != null)
                         {
-                            line = reader.ReadLine();
-                            if (line != null)
-                            {
-                                result.Add(line);
-                                i++;
-                            }
+                            result.Add(line);
+                            i++;
                         }
-                        while (i < maxLines && line != null);
                     }
+                    while (i < 10 && line != null);
                 }
-                catch
-                {
-                    return new List<string>();
-                }
+            }
+            catch
+            {
+                return new List<string>();
             }
 
             return result;
@@ -228,5 +230,6 @@ namespace FilesLogSource.Editor
         public bool ProvidesSampleLines => true;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler SourceChanged;
     }
 }

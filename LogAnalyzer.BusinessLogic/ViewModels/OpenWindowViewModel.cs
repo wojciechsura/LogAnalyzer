@@ -74,9 +74,23 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 return new List<string>();
         }
 
-        private void OnSelectedLogSourceChanged()
+        private void SetLogSource(ILogSourceEditorViewModel value)
         {
+            if (selectedLogSource != null)
+                selectedLogSource.SourceChanged -= HandleSourceChanged;
+
+            selectedLogSource = value;
+
+            if (selectedLogSource != null)
+                selectedLogSource.SourceChanged += HandleSourceChanged;
+
             OnPropertyChanged(nameof(SelectedLogSource));
+            CheckCompatibleParsers();
+        }
+
+        private void HandleSourceChanged(object sender, EventArgs e)
+        {
+            CheckCompatibleParsers();
         }
 
         private void OnSelectedParserChanged()
@@ -225,6 +239,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             result = new ModalDialogResult<OpenResult>();
 
+            // Log profiles
+
+            logParserProfiles = new ObservableCollection<LogParserProfileInfo>();
+            BuildLogParserProfileInfos();
+
+            LogParserProfileInfo lastProfile = logParserProfiles.FirstOrDefault(p => p.Guid.Equals(configurationService.Configuration.Session.LastParserProfile.Value));
+            SelectedLogParserProfile = lastProfile ?? logParserProfiles.FirstOrDefault();
+
+            // Log sources
 
             logSourceViewModels = new ObservableCollection<ILogSourceEditorViewModel>();
 
@@ -245,7 +268,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                         if (config != null)
                         {
                             viewmodel.LoadConfiguration(config);
-                            selectedLogSource = viewmodel;
+                            SetLogSource(viewmodel);
                             bestSourceFound = true;
                             break;
                         }
@@ -260,7 +283,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                     if (config != null)
                     {
                         viewmodel.LoadConfiguration(config);
-                        selectedLogSource = viewmodel;
+                        SetLogSource(viewmodel);
                         bestSourceFound = true;
                         break;
                     }
@@ -268,13 +291,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
 
             if (!bestSourceFound)
-                selectedLogSource = logSourceViewModels.FirstOrDefault();
-
-            logParserProfiles = new ObservableCollection<LogParserProfileInfo>();
-            BuildLogParserProfileInfos();
-
-            LogParserProfileInfo lastProfile = logParserProfiles.FirstOrDefault(p => p.Guid.Equals(configurationService.Configuration.Session.LastParserProfile.Value));
-            SelectedLogParserProfile = lastProfile ?? logParserProfiles.FirstOrDefault();
+                SelectedLogSource = logSourceViewModels.FirstOrDefault();
 
             CheckCompatibleParsers();
         }
@@ -290,9 +307,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 return selectedLogSource;
             }
             set
-            {
-                selectedLogSource = value;
-                OnSelectedLogSourceChanged();
+            {                
+                SetLogSource(value);
             }
         }
 

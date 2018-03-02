@@ -20,7 +20,7 @@
                 <Image Source="/Resources/Images/Open16.png" Width="16" Height="16" />
             </Button>
 
-            <TextBox Grid.Row="1" Grid.Column="1" Margin="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Margin="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" IsReadOnly="True" Text="{Binding Filename, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>

@@ -75,5 +75,6 @@ namespace ClipboardLogSource.Editor
         public bool ProvidesSampleLines => true;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler SourceChanged;
     }
 }

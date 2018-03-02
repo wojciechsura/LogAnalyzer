@@ -37,10 +37,17 @@ namespace FileLogSource.Editor
         private void DoOpenFile()
         {
             string filename = winApiService.OpenFile(LogAnalyzer.Models.Constants.File.LogFilterDefinitions);
-            if (filename != null) {
+            if (filename != null)
+            {
                 this.filename = filename;
                 OnPropertyChanged(nameof(Filename));
+                OnSourceChanged();
             }
+        }
+
+        private void OnSourceChanged()
+        {
+            SourceChanged?.Invoke(this, new EventArgs());
         }
 
         private void LoadConfig(FileLogSourceConfiguration config)
@@ -139,5 +146,6 @@ namespace FileLogSource.Editor
         public bool ProvidesSampleLines => true;
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler SourceChanged;
     }
 }
