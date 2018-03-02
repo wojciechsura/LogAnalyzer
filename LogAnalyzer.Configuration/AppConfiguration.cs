@@ -17,6 +17,8 @@ namespace LogAnalyzer.Configuration
             Session = new Session(this);
 
             LogParserProfiles = new SimpleCollection<LogParserProfile>("LogParserProfiles", this, LogParserProfile.XML_NAME);
+
+            OpeningConfiguration = new OpeningConfiguration(this);
         }
 
         public void Defaults()
@@ -29,5 +31,7 @@ namespace LogAnalyzer.Configuration
         public Session Session { get; }
 
         public SimpleCollection<LogParserProfile> LogParserProfiles { get; }
+
+        public OpeningConfiguration OpeningConfiguration { get; }
     }
 }
