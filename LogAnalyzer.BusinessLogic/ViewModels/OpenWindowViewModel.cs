@@ -40,6 +40,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private LogParserProfileInfo selectedParserProfile;
         private Condition parserProfileSelected;
 
+        private readonly bool detectParsers;
+
         // Private methods ----------------------------------------------------
 
         private void BuildLogParserProfileInfos()
@@ -48,15 +50,20 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             configurationService.Configuration.LogParserProfiles
                 .Select(pp => 
                 {
-                    // Build parser if it is possible
                     ILogParser parser = null;
-                    var provider = logParserRepository.LogParserProviders.FirstOrDefault(p => p.UniqueName == pp.ParserUniqueName.Value);
-                    if (provider != null)
+
+                    // Build parsers only if user wants to auto-detect them.
+                    // This takes time, might be noticeable if there are plenty of them.
+                    if (detectParsers)
                     {
-                        var configuration = provider.DeserializeConfiguration(pp.SerializedParserConfiguration.Value);
-                        if (configuration != null)
+                        var provider = logParserRepository.LogParserProviders.FirstOrDefault(p => p.UniqueName == pp.ParserUniqueName.Value);
+                        if (provider != null)
                         {
-                            parser = provider.CreateParser(configuration);
+                            var configuration = provider.DeserializeConfiguration(pp.SerializedParserConfiguration.Value);
+                            if (configuration != null)
+                            {
+                                parser = provider.CreateParser(configuration);
+                            }
                         }
                     }
 
@@ -66,7 +73,57 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 .ForEach(pp => logParserProfiles.Add(pp));
         }
 
-        private List<string> GetSampleLines()
+        private void SelectBestLogSource(BaseOpenFilesModel model)
+        {
+            bool bestSourceFound = false;
+
+            if (model is OpenFilesModel openFilesModel)
+            {
+                if (openFilesModel.DroppedFiles != null && openFilesModel.DroppedFiles.Count > 0)
+                {
+                    // Find first viewmodel, which can handle dropped multiple files
+                    foreach (var viewmodel in logSourceViewModels)
+                    {
+                        var config = viewmodel.Provider.CreateFromLocalPaths(openFilesModel.DroppedFiles);
+                        if (config != null)
+                        {
+                            viewmodel.LoadConfiguration(config);
+                            SetLogSource(viewmodel);
+                            bestSourceFound = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (model is OpenClipboardModel)
+            {
+                // Find first viewmodel, which can handle providing data from clipboard
+                foreach (var viewmodel in logSourceViewModels)
+                {
+                    var config = viewmodel.Provider.CreateFromClipboard();
+                    if (config != null)
+                    {
+                        viewmodel.LoadConfiguration(config);
+                        SetLogSource(viewmodel);
+                        bestSourceFound = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!bestSourceFound)
+                SetLogSource(logSourceViewModels.FirstOrDefault());
+        }
+
+        private void BuildLogSourceViewModels(ILogSourceRepository logSourceRepository)
+        {
+            logSourceRepository.LogSourceProviders
+                .Select(provider => provider.CreateEditorViewModel())
+                .ToList()
+                .ForEach(vm => logSourceViewModels.Add(vm));
+        }
+
+        private List<string> GetSampleLinesFromSource()
         {
             if (selectedLogSource.ProvidesSampleLines)
                 return selectedLogSource.ProvideSampleLines();
@@ -76,19 +133,34 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void SetLogSource(ILogSourceEditorViewModel value)
         {
-            if (selectedLogSource != null)
-                selectedLogSource.SourceChanged -= HandleSourceChanged;
+            UnsubscribeLogSource(selectedLogSource);
 
             selectedLogSource = value;
-
-            if (selectedLogSource != null)
-                selectedLogSource.SourceChanged += HandleSourceChanged;
-
             OnPropertyChanged(nameof(SelectedLogSource));
-            CheckCompatibleParsers();
+
+            SubscribeLogSource(selectedLogSource);
+
+            DoHandleSourceChanged();
+        }
+
+        private void SubscribeLogSource(ILogSourceEditorViewModel logSource)
+        {
+            if (logSource != null)
+                logSource.SourceChanged += HandleSourceChanged;
+        }
+
+        private void UnsubscribeLogSource(ILogSourceEditorViewModel logSource)
+        {
+            if (logSource != null)
+                logSource.SourceChanged -= HandleSourceChanged;
         }
 
         private void HandleSourceChanged(object sender, EventArgs e)
+        {
+            DoHandleSourceChanged();
+        }
+
+        private void DoHandleSourceChanged()
         {
             CheckCompatibleParsers();
         }
@@ -100,54 +172,56 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void CheckCompatibleParsers()
         {
-            for (int i = 0; i < logParserProfiles.Count; i++)
+            if (detectParsers && selectedLogSource != null && selectedLogSource.ProvidesSampleLines)
             {
-                logParserProfiles[i].Compatible = false;
+                List<string> sampleLines = selectedLogSource.ProvideSampleLines();
+
+                for (int parser = 0; parser < logParserProfiles.Count; parser++)
+                {
+                    logParserProfiles[parser].Compatible = sampleLines
+                        .FirstOrDefault(s =>
+                        {
+                            (BaseLogEntry entry, ParserOperation op) = logParserProfiles[parser].Parser.Parse(s, null);
+
+                            return (entry != null && op == ParserOperation.AddNew);
+                        }) != null;
+                }
             }
-
-            if (selectedLogSource == null || !selectedLogSource.ProvidesSampleLines)
-                return;
-
-            List<string> sampleLines = selectedLogSource.ProvideSampleLines();
-
-            for (int parser = 0; parser < logParserProfiles.Count; parser++)
+            else
             {
-                logParserProfiles[parser].Compatible = sampleLines
-                    .FirstOrDefault(s =>
-                    {
-                        (BaseLogEntry entry, ParserOperation op) = logParserProfiles[parser].Parser.Parse(s, null);
-
-                        return (entry != null && op == ParserOperation.AddNew);
-                    }) != null;
+                for (int i = 0; i < logParserProfiles.Count; i++)
+                {
+                    logParserProfiles[i].Compatible = false;
+                }
             }
+        }
+
+        private void HandleParserProfilesChanged(ModalDialogResult<LogParserProfileEditorResult> result)
+        {
+            BuildLogParserProfileInfos();
+            CheckCompatibleParsers();
+
+            SelectedLogParserProfile = logParserProfiles
+                .Where(p => p.Guid.Equals(result.Result.Guid))
+                .FirstOrDefault();
         }
 
         private void DoEditParserProfile()
         {
-            var sampleLines = GetSampleLines();
+            var sampleLines = GetSampleLinesFromSource();
 
             ModalDialogResult<LogParserProfileEditorResult> result = dialogService.EditLogParserProfile(selectedParserProfile.Guid, sampleLines);
             if (result.DialogResult)
-            {
-                BuildLogParserProfileInfos();
-                SelectedLogParserProfile = logParserProfiles
-                    .Where(p => p.Guid.Equals(result.Result.Guid))
-                    .FirstOrDefault();
-            }
+                HandleParserProfilesChanged(result);
         }
 
         private void DoNewParserProfile()
         {
-            var sampleLines = GetSampleLines();
+            var sampleLines = GetSampleLinesFromSource();
 
             ModalDialogResult<LogParserProfileEditorResult> result = dialogService.NewLogParserProfile(sampleLines);
             if (result.DialogResult)
-            {
-                BuildLogParserProfileInfos();
-                SelectedLogParserProfile = logParserProfiles
-                    .Where(p => p.Guid.Equals(result.Result.Guid))
-                    .FirstOrDefault();
-            }
+                HandleParserProfilesChanged(result);
         }
 
         private void DoDeleteParserProfile()
@@ -159,6 +233,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
                 logParserProfiles.Remove(selectedParserProfile);
                 SelectedLogParserProfile = logParserProfiles.FirstOrDefault();
+
+                // No need to re-check compatible parsers here
             }
         }
 
@@ -229,13 +305,21 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.dialogService = dialogService;
             this.messagingService = messagingService;
 
+            this.detectParsers = configurationService.Configuration.OpeningConfiguration.MarkAvailableParsers.Value;
+
+            // Conditions
+
             parserProfileSelected = new Condition(false);
+
+            // Commands
 
             NewParserProfileCommand = new SimpleCommand((obj) => DoNewParserProfile());
             EditParserProfileCommand = new SimpleCommand((obj) => DoEditParserProfile(), parserProfileSelected);
             DeleteParserProfileCommand = new SimpleCommand((obj) => DoDeleteParserProfile(), parserProfileSelected);
             OkCommand = new SimpleCommand((obj) => DoOk());
             CancelCommand = new SimpleCommand((obj) => DoCancel());
+
+            // Result
 
             result = new ModalDialogResult<OpenResult>();
 
@@ -250,50 +334,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             // Log sources
 
             logSourceViewModels = new ObservableCollection<ILogSourceEditorViewModel>();
+            BuildLogSourceViewModels(logSourceRepository);
 
-            logSourceRepository.LogSourceProviders
-                .Select(provider => provider.CreateEditorViewModel())
-                .ToList()
-                .ForEach(vm => logSourceViewModels.Add(vm));
+            // Select best matching log source - only after everything else is ready
 
-            bool bestSourceFound = false;
-
-            if (model is OpenFilesModel openFilesModel)
-            {
-                if (openFilesModel.DroppedFiles != null && openFilesModel.DroppedFiles.Count > 0)
-                {
-                    foreach (var viewmodel in logSourceViewModels)
-                    {
-                        var config = viewmodel.Provider.CreateFromLocalPaths(openFilesModel.DroppedFiles);
-                        if (config != null)
-                        {
-                            viewmodel.LoadConfiguration(config);
-                            SetLogSource(viewmodel);
-                            bestSourceFound = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            else if (model is OpenClipboardModel)
-            {
-                foreach (var viewmodel in logSourceViewModels)
-                {
-                    var config = viewmodel.Provider.CreateFromClipboard();
-                    if (config != null)
-                    {
-                        viewmodel.LoadConfiguration(config);
-                        SetLogSource(viewmodel);
-                        bestSourceFound = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!bestSourceFound)
-                SelectedLogSource = logSourceViewModels.FirstOrDefault();
-
-            CheckCompatibleParsers();
+            SelectBestLogSource(model);
         }
 
         // Public properties --------------------------------------------------
