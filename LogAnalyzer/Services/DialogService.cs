@@ -89,5 +89,11 @@ namespace LogAnalyzer.Services
             LogMessageVisualizerWindow window = new LogMessageVisualizerWindow(model);
             window.ShowDialog();
         }
+
+        public void OpenConfiguration()
+        {
+            ConfigurationWindow window = new ConfigurationWindow();
+            window.ShowDialog();
+        }
     }
 }

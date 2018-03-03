@@ -142,6 +142,9 @@
     <Compile Include="Windows\ColumnSelectionWindow.xaml.cs">
       <DependentUpon>ColumnSelectionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ConfigurationWindow.xaml.cs">
+      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\FilterConfigWindow.xaml.cs">
       <DependentUpon>FilterConfigWindow.xaml</DependentUpon>
     </Compile>
@@ -166,9 +169,6 @@
     <Compile Include="Windows\ParserProfileEditorWindow.xaml.cs">
       <DependentUpon>ParserProfileEditorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\PreferencesWindow.xaml.cs">
-      <DependentUpon>PreferencesWindow.xaml</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="Resources\Xaml\RegularColumn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -182,6 +182,14 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <Page Include="Windows\ColumnSelectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ConfigurationWindow.Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ConfigurationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -227,10 +235,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ParserProfileEditorWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\PreferencesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -761,6 +765,8 @@
     <Content Include="Lib\shutil.py" />
     <Content Include="Lib\SimpleHTTPServer.py" />
     <Content Include="Lib\SimpleXMLRPCServer.py" />
+    <Resource Include="Resources\Images\Gear16.png" />
+    <Resource Include="Resources\Images\Gear32.png" />
     <Resource Include="Resources\Images\Tick16.png" />
     <Resource Include="Resources\Images\Paste16.png" />
     <Resource Include="Resources\Images\Paste32.png" />

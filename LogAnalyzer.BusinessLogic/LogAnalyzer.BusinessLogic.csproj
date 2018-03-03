@@ -74,12 +74,16 @@
   <ItemGroup>
     <Compile Include="Dependencies\Configuration.cs" />
     <Compile Include="ViewModels\ColumnSelectionWindowViewModel.cs" />
+    <Compile Include="ViewModels\ConfigurationWindowViewModel.cs" />
+    <Compile Include="ViewModels\Configuration\BaseConfigurationViewModel.cs" />
+    <Compile Include="ViewModels\Configuration\OpeningViewModel.cs" />
     <Compile Include="ViewModels\FindWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\LogParserRepository.cs" />
     <Compile Include="Services\LogSourceRepository.cs" />
     <Compile Include="ViewModels\FilterConfigWindowViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IColumnSelectionWindowAccess.cs" />
+    <Compile Include="ViewModels\Interfaces\IConfigurationWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IFindWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IJumpToTimeWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\ILogMessageVisualizerWindowAccess.cs" />

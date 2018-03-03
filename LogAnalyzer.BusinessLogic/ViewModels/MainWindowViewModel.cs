@@ -549,6 +549,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             access.FocusQuickSearchBox();
         }
 
+        private void DoOpenConfiguration()
+        {
+            dialogService.OpenConfiguration();
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -615,6 +620,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             CloseQuickSearchCommand = new SimpleCommand((obj) => DoCloseQuickSearch());
             ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
             OpenFromClipboardCommand = new SimpleCommand((obj) => DoOpenFromClipboard());
+            ConfigurationCommand = new SimpleCommand((obj) => DoOpenConfiguration());
         }
 
         public bool HandleClosing()
@@ -704,6 +710,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand ShowQuickSearchCommand { get; }
 
         public ICommand OpenFromClipboardCommand { get; }
+
+        public ICommand ConfigurationCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

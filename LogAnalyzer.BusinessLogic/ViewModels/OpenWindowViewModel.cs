@@ -305,7 +305,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.dialogService = dialogService;
             this.messagingService = messagingService;
 
-            this.detectParsers = configurationService.Configuration.OpeningConfiguration.MarkAvailableParsers.Value;
+            this.detectParsers = configurationService.Configuration.OpeningConfiguration.DetectParsers.Value;
 
             // Conditions
 

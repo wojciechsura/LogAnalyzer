@@ -13,9 +13,9 @@ namespace LogAnalyzer.Configuration
 
         public OpeningConfiguration(BaseItemContainer parent) : base(XML_NAME, parent)
         {
-            MarkAvailableParsers = new SimpleValue<bool>("MarkAvailableParsers", this, true);
+            DetectParsers = new SimpleValue<bool>("DetectParsers", this, true);
         }
 
-        public SimpleValue<bool> MarkAvailableParsers { get; }
+        public SimpleValue<bool> DetectParsers { get; }
     }
 }

@@ -148,6 +148,12 @@
                         <f:MenuItem Header="Html, plain" Command="{Binding ExportToHtmlCommand}" />
                         <f:MenuItem Header="Html, styled" Command="{Binding ExportToStyledHtmlCommand}" />
                     </f:DropDownButton>
+                    <f:Button Header="Configuration"
+                              LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Gear32.png"
+                              Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Gear16.png"
+                              Command="{Binding ConfigurationCommand}" 
+                              SizeDefinition="Middle,Middle,Middle" />
+
                 </f:RibbonGroupBox>
                 <f:RibbonGroupBox Header="Edit">
                     <f:Button Header="Copy"

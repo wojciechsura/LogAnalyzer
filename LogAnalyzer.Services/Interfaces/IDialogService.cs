@@ -29,5 +29,6 @@ namespace LogAnalyzer.Services.Interfaces
         ModalDialogResult<ColumnSelectionResult> SelectColumn(ColumnSelectionModel model);
         ModalDialogResult<NoteResult> EditAnnotations(NoteModel model);
         void VisualizeMessage(LogMessageVisualizerModel model);
+        void OpenConfiguration();
     }
 }
