@@ -1,0 +1,28 @@
+﻿<f:RibbonWindow x:Class="LogAnalyzer.Windows.PythonEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ae="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:local="clr-namespace:LogAnalyzer.Windows"
+        xmlns:f="urn:fluent-ribbon"
+        mc:Ignorable="d"
+        Title="PythonEditorWindow" Height="600" Width="800" Closing="Window_Closing">
+    <DockPanel>
+        <f:Ribbon DockPanel.Dock="Top">
+            <f:Ribbon.Tabs>
+                <f:RibbonTabItem Header="File">
+                    <f:RibbonGroupBox Header="File">
+                        <f:Button />
+                    </f:RibbonGroupBox>
+                </f:RibbonTabItem>
+            </f:Ribbon.Tabs>
+        </f:Ribbon>
+        <ae:TextEditor x:Name="editor" Document="{Binding Document}" ShowLineNumbers="True"                                   
+                                FontFamily="Consolas" FontSize="10pt">
+            <ae:TextEditor.Options>
+                <ae:TextEditorOptions ConvertTabsToSpaces="True" />
+            </ae:TextEditor.Options>
+        </ae:TextEditor>
+    </DockPanel>
+</f:RibbonWindow>

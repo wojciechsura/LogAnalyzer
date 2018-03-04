@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:LogAnalyzer"
              xmlns:ct="clr-namespace:LogAnalyzer.Wpf.Controls;assembly=LogAnalyzer.Wpf"
-             StartupUri="Windows/MainWindow.xaml">
+             StartupUri="Windows/MainWindow.xaml"
+             ShutdownMode="OnMainWindowClose">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

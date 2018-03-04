@@ -124,11 +124,20 @@
     <DockPanel>
         <f:Ribbon DockPanel.Dock="Top">
             <f:Ribbon.Menu>
-                <f:Backstage>
-                    <f:BackstageTabControl>
-                        <f:BackstageTabItem Header="Open" />
-                    </f:BackstageTabControl>
-                </f:Backstage>
+                <f:ApplicationMenu>
+                    <f:MenuItem Header="Open" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Open32.png"
+                                Command="{Binding OpenCommand}" />
+                    <f:MenuItem Header="From clipboard" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Paste32.png"
+                                Command="{Binding OpenFromClipboardCommand}" />
+                    <f:MenuItem Header="Export" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Export32.png">
+                        <f:MenuItem Header="HTML, plain" Command="{Binding ExportToHtmlCommand}" 
+                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/World32.png"
+                        Description="Exports selected rows to simple HTML-based table"/>
+                        <f:MenuItem Header="HTML, styled" Command="{Binding ExportToStyledHtmlCommand}" 
+                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/World32.png"
+                                    Description="Exports selected rows to HTML-based table - including highlighting, profiling etc."/>
+                    </f:MenuItem>
+                </f:ApplicationMenu>
             </f:Ribbon.Menu>
             <f:RibbonTabItem Header="Home">
                 <f:RibbonGroupBox Header="File">
@@ -145,8 +154,10 @@
                               LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Export32.png"
                               Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Export16.png"                              
                               SizeDefinition="Middle,Middle,Middle">
-                        <f:MenuItem Header="Html, plain" Command="{Binding ExportToHtmlCommand}" />
-                        <f:MenuItem Header="Html, styled" Command="{Binding ExportToStyledHtmlCommand}" />
+                        <f:MenuItem Header="Html, plain" Command="{Binding ExportToHtmlCommand}" 
+                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/World16.png"/>
+                        <f:MenuItem Header="Html, styled" Command="{Binding ExportToStyledHtmlCommand}" 
+                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/World16.png"/>
                     </f:DropDownButton>
                     <f:Button Header="Configuration"
                               LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Gear32.png"
@@ -209,8 +220,16 @@
                                     LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/BottomPane32.png"
                                     Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/BottomPane16.png"
                                     IsChecked="{Binding BottomPaneVisible}"
-                              
-                              SizeDefinition="Middle,Middle,Middle"/>
+                                    SizeDefinition="Middle,Middle,Middle"/>
+                </f:RibbonGroupBox>
+            </f:RibbonTabItem>
+            <f:RibbonTabItem Header="Scripting">
+                <f:RibbonGroupBox Header="Scripting">
+                    <f:Button Header="Open editor"
+                              LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python32.png"
+                              Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python16.png" 
+                              Command="{Binding OpenPythonEditorCommand}" 
+                              SizeDefinition="Large,Large,Large"/>
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>

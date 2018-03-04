@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}</ProjectGuid>
+    <ProjectGuid>{1C1792B5-D2E4-45CD-A9CA-5A25C4809EAE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LogAnalyzer.Common</RootNamespace>
-    <AssemblyName>LogAnalyzer.Common</AssemblyName>
+    <RootNamespace>LogAnalyzer.Licensing</RootNamespace>
+    <AssemblyName>LogAnalyzer.Licensing</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,7 +33,6 @@
     <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.7.3\lib\net46\CommonServiceLocator.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -65,11 +64,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\ColorExtensions.cs" />
-    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Dependencies\Configuration.cs" />
+    <Compile Include="Cryptography.cs" />
+    <Compile Include="License.cs" />
+    <Compile Include="LicenseService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\HtmlTag.cs" />
-    <Compile Include="Tools\ResourceReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogAnalyzer.Models\LogAnalyzer.Models.csproj">
+      <Project>{5b2ceec9-3261-400f-b198-831743ae86cc}</Project>
+      <Name>LogAnalyzer.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Services\LogAnalyzer.Services.csproj">
+      <Project>{3bb6cdc4-0642-4a68-9557-9ef4d81eb0f9}</Project>
+      <Name>LogAnalyzer.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
+      <Project>{47fc3aa3-69ca-424a-8f09-fa2c89c5995f}</Project>
+      <Name>LogAnalyzer.Wpf</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

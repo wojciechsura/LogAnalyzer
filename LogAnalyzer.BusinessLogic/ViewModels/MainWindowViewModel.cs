@@ -554,6 +554,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             dialogService.OpenConfiguration();
         }
 
+        private void DoOpenPythonEditor()
+        {
+            dialogService.OpenPythonEditor();
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -621,6 +626,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
             OpenFromClipboardCommand = new SimpleCommand((obj) => DoOpenFromClipboard());
             ConfigurationCommand = new SimpleCommand((obj) => DoOpenConfiguration());
+            OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor());
         }
 
         public bool HandleClosing()
@@ -712,6 +718,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand OpenFromClipboardCommand { get; }
 
         public ICommand ConfigurationCommand { get; }
+
+        public ICommand OpenPythonEditorCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

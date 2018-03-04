@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer", "LogAnalyzer\LogAnalyzer.csproj", "{77BA0984-FD8F-4BD1-AE31-4DEC3459D73C}"
 EndProject
@@ -44,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.TextParser", "LogAnalyzer.TextParser\LogAnalyzer.TextParser.csproj", "{D1213750-11CB-48E3-ABC1-64FF9796FBDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Export", "LogAnalyzer.Export\LogAnalyzer.Export.csproj", "{AED134B5-4766-4880-B984-80CD324CC6D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogAnalyzer.Licensing", "LogAnalyzer.Licensing\LogAnalyzer.Licensing.csproj", "{1C1792B5-D2E4-45CD-A9CA-5A25C4809EAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -127,6 +129,10 @@ Global
 		{AED134B5-4766-4880-B984-80CD324CC6D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AED134B5-4766-4880-B984-80CD324CC6D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AED134B5-4766-4880-B984-80CD324CC6D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C1792B5-D2E4-45CD-A9CA-5A25C4809EAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C1792B5-D2E4-45CD-A9CA-5A25C4809EAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C1792B5-D2E4-45CD-A9CA-5A25C4809EAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C1792B5-D2E4-45CD-A9CA-5A25C4809EAE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

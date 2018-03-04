@@ -30,5 +30,6 @@ namespace LogAnalyzer.Services.Interfaces
         ModalDialogResult<NoteResult> EditAnnotations(NoteModel model);
         void VisualizeMessage(LogMessageVisualizerModel model);
         void OpenConfiguration();
+        void OpenPythonEditor();
     }
 }

@@ -21,6 +21,8 @@ namespace LogAnalyzer.Services
 {
     public class DialogService : IDialogService
     {
+        private PythonEditorWindow pythonEditorWindow = null;
+
         public ModalDialogResult<HighlightConfig> ConfigHighlighting(HighlightConfigModel model)
         {
             HighlightConfigWindow window = new HighlightConfigWindow(model);
@@ -94,6 +96,14 @@ namespace LogAnalyzer.Services
         {
             ConfigurationWindow window = new ConfigurationWindow();
             window.ShowDialog();
+        }
+
+        public void OpenPythonEditor()
+        {
+            if (pythonEditorWindow == null)
+                pythonEditorWindow = new PythonEditorWindow();
+
+            pythonEditorWindow.Show();
         }
     }
 }
