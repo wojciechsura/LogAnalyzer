@@ -5,7 +5,6 @@ using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 using System.Reflection;
-using LogAnalyzer.Models.Licensing;
 using LogAnalyzer.Wpf.Input;
 using LogAnalyzer.Services.Interfaces;
 
@@ -13,6 +12,12 @@ namespace LogAnalyzer.Licensing
 {
     public class LicenseService : ILicenseService
     {
+        // Private constants --------------------------------------------------
+
+        private readonly string APPLICATION_MODULE_NAME = "LOGANALYZER";
+      
+        // Private types ------------------------------------------------------
+
         private sealed class InternalLicenseCondition : BaseCondition, IDisposable
         {
             private LicenseService licenseManager;
@@ -42,43 +47,22 @@ namespace LogAnalyzer.Licensing
             }
         }
 
-        private AppInfo appInfo;
+        private IPathProviderService pathProviderService;
+
+        // Private fields -----------------------------------------------------
+
         private License license;
         RSAParameters parameters;
 
-        public LicenseService(AppInfo newAppInfo)
-        {
-            appInfo = newAppInfo ?? throw new ArgumentNullException(nameof(newAppInfo));
-            license = null;
-            parameters = Cryptography.LoadRSAKeys(newAppInfo.PublicLicenseKey);
+        // Private methods ----------------------------------------------------
 
-            LicenseCondition = new InternalLicenseCondition(this);
-        }
-
-        public bool Verify(License license)
-        {
-            if (license == null)
-                return false;
-
-            if (!license.VerifySignature(parameters))
-                return false;
-
-            if (license.Module != appInfo.LicenseModule && license.Module != "ALL")
-                return false;
-
-            if (license.Expires && license.ExpirationDate < DateTime.Now)
-                return false;
-
-            return true;
-        }
-
-        public bool Load(string filename)
+        private bool LoadLicense(string filename)
         {
             try
             {
                 License license = License.LoadFromFile(filename);
 
-                return Install(license);
+                return InstallLicense(license);
             }
             catch
             {
@@ -86,15 +70,7 @@ namespace LogAnalyzer.Licensing
             }
         }
 
-        public void Remove()
-        {
-            this.license = null;
-
-            if (LicensedChanged != null)
-                LicensedChanged(this, new EventArgs());
-        }
-
-        public bool Install(License license)
+        private bool InstallLicense(License license)
         {
             if (license == null)
             {
@@ -119,6 +95,73 @@ namespace LogAnalyzer.Licensing
             }
         }
 
+        private bool Verify(License license)
+        {
+            if (license == null)
+                return false;
+
+            if (!license.VerifySignature(parameters))
+                return false;
+
+            if (license.Module != APPLICATION_MODULE_NAME && license.Module != "ALL")
+                return false;
+
+            if (license.Expires && license.ExpirationDate < DateTime.Now)
+                return false;
+
+            return true;
+        }
+
+        private void Clear()
+        {
+            this.license = null;
+
+            if (LicensedChanged != null)
+                LicensedChanged(this, new EventArgs());
+        }
+
+        // Public methods -----------------------------------------------------
+
+        public LicenseService(IPathProviderService pathProviderService)
+        {
+            this.pathProviderService = pathProviderService;
+
+            license = null;
+
+            Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("LogAnalyzer.Licensing.Resources.protools.public.key");
+            parameters = Cryptography.LoadRSAKeys(stream);
+
+            LicenseCondition = new InternalLicenseCondition(this);
+
+            LoadLicense(pathProviderService.GetLicenseFilePath());
+        }
+
+        public bool Install(string filename)
+        {
+            if (LoadLicense(filename))
+            {
+                try
+                {
+                    File.Copy(filename, pathProviderService.GetLicenseFilePath());
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            else
+                return false;
+        }
+
+        public void Remove()
+        {
+            Clear();
+            File.Delete(pathProviderService.GetLicenseFilePath());
+        }
+
+        // Public properties --------------------------------------------------
+
         public bool Licensed
         {
             get
@@ -131,35 +174,26 @@ namespace LogAnalyzer.Licensing
         {
             get
             {
-                if (license == null)
-                    throw new InvalidOperationException("Internal error: not licensed, cannot retreive username!");
-
-                return license.Username;
+                return license?.Username;
             }
         }
 
-        public bool Expires
+        public bool? Expires
         {
             get
             {
-                if (license == null)
-                    throw new InvalidOperationException("Internal error: not licensed, cannot retreive expiration!");
-
-                return license.Expires;
+                return license?.Expires;
             }
         }
 
-        public DateTime ExpirationDate
+        public DateTime? ExpirationDate
         {
             get
             {
-                if (license == null)
-                    throw new InvalidOperationException("Internal error: not licensed, cannot retreive expiration date!");
-
-                return license.ExpirationDate;
+                return license?.ExpirationDate;
             }
         }
-
+       
         public BaseCondition LicenseCondition { get; }
 
         public event EventHandler LicensedChanged;
