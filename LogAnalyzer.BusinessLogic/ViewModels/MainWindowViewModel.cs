@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Unity;
-using Unity.Resolution;
 using LogAnalyzer.Dependencies;
 using LogAnalyzer.Wpf.Input;
 using LogAnalyzer.Services.Interfaces;
