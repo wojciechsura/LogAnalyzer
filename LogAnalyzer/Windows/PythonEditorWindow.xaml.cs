@@ -3,6 +3,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using LogAnalyzer.BusinessLogic.ViewModels;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
+using LogAnalyzer.Scripting;
 using System;
 using System.Collections.Generic;
 using System.Linq;

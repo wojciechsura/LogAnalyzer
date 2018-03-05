@@ -8,6 +8,7 @@
                 xmlns:ct="clr-namespace:LogAnalyzer.Wpf.Controls;assembly=LogAnalyzer.Wpf"
                 xmlns:sc="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
                 xmlns:f="urn:fluent-ribbon"
+                xmlns:ic="http://icsharpcode.net/sharpdevelop/avalonedit"
                 mc:Ignorable="d"
                 Title="Spooksoft LogAnalyzer" Height="600" Width="800"
                 WindowStartupLocation="CenterScreen"
@@ -137,7 +138,6 @@
                                     Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/World32.png"
                                     Description="Exports selected rows to HTML-based table - including highlighting, profiling etc."/>
                     </f:MenuItem>
-                    <f:GroupSeparatorMenuItem />
                     <f:MenuItem Header="License" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Key32.png"
                                 Command="{Binding LicenseCommand}" />
                 </f:ApplicationMenu>
@@ -257,12 +257,22 @@
                     <DockPanel>
                         <Button FontFamily="Marlett" FontSize="10" Width="16" Height="16" Style="{StaticResource FlatButtonStyle}" DockPanel.Dock="Right"
                                 Command="{Binding CloseBottomPaneCommand}">r</Button>
-                        <TextBlock Foreground="{x:Static SystemColors.ActiveCaptionTextBrush}">Search results</TextBlock>
+                        <TextBlock Foreground="{x:Static SystemColors.ActiveCaptionTextBrush}" Text="{Binding ElementName=tcBottomPane, Path=SelectedItem.Header}" />
                     </DockPanel>
                 </Border>
-                <ListView x:Name="lvSearchResults" ItemsSource="{Binding SearchResults}" SelectionMode="Single" VerticalContentAlignment="Top"
+
+                <TabControl TabStripPlacement="Bottom" x:Name="tcBottomPane" SelectedIndex="{Binding BottomPaneSelectedTabIndex}">
+                    <TabItem Header="Search results">
+                        <ListView x:Name="lvSearchResults" ItemsSource="{Binding SearchResults}" SelectionMode="Single" VerticalContentAlignment="Top"
                           ItemContainerStyle="{StaticResource ListViewItemStyle}" MouseDoubleClick="SearchResultsDoubleClick"
                           SelectedItem="{Binding SelectedSearchResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </TabItem>
+                    <TabItem Header="Script log">
+                        <DockPanel>
+                            <ic:TextEditor FontFamily="Consolas" FontSize="11" Document="{Binding ScriptLogDocument}" />
+                        </DockPanel>
+                    </TabItem>
+                </TabControl>
             </DockPanel>
 
             <ct:DockPanelSplitter DockPanel.Dock="Bottom" ProportionalResize="False" 

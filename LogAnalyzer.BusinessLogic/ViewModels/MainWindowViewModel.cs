@@ -27,18 +27,48 @@ using LogAnalyzer.Models.Engine.PredicateDescriptions;
 using LogAnalyzer.Models.Types;
 using LogAnalyzer.Models.Views.NoteWindow;
 using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
+using ICSharpCode.AvalonEdit.Document;
+using LogAnalyzer.Scripting;
+using LogAnalyzer.Scripting.ScriptAPI;
+using IronPython.Hosting;
+using System.Reflection;
+using System.IO;
+using Microsoft.Scripting.Hosting;
+using Microsoft.Scripting;
+using Unity;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged
+    public class MainWindowViewModel : INotifyPropertyChanged, IScriptingHost, ILogAnalyzer
     {
         private class CloseData
         {
             public bool HandlingClosing { get; set; } = false;
         }
 
+        private class PythonScriptErrorListener : ErrorListener
+        {
+
+            private Action<ScriptSource, string, SourceSpan, int, Severity> errorAction;
+
+            public override void ErrorReported(ScriptSource source, string message, SourceSpan span, int errorCode, Severity severity)
+            {
+
+                errorAction(source, message, span, errorCode, severity);
+            }
+
+            public PythonScriptErrorListener(Action<ScriptSource, string, SourceSpan, int, Severity> errorAction)
+            {
+
+                if (errorAction == null)
+                    throw new ArgumentNullException("errorAction");
+
+                this.errorAction = errorAction;
+            }
+        }
+
         // Private fields -----------------------------------------------------
-        
+
         private readonly IMainWindowAccess access;
         private readonly IDialogService dialogService;
         private readonly ILogSourceRepository logSourceRepository;
@@ -60,6 +90,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private Wpf.Input.Condition searchStringExists;
 
         private bool bottomPaneVisible;
+        private int bottomPaneSelectedTabIndex;
         private LogRecord selectedSearchResult;
         private LogRecord selectedLogEntry;
 
@@ -68,6 +99,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private bool searchCaseSensitive;
         private bool searchWholeWords;
         private bool searchRegex;
+
+        private TextDocument scriptLogDocument;
 
         private bool loadingStatus;
         private string loadingStatusText;
@@ -211,6 +244,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             {
                 engine.SearchConfig = result.Result;
                 BottomPaneVisible = true;
+                BottomPaneSelectedTabIndex = 0;
             }
         }
 
@@ -569,6 +603,60 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        // IScriptingHost implementation --------------------------------------
+
+        void IScriptingHost.Run(string script)
+        {
+            scriptLogDocument.Text = "";
+
+            // string path = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath);
+            // if (!path.EndsWith("\\"))
+            //     path += "\\";
+            // path += "Lib\\";
+
+            var engine = Python.CreateEngine();
+            // engine.SetSearchPaths(new List<string> { path });
+            var scope = engine.CreateScope();
+
+            scope.SetVariable("LogAnalyzer", (ILogAnalyzer)this);
+
+            var errorListener = new PythonScriptErrorListener((ScriptSource erroneousScriptSource, string message, SourceSpan span, int errorCode, Severity severity) => {
+
+                scriptLogDocument.Insert(scriptLogDocument.TextLength, $"{severity.ToString()} {errorCode} at {span.Start.ToString()}: {message}\n");
+            });
+            var scriptSource = engine.CreateScriptSourceFromString(script);
+            var compiled = scriptSource.Compile(errorListener);
+
+            if (compiled == null)
+            {
+                messagingService.Warn("There were compilation errors. Look at the script log for details.");
+                BottomPaneVisible = true;
+                BottomPaneSelectedTabIndex = 1;
+                return;
+            }
+
+            try
+            {
+                compiled.Execute(scope);
+            }
+            catch (Exception e)
+            {
+                scriptLogDocument.Insert(scriptLogDocument.TextLength, $"Script runtime error: {e.Message}");
+            }
+        }
+
+        // ILogAnalyzer implementation ----------------------------------------
+
+        void ILogAnalyzer.WriteLog(string message)
+        {
+            scriptLogDocument.Insert(scriptLogDocument.TextLength, message);
+        }
+
+        void ILogAnalyzer.WritelnLog(string message)
+        {
+            scriptLogDocument.Insert(scriptLogDocument.TextLength, $"{message}\n");
+        }
+
         // Public methods -----------------------------------------------------
 
         public MainWindowViewModel(IMainWindowAccess access,
@@ -607,6 +695,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             loadingStatus = false;
             processingStatus = false;
 
+            scriptLogDocument = new TextDocument();
+
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
             FilterConfigCommand = new SimpleCommand((obj) => DoFilterConfig(), generalEnginePresentCondition);
@@ -633,6 +723,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ConfigurationCommand = new SimpleCommand((obj) => DoOpenConfiguration());
             OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor(), licenseService.LicenseCondition);
             LicenseCommand = new SimpleCommand((obj) => DoOpenLicense());
+
+            LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);
         }
 
         public bool HandleClosing()
@@ -773,6 +865,16 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        public int BottomPaneSelectedTabIndex
+        {
+            get => bottomPaneSelectedTabIndex;
+            set
+            {
+                bottomPaneSelectedTabIndex = value;
+                OnPropertyChanged(nameof(BottomPaneSelectedTabIndex));
+            }
+        }
+
         public string SearchString
         {
             get => searchString;
@@ -823,6 +925,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 OnPropertyChanged(nameof(SearchRegex));
             }
         }
+
+        public TextDocument ScriptLogDocument => scriptLogDocument;
 
         public string LoadingStatusText
         {

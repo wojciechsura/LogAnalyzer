@@ -11,9 +11,12 @@
     <DockPanel>
         <f:Ribbon DockPanel.Dock="Top">
             <f:Ribbon.Tabs>
-                <f:RibbonTabItem Header="File">
-                    <f:RibbonGroupBox Header="File">
-                        <f:Button />
+                <f:RibbonTabItem Header="Script">
+                    <f:RibbonGroupBox Header="Script">
+                        <f:Button Header="Run" 
+                              LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Play32.png"
+                              Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Play16.png" 
+                                  Command="{Binding RunCommand}"/>
                     </f:RibbonGroupBox>
                 </f:RibbonTabItem>
             </f:Ribbon.Tabs>

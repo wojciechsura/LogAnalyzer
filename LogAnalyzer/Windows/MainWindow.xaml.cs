@@ -176,6 +176,7 @@ namespace LogAnalyzer.Windows
         public void FocusQuickSearchBox()
         {
             tbQuickSearch.Focus();
+            tbQuickSearch.SelectAll();
         }
 
         private void tbQuickSearch_KeyDown(object sender, KeyEventArgs e)

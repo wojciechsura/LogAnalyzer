@@ -104,6 +104,10 @@
       <Project>{5B2CEEC9-3261-400F-B198-831743AE86CC}</Project>
       <Name>LogAnalyzer.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Scripting\LogAnalyzer.Scripting.csproj">
+      <Project>{B32F876F-B77E-4849-96C6-BF28A755708E}</Project>
+      <Name>LogAnalyzer.Scripting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Types\LogAnalyzer.Types.csproj">
       <Project>{1C717240-85A8-455C-992D-7546AE7526AD}</Project>
       <Name>LogAnalyzer.Types</Name>
