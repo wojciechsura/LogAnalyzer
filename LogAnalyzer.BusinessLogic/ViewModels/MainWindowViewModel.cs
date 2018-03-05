@@ -609,13 +609,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             scriptLogDocument.Text = "";
 
-            // string path = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath);
-            // if (!path.EndsWith("\\"))
-            //     path += "\\";
-            // path += "Lib\\";
+            string path = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).AbsolutePath);
+            if (!path.EndsWith("\\"))
+                path += "\\";
+            path += "Lib\\";
 
             var engine = Python.CreateEngine();
-            // engine.SetSearchPaths(new List<string> { path });
+            engine.SetSearchPaths(new List<string> { path });
             var scope = engine.CreateScope();
 
             scope.SetVariable("LogAnalyzer", (ILogAnalyzer)this);

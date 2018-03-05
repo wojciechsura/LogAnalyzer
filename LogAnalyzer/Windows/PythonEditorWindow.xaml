@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:LogAnalyzer.Windows"
         xmlns:f="urn:fluent-ribbon"
         mc:Ignorable="d"
-        Title="PythonEditorWindow" Height="600" Width="800" Closing="Window_Closing">
+        Title="Script editor" Height="600" Width="800" Closing="Window_Closing">
     <DockPanel>
         <f:Ribbon DockPanel.Dock="Top">
             <f:Ribbon.Tabs>
