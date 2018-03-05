@@ -11,10 +11,16 @@ namespace LogAnalyzer.Services
     class PathProviderService : IPathProviderService
     {
         private static readonly string CONFIGURATION_FILE = "config.xml";
+        private static readonly string LICENSE_FILE = "loganalyzer.license";
 
         public string GetConfigurationFilePath()
         {
             return Path.Combine(GetUserPath(), CONFIGURATION_FILE);
+        }
+
+        public string GetLicenseFilePath()
+        {
+            return Path.Combine(GetUserPath(), LICENSE_FILE);
         }
 
         public string GetUserPath()

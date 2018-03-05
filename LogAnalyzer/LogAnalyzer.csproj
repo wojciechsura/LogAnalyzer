@@ -157,6 +157,9 @@
     <Compile Include="Windows\JumpToTimeWindow.xaml.cs">
       <DependentUpon>JumpToTimeWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\LicenseWindow.xaml.cs">
+      <DependentUpon>LicenseWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\LogMessageVisualizerWindow.xaml.cs">
       <DependentUpon>LogMessageVisualizerWindow.xaml</DependentUpon>
     </Compile>
@@ -209,6 +212,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\JumpToTimeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\LicenseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -376,6 +383,10 @@
     <Resource Include="Resources\Images\Close16.png" />
     <Resource Include="Resources\Images\Export16.png" />
     <Resource Include="Resources\Images\Export32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Images\Key16.png" />
+    <Resource Include="Resources\Images\Key32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

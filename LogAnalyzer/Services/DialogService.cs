@@ -105,5 +105,11 @@ namespace LogAnalyzer.Services
 
             pythonEditorWindow.Show();
         }
+
+        public void OpenLicesneWindow()
+        {
+            LicenseWindow window = new LicenseWindow();
+            window.ShowDialog();
+        }
     }
 }

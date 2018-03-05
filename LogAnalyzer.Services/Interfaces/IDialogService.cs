@@ -31,5 +31,6 @@ namespace LogAnalyzer.Services.Interfaces
         void VisualizeMessage(LogMessageVisualizerModel model);
         void OpenConfiguration();
         void OpenPythonEditor();
+        void OpenLicesneWindow();
     }
 }

@@ -10,5 +10,6 @@ namespace LogAnalyzer.Services.Interfaces
     {
         string GetUserPath();
         string GetConfigurationFilePath();
+        string GetLicenseFilePath();
     }
 }

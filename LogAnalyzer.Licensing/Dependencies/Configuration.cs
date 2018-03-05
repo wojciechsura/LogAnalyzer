@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Unity;
+using Unity.Lifetime;
 
 namespace LogAnalyzer.Licensing.Dependencies
 {
@@ -17,7 +18,7 @@ namespace LogAnalyzer.Licensing.Dependencies
             if (isConfigured)
                 return;
 
-            container.RegisterType<ILicenseService, LicenseService>();
+            container.RegisterType<ILicenseService, LicenseService>(new ContainerControlledLifetimeManager());
 
             isConfigured = true;
         }

@@ -108,6 +108,10 @@
       <Project>{1C717240-85A8-455C-992D-7546AE7526AD}</Project>
       <Name>LogAnalyzer.Types</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
+      <Project>{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}</Project>
+      <Name>LogAnalyzer.Wpf</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -89,10 +89,12 @@
     <Compile Include="ViewModels\Interfaces\IConfigurationWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IFindWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IJumpToTimeWindowAccess.cs" />
+    <Compile Include="ViewModels\Interfaces\ILicenseWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\ILogMessageVisualizerWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\INoteWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IPythonEditorWindowAccess.cs" />
     <Compile Include="ViewModels\JumpToTimeWindowViewModel.cs" />
+    <Compile Include="ViewModels\LicenseWindowViewModel.cs" />
     <Compile Include="ViewModels\LogMessageVisualizerWindowViewModel.cs" />
     <Compile Include="ViewModels\NoteWindowViewModel.cs" />
     <Compile Include="ViewModels\Processing\BaseRuleEditorViewModel.cs" />

@@ -49,7 +49,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IMessagingService messagingService;
         private readonly IWinApiService winApiService;
         private readonly IExportService exportService;
-
+        private readonly ILicenseService licenseService;
         private IEngine engine;
 
         private Wpf.Input.Condition engineStoppingCondition;
@@ -557,6 +557,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             dialogService.OpenPythonEditor();
         }
 
+        private void DoOpenLicense()
+        {
+            dialogService.OpenLicesneWindow();
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -575,7 +580,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ITextParser textParser,
             IMessagingService messagingService,
             IWinApiService winApiService,
-            IExportService exportService)
+            IExportService exportService,
+            ILicenseService licenseService)
         {
             this.access = access;
             this.dialogService = dialogService;
@@ -587,6 +593,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.messagingService = messagingService;
             this.winApiService = winApiService;
             this.exportService = exportService;
+            this.licenseService = licenseService;
 
             engineStoppingCondition = new Wpf.Input.Condition(false);
             generalCommandCondition = !engineStoppingCondition;
@@ -624,7 +631,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
             OpenFromClipboardCommand = new SimpleCommand((obj) => DoOpenFromClipboard());
             ConfigurationCommand = new SimpleCommand((obj) => DoOpenConfiguration());
-            OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor());
+            OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor(), licenseService.LicenseCondition);
+            LicenseCommand = new SimpleCommand((obj) => DoOpenLicense());
         }
 
         public bool HandleClosing()
@@ -718,6 +726,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand ConfigurationCommand { get; }
 
         public ICommand OpenPythonEditorCommand { get; }
+
+        public ICommand LicenseCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

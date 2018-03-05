@@ -137,6 +137,9 @@
                                     Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/World32.png"
                                     Description="Exports selected rows to HTML-based table - including highlighting, profiling etc."/>
                     </f:MenuItem>
+                    <f:GroupSeparatorMenuItem />
+                    <f:MenuItem Header="License" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Key32.png"
+                                Command="{Binding LicenseCommand}" />
                 </f:ApplicationMenu>
             </f:Ribbon.Menu>
             <f:RibbonTabItem Header="Home">
