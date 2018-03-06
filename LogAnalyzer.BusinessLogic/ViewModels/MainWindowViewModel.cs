@@ -36,6 +36,10 @@ using System.IO;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 using Unity;
+using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using LogAnalyzer.BusinessLogic.ViewModels.Main;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -101,6 +105,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private bool searchRegex;
 
         private TextDocument scriptLogDocument;
+
+        private readonly ObservableCollection<ProcessingProfileViewModel> processingProfiles;
+        private readonly ICommand processingProfileClickCommand;
 
         private bool loadingStatus;
         private string loadingStatusText;
@@ -596,6 +603,46 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             dialogService.OpenLicesneWindow();
         }
 
+        private void DoSaveProfile()
+        {
+            ProcessingProfileNameModel model = new ProcessingProfileNameModel { Name = "New profile" };
+            var result = dialogService.ChooseProfileName(model);
+            if (result.DialogResult)
+            {
+                string serializedHighlightSettings = JsonConvert.SerializeObject(engine.HighlightConfig);
+                string serializedFilterSettings = JsonConvert.SerializeObject(engine.FilterConfig);
+
+                ProcessingProfile processingProfile = new ProcessingProfile();
+                processingProfile.Name.Value = result.Result.Name;
+                processingProfile.Guid.Value = Guid.NewGuid();
+                processingProfile.HighlightingSettings.Value = serializedHighlightSettings;
+                processingProfile.FilteringSettings.Value = serializedFilterSettings;
+
+                configurationService.Configuration.ProcessingProfiles.Add(processingProfile);
+
+                BuildProcessingProfiles();
+            }
+        }
+
+        private void BuildProcessingProfiles()
+        {
+            processingProfiles.Clear();
+
+            var profiles = configurationService.Configuration.ProcessingProfiles;
+            for (int i = 0; i < profiles.Count; i++)
+            {
+                var profile = profiles[i];
+
+                ProcessingProfileViewModel model = new ProcessingProfileViewModel(profile.Name.Value, profile.Guid.Value, processingProfileClickCommand);
+                processingProfiles.Add(model);
+            }
+        }
+
+        private void DoChooseProcessingProfile(object profile)
+        {
+            System.Diagnostics.Debug.WriteLine("Ok!");
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -697,6 +744,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             scriptLogDocument = new TextDocument();
 
+            processingProfiles = new ObservableCollection<ProcessingProfileViewModel>();
+            processingProfileClickCommand = new SimpleCommand((obj) => DoChooseProcessingProfile(obj), enginePresentCondition & licenseService.LicenseCondition);
+            BuildProcessingProfiles();
+
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
             FilterConfigCommand = new SimpleCommand((obj) => DoFilterConfig(), generalEnginePresentCondition);
@@ -723,6 +774,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ConfigurationCommand = new SimpleCommand((obj) => DoOpenConfiguration());
             OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor(), licenseService.LicenseCondition);
             LicenseCommand = new SimpleCommand((obj) => DoOpenLicense());
+            SaveProfileCommand = new SimpleCommand((obj) => DoSaveProfile(), enginePresentCondition & licenseService.LicenseCondition);
 
             LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);
         }
@@ -820,6 +872,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand OpenPythonEditorCommand { get; }
 
         public ICommand LicenseCommand { get; }
+
+        public ICommand SaveProfileCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 
@@ -967,5 +1021,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 OnPropertyChanged(nameof(ProcessingStatus));
             }
         }
+
+        public ObservableCollection<ProcessingProfileViewModel> ProcessingProfiles => processingProfiles;
     }
 }

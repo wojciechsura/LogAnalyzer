@@ -172,6 +172,9 @@
     <Compile Include="Windows\ParserProfileEditorWindow.xaml.cs">
       <DependentUpon>ParserProfileEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ProcessingProfileNameWindow.xaml.cs">
+      <DependentUpon>ProcessingProfileNameWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\PythonEditorWindow.xaml.cs">
       <DependentUpon>PythonEditorWindow.xaml</DependentUpon>
     </Compile>
@@ -245,6 +248,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ParserProfileEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ProcessingProfileNameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1629,6 +1636,10 @@
     <Content Include="Lib\SimpleXMLRPCServer.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Images\Profile16.png" />
+    <Resource Include="Resources\Images\Profile32.png" />
+    <Resource Include="Resources\Images\Save16.png" />
+    <Resource Include="Resources\Images\Save32.png" />
     <Resource Include="Lib\site-packages\README.txt" />
     <Content Include="Lib\site.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

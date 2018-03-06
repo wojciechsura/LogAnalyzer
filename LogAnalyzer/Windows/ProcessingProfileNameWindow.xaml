@@ -1,19 +1,19 @@
-﻿<Window x:Class="LogAnalyzer.Windows.NoteWindow"
+﻿<Window x:Class="LogAnalyzer.Windows.ProcessingProfileNameWindow"        
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LogAnalyzer.Windows"
         mc:Ignorable="d"
-        Title="Edit note" SizeToContent="WidthAndHeight"
+        Title="Profile name" SizeToContent="WidthAndHeight"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow">
     <StackPanel Orientation="Vertical">
-        <GroupBox Header="Edit note" Margin="4" Padding="4">
+        <GroupBox Header="Profile name" Margin="4" Padding="4">
             <StackPanel Orientation="Vertical">
-                <Label>Note for log entry</Label>
-                <TextBox Width="400" Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Label>Enter name for processing profile:</Label>
+                <TextBox Width="400" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="4">

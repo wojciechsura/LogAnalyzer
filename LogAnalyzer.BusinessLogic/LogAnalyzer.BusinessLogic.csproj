@@ -63,6 +63,9 @@
     <Reference Include="Microsoft.VisualStudio.CodeCoverage.Shim, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\DynamicLanguageRuntime.1.2.1\lib\net45\Microsoft.VisualStudio.CodeCoverage.Shim.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -116,11 +119,14 @@
     <Compile Include="ViewModels\Interfaces\ILicenseWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\ILogMessageVisualizerWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\INoteWindowAccess.cs" />
+    <Compile Include="ViewModels\Interfaces\IProcessingProfileNameWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IPythonEditorWindowAccess.cs" />
     <Compile Include="ViewModels\JumpToTimeWindowViewModel.cs" />
     <Compile Include="ViewModels\LicenseWindowViewModel.cs" />
     <Compile Include="ViewModels\LogMessageVisualizerWindowViewModel.cs" />
+    <Compile Include="ViewModels\Main\ProcessingProfileViewModel.cs" />
     <Compile Include="ViewModels\NoteWindowViewModel.cs" />
+    <Compile Include="ViewModels\ProcessingProfileNameWindowViewModel.cs" />
     <Compile Include="ViewModels\Processing\BaseRuleEditorViewModel.cs" />
     <Compile Include="ViewModels\Processing\FilteringRuleEditorViewModel.cs" />
     <Compile Include="ViewModels\HighlightConfigWindowViewModel.cs" />

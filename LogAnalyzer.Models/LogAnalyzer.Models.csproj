@@ -52,6 +52,7 @@
     <Compile Include="DialogResults\LogParserProfileEditorResult.cs" />
     <Compile Include="DialogResults\NoteResult.cs" />
     <Compile Include="DialogResults\OpenResult.cs" />
+    <Compile Include="DialogResults\ProcessingProfileNameResult.cs" />
     <Compile Include="Engine\BookmarkEntry.cs" />
     <Compile Include="Engine\FilterConfig.cs" />
     <Compile Include="Engine\FilterEntry.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Views\OpenWindow\LogParserProfileInfo.cs" />
     <Compile Include="Views\OpenWindow\OpenClipboardModel.cs" />
     <Compile Include="Views\OpenWindow\OpenFilesModel.cs" />
+    <Compile Include="Views\ProcessingProfileNameWindow\ProcessingProfileNameModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">

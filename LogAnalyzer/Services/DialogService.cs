@@ -17,6 +17,7 @@ using LogAnalyzer.Models.Views.ColumnSelectionWindow;
 using LogAnalyzer.Models.Views.NoteWindow;
 using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
 using LogAnalyzer.Scripting;
+using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -111,6 +112,13 @@ namespace LogAnalyzer.Services
         {
             LicenseWindow window = new LicenseWindow();
             window.ShowDialog();
+        }
+
+        public ModalDialogResult<ProcessingProfileNameResult> ChooseProfileName(ProcessingProfileNameModel model)
+        {
+            ProcessingProfileNameWindow window = new ProcessingProfileNameWindow(model);
+            window.ShowDialog();
+            return window.DataResult;
         }
     }
 }
