@@ -7,6 +7,7 @@
                 xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
                 xmlns:ct="clr-namespace:LogAnalyzer.Wpf.Controls;assembly=LogAnalyzer.Wpf"
                 xmlns:sc="clr-namespace:System.Windows.Controls;assembly=PresentationFramework"
+                xmlns:vm="clr-namespace:LogAnalyzer.BusinessLogic.ViewModels.Main;assembly=LogAnalyzer.BusinessLogic"
                 xmlns:f="urn:fluent-ribbon"
                 xmlns:ic="http://icsharpcode.net/sharpdevelop/avalonedit"
                 mc:Ignorable="d"
@@ -206,7 +207,7 @@
                                        Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile32.png"
                                        ItemsSource="{Binding ProcessingProfiles}">
                         <f:InRibbonGallery.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate DataType="{x:Type vm:ProcessingProfileViewModel}">
                                 <f:GalleryItem Command="{Binding ClickCommand}" CommandParameter="{Binding}">
                                     <StackPanel Orientation="Vertical" Margin="2">
                                         <Image Margin="2" Width="32" Height="32" HorizontalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile32.png" />
