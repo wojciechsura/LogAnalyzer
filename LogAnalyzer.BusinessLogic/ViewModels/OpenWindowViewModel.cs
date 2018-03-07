@@ -4,6 +4,7 @@ using LogAnalyzer.API.Models;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.BusinessLogic.Models.Views.OpenWindow;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
+using LogAnalyzer.BusinessLogic.ViewModels.Open;
 using LogAnalyzer.Configuration;
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.Models.Views.OpenWindow;
@@ -33,12 +34,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IDialogService dialogService;
         private readonly IMessagingService messagingService;
 
-        private ObservableCollection<ILogSourceEditorViewModel> logSourceViewModels;
+        private readonly ObservableCollection<ILogSourceEditorViewModel> logSourceViewModels;
         private ILogSourceEditorViewModel selectedLogSource;
 
-        private ObservableCollection<LogParserProfileInfo> logParserProfiles;
+        private readonly ObservableCollection<LogParserProfileInfo> logParserProfiles;
         private LogParserProfileInfo selectedParserProfile;
         private Condition parserProfileSelected;
+
+        private readonly ObservableCollection<ProcessingProfileViewModel> processingProfiles;
+        private ProcessingProfileViewModel selectedProcessingProfile;
 
         private readonly bool detectParsers;
 
@@ -48,7 +52,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             logParserProfiles.Clear();
             configurationService.Configuration.LogParserProfiles
-                .Select(pp => 
+                .Select(pp =>
                 {
                     ILogParser parser = null;
 
@@ -71,6 +75,20 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 })
                 .ToList()
                 .ForEach(pp => logParserProfiles.Add(pp));
+        }
+
+        private void BuildProcessingProfiles()
+        {
+            processingProfiles.Clear();
+
+            processingProfiles.Add(new ProcessingProfileViewModel("None", Guid.Empty));
+
+            ConfigurationBase.SimpleCollection<ProcessingProfile> profileRepository = configurationService.Configuration.ProcessingProfiles;
+            for (int i = 0; i < profileRepository.Count; i++)
+            {
+                var profile = profileRepository[i];
+                processingProfiles.Add(new ProcessingProfileViewModel(profile.Name.Value, profile.Guid.Value));
+            }
         }
 
         private void SelectBestLogSource(BaseOpenFilesModel model)
@@ -260,7 +278,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
 
             result.DialogResult = true;
-            result.Result = new OpenResult(selectedLogSource.BuildConfiguration(), selectedLogSource.Provider.UniqueName, selectedParserProfile.Guid);
+            result.Result = new OpenResult(selectedLogSource.BuildConfiguration(), selectedLogSource.Provider.UniqueName, selectedParserProfile.Guid, selectedProcessingProfile?.Guid ?? Guid.Empty);
 
             // Save configuration
             configurationService.Configuration.SuspendNotifications();
@@ -269,7 +287,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 configurationService.Configuration.Session.LastParserProfile.Value = selectedParserProfile.Guid;
             }
             finally
-            { 
+            {
                 configurationService.Configuration.ResumeNotifications();
             }
 
@@ -290,10 +308,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         // Public methods -----------------------------------------------------
 
-        public OpenWindowViewModel(IOpenWindowAccess access, 
+        public OpenWindowViewModel(IOpenWindowAccess access,
             BaseOpenFilesModel model,
-            ILogSourceRepository logSourceRepository, 
-            ILogParserRepository logParserRepository, 
+            ILogSourceRepository logSourceRepository,
+            ILogParserRepository logParserRepository,
             IConfigurationService configurationService,
             IDialogService dialogService,
             IMessagingService messagingService)
@@ -336,6 +354,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             logSourceViewModels = new ObservableCollection<ILogSourceEditorViewModel>();
             BuildLogSourceViewModels(logSourceRepository);
 
+            // Processing profiles
+
+            processingProfiles = new ObservableCollection<ProcessingProfileViewModel>();
+            BuildProcessingProfiles();
+            selectedProcessingProfile = processingProfiles.FirstOrDefault();
+
             // Select best matching log source - only after everything else is ready
 
             SelectBestLogSource(model);
@@ -352,7 +376,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 return selectedLogSource;
             }
             set
-            {                
+            {
                 SetLogSource(value);
             }
         }
@@ -370,6 +394,17 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 selectedParserProfile = value;
                 parserProfileSelected.Value = value != null;
                 OnSelectedParserChanged();
+            }
+        }
+
+        public ObservableCollection<ProcessingProfileViewModel> ProcessingProfiles => processingProfiles;
+        public ProcessingProfileViewModel SelectedProcessingProfile
+        {
+            get => selectedProcessingProfile;
+            set
+            {
+                selectedProcessingProfile = value;
+                OnPropertyChanged(nameof(SelectedProcessingProfile));
             }
         }
 

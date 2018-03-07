@@ -76,7 +76,18 @@
         <GroupBox Header="Processing profile" Margin="4" Padding="4">
             <StackPanel Orientation="Vertical">
                 <Label>Processing profile</Label>
-                <ComboBox HorizontalAlignment="Stretch" Margin="4" />
+                <ComboBox HorizontalAlignment="Stretch" Margin="4" ItemsSource="{Binding ProcessingProfiles}" 
+                          SelectedItem="{Binding SelectedProcessingProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16" VerticalAlignment="Center" Margin="2" Source="/Resources/Images/Profile16.png" />
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="2" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+
+                </ComboBox>
             </StackPanel>
         </GroupBox>
         

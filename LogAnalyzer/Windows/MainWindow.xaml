@@ -203,27 +203,25 @@
                               LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Filter32.png"
                               Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Filter16.png"
                               Command="{Binding FilterConfigCommand}" />
-                    <f:InRibbonGallery x:Name="irg_Profiles" CanCollapseToButton="True" IsCollapsed="true" Header="Profile" 
-                                       Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile32.png"
-                                       ItemsSource="{Binding ProcessingProfiles}">
-                        <f:InRibbonGallery.ItemTemplate>
-                            <DataTemplate DataType="{x:Type vm:ProcessingProfileViewModel}">
-                                <f:GalleryItem Command="{Binding ClickCommand}" CommandParameter="{Binding}">
-                                    <StackPanel Orientation="Vertical" Margin="2">
-                                        <Image Margin="2" Width="32" Height="32" HorizontalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile32.png" />
-                                        <TextBlock Text="{Binding Name}" HorizontalAlignment="Center" />
-                                    </StackPanel>
-                                </f:GalleryItem>
-                            </DataTemplate>
-                        </f:InRibbonGallery.ItemTemplate>
-                        <f:InRibbonGallery.Menu>
-                            <f:RibbonMenu>
-                                <f:MenuItem Header="Save a new profile" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save16.png" 
+                    <f:DropDownButton Header="Profile"
+                        LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile32.png"
+                        Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile16.png">
+                        <f:Gallery ItemsSource="{Binding ProcessingProfiles}" Selectable="False" Orientation="Vertical">
+                            <f:Gallery.ItemTemplate>
+                                <DataTemplate>
+                                    <f:GalleryItem Command="{Binding ClickCommand}" CommandParameter="{Binding}">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                            <Image Margin="2" Width="16" Height="16" VerticalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile16.png" />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                                        </StackPanel>
+                                    </f:GalleryItem>
+                                </DataTemplate>
+                            </f:Gallery.ItemTemplate>
+                        </f:Gallery>
+                        <f:MenuItem Header="Save a new profile" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save16.png" 
                                             Command="{Binding SaveProfileCommand}"/>
-                                <f:MenuItem Header="Manage..." Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Gear16.png" />
-                            </f:RibbonMenu>
-                        </f:InRibbonGallery.Menu>
-                    </f:InRibbonGallery>
+                        <f:MenuItem Header="Manage..." Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Gear16.png" />
+                    </f:DropDownButton>
                     <f:Button Header="Toggle time step"
                               Command="{Binding ToggleProfilingPointCommand}" 
                               LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Stopwatch32.png"

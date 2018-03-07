@@ -52,12 +52,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private class PythonScriptErrorListener : ErrorListener
         {
-
             private Action<ScriptSource, string, SourceSpan, int, Severity> errorAction;
 
             public override void ErrorReported(ScriptSource source, string message, SourceSpan span, int errorCode, Severity severity)
             {
-
                 errorAction(source, message, span, errorCode, severity);
             }
 
@@ -152,6 +150,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             enginePresentCondition.Value = true;
             bottomPaneVisible = false;
+
+            if (!result.ProcessingProfileGuid.Equals(Guid.Empty))
+            {
+                ApplyProcessingProfile(result.ProcessingProfileGuid);
+            }
         }
 
         private void DoStopEngine()
@@ -646,18 +649,23 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             if (profile is ProcessingProfileViewModel processingProfileViewModel)
             {
-                var processingProfile = configurationService.Configuration.ProcessingProfiles
-                    .FirstOrDefault(pp => pp.Guid.Value.Equals(processingProfileViewModel.Guid));
-
-                var serializerSettings = new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Objects
-                };
-
-                HighlightConfig highlightConfig = JsonConvert.DeserializeObject<HighlightConfig>(processingProfile.HighlightingSettings.Value, serializerSettings);
-                FilterConfig filterConfig = JsonConvert.DeserializeObject<FilterConfig>(processingProfile.FilteringSettings.Value, serializerSettings);
-                engine.SetProcessingProfile(filterConfig, highlightConfig);
+                ApplyProcessingProfile(processingProfileViewModel.Guid);
             }
+        }
+
+        private void ApplyProcessingProfile(Guid processingProfileGuid)
+        {
+            var processingProfile = configurationService.Configuration.ProcessingProfiles
+                                .FirstOrDefault(pp => pp.Guid.Value.Equals(processingProfileGuid));
+
+            var serializerSettings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            };
+
+            HighlightConfig highlightConfig = JsonConvert.DeserializeObject<HighlightConfig>(processingProfile.HighlightingSettings.Value, serializerSettings);
+            FilterConfig filterConfig = JsonConvert.DeserializeObject<FilterConfig>(processingProfile.FilteringSettings.Value, serializerSettings);
+            engine.SetProcessingProfile(filterConfig, highlightConfig);
         }
 
         // Protected methods --------------------------------------------------
