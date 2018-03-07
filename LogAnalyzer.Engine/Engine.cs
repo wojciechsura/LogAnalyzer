@@ -435,6 +435,12 @@ namespace LogAnalyzer.Engine
                 return null;
         }
 
+        public void SetProcessingProfile(FilterConfig filterConfig, HighlightConfig highlightConfig)
+        {
+            SetFilterConfig(filterConfig);
+            SetHighlightConfig(highlightConfig);
+        }
+
         // Public properties --------------------------------------------------
 
         public ObservableRangeCollection<LogRecord> LogEntries => data.HighlightedLogEntries;

@@ -63,5 +63,7 @@ namespace LogAnalyzer.Services.Interfaces
 
         event StatusChangedDelegate LoadingStatusChanged;
         event StatusChangedDelegate ProcessingStatusChanged;
+
+        void SetProcessingProfile(FilterConfig filterConfig, HighlightConfig highlightConfig);
     }
 }

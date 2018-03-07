@@ -609,8 +609,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             var result = dialogService.ChooseProfileName(model);
             if (result.DialogResult)
             {
-                string serializedHighlightSettings = JsonConvert.SerializeObject(engine.HighlightConfig);
-                string serializedFilterSettings = JsonConvert.SerializeObject(engine.FilterConfig);
+                var serializerSettings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects
+                };
+                string serializedHighlightSettings = JsonConvert.SerializeObject(engine.HighlightConfig, serializerSettings);
+                string serializedFilterSettings = JsonConvert.SerializeObject(engine.FilterConfig, serializerSettings);
 
                 ProcessingProfile processingProfile = new ProcessingProfile();
                 processingProfile.Name.Value = result.Result.Name;
@@ -640,7 +644,20 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoChooseProcessingProfile(object profile)
         {
-            System.Diagnostics.Debug.WriteLine("Ok!");
+            if (profile is ProcessingProfileViewModel processingProfileViewModel)
+            {
+                var processingProfile = configurationService.Configuration.ProcessingProfiles
+                    .FirstOrDefault(pp => pp.Guid.Value.Equals(processingProfileViewModel.Guid));
+
+                var serializerSettings = new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects
+                };
+
+                HighlightConfig highlightConfig = JsonConvert.DeserializeObject<HighlightConfig>(processingProfile.HighlightingSettings.Value, serializerSettings);
+                FilterConfig filterConfig = JsonConvert.DeserializeObject<FilterConfig>(processingProfile.FilteringSettings.Value, serializerSettings);
+                engine.SetProcessingProfile(filterConfig, highlightConfig);
+            }
         }
 
         // Protected methods --------------------------------------------------
