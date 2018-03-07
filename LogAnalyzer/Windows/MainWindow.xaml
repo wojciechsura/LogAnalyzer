@@ -218,7 +218,7 @@
                                 </DataTemplate>
                             </f:Gallery.ItemTemplate>
                         </f:Gallery>
-                        <f:MenuItem Header="Save a new profile" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save16.png" 
+                        <f:MenuItem Header="Save new profile" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save16.png" 
                                             Command="{Binding SaveProfileCommand}"/>
                         <f:MenuItem Header="Manage..." Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Gear16.png" />
                     </f:DropDownButton>

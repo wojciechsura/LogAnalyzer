@@ -77,7 +77,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             LicenseType = licenseService.Licensed ? (licenseService.Expires == true ? "Timed" : "Full") : "(none)";
             Username = licenseService.Username ?? "";
-            ExpirationDate = licenseService.ExpirationDate?.ToString("dd-MM-yyyy") ?? "";
+            ExpirationDate = licenseService.Licensed ? (licenseService.Expires == true ? licenseService.ExpirationDate?.ToString("dd-MM-yyyy") ?? "" : "(none)") : "";
         }
 
         public string LicenseType
