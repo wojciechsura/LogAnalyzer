@@ -36,8 +36,9 @@ namespace LogAnalyzer.Services.Interfaces
     public interface IEngine
     {
         void NotifySourceReady();
-        ObservableRangeCollection<LogRecord> LogEntries { get; }
+        ObservableRangeCollection<LogRecord> LogRecords { get; }
         ObservableRangeCollection<LogRecord> SearchResults { get; }
+        IReadOnlyList<LogEntry> LogEntries { get; }
         void Stop(Action stopAction);
         List<BaseColumnInfo> GetColumnInfos();
 

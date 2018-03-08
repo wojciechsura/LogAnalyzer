@@ -53,6 +53,8 @@ namespace LogAnalyzer.Engine
         private readonly LogProcessor logProcessor;
         private readonly EngineData data;
 
+        private readonly List<BaseColumnInfo> columnInfos;
+
         private HighlightConfig highlightConfig;
         private FilterConfig filterConfig;
         private SearchConfig searchConfig;
@@ -240,7 +242,10 @@ namespace LogAnalyzer.Engine
         {
             eventBus = new EventBus();
             data = new EngineData();
+
             logReader = new LogReader(logSource, logParser, eventBus, data, this);
+            columnInfos = logReader.GetColumnInfos();
+
             logProcessor = new LogProcessor(eventBus, data);
 
             highlightConfig = new HighlightConfig
@@ -289,7 +294,7 @@ namespace LogAnalyzer.Engine
 
         public List<BaseColumnInfo> GetColumnInfos()
         {
-            return logReader.GetColumnInfos();
+            return columnInfos;
         }
 
         public DateTime GetFirstFilteredTime()
@@ -443,7 +448,7 @@ namespace LogAnalyzer.Engine
 
         // Public properties --------------------------------------------------
 
-        public ObservableRangeCollection<LogRecord> LogEntries => data.HighlightedLogEntries;
+        public ObservableRangeCollection<LogRecord> LogRecords => data.HighlightedLogEntries;
 
         public ObservableRangeCollection<LogRecord> SearchResults => data.FoundEntries;
 
@@ -482,6 +487,8 @@ namespace LogAnalyzer.Engine
                 SetSearchConfig(value);
             }
         }
+
+        public IReadOnlyList<LogEntry> LogEntries => data.ResultLogEntries;
 
         public event StatusChangedDelegate LoadingStatusChanged
         {

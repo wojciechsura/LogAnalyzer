@@ -40,10 +40,11 @@ using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using LogAnalyzer.BusinessLogic.ViewModels.Main;
+using LogAnalyzer.BusinessLogic.ViewModels.Scripting;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged, IScriptingHost, ILogAnalyzer
+    public class MainWindowViewModel : INotifyPropertyChanged, IScriptingHost
     {
         private class CloseData
         {
@@ -82,7 +83,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IWinApiService winApiService;
         private readonly IExportService exportService;
         private readonly ILicenseService licenseService;
+
         private IEngine engine;
+        private LogAnalyzerImpl scriptLogAnalyzer;
 
         private Wpf.Input.Condition engineStoppingCondition;
         private BaseCondition generalCommandCondition;
@@ -165,7 +168,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             access.SetupListViews(engine.GetColumnInfos());
             engine.NotifySourceReady();
 
-            LogEntries = engine.LogEntries;
+            LogEntries = engine.LogRecords;
             OnPropertyChanged(nameof(LogEntries));
             SearchResults = engine.SearchResults;
             OnPropertyChanged(nameof(SearchResults));
@@ -177,6 +180,20 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             {
                 ApplyProcessingProfile(result.ProcessingProfileGuid);
             }
+
+            scriptLogAnalyzer = new LogAnalyzerImpl(engine);
+            scriptLogAnalyzer.WriteLog += this.HandleWriteLog;
+            scriptLogAnalyzer.WritelnLog += this.HandleWritelnLog;
+        }
+
+        private void HandleWritelnLog(object sender, LogEventArgs args)
+        {
+            scriptLogDocument.Insert(scriptLogDocument.TextLength, $"{args.Message}\n");
+        }
+
+        private void HandleWriteLog(object sender, LogEventArgs args)
+        {
+            scriptLogDocument.Insert(scriptLogDocument.TextLength, args.Message);
         }
 
         private void DoStopEngine()
@@ -187,6 +204,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 engine.LoadingStatusChanged -= HandleEngineLoadingStatusChanged;
                 engine.ProcessingStatusChanged -= HandleEngineProcessingStatusChanged;
             }
+            scriptLogAnalyzer.Dispose();
             engine = null;
             access.ClearListView();
         }
@@ -519,7 +537,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 if (!messagingService.Ask("No entries selected - you will export all visible items. Are you sure?"))
                     recordsToExport = null;
                 else
-                    recordsToExport = engine.LogEntries;
+                    recordsToExport = engine.LogRecords;
             }
             else
             {
@@ -773,18 +791,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             {
                 scriptLogDocument.Insert(scriptLogDocument.TextLength, $"Script runtime error: {e.Message}");
             }
-        }
-
-        // ILogAnalyzer implementation ----------------------------------------
-
-        void ILogAnalyzer.WriteLog(string message)
-        {
-            scriptLogDocument.Insert(scriptLogDocument.TextLength, message);
-        }
-
-        void ILogAnalyzer.WritelnLog(string message)
-        {
-            scriptLogDocument.Insert(scriptLogDocument.TextLength, $"{message}\n");
         }
 
         // Public methods -----------------------------------------------------

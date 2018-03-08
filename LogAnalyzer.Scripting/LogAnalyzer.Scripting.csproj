@@ -43,6 +43,8 @@
     <Compile Include="IScriptingHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptAPI\ILogAnalyzer.cs" />
+    <Compile Include="ScriptAPI\ILogEntries.cs" />
+    <Compile Include="ScriptAPI\ILogEntry.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -146,6 +146,9 @@
     <Compile Include="ViewModels\OpenWindowViewModel.cs" />
     <Compile Include="ViewModels\ParserProfileEditorWindowViewModel.cs" />
     <Compile Include="ViewModels\PythonEditorWindowViewModel.cs" />
+    <Compile Include="ViewModels\Scripting\LogAnalyzerImpl.cs" />
+    <Compile Include="ViewModels\Scripting\LogEntriesImpl.cs" />
+    <Compile Include="ViewModels\Scripting\LogEntryImpl.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Scripting.ScriptAPI
 {
-    public interface ILogAnalyzer
+    public interface ILogEntries
     {
-        void WriteLog(string message);
-        void WritelnLog(string message);
-
-        ILogEntries Entries { get; }
+        int Count { get; }
+        ILogEntry this[int index] { get; }
     }
 }
