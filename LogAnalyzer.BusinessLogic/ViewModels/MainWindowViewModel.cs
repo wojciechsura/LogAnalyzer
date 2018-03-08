@@ -91,8 +91,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private Wpf.Input.Condition itemSelectedCondition;
         private Wpf.Input.Condition searchStringExists;
 
+        private int selectedProcessingProfileIndex;
+        private Wpf.Input.Condition profileSelectedCondition;
+        private Wpf.Input.Condition firstProfileSelectedCondition;
+        private Wpf.Input.Condition lastProfileSelectedCondition;
+
         private bool bottomPaneVisible;
         private int bottomPaneSelectedTabIndex;
+        private bool rightPaneVisible;
+        private int rightPaneSelectedTabIndex;
         private LogRecord selectedSearchResult;
         private LogRecord selectedLogEntry;
 
@@ -111,6 +118,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private string loadingStatusText;
         private bool processingStatus;
         private string processingStatusText;
+        private ProcessingProfileViewModel selectedProcessingProfile;
 
         // Private methods ----------------------------------------------------
 
@@ -122,6 +130,20 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private void HandleEngineLoadingStatusChanged(object sender, StatusChangedEventArgs args)
         {
             ProcessingStatus = args.Status;
+        }
+
+        private void BuildProcessingProfiles()
+        {
+            processingProfiles.Clear();
+
+            var profiles = configurationService.Configuration.ProcessingProfiles;
+            for (int i = 0; i < profiles.Count; i++)
+            {
+                var profile = profiles[i];
+
+                ProcessingProfileViewModel model = new ProcessingProfileViewModel(profile.Name.Value, profile.Guid.Value, processingProfileClickCommand);
+                processingProfiles.Add(model);
+            }
         }
 
         private void DoCreateEngine(OpenResult result)
@@ -258,14 +280,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
-        private void DoToggleBottomPane()
-        {
-            BottomPaneVisible = !BottomPaneVisible;
-        }
-
         private void DoCloseBootomPane()
         {
             BottomPaneVisible = false;
+        }
+
+        private void DoCloseRightPane()
+        {
+            RightPaneVisible = false;
         }
 
         private void DoCopy()
@@ -308,7 +330,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                     else if (info is CustomColumnInfo customInfo)
                     {
                         builder.Append(entry.LogEntry.CustomFields[customInfo.Index]);
-                        
+
                     }
                     if (col < columns.Count - 1)
                         builder.Append("\t");
@@ -631,18 +653,54 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
-        private void BuildProcessingProfiles()
+        private int FindSelectedProfile()
         {
-            processingProfiles.Clear();
-
             var profiles = configurationService.Configuration.ProcessingProfiles;
-            for (int i = 0; i < profiles.Count; i++)
-            {
-                var profile = profiles[i];
 
-                ProcessingProfileViewModel model = new ProcessingProfileViewModel(profile.Name.Value, profile.Guid.Value, processingProfileClickCommand);
-                processingProfiles.Add(model);
+            int index = 0;
+            while (index < profiles.Count && !profiles[index].Guid.Value.Equals(selectedProcessingProfile.Guid))
+                index++;
+
+            if (index >= profiles.Count)
+                throw new InvalidOperationException("Invalid profile!");
+            return index;
+        }
+
+        private void DoDeleteProfile()
+        {
+            if (messagingService.Ask("Are you sure you want to delete selected processing profile?"))
+            {
+                int index = 0;
+                ConfigurationBase.SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
+                index = FindSelectedProfile();
+
+                profiles.RemoveAt(index);
+                processingProfiles.Remove(selectedProcessingProfile);
             }
+        }
+
+        private void DoMoveProfileDown()
+        {
+            ConfigurationBase.SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
+
+            int index = FindSelectedProfile();
+            if (index == profiles.Count - 1)
+                throw new InvalidOperationException("Cant move bottommost item down!");
+
+            profiles.Move(index, index + 1);
+            processingProfiles.Move(selectedProcessingProfileIndex, selectedProcessingProfileIndex + 1);
+        }
+
+        private void DoMoveProfileUp()
+        {
+            ConfigurationBase.SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
+
+            int index = FindSelectedProfile();
+            if (index == 0)
+                throw new InvalidOperationException("Cant move topmost item up!");
+
+            profiles.Move(index, index - 1);
+            processingProfiles.Move(selectedProcessingProfileIndex, selectedProcessingProfileIndex - 1);
         }
 
         private void DoChooseProcessingProfile(object profile)
@@ -761,6 +819,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             generalEnginePresentCondition = enginePresentCondition & !engineStoppingCondition;
             itemSelectedCondition = new Wpf.Input.Condition(false);
             searchStringExists = new Wpf.Input.Condition(false);
+            firstProfileSelectedCondition = new Wpf.Input.Condition(false);
+            lastProfileSelectedCondition = new Wpf.Input.Condition(false);
+            profileSelectedCondition = new Wpf.Input.Condition(false);
 
             loadingStatusText = "Loading...";
             processingStatusText = "Processing...";
@@ -777,8 +838,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
             FilterConfigCommand = new SimpleCommand((obj) => DoFilterConfig(), generalEnginePresentCondition);
             SearchCommand = new SimpleCommand((obj) => DoSearch(), generalEnginePresentCondition);
-            ToggleBottomPaneCommand = new SimpleCommand((obj) => DoToggleBottomPane());
             CloseBottomPaneCommand = new SimpleCommand((obj) => DoCloseBootomPane());
+            CloseRightPaneCommand = new SimpleCommand((obj) => DoCloseRightPane());
             CopyCommand = new SimpleCommand((obj) => DoCopy(), enginePresentCondition);
             JumpToTimeCommand = new SimpleCommand((obj) => DoJumpToTime(), enginePresentCondition);
             SetBookmarkCommand = new SimpleCommand((obj) => DoSetBookmark((string)obj), enginePresentCondition & itemSelectedCondition);
@@ -800,6 +861,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor(), licenseService.LicenseCondition);
             LicenseCommand = new SimpleCommand((obj) => DoOpenLicense());
             SaveProfileCommand = new SimpleCommand((obj) => DoSaveProfile(), enginePresentCondition & licenseService.LicenseCondition);
+            MoveProfileUpCommand = new SimpleCommand((obj) => DoMoveProfileUp(), profileSelectedCondition & (!firstProfileSelectedCondition) & licenseService.LicenseCondition);
+            MoveProfileDownCommand = new SimpleCommand((obj) => DoMoveProfileDown(), profileSelectedCondition & (!lastProfileSelectedCondition) & licenseService.LicenseCondition);
+            DeleteProfileCommand = new SimpleCommand((obj) => DoDeleteProfile(), profileSelectedCondition & licenseService.LicenseCondition);
 
             LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);
         }
@@ -854,9 +918,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public ICommand SearchCommand { get; }
 
-        public ICommand ToggleBottomPaneCommand { get; }
-
         public ICommand CloseBottomPaneCommand { get; }
+
+        public ICommand CloseRightPaneCommand { get; }
 
         public ICommand CopyCommand { get; }
 
@@ -899,6 +963,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand LicenseCommand { get; }
 
         public ICommand SaveProfileCommand { get; }
+
+        public ICommand MoveProfileUpCommand { get; }
+
+        public ICommand MoveProfileDownCommand { get; }
+
+        public ICommand DeleteProfileCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 
@@ -951,6 +1021,26 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             {
                 bottomPaneSelectedTabIndex = value;
                 OnPropertyChanged(nameof(BottomPaneSelectedTabIndex));
+            }
+        }
+
+        public bool RightPaneVisible
+        {
+            get => rightPaneVisible;
+            set
+            {
+                rightPaneVisible = value;
+                OnPropertyChanged(nameof(RightPaneVisible));
+            }
+        }
+
+        public int RightPaneSelectedTabIndex
+        {
+            get => rightPaneSelectedTabIndex;
+            set
+            {
+                rightPaneSelectedTabIndex = value;
+                OnPropertyChanged(nameof(RightPaneSelectedTabIndex));
             }
         }
 
@@ -1048,5 +1138,27 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         }
 
         public ObservableCollection<ProcessingProfileViewModel> ProcessingProfiles => processingProfiles;
+
+        public ProcessingProfileViewModel SelectedProcessingProfile
+        {
+            get => selectedProcessingProfile;
+            set
+            {
+                selectedProcessingProfile = value;
+                OnPropertyChanged(nameof(SelectedProcessingProfile));
+            }
+        }
+
+        public int SelectedProcessingProfileIndex
+        {
+            get => selectedProcessingProfileIndex;
+            set
+            {
+                selectedProcessingProfileIndex = value;
+                firstProfileSelectedCondition.Value = (value == 0);
+                lastProfileSelectedCondition.Value = (value == processingProfiles.Count - 1);
+                profileSelectedCondition.Value = (value >= 0);
+            }
+        }
     }
 }

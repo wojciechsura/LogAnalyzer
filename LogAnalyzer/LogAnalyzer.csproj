@@ -1636,6 +1636,8 @@
     <Content Include="Lib\SimpleXMLRPCServer.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Images\RightPane16.png" />
+    <Resource Include="Resources\Images\RightPane32.png" />
     <Resource Include="Resources\Images\Profile16.png" />
     <Resource Include="Resources\Images\Profile32.png" />
     <Resource Include="Resources\Images\Save16.png" />

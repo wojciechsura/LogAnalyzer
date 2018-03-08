@@ -244,6 +244,11 @@
                                     Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/BottomPane16.png"
                                     IsChecked="{Binding BottomPaneVisible}"
                                     SizeDefinition="Middle,Middle,Middle"/>
+                    <f:ToggleButton Header="Right pane"
+                                    LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/RightPane32.png"
+                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/RightPane16.png"
+                                    IsChecked="{Binding RightPaneVisible}"
+                                    SizeDefinition="Middle,Middle,Middle"/>
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
             <f:RibbonTabItem Header="Scripting">
@@ -289,7 +294,7 @@
                     </TabItem>
                     <TabItem Header="Script log">
                         <DockPanel>
-                            <ic:TextEditor FontFamily="Consolas" FontSize="11" Document="{Binding ScriptLogDocument}" />
+                            <ic:TextEditor FontFamily="Consolas" FontSize="11" Document="{Binding ScriptLogDocument}" IsReadOnly="True" />
                         </DockPanel>
                     </TabItem>
                 </TabControl>
@@ -298,6 +303,50 @@
             <ct:DockPanelSplitter DockPanel.Dock="Bottom" ProportionalResize="False" 
                                   HorizontalAlignment="Stretch" Height="4"
                                   Visibility="{Binding BottomPaneVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+            <DockPanel DockPanel.Dock="Right" Width="250" 
+                       Visibility="{Binding RightPaneVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Border DockPanel.Dock="Top" Background="{x:Static SystemColors.ActiveCaptionBrush}" Padding="4">
+                    <DockPanel>
+                        <Button FontFamily="Marlett" FontSize="10" Width="16" Height="16" Style="{StaticResource FlatButtonStyle}" DockPanel.Dock="Right"
+                                Command="{Binding CloseRightPaneCommand}">r</Button>
+                        <TextBlock Foreground="{x:Static SystemColors.ActiveCaptionTextBrush}" Text="{Binding ElementName=tcRightPane, Path=SelectedItem.Header}" />
+                    </DockPanel>
+                </Border>
+                <TabControl x:Name="tcRightPane" TabStripPlacement="Bottom" SelectedIndex="{Binding RightPaneSelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TabItem Header="Processing profiles">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{x:Static SystemColors.ControlBrush}">
+                                <Button Width="24" Height="24" Margin="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding MoveProfileUpCommand}">
+                                    <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Up16.png" />
+                                </Button>
+                                <Button Width="24" Height="24" Margin="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding MoveProfileDownCommand}">
+                                    <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Down16.png" />
+                                </Button>
+                                <Button Width="24" Height="24" Margin="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding DeleteProfileCommand}">
+                                    <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Delete16.png" />
+                                </Button>
+                            </StackPanel>
+
+                            <ListBox ItemsSource="{Binding ProcessingProfiles}" SelectedItem="{Binding SelectedProcessingProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedIndex="{Binding SelectedProcessingProfileIndex, UpdateSourceTrigger=PropertyChanged}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                            <Image Margin="2" Width="16" Height="16" VerticalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile16.png" />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
+                    </TabItem>
+                </TabControl>
+            </DockPanel>
+
+            <ct:DockPanelSplitter DockPanel.Dock="Right" ProportionalResize="False"
+                                  VerticalAlignment="Stretch" Width="4"
+                                  Visibility="{Binding RightPaneVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
 
             <Grid>
 

@@ -48,7 +48,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-
+            
             <Style TargetType="ToggleButton" x:Key="FlatToggleButtonStyle">
                 <Setter Property="OverridesDefaultStyle" Value="True" />
                 <Setter Property="Background" Value="Transparent" />
