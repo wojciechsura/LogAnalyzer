@@ -25,34 +25,34 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Scripting
         // Private fields -----------------------------------------------------
 
         private IEngine engine;
+        private readonly Action<string> writeCallback;
+        private readonly Action<string> writelnCallback;
         private ILogEntries logEntries;
 
         // ILogAnalyzer implementation ----------------------------------------
 
         void ILogAnalyzer.WritelnLog(string message)
         {
-            this.WritelnLog?.Invoke(this, new LogEventArgs(message));
+            writelnCallback?.Invoke(message);
         }
 
         void ILogAnalyzer.WriteLog(string message)
         {
-            this.WriteLog?.Invoke(this, new LogEventArgs(message));
+            writeCallback?.Invoke(message);
         }
 
         ILogEntries ILogAnalyzer.Entries => logEntries;
 
         // Internal methods ---------------------------------------------------
 
-        public LogAnalyzerImpl(IEngine engine)
+        public LogAnalyzerImpl(IEngine engine, Action<string> writeCallback, Action<string> writelnCallback)
         {
             this.engine = engine;
+            this.writeCallback = writeCallback;
+            this.writelnCallback = writelnCallback;
+
             logEntries = new LogEntriesImpl(engine);
         }
-
-        // Internal events ----------------------------------------------------
-
-        internal event LogMessageEventHandler WriteLog;
-        internal event LogMessageEventHandler WritelnLog;
 
         // Public methods -----------------------------------------------------
 

@@ -85,7 +85,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly ILicenseService licenseService;
 
         private IEngine engine;
-        private LogAnalyzerImpl scriptLogAnalyzer;
 
         private Wpf.Input.Condition engineStoppingCondition;
         private BaseCondition generalCommandCondition;
@@ -180,20 +179,16 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             {
                 ApplyProcessingProfile(result.ProcessingProfileGuid);
             }
-
-            scriptLogAnalyzer = new LogAnalyzerImpl(engine);
-            scriptLogAnalyzer.WriteLog += this.HandleWriteLog;
-            scriptLogAnalyzer.WritelnLog += this.HandleWritelnLog;
         }
 
-        private void HandleWritelnLog(object sender, LogEventArgs args)
+        private void WritelnLog(string message)
         {
-            scriptLogDocument.Insert(scriptLogDocument.TextLength, $"{args.Message}\n");
+            scriptLogDocument.Insert(scriptLogDocument.TextLength, $"{message}\n");
         }
 
-        private void HandleWriteLog(object sender, LogEventArgs args)
+        private void WriteLog(string message)
         {
-            scriptLogDocument.Insert(scriptLogDocument.TextLength, args.Message);
+            scriptLogDocument.Insert(scriptLogDocument.TextLength, message);
         }
 
         private void DoStopEngine()
@@ -204,7 +199,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 engine.LoadingStatusChanged -= HandleEngineLoadingStatusChanged;
                 engine.ProcessingStatusChanged -= HandleEngineProcessingStatusChanged;
             }
-            scriptLogAnalyzer.Dispose();
+
             engine = null;
             access.ClearListView();
         }
@@ -762,34 +757,38 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 path += "\\";
             path += "Lib\\";
 
-            var engine = Python.CreateEngine();
-            engine.SetSearchPaths(new List<string> { path });
-            var scope = engine.CreateScope();
+            var scriptEngine = Python.CreateEngine();
+            scriptEngine.SetSearchPaths(new List<string> { path });
+            var scriptScope = scriptEngine.CreateScope();
 
-            scope.SetVariable("LogAnalyzer", (ILogAnalyzer)this);
-
-            var errorListener = new PythonScriptErrorListener((ScriptSource erroneousScriptSource, string message, SourceSpan span, int errorCode, Severity severity) => {
-
-                scriptLogDocument.Insert(scriptLogDocument.TextLength, $"{severity.ToString()} {errorCode} at {span.Start.ToString()}: {message}\n");
-            });
-            var scriptSource = engine.CreateScriptSourceFromString(script);
-            var compiled = scriptSource.Compile(errorListener);
-
-            if (compiled == null)
+            using (var logAnalyzer = new LogAnalyzerImpl(this.engine, WriteLog, WritelnLog))
             {
-                messagingService.Warn("There were compilation errors. Look at the script log for details.");
-                BottomPaneVisible = true;
-                BottomPaneSelectedTabIndex = 1;
-                return;
-            }
+                scriptScope.SetVariable("LogAnalyzer", logAnalyzer);
 
-            try
-            {
-                compiled.Execute(scope);
-            }
-            catch (Exception e)
-            {
-                scriptLogDocument.Insert(scriptLogDocument.TextLength, $"Script runtime error: {e.Message}");
+                var errorListener = new PythonScriptErrorListener((ScriptSource erroneousScriptSource, string message, SourceSpan span, int errorCode, Severity severity) =>
+                {
+                    WritelnLog($"{severity.ToString()} {errorCode} at {span.Start.ToString()}: {message}\n");
+                });
+
+                var scriptSource = scriptEngine.CreateScriptSourceFromString(script);
+                var compiled = scriptSource.Compile(errorListener);
+
+                if (compiled == null)
+                {
+                    messagingService.Warn("There were compilation errors. Look at the script log for details.");
+                    BottomPaneVisible = true;
+                    BottomPaneSelectedTabIndex = 1;
+                    return;
+                }
+
+                try
+                {
+                    compiled.Execute(scriptScope);
+                }
+                catch (Exception e)
+                {
+                    scriptLogDocument.Insert(scriptLogDocument.TextLength, $"Script runtime error: {e.Message}");
+                }
             }
         }
 

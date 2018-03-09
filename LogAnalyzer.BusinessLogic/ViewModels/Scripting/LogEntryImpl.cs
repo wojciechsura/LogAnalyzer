@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.Scripting.ScriptAPI;
+using System.Linq;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels.Scripting
 {
@@ -24,12 +25,19 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Scripting
 
         string ILogEntry.Custom(string name)
         {
-            throw new NotImplementedException();
+            int index = columns.OfType<CustomColumnInfo>()
+                .FirstOrDefault(c => c.Name == name)
+                ?.Index ?? -1;
+
+            if (index > 0)
+                return logEntry.CustomFields[index];
+            else
+                return null;
         }
 
         // Internal methods ---------------------------------------------------
 
-        LogEntryImpl(LogEntry logEntry, List<BaseColumnInfo> columns)
+        public LogEntryImpl(LogEntry logEntry, List<BaseColumnInfo> columns)
         {
             this.logEntry = logEntry;
             this.columns = columns;
