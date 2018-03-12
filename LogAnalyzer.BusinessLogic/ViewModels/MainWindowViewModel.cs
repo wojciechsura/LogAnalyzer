@@ -45,7 +45,7 @@ using LogAnalyzer.Models.Events;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged, IScriptingHost, IEventListener<ProcessingProfileListChanged>
+    public class MainWindowViewModel : INotifyPropertyChanged, IScriptingHost, IEventListener<ProcessingProfileListChanged>, IEventListener<StoredScriptListChanged>
     {
         private class CloseData
         {
@@ -114,6 +114,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly ObservableCollection<ProcessingProfileViewModel> processingProfiles;
         private readonly ICommand processingProfileClickCommand;
 
+        private readonly ObservableCollection<StoredScriptViewModel> storedScripts;
+        private readonly ICommand storedScriptClickCommand;
+
         private bool loadingStatus;
         private string loadingStatusText;
         private bool processingStatus;
@@ -143,6 +146,20 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
                 ProcessingProfileViewModel model = new ProcessingProfileViewModel(profile.Name.Value, profile.Guid.Value, processingProfileClickCommand);
                 processingProfiles.Add(model);
+            }
+        }
+
+        private void BuildStoredScripts()
+        {
+            storedScripts.Clear();
+
+            var scripts = configurationService.Configuration.StoredScripts;
+            for (int i = 0; i < scripts.Count; i++)
+            {
+                var script = scripts[i];
+
+                StoredScriptViewModel model = new StoredScriptViewModel(script.Name.Value, script.Guid.Value, storedScriptClickCommand);
+                storedScripts.Add(model);
             }
         }
 
@@ -728,7 +745,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private void ApplyProcessingProfile(Guid processingProfileGuid)
         {
             var processingProfile = configurationService.Configuration.ProcessingProfiles
-                                .FirstOrDefault(pp => pp.Guid.Value.Equals(processingProfileGuid));
+                                .Single(pp => pp.Guid.Value.Equals(processingProfileGuid));
 
             var serializerSettings = new JsonSerializerSettings
             {
@@ -740,16 +757,31 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             engine.SetProcessingProfile(filterConfig, highlightConfig);
         }
 
-        // Protected methods --------------------------------------------------
-
-        protected void OnPropertyChanged(string name)
+        private void DoRunScript(object script)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            if (script is StoredScriptViewModel)
+            {
+                RunChosenScript(script as StoredScriptViewModel);
+            }            
         }
 
-        // IScriptingHost implementation --------------------------------------
+        private void RunChosenScript(StoredScriptViewModel storedScriptViewModel)
+        {
+            var script = configurationService.Configuration.StoredScripts
+                .Single(s => s.Guid.Value.Equals(storedScriptViewModel.Guid));
 
-        void IScriptingHost.Run(string script)
+            try
+            {
+                string scriptSource = File.ReadAllText(script.Filename.Value);
+                ExecuteScript(scriptSource);
+            }
+            catch
+            {
+                messagingService.Stop("Cannot load script!");
+            }
+        }
+
+        private void ExecuteScript(string source)
         {
             scriptLogDocument.Text = "";
 
@@ -771,7 +803,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                     WritelnLog($"{severity.ToString()} {errorCode} at {span.Start.ToString()}: {message}\n");
                 });
 
-                var scriptSource = scriptEngine.CreateScriptSourceFromString(script);
+                var scriptSource = scriptEngine.CreateScriptSourceFromString(source);
                 var compiled = scriptSource.Compile(errorListener);
 
                 if (compiled == null)
@@ -797,11 +829,32 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        // Protected methods --------------------------------------------------
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        // IScriptingHost implementation --------------------------------------
+
+        void IScriptingHost.Run(string script)
+        {
+            ExecuteScript(script);
+        }
+
         // IEventListener<ProcessingProfileListChanged> implementation --------
 
         void IEventListener<ProcessingProfileListChanged>.Receive(ProcessingProfileListChanged @event)
         {
             BuildProcessingProfiles();
+        }
+
+        // IEventListener<StoredScriptListChanged> implementation -------------
+
+        void IEventListener<StoredScriptListChanged>.Receive(StoredScriptListChanged @event)
+        {
+            BuildStoredScripts();
         }
 
         // Public methods -----------------------------------------------------
@@ -833,6 +886,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.eventBusService = eventBusService;
 
             this.eventBusService.Register<ProcessingProfileListChanged>(this);
+            this.eventBusService.Register<StoredScriptListChanged>(this);
 
             engineStoppingCondition = new Wpf.Input.Condition(false);
             generalCommandCondition = !engineStoppingCondition;
@@ -855,6 +909,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             processingProfileClickCommand = new SimpleCommand((obj) => DoChooseProcessingProfile(obj), enginePresentCondition & licenseService.LicenseCondition);
 
             BuildProcessingProfiles();
+
+            storedScripts = new ObservableCollection<StoredScriptViewModel>();
+            storedScriptClickCommand = new SimpleCommand((obj) => DoRunScript(obj), enginePresentCondition & licenseService.LicenseCondition);
+
+            BuildStoredScripts();
 
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
             HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
@@ -1184,5 +1243,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 OnPropertyChanged(nameof(SelectedProcessingProfileIndex));
             }
         }
+
+        public ObservableCollection<StoredScriptViewModel> StoredScripts => storedScripts;
     }
 }

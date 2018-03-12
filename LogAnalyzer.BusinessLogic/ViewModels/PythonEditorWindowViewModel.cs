@@ -1,6 +1,7 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Configuration;
+using LogAnalyzer.Models.Events;
 using LogAnalyzer.Models.Views.ScriptNameWindow;
 using LogAnalyzer.Scripting;
 using LogAnalyzer.Services.Interfaces;
@@ -16,7 +17,7 @@ using System.Windows.Input;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
-    public class PythonEditorWindowViewModel : INotifyPropertyChanged
+    public class PythonEditorWindowViewModel : INotifyPropertyChanged, IEventListener<StoredScriptListChanged>
     {
         // Private fields -----------------------------------------------------
 
@@ -26,6 +27,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IPathProviderService pathProviderService;
         private readonly IDialogService dialogService;
         private readonly IMessagingService messagingService;
+        private readonly IEventBusService eventBusService;
         private readonly TextDocument document;
 
         private Guid currentScriptGuid;
@@ -62,6 +64,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                     // Upon successful saving, add entry in configuration and
                     // keep script's guid as current.
                     configurationService.Configuration.StoredScripts.Add(storedScript);
+                    eventBusService.Send(new StoredScriptListChanged());
+
                     currentScriptGuid = scriptGuid;
                 }
                 catch
@@ -90,6 +94,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        // IEventListener<StoredScriptListChanged> implementation ------------
+
+        void IEventListener<StoredScriptListChanged>.Receive(StoredScriptListChanged @event)
+        {
+            // TODO
+        }
+
         // Public methods -----------------------------------------------------
 
         public PythonEditorWindowViewModel(IPythonEditorWindowAccess access, 
@@ -97,7 +108,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             IConfigurationService configurationService,
             IPathProviderService pathProviderService,
             IDialogService dialogService,
-            IMessagingService messagingService)
+            IMessagingService messagingService,
+            IEventBusService eventBusService)
         {
             this.access = access;
             this.scriptingHost = scriptingHost;
@@ -105,6 +117,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.pathProviderService = pathProviderService;
             this.dialogService = dialogService;
             this.messagingService = messagingService;
+            this.eventBusService = eventBusService;
 
             this.currentScriptGuid = Guid.Empty;
             this.document = new TextDocument();
