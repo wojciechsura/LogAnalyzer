@@ -15,6 +15,7 @@ using LogAnalyzer.Models.Views.ColumnSelectionWindow;
 using LogAnalyzer.Models.Views.NoteWindow;
 using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
 using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
+using LogAnalyzer.Models.Views.ScriptNameWindow;
 
 namespace LogAnalyzer.Services.Interfaces
 {
@@ -34,5 +35,6 @@ namespace LogAnalyzer.Services.Interfaces
         void OpenPythonEditor();
         void OpenLicesneWindow();
         ModalDialogResult<ProcessingProfileNameResult> ChooseProfileName(ProcessingProfileNameModel model);
+        ModalDialogResult<ScriptNameResult> ChooseScriptName(ScriptNameModel model);
     }
 }

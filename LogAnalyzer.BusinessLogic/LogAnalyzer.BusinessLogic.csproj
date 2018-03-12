@@ -121,6 +121,7 @@
     <Compile Include="ViewModels\Interfaces\INoteWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IProcessingProfileNameWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IPythonEditorWindowAccess.cs" />
+    <Compile Include="ViewModels\Interfaces\IScriptNameWindowAccess.cs" />
     <Compile Include="ViewModels\JumpToTimeWindowViewModel.cs" />
     <Compile Include="ViewModels\LicenseWindowViewModel.cs" />
     <Compile Include="ViewModels\LogMessageVisualizerWindowViewModel.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="ViewModels\Scripting\LogAnalyzerImpl.cs" />
     <Compile Include="ViewModels\Scripting\LogEntriesImpl.cs" />
     <Compile Include="ViewModels\Scripting\LogEntryImpl.cs" />
+    <Compile Include="ViewModels\ScriptNameWindowViewModel.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

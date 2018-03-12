@@ -18,6 +18,7 @@ using LogAnalyzer.Models.Views.NoteWindow;
 using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
 using LogAnalyzer.Scripting;
 using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
+using LogAnalyzer.Models.Views.ScriptNameWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -117,6 +118,13 @@ namespace LogAnalyzer.Services
         public ModalDialogResult<ProcessingProfileNameResult> ChooseProfileName(ProcessingProfileNameModel model)
         {
             ProcessingProfileNameWindow window = new ProcessingProfileNameWindow(model);
+            window.ShowDialog();
+            return window.DataResult;
+        }
+
+        public ModalDialogResult<ScriptNameResult> ChooseScriptName(ScriptNameModel model)
+        {
+            ScriptNameWindow window = new ScriptNameWindow(model);
             window.ShowDialog();
             return window.DataResult;
         }

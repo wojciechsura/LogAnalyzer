@@ -18,6 +18,7 @@ namespace LogAnalyzer.Configuration
 
             LogParserProfiles = new SimpleCollection<LogParserProfile>("LogParserProfiles", this, LogParserProfile.XML_NAME);
             ProcessingProfiles = new SimpleCollection<ProcessingProfile>("ProcessingProfiles", this, ProcessingProfile.XML_NAME);
+            StoredScripts = new SimpleCollection<StoredScript>("StoredScripts", this, StoredScript.XML_NAME);
 
             OpeningConfiguration = new OpeningConfiguration(this);
         }
@@ -33,7 +34,7 @@ namespace LogAnalyzer.Configuration
 
         public SimpleCollection<LogParserProfile> LogParserProfiles { get; }
         public SimpleCollection<ProcessingProfile> ProcessingProfiles { get; }
-
+        public SimpleCollection<StoredScript> StoredScripts { get; }
         public OpeningConfiguration OpeningConfiguration { get; }
     }
 }

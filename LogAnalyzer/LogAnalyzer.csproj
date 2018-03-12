@@ -178,6 +178,9 @@
     <Compile Include="Windows\PythonEditorWindow.xaml.cs">
       <DependentUpon>PythonEditorWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ScriptNameWindow.xaml.cs">
+      <DependentUpon>ScriptNameWindow.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Resources\Xaml\RegularColumn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -256,6 +259,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\PythonEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ScriptNameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

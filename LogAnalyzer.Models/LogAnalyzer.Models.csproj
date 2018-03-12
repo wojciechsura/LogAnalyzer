@@ -53,6 +53,7 @@
     <Compile Include="DialogResults\NoteResult.cs" />
     <Compile Include="DialogResults\OpenResult.cs" />
     <Compile Include="DialogResults\ProcessingProfileNameResult.cs" />
+    <Compile Include="DialogResults\ScriptNameResult.cs" />
     <Compile Include="Engine\BookmarkEntry.cs" />
     <Compile Include="Engine\FilterConfig.cs" />
     <Compile Include="Engine\FilterEntry.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Views\OpenWindow\OpenClipboardModel.cs" />
     <Compile Include="Views\OpenWindow\OpenFilesModel.cs" />
     <Compile Include="Views\ProcessingProfileNameWindow\ProcessingProfileNameModel.cs" />
+    <Compile Include="Views\ScriptNameWindow\ScriptNameModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LogAnalyzer.API\LogAnalyzer.API.csproj">
@@ -101,5 +103,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

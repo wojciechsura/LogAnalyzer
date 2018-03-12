@@ -784,6 +784,10 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 try
                 {
                     compiled.Execute(scriptScope);
+
+                    // Display log
+                    BottomPaneVisible = true;
+                    BottomPaneSelectedTabIndex = 1;
                 }
                 catch (Exception e)
                 {
