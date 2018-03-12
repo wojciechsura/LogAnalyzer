@@ -62,11 +62,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             public PythonScriptErrorListener(Action<ScriptSource, string, SourceSpan, int, Severity> errorAction)
             {
-
-                if (errorAction == null)
-                    throw new ArgumentNullException("errorAction");
-
-                this.errorAction = errorAction;
+                this.errorAction = errorAction ?? throw new ArgumentNullException("errorAction");
             }
         }
 

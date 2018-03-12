@@ -12,6 +12,18 @@ namespace LogAnalyzer.Services
     {
         private static readonly string CONFIGURATION_FILE = "config.xml";
         private static readonly string LICENSE_FILE = "loganalyzer.license";
+        private static readonly string SCRIPTS_PATH = "Scripts";
+
+        private void CreateIfNotExist(string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+
+        public PathProviderService()
+        {
+            CreateIfNotExist(GetScriptsPath());
+        }
 
         public string GetConfigurationFilePath()
         {
@@ -23,6 +35,11 @@ namespace LogAnalyzer.Services
             return Path.Combine(GetUserPath(), LICENSE_FILE);
         }
 
+        public string GetScriptsPath()
+        {
+            return Path.Combine(GetUserPath(), SCRIPTS_PATH);
+        }
+
         public string GetUserPath()
         {
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spooksoft", "LogAnalyzer");
@@ -30,6 +47,6 @@ namespace LogAnalyzer.Services
                 path += "\\";
 
             return path;
-        }
+        }        
     }
 }

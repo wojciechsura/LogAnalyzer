@@ -12,7 +12,16 @@
         <f:Ribbon DockPanel.Dock="Top">
             <f:Ribbon.Tabs>
                 <f:RibbonTabItem Header="Script">
-                    <f:RibbonGroupBox Header="Script">
+                    <f:RibbonGroupBox Header="File">
+                        <f:Button Header="Save" LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save32.png" 
+                                  Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save16.png"
+                                  Command="{Binding SaveCommand}"/>
+                        <f:Button Header="Save as..." LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save32.png" 
+                                  Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save16.png"
+                                  Command="{Binding SaveAsCommand}"
+                                  SizeDefinition="Middle,Middle,Middle"/>
+                    </f:RibbonGroupBox>
+                    <f:RibbonGroupBox Header="Run">
                         <f:Button Header="Run" 
                               LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Play32.png"
                               Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Play16.png" 
