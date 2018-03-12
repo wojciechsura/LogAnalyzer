@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Engine.Infrastructure.Events
 {
-    class LastParsedEntriesItemReplacedEvent : BaseEvent
+    class LastParsedEntriesItemReplacedEvent : BaseEngineEvent
     {
         private readonly int metaIndex;
 

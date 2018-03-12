@@ -75,6 +75,7 @@
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Interfaces\IEngine.cs" />
     <Compile Include="Interfaces\IEngineFactory.cs" />
+    <Compile Include="Interfaces\IEventBusService.cs" />
     <Compile Include="Interfaces\IEventListener.cs" />
     <Compile Include="Interfaces\IExportService.cs" />
     <Compile Include="Interfaces\ILicenseService.cs" />

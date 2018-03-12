@@ -23,6 +23,7 @@ namespace LogAnalyzer.Services.Dependencies
             container.RegisterType<IWinApiService, WinApiService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IConfigurationService, ConfigurationService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IPathProviderService, PathProviderService>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IEventBusService, EventBusService>(new ContainerControlledLifetimeManager());
 
             isConfigured = true;
         }

@@ -41,10 +41,11 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using LogAnalyzer.BusinessLogic.ViewModels.Main;
 using LogAnalyzer.BusinessLogic.ViewModels.Scripting;
+using LogAnalyzer.Models.Events;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
-    public class MainWindowViewModel : INotifyPropertyChanged, IScriptingHost
+    public class MainWindowViewModel : INotifyPropertyChanged, IScriptingHost, IEventListener<ProcessingProfileListChanged>
     {
         private class CloseData
         {
@@ -79,6 +80,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IWinApiService winApiService;
         private readonly IExportService exportService;
         private readonly ILicenseService licenseService;
+        private readonly IEventBusService eventBusService;
 
         private IEngine engine;
 
@@ -658,7 +660,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
                 configurationService.Configuration.ProcessingProfiles.Add(processingProfile);
 
-                BuildProcessingProfiles();
+                eventBusService.Send(new ProcessingProfileListChanged());
             }
         }
 
@@ -684,7 +686,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 index = FindSelectedProfile();
 
                 profiles.RemoveAt(index);
-                processingProfiles.Remove(selectedProcessingProfile);
+
+                eventBusService.Send(new ProcessingProfileListChanged());
             }
         }
 
@@ -697,7 +700,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 throw new InvalidOperationException("Cant move bottommost item down!");
 
             profiles.Move(index, index + 1);
-            processingProfiles.Move(selectedProcessingProfileIndex, selectedProcessingProfileIndex + 1);
+            eventBusService.Send(new ProcessingProfileListChanged());
+            SelectedProcessingProfileIndex = index + 1;
         }
 
         private void DoMoveProfileUp()
@@ -709,7 +713,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 throw new InvalidOperationException("Cant move topmost item up!");
 
             profiles.Move(index, index - 1);
-            processingProfiles.Move(selectedProcessingProfileIndex, selectedProcessingProfileIndex - 1);
+            eventBusService.Send(new ProcessingProfileListChanged());
+            SelectedProcessingProfileIndex = index - 1;
         }
 
         private void DoChooseProcessingProfile(object profile)
@@ -792,6 +797,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        // IEventListener<ProcessingProfileListChanged> implementation --------
+
+        void IEventListener<ProcessingProfileListChanged>.Receive(ProcessingProfileListChanged @event)
+        {
+            BuildProcessingProfiles();
+        }
+
         // Public methods -----------------------------------------------------
 
         public MainWindowViewModel(IMainWindowAccess access,
@@ -804,7 +816,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             IMessagingService messagingService,
             IWinApiService winApiService,
             IExportService exportService,
-            ILicenseService licenseService)
+            ILicenseService licenseService,
+            IEventBusService eventBusService)
         {
             this.access = access;
             this.dialogService = dialogService;
@@ -817,6 +830,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.winApiService = winApiService;
             this.exportService = exportService;
             this.licenseService = licenseService;
+            this.eventBusService = eventBusService;
+
+            this.eventBusService.Register<ProcessingProfileListChanged>(this);
 
             engineStoppingCondition = new Wpf.Input.Condition(false);
             generalCommandCondition = !engineStoppingCondition;
@@ -837,6 +853,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             processingProfiles = new ObservableCollection<ProcessingProfileViewModel>();
             processingProfileClickCommand = new SimpleCommand((obj) => DoChooseProcessingProfile(obj), enginePresentCondition & licenseService.LicenseCondition);
+
             BuildProcessingProfiles();
 
             OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
@@ -1163,6 +1180,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 firstProfileSelectedCondition.Value = (value == 0);
                 lastProfileSelectedCondition.Value = (value == processingProfiles.Count - 1);
                 profileSelectedCondition.Value = (value >= 0);
+
+                OnPropertyChanged(nameof(SelectedProcessingProfileIndex));
             }
         }
     }

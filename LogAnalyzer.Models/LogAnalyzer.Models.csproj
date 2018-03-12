@@ -67,6 +67,7 @@
     <Compile Include="Engine\PredicateDescriptions\StringPredicateDescription.cs" />
     <Compile Include="Engine\ProfilingEntry.cs" />
     <Compile Include="Engine\SearchConfig.cs" />
+    <Compile Include="Events\ProcessingProfileListChanged.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EventBus\BaseEvent.cs" />
     <Compile Include="Services\TextParser\BaseTextPart.cs" />

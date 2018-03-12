@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Engine.Infrastructure.Events
 {
-    class AddedNewParsedEntriesEvent : BaseEvent
+    class AddedNewParsedEntriesEvent : BaseEngineEvent
     {
         public AddedNewParsedEntriesEvent(int start, int count)
         {

@@ -48,7 +48,7 @@ namespace LogAnalyzer.Engine
 
         // Private fields -----------------------------------------------------
 
-        private readonly EventBus eventBus;
+        private readonly EngineEventBus eventBus;
         private readonly LogReader logReader;
         private readonly LogProcessor logProcessor;
         private readonly EngineData data;
@@ -240,7 +240,7 @@ namespace LogAnalyzer.Engine
 
         public Engine(ILogSource logSource, ILogParser logParser)
         {
-            eventBus = new EventBus();
+            eventBus = new EngineEventBus();
             data = new EngineData();
 
             logReader = new LogReader(logSource, logParser, eventBus, data, this);

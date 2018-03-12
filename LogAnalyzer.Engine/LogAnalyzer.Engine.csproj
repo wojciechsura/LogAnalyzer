@@ -72,7 +72,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\EventBus.cs" />
+    <Compile Include="Components\EngineEventBus.cs" />
     <Compile Include="Components\LogProcessor.cs" />
     <Compile Include="Components\LogReader.cs" />
     <Compile Include="Dependencies\Configuration.cs" />
@@ -87,10 +87,10 @@
     <Compile Include="Infrastructure\Data\EngineData.cs" />
     <Compile Include="Infrastructure\Data\Interfaces\ILogReaderEngineDataView.cs" />
     <Compile Include="Infrastructure\Events\AddedNewParsedEntriesEvent.cs" />
-    <Compile Include="Infrastructure\Events\BaseEvent.cs" />
+    <Compile Include="Infrastructure\Events\BaseEngineEvent.cs" />
     <Compile Include="Infrastructure\Events\LastParsedEntriesItemReplacedEvent.cs" />
     <Compile Include="Infrastructure\Processing\LogSearchConfig.cs" />
-    <Compile Include="Interfaces\IEventListener.cs" />
+    <Compile Include="Interfaces\IEngineEventListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

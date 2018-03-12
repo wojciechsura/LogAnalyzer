@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Services
 {
-    class EventBus
+    class EventBusService : IEventBusService
     {
         private Dictionary<Type, object> listeners;
 
-        public EventBus()
+        public EventBusService()
         {
             listeners = new Dictionary<Type, object>();
         }
@@ -40,8 +40,7 @@ namespace LogAnalyzer.Services
             bool alreadyExists = false;
             for (int i = 0; i < eventListeners.Count; i++)
             {
-                IEventListener<T> currentListener = null;
-                eventListeners[i].TryGetTarget(out currentListener);
+                eventListeners[i].TryGetTarget(out IEventListener<T> currentListener);
                 if (currentListener == listener)
                 {
                     alreadyExists = true;
@@ -66,8 +65,7 @@ namespace LogAnalyzer.Services
             List<WeakReference<IEventListener<T>>> eventListeners = listeners[t] as List<WeakReference<IEventListener<T>>>;
             for (int i = 0; i < eventListeners.Count; i++)
             {
-                IEventListener<T> currentListener = null;
-                eventListeners[i].TryGetTarget(out currentListener);
+                eventListeners[i].TryGetTarget(out IEventListener<T> currentListener);
                 if (currentListener == listener)
                 {
                     eventListeners.RemoveAt(i);
@@ -89,8 +87,7 @@ namespace LogAnalyzer.Services
                 int i = 0;
                 while (i < eventListeners.Count)
                 {
-                    IEventListener<T> listener = null;
-                    eventListeners[i].TryGetTarget(out listener);
+                    eventListeners[i].TryGetTarget(out IEventListener<T> listener);
 
                     if (listener != null)
                     {

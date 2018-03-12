@@ -58,7 +58,7 @@ namespace LogAnalyzer.Engine.Components
 
         private readonly ILogSource logSource;
         private readonly ILogParser logParser;
-        private readonly EventBus eventBus;
+        private readonly EngineEventBus eventBus;
         private readonly ILogReaderEngineDataView data;
         private readonly ILogEntryMetaHandler handler;
         private readonly BackgroundWorker backgroundWorker;
@@ -269,7 +269,7 @@ namespace LogAnalyzer.Engine.Components
 
         // Public methods -----------------------------------------------------
 
-        public LogReader(ILogSource logSource, ILogParser logParser, EventBus eventBus, ILogReaderEngineDataView data, ILogEntryMetaHandler handler)
+        public LogReader(ILogSource logSource, ILogParser logParser, EngineEventBus eventBus, ILogReaderEngineDataView data, ILogEntryMetaHandler handler)
         {
             this.logSource = logSource;
             this.logParser = logParser;

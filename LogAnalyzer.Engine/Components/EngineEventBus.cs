@@ -8,31 +8,31 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Engine.Components
 {
-    class EventBus
+    class EngineEventBus
     {
         private Dictionary<Type, object> listeners;
 
-        public EventBus()
+        public EngineEventBus()
         {
             listeners = new Dictionary<Type, object>();
         }
 
-        public void Register<T>(IEventListener<T> listener) where T : BaseEvent
+        public void Register<T>(IEngineEventListener<T> listener) where T : BaseEngineEvent
         {
             if (listener == null)
                 throw new ArgumentNullException(nameof(listener));
 
             Type t = typeof(T);
 
-            List<IEventListener<T>> eventListeners;
+            List<IEngineEventListener<T>> eventListeners;
             if (!listeners.ContainsKey(t))
             {
-                eventListeners = new List<IEventListener<T>>();
+                eventListeners = new List<IEngineEventListener<T>>();
                 listeners[t] = eventListeners;
             }
             else
             {
-                eventListeners = listeners[t] as List<IEventListener<T>>;
+                eventListeners = listeners[t] as List<IEngineEventListener<T>>;
                 if (eventListeners == null)
                     throw new InvalidOperationException("Invalid list type in dictionary!");
             }
@@ -41,7 +41,7 @@ namespace LogAnalyzer.Engine.Components
                 eventListeners.Add(listener);            
         }
 
-        public void Unregister<T>(IEventListener<T> listener) where T : BaseEvent
+        public void Unregister<T>(IEngineEventListener<T> listener) where T : BaseEngineEvent
         {
             if (listener == null)
                 throw new ArgumentNullException(nameof(listener));
@@ -51,19 +51,19 @@ namespace LogAnalyzer.Engine.Components
             if (!listeners.ContainsKey(t))
                 return;
 
-            List<IEventListener<T>> eventListeners = listeners[t] as List<IEventListener<T>>;
+            List<IEngineEventListener<T>> eventListeners = listeners[t] as List<IEngineEventListener<T>>;
             eventListeners.Remove(listener);
 
             if (eventListeners.Count == 0)
                 listeners.Remove(t);
         }
 
-        public void Send<T>(T @event) where T : BaseEvent
+        public void Send<T>(T @event) where T : BaseEngineEvent
         {
             Type t = typeof(T);
             if (listeners.ContainsKey(t))
             {
-                List<IEventListener<T>> eventListeners = listeners[t] as List<IEventListener<T>>;
+                List<IEngineEventListener<T>> eventListeners = listeners[t] as List<IEngineEventListener<T>>;
                 foreach (var listener in eventListeners)
                     listener.Receive(@event);
             }

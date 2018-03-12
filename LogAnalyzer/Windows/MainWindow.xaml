@@ -329,7 +329,7 @@
                             </StackPanel>
 
                             <ListBox ItemsSource="{Binding ProcessingProfiles}" SelectedItem="{Binding SelectedProcessingProfile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     SelectedIndex="{Binding SelectedProcessingProfileIndex, UpdateSourceTrigger=PropertyChanged}">
+                                     SelectedIndex="{Binding SelectedProcessingProfileIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">

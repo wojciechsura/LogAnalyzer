@@ -17,7 +17,7 @@ using System.Windows.Media;
 
 namespace LogAnalyzer.Engine.Components
 {
-    class LogProcessor : IEventListener<AddedNewParsedEntriesEvent>, IEventListener<LastParsedEntriesItemReplacedEvent>
+    class LogProcessor : Interfaces.IEngineEventListener<AddedNewParsedEntriesEvent>, Interfaces.IEngineEventListener<LastParsedEntriesItemReplacedEvent>
     {
         // Private constants --------------------------------------------------
 
@@ -178,7 +178,7 @@ namespace LogAnalyzer.Engine.Components
 
         private readonly BackgroundWorker backgroundWorker;
         private readonly ILogProcessorEngineDataView data;
-        private readonly EventBus eventBus;
+        private readonly EngineEventBus eventBus;
         private readonly Queue<BaseQueueItem> queue;
 
         private int availableDataCount = 0;
@@ -654,7 +654,7 @@ namespace LogAnalyzer.Engine.Components
 
         // Public methods -----------------------------------------------------
 
-        public LogProcessor(EventBus eventBus, ILogProcessorEngineDataView data)
+        public LogProcessor(EngineEventBus eventBus, ILogProcessorEngineDataView data)
         {
             this.eventBus = eventBus;
             this.data = data;

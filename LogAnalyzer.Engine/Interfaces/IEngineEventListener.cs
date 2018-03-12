@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogAnalyzer.Engine.Interfaces
 {
-    interface IEventListener<T> where T : BaseEvent
+    interface IEngineEventListener<T> where T : BaseEngineEvent
     {
         void Receive(T @event);
     }
