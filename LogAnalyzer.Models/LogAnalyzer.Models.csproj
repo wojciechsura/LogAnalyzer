@@ -68,6 +68,7 @@
     <Compile Include="Engine\ProfilingEntry.cs" />
     <Compile Include="Engine\SearchConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\EventBus\BaseEvent.cs" />
     <Compile Include="Services\TextParser\BaseTextPart.cs" />
     <Compile Include="Services\TextParser\JsonTextPart.cs" />
     <Compile Include="Services\TextParser\SimpleTextPart.cs" />

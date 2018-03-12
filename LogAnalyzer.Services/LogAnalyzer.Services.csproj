@@ -70,10 +70,12 @@
   <ItemGroup>
     <Compile Include="ConfigurationService.cs" />
     <Compile Include="Dependencies\Configuration.cs" />
+    <Compile Include="EventBusService.cs" />
     <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Interfaces\IEngine.cs" />
     <Compile Include="Interfaces\IEngineFactory.cs" />
+    <Compile Include="Interfaces\IEventListener.cs" />
     <Compile Include="Interfaces\IExportService.cs" />
     <Compile Include="Interfaces\ILicenseService.cs" />
     <Compile Include="Interfaces\ILogParserRepository.cs" />
