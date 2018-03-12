@@ -29,7 +29,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Scripting
                 .FirstOrDefault(c => c.Name == name)
                 ?.Index ?? -1;
 
-            if (index > 0)
+            if (index >= 0)
                 return logEntry.CustomFields[index];
             else
                 return null;
