@@ -97,6 +97,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly Wpf.Input.Condition scriptSelectedCondition;
         private readonly Wpf.Input.Condition firstScriptSelectedCondition;
         private readonly Wpf.Input.Condition lastScriptSelectedCondition;
+        private readonly BaseCondition scriptRunCondition;
 
         private bool bottomPaneVisible;
         private int bottomPaneSelectedTabIndex;
@@ -902,6 +903,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ExecuteScript(script);
         }
 
+        BaseCondition IScriptingHost.CanRunCondition => scriptRunCondition;
+
         // IEventListener<ProcessingProfileListChanged> implementation --------
 
         void IEventListener<ProcessingProfileListChanged>.Receive(ProcessingProfileListChanged @event)
@@ -959,6 +962,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             firstScriptSelectedCondition = new Wpf.Input.Condition(false);
             lastScriptSelectedCondition = new Wpf.Input.Condition(false);
             scriptSelectedCondition = new Wpf.Input.Condition(false);
+            scriptRunCondition = generalEnginePresentCondition & licenseService.LicenseCondition;
 
             loadingStatusText = "Loading...";
             processingStatusText = "Processing...";
@@ -968,12 +972,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             scriptLogDocument = new TextDocument();
 
             processingProfiles = new ObservableCollection<ProcessingProfileViewModel>();
-            processingProfileClickCommand = new SimpleCommand((obj) => DoChooseProcessingProfile(obj), enginePresentCondition & licenseService.LicenseCondition);
+            processingProfileClickCommand = new SimpleCommand((obj) => DoChooseProcessingProfile(obj), generalEnginePresentCondition & licenseService.LicenseCondition);
 
             BuildProcessingProfiles();
 
             storedScripts = new ObservableCollection<StoredScriptViewModel>();
-            storedScriptClickCommand = new SimpleCommand((obj) => DoRunScript(obj), enginePresentCondition & licenseService.LicenseCondition);
+            storedScriptClickCommand = new SimpleCommand((obj) => DoRunScript(obj), generalEnginePresentCondition & licenseService.LicenseCondition);
 
             BuildStoredScripts();
 
@@ -983,27 +987,27 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             SearchCommand = new SimpleCommand((obj) => DoSearch(), generalEnginePresentCondition);
             CloseBottomPaneCommand = new SimpleCommand((obj) => DoCloseBootomPane());
             CloseRightPaneCommand = new SimpleCommand((obj) => DoCloseRightPane());
-            CopyCommand = new SimpleCommand((obj) => DoCopy(), enginePresentCondition);
-            JumpToTimeCommand = new SimpleCommand((obj) => DoJumpToTime(), enginePresentCondition);
-            SetBookmarkCommand = new SimpleCommand((obj) => DoSetBookmark((string)obj), enginePresentCondition & itemSelectedCondition);
-            GotoBookmarkCommand = new SimpleCommand((obj) => DoGotoBookmark((string)obj), enginePresentCondition);
-            AddHighlightingRuleCommand = new SimpleCommand((obj) => DoAddHighlightingRule(), enginePresentCondition & itemSelectedCondition);
-            AddFilteringRuleCommand = new SimpleCommand((obj) => DoAddFilteringRule(), enginePresentCondition & itemSelectedCondition);
-            ToggleProfilingPointCommand = new SimpleCommand((obj) => DoToggleProfilingPointCommand(), enginePresentCondition & itemSelectedCondition);
-            ClearProfilingPointsCommand = new SimpleCommand((obj) => DoClearProfilingPointsCommand(), enginePresentCondition);
-            AnnotateCommand = new SimpleCommand((obj) => DoAnnotate(), enginePresentCondition & itemSelectedCondition);
-            VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), enginePresentCondition & itemSelectedCondition);
-            ExportToHtmlCommand = new SimpleCommand((obj) => DoExportToHtml(), enginePresentCondition);
-            ExportToStyledHtmlCommand = new SimpleCommand((obj) => DoExportToStyledHtml(), enginePresentCondition);
-            QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), enginePresentCondition & searchStringExists);
-            QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), enginePresentCondition & searchStringExists);
+            CopyCommand = new SimpleCommand((obj) => DoCopy(), generalEnginePresentCondition);
+            JumpToTimeCommand = new SimpleCommand((obj) => DoJumpToTime(), generalEnginePresentCondition);
+            SetBookmarkCommand = new SimpleCommand((obj) => DoSetBookmark((string)obj), generalEnginePresentCondition & itemSelectedCondition);
+            GotoBookmarkCommand = new SimpleCommand((obj) => DoGotoBookmark((string)obj), generalEnginePresentCondition);
+            AddHighlightingRuleCommand = new SimpleCommand((obj) => DoAddHighlightingRule(), generalEnginePresentCondition & itemSelectedCondition);
+            AddFilteringRuleCommand = new SimpleCommand((obj) => DoAddFilteringRule(), generalEnginePresentCondition & itemSelectedCondition);
+            ToggleProfilingPointCommand = new SimpleCommand((obj) => DoToggleProfilingPointCommand(), generalEnginePresentCondition & itemSelectedCondition);
+            ClearProfilingPointsCommand = new SimpleCommand((obj) => DoClearProfilingPointsCommand(), generalEnginePresentCondition);
+            AnnotateCommand = new SimpleCommand((obj) => DoAnnotate(), generalEnginePresentCondition & itemSelectedCondition);
+            VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), generalEnginePresentCondition & itemSelectedCondition);
+            ExportToHtmlCommand = new SimpleCommand((obj) => DoExportToHtml(), generalEnginePresentCondition);
+            ExportToStyledHtmlCommand = new SimpleCommand((obj) => DoExportToStyledHtml(), generalEnginePresentCondition);
+            QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), generalEnginePresentCondition & searchStringExists);
+            QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), generalEnginePresentCondition & searchStringExists);
             CloseQuickSearchCommand = new SimpleCommand((obj) => DoCloseQuickSearch());
             ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
             OpenFromClipboardCommand = new SimpleCommand((obj) => DoOpenFromClipboard());
             ConfigurationCommand = new SimpleCommand((obj) => DoOpenConfiguration());
             OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor(), licenseService.LicenseCondition);
             LicenseCommand = new SimpleCommand((obj) => DoOpenLicense());
-            SaveProfileCommand = new SimpleCommand((obj) => DoSaveProfile(), enginePresentCondition & licenseService.LicenseCondition);
+            SaveProfileCommand = new SimpleCommand((obj) => DoSaveProfile(), generalEnginePresentCondition & licenseService.LicenseCondition);
             MoveProfileUpCommand = new SimpleCommand((obj) => DoMoveProfileUp(), profileSelectedCondition & (!firstProfileSelectedCondition) & licenseService.LicenseCondition);
             MoveProfileDownCommand = new SimpleCommand((obj) => DoMoveProfileDown(), profileSelectedCondition & (!lastProfileSelectedCondition) & licenseService.LicenseCondition);
             DeleteProfileCommand = new SimpleCommand((obj) => DoDeleteProfile(), profileSelectedCondition & licenseService.LicenseCondition);

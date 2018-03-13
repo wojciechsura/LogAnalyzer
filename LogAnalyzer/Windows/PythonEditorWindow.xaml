@@ -16,18 +16,21 @@
                         <f:DropDownButton Header="Open"
                         LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Open32.png"
                         Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Open16.png">
-                            <f:Gallery ItemsSource="{Binding StoredScripts}" Selectable="False" Orientation="Vertical">
-                                <f:Gallery.ItemTemplate>
+                            <ItemsControl ItemsSource="{Binding StoredScripts}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <f:GalleryItem Command="{Binding ClickCommand}" CommandParameter="{Binding}">
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                                <Image Margin="2" Width="16" Height="16" VerticalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python16.png" />
-                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
-                                            </StackPanel>
-                                        </f:GalleryItem>
+                                        <f:MenuItem Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python16.png"
+                                                Header="{Binding Name}"
+                                                Command="{Binding ClickCommand}" 
+                                                CommandParameter="{Binding}" />
                                     </DataTemplate>
-                                </f:Gallery.ItemTemplate>
-                            </f:Gallery>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
                         </f:DropDownButton>
 
                         <f:Button Header="Save" LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save32.png" 

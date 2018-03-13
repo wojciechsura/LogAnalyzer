@@ -46,5 +46,11 @@
     <Compile Include="ScriptAPI\ILogEntries.cs" />
     <Compile Include="ScriptAPI\ILogEntry.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogAnalyzer.Wpf\LogAnalyzer.Wpf.csproj">
+      <Project>{47FC3AA3-69CA-424A-8F09-FA2C89C5995F}</Project>
+      <Name>LogAnalyzer.Wpf</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

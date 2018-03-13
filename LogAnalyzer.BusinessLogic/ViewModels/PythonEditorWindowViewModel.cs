@@ -118,7 +118,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 return;
             }
 
-            StoredScript storedScript = configurationService.Configuration.StoredScripts.Single(ss => ss.Guid.Equals(currentScriptGuid));
+            StoredScript storedScript = configurationService.Configuration.StoredScripts.Single(ss => ss.Guid.Value.Equals(currentScriptGuid));
             SaveExistingScript(storedScript);
         }
 
@@ -170,7 +170,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.storedScriptClickCommand = new SimpleCommand((obj) => DoOpenScript(obj));
             BuildStoredScripts();
 
-            this.RunCommand = new SimpleCommand((obj) => DoRun());
+            this.RunCommand = new SimpleCommand((obj) => DoRun(), scriptingHost.CanRunCondition);
             this.SaveCommand = new SimpleCommand((obj) => DoSave());
             this.SaveAsCommand = new SimpleCommand((obj) => DoSaveAs());
         }
