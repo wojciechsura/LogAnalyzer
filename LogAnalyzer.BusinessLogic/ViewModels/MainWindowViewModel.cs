@@ -42,6 +42,7 @@ using System.Collections.ObjectModel;
 using LogAnalyzer.BusinessLogic.ViewModels.Main;
 using LogAnalyzer.BusinessLogic.ViewModels.Scripting;
 using LogAnalyzer.Models.Events;
+using ConfigurationBase;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -84,17 +85,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private IEngine engine;
 
-        private Wpf.Input.Condition engineStoppingCondition;
-        private BaseCondition generalCommandCondition;
-        private Wpf.Input.Condition enginePresentCondition;
-        private BaseCondition generalEnginePresentCondition;
-        private Wpf.Input.Condition itemSelectedCondition;
-        private Wpf.Input.Condition searchStringExists;
-
-        private int selectedProcessingProfileIndex;
-        private Wpf.Input.Condition profileSelectedCondition;
-        private Wpf.Input.Condition firstProfileSelectedCondition;
-        private Wpf.Input.Condition lastProfileSelectedCondition;
+        private readonly Wpf.Input.Condition engineStoppingCondition;
+        private readonly BaseCondition generalCommandCondition;
+        private readonly Wpf.Input.Condition enginePresentCondition;
+        private readonly BaseCondition generalEnginePresentCondition;
+        private readonly Wpf.Input.Condition itemSelectedCondition;
+        private readonly Wpf.Input.Condition searchStringExists;
+        private readonly Wpf.Input.Condition profileSelectedCondition;
+        private readonly Wpf.Input.Condition firstProfileSelectedCondition;
+        private readonly Wpf.Input.Condition lastProfileSelectedCondition;
+        private readonly Wpf.Input.Condition scriptSelectedCondition;
+        private readonly Wpf.Input.Condition firstScriptSelectedCondition;
+        private readonly Wpf.Input.Condition lastScriptSelectedCondition;
 
         private bool bottomPaneVisible;
         private int bottomPaneSelectedTabIndex;
@@ -113,15 +115,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private readonly ObservableCollection<ProcessingProfileViewModel> processingProfiles;
         private readonly ICommand processingProfileClickCommand;
+        private ProcessingProfileViewModel selectedProcessingProfile;
+        private int selectedProcessingProfileIndex;
 
         private readonly ObservableCollection<StoredScriptViewModel> storedScripts;
         private readonly ICommand storedScriptClickCommand;
+        private StoredScriptViewModel selectedStoredScript;
+        private int selectedStoredScriptIndex;
 
         private bool loadingStatus;
         private string loadingStatusText;
         private bool processingStatus;
         private string processingStatusText;
-        private ProcessingProfileViewModel selectedProcessingProfile;
 
         // Private methods ----------------------------------------------------
 
@@ -734,6 +739,60 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             SelectedProcessingProfileIndex = index - 1;
         }
 
+        private int FindSelectedScript()
+        {
+            var scripts = configurationService.Configuration.StoredScripts;
+
+            int index = 0;
+            while (index < scripts.Count && !scripts[index].Guid.Value.Equals(selectedStoredScript.Guid))
+                index++;
+
+            if (index >= scripts.Count)
+                throw new InvalidOperationException("Invalid script!");
+            return index;
+        }
+
+        private void DoDeleteScript()
+        {
+            if (messagingService.Ask("Are you sure you want to delete selected script?"))
+            {
+                int index = 0;
+                SimpleCollection<StoredScript> scripts = configurationService.Configuration.StoredScripts;
+                index = FindSelectedScript();
+
+                scripts.RemoveAt(index);
+
+                eventBusService.Send(new StoredScriptListChanged());
+            }
+        }
+
+        private void DoMoveScriptDown()
+        {
+            SimpleCollection<StoredScript> scripts = configurationService.Configuration.StoredScripts;
+
+            int index = FindSelectedScript();
+            if (index == scripts.Count - 1)
+                throw new InvalidOperationException("Cant move bottommost item down!");
+
+            scripts.Move(index, index + 1);
+            eventBusService.Send(new StoredScriptListChanged());
+            SelectedStoredScriptIndex = index + 1;
+
+        }
+
+        private void DoMoveScriptUp()
+        {
+            SimpleCollection<StoredScript> scripts = configurationService.Configuration.StoredScripts;
+
+            int index = FindSelectedScript();
+            if (index == 0)
+                throw new InvalidOperationException("Cant move topmost item up!");
+
+            scripts.Move(index, index - 1);
+            eventBusService.Send(new StoredScriptListChanged());
+            SelectedStoredScriptIndex = index - 1;
+        }
+
         private void DoChooseProcessingProfile(object profile)
         {
             if (profile is ProcessingProfileViewModel processingProfileViewModel)
@@ -897,6 +956,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             firstProfileSelectedCondition = new Wpf.Input.Condition(false);
             lastProfileSelectedCondition = new Wpf.Input.Condition(false);
             profileSelectedCondition = new Wpf.Input.Condition(false);
+            firstScriptSelectedCondition = new Wpf.Input.Condition(false);
+            lastScriptSelectedCondition = new Wpf.Input.Condition(false);
+            scriptSelectedCondition = new Wpf.Input.Condition(false);
 
             loadingStatusText = "Loading...";
             processingStatusText = "Processing...";
@@ -945,6 +1007,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             MoveProfileUpCommand = new SimpleCommand((obj) => DoMoveProfileUp(), profileSelectedCondition & (!firstProfileSelectedCondition) & licenseService.LicenseCondition);
             MoveProfileDownCommand = new SimpleCommand((obj) => DoMoveProfileDown(), profileSelectedCondition & (!lastProfileSelectedCondition) & licenseService.LicenseCondition);
             DeleteProfileCommand = new SimpleCommand((obj) => DoDeleteProfile(), profileSelectedCondition & licenseService.LicenseCondition);
+            MoveScriptUpCommand = new SimpleCommand((obj) => DoMoveScriptUp(), scriptSelectedCondition & (!firstScriptSelectedCondition) & licenseService.LicenseCondition);
+            MoveScriptDownCommand = new SimpleCommand((obj) => DoMoveScriptDown(), scriptSelectedCondition & (!lastScriptSelectedCondition) & licenseService.LicenseCondition);
+            DeleteScriptCommand = new SimpleCommand((obj) => DoDeleteScript(), scriptSelectedCondition & licenseService.LicenseCondition);
 
             LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);
         }
@@ -1050,6 +1115,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand MoveProfileDownCommand { get; }
 
         public ICommand DeleteProfileCommand { get; }
+
+        public ICommand MoveScriptUpCommand { get; }
+
+        public ICommand MoveScriptDownCommand { get; }
+
+        public ICommand DeleteScriptCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 
@@ -1241,6 +1312,31 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
                 profileSelectedCondition.Value = (value >= 0);
 
                 OnPropertyChanged(nameof(SelectedProcessingProfileIndex));
+            }
+        }
+
+        public StoredScriptViewModel SelectedStoredScript
+        {
+            get => selectedStoredScript;
+            set
+            {
+                selectedStoredScript = value;
+                OnPropertyChanged(nameof(SelectedStoredScript));
+            }
+        }
+
+        public int SelectedStoredScriptIndex
+        {
+            get => selectedStoredScriptIndex;
+            set
+            {
+                selectedStoredScriptIndex = value;
+
+                firstScriptSelectedCondition.Value = (value == 0);
+                lastScriptSelectedCondition.Value = (value == storedScripts.Count - 1);
+                scriptSelectedCondition.Value = (value >= 0);
+
+                OnPropertyChanged(nameof(SelectedStoredScriptIndex));
             }
         }
 

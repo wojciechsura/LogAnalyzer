@@ -267,7 +267,7 @@
                                 <DataTemplate>
                                     <f:GalleryItem Command="{Binding ClickCommand}" CommandParameter="{Binding}">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                            <Image Margin="2" Width="16" Height="16" VerticalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Pyton16.png" />
+                                            <Image Margin="2" Width="16" Height="16" VerticalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python16.png" />
                                             <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
                                         </StackPanel>
                                     </f:GalleryItem>
@@ -352,6 +352,33 @@
                                     <DataTemplate DataType="">
                                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                                             <Image Margin="2" Width="16" Height="16" VerticalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Profile16.png" />
+                                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </DockPanel>
+                    </TabItem>
+                    <TabItem Header="Stored scripts">
+                        <DockPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{x:Static SystemColors.ControlBrush}">
+                                <Button Width="24" Height="24" Margin="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding MoveScriptUpCommand}">
+                                    <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Up16.png" />
+                                </Button>
+                                <Button Width="24" Height="24" Margin="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding MoveScriptDownCommand}">
+                                    <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Down16.png" />
+                                </Button>
+                                <Button Width="24" Height="24" Margin="2" Style="{StaticResource FlatButtonStyle}" Command="{Binding DeleteScriptCommand}">
+                                    <Image Width="16" Height="16" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Delete16.png" />
+                                </Button>
+                            </StackPanel>
+
+                            <ListBox ItemsSource="{Binding StoredScripts}" SelectedItem="{Binding SelectedStoredScript, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedIndex="{Binding SelectedStoredScriptIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate DataType="">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                            <Image Margin="2" Width="16" Height="16" VerticalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python16.png" />
                                             <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
                                         </StackPanel>
                                     </DataTemplate>

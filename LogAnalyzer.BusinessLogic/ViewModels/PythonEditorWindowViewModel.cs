@@ -1,5 +1,6 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
+using LogAnalyzer.BusinessLogic.ViewModels.PythonEditor;
 using LogAnalyzer.Configuration;
 using LogAnalyzer.Models.Events;
 using LogAnalyzer.Models.Views.ScriptNameWindow;
@@ -8,6 +9,7 @@ using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Wpf.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -32,7 +34,40 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private Guid currentScriptGuid;
 
+        private readonly ICommand storedScriptClickCommand;
+        private readonly ObservableCollection<StoredScriptViewModel> storedScripts;
+
         // Private methods ----------------------------------------------------
+
+        private void BuildStoredScripts()
+        {
+            storedScripts.Clear();
+
+            var scripts = configurationService.Configuration.StoredScripts;
+            for (int i = 0; i < scripts.Count; i++)
+            {
+                var script = scripts[i];
+
+                StoredScriptViewModel model = new StoredScriptViewModel(script.Name.Value, script.Guid.Value, storedScriptClickCommand);
+                storedScripts.Add(model);
+            }
+        }
+
+        private void InternalOpenScript(StoredScriptViewModel script)
+        {
+            StoredScript storedScript = configurationService.Configuration.StoredScripts.Single(ss => ss.Guid.Value.Equals(script.Guid));
+
+            try
+            {
+                string scriptSource = File.ReadAllText(storedScript.Filename.Value);
+                document.Text = scriptSource;
+                currentScriptGuid = storedScript.Guid.Value;
+            }
+            catch
+            {
+                messagingService.Stop("Cannot open selected script!");
+            }
+        }
 
         private void SaveExistingScript(StoredScript storedScript)
         {                       
@@ -87,6 +122,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             SaveExistingScript(storedScript);
         }
 
+        private void DoOpenScript(object obj)
+        {
+            if (!(obj is StoredScriptViewModel))
+                throw new ArgumentException("Invalid parameter for DoOpenScript!");
+
+            InternalOpenScript((StoredScriptViewModel)obj);
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -98,7 +141,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         void IEventListener<StoredScriptListChanged>.Receive(StoredScriptListChanged @event)
         {
-            // TODO
+            BuildStoredScripts();
         }
 
         // Public methods -----------------------------------------------------
@@ -122,6 +165,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.currentScriptGuid = Guid.Empty;
             this.document = new TextDocument();
 
+            this.storedScripts = new ObservableCollection<StoredScriptViewModel>();
+
+            this.storedScriptClickCommand = new SimpleCommand((obj) => DoOpenScript(obj));
+            BuildStoredScripts();
+
             this.RunCommand = new SimpleCommand((obj) => DoRun());
             this.SaveCommand = new SimpleCommand((obj) => DoSave());
             this.SaveAsCommand = new SimpleCommand((obj) => DoSaveAs());
@@ -134,6 +182,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand RunCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand SaveAsCommand { get; }
+
+        public ObservableCollection<StoredScriptViewModel> StoredScripts => storedScripts;
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

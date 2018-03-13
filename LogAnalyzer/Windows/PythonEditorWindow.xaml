@@ -13,6 +13,23 @@
             <f:Ribbon.Tabs>
                 <f:RibbonTabItem Header="Script">
                     <f:RibbonGroupBox Header="File">
+                        <f:DropDownButton Header="Open"
+                        LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Open32.png"
+                        Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Open16.png">
+                            <f:Gallery ItemsSource="{Binding StoredScripts}" Selectable="False" Orientation="Vertical">
+                                <f:Gallery.ItemTemplate>
+                                    <DataTemplate>
+                                        <f:GalleryItem Command="{Binding ClickCommand}" CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+                                                <Image Margin="2" Width="16" Height="16" VerticalAlignment="Center" Source="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python16.png" />
+                                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" HorizontalAlignment="Stretch" />
+                                            </StackPanel>
+                                        </f:GalleryItem>
+                                    </DataTemplate>
+                                </f:Gallery.ItemTemplate>
+                            </f:Gallery>
+                        </f:DropDownButton>
+
                         <f:Button Header="Save" LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save32.png" 
                                   Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save16.png"
                                   Command="{Binding SaveCommand}"/>
