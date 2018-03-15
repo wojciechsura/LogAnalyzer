@@ -2,6 +2,7 @@
 using LogAnalyzer.BusinessLogic.ViewModels.ApiSamples;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.BusinessLogic.ViewModels.PythonEditor;
+using LogAnalyzer.Common.Tools;
 using LogAnalyzer.Configuration;
 using LogAnalyzer.Models.Events;
 using LogAnalyzer.Models.Views.ScriptNameWindow;
@@ -14,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -39,7 +41,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly ICommand storedScriptClickCommand;
         private readonly ICommand apiSampleClickCommand;
         private readonly ObservableCollection<StoredScriptViewModel> storedScripts;
-        private readonly IReadOnlyList<ApiSampleViewModel> apiSamples;
+        private readonly ObservableCollection<ApiSampleViewModel> apiSamples;
 
         // Private methods ----------------------------------------------------
 
@@ -57,6 +59,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        private void BuildApiSamples()
+        {
+            apiSamples.Clear();
+            this.scriptApiSampleRepository.ApiSamples
+                .Select(s => new ApiSampleViewModel(s.Name, s.Id, apiSampleClickCommand))
+                .ToList()
+                .ForEach(s => apiSamples.Add(s));
+        }
+
         private void InternalOpenScript(StoredScriptViewModel script)
         {
             StoredScript storedScript = configurationService.Configuration.StoredScripts.Single(ss => ss.Guid.Value.Equals(script.Guid));
@@ -71,6 +82,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             {
                 messagingService.Stop("Cannot open selected script!");
             }
+        }
+
+        private void InternalInsertApiSample(ApiSampleViewModel sample)
+        {
+            string resource = scriptApiSampleRepository.ApiSamples.Single(s => s.Id == sample.Id)
+                .ResourceName;
+
+            string source = ResourceReader.ReadEmbeddedResource(Assembly.GetExecutingAssembly(), resource);
+            document.Insert(access.GetCaretOffset(), source);
         }
 
         private void SaveExistingScript(StoredScript storedScript)
@@ -134,6 +154,14 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             InternalOpenScript((StoredScriptViewModel)obj);
         }
 
+        private void DoInsertApiSample(object obj)
+        {
+            if (!(obj is ApiSampleViewModel))
+                throw new ArgumentException("Invalid parameter for DoInsertApiSampl!");
+
+            InternalInsertApiSample((ApiSampleViewModel)obj);
+        }
+
         // Protected methods --------------------------------------------------
 
         protected void OnPropertyChanged(string name)
@@ -169,18 +197,19 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.scriptApiSampleRepository = scriptApiSampleRepository;
 
             this.eventBusService.Register<StoredScriptListChanged>(this);
-            apiSamples = this.scriptApiSampleRepository.ApiSamples
-                .Select(s => new ApiSampleViewModel(s.Name, s.Id, apiSampleClickCommand))
-                .ToList();
 
             this.currentScriptGuid = Guid.Empty;
             this.document = new TextDocument();
 
             this.storedScripts = new ObservableCollection<StoredScriptViewModel>();
+            this.apiSamples = new ObservableCollection<ApiSampleViewModel>();
 
             this.storedScriptClickCommand = new SimpleCommand((obj) => DoOpenScript(obj));
-            BuildStoredScripts();
+            this.apiSampleClickCommand = new SimpleCommand((obj) => DoInsertApiSample(obj));
 
+            BuildStoredScripts();
+            BuildApiSamples();
+            
             this.RunCommand = new SimpleCommand((obj) => DoRun(), scriptingHost.CanRunCondition);
             this.SaveCommand = new SimpleCommand((obj) => DoSave());
             this.SaveAsCommand = new SimpleCommand((obj) => DoSaveAs());

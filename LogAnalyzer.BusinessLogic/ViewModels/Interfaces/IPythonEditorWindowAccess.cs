@@ -8,5 +8,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels.Interfaces
 {
     public interface IPythonEditorWindowAccess
     {
+        int GetCaretOffset();
     }
 }

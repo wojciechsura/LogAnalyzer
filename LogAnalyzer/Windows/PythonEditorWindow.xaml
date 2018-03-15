@@ -72,7 +72,7 @@
                 </f:RibbonTabItem>
             </f:Ribbon.Tabs>
         </f:Ribbon>
-        <ae:TextEditor x:Name="editor" Document="{Binding Document}" ShowLineNumbers="True"                                   
+        <ae:TextEditor x:Name="editor" Document="{Binding Document}" ShowLineNumbers="True" 
                                 FontFamily="Consolas" FontSize="10pt">
             <ae:TextEditor.Options>
                 <ae:TextEditorOptions ConvertTabsToSpaces="True" />

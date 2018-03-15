@@ -49,6 +49,11 @@ namespace LogAnalyzer.Windows
             DataContext = viewModel;
         }
 
+        public int GetCaretOffset()
+        {
+            return editor.CaretOffset;
+        }
+
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             e.Cancel = true;

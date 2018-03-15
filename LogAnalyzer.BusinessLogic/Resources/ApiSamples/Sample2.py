@@ -5,6 +5,6 @@ for i in range(0, 10):
 
     LogAnalyzer.WritelnLog("Index: " + str(entry.Index));
     LogAnalyzer.WritelnLog("Date: " + str(entry.Date));
-    LogAnalyzer.WritelnLog("Severity: " + str(entry.Severity));
-    LogAnalyzer.WritelnLog("Message: " + str(entry.Message));
-    LogAnalyzer.WritelnLog("Custom field: " + str(entry.Custom("Source")));
+    LogAnalyzer.WritelnLog("Severity: " + entry.Severity);
+    LogAnalyzer.WritelnLog("Message: " + entry.Message);
+    LogAnalyzer.WritelnLog("Custom field: " + entry.Custom("Source"));
