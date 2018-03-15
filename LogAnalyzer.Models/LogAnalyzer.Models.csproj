@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiSamples\ApiSampleModel.cs" />
     <Compile Include="Constants\File.cs" />
     <Compile Include="DialogResults\ColumnSelectionResult.cs" />
     <Compile Include="DialogResults\JumpToTimeResult.cs" />

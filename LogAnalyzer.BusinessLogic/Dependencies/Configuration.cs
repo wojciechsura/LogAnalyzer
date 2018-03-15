@@ -31,6 +31,7 @@ namespace LogAnalyzer.BusinessLogic.Dependencies
 
             container.RegisterType<ILogSourceRepository, LogSourceRepository>(new ContainerControlledLifetimeManager());
             container.RegisterType<ILogParserRepository, LogParserRepository>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IScriptApiSampleRepository, ScriptApiSampleRepository>(new ContainerControlledLifetimeManager());
 
             isConfigured = true;
         }

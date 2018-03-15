@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.AvalonEdit.Document;
+using LogAnalyzer.BusinessLogic.ViewModels.ApiSamples;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.BusinessLogic.ViewModels.PythonEditor;
 using LogAnalyzer.Configuration;
@@ -30,12 +31,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IDialogService dialogService;
         private readonly IMessagingService messagingService;
         private readonly IEventBusService eventBusService;
+        private readonly IScriptApiSampleRepository scriptApiSampleRepository;
         private readonly TextDocument document;
 
         private Guid currentScriptGuid;
 
         private readonly ICommand storedScriptClickCommand;
+        private readonly ICommand apiSampleClickCommand;
         private readonly ObservableCollection<StoredScriptViewModel> storedScripts;
+        private readonly IReadOnlyList<ApiSampleViewModel> apiSamples;
 
         // Private methods ----------------------------------------------------
 
@@ -152,7 +156,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             IPathProviderService pathProviderService,
             IDialogService dialogService,
             IMessagingService messagingService,
-            IEventBusService eventBusService)
+            IEventBusService eventBusService,
+            IScriptApiSampleRepository scriptApiSampleRepository)
         {
             this.access = access;
             this.scriptingHost = scriptingHost;
@@ -161,6 +166,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.dialogService = dialogService;
             this.messagingService = messagingService;
             this.eventBusService = eventBusService;
+            this.scriptApiSampleRepository = scriptApiSampleRepository;
+
+            this.eventBusService.Register<StoredScriptListChanged>(this);
+            apiSamples = this.scriptApiSampleRepository.ApiSamples
+                .Select(s => new ApiSampleViewModel(s.Name, s.Id, apiSampleClickCommand))
+                .ToList();
 
             this.currentScriptGuid = Guid.Empty;
             this.document = new TextDocument();
@@ -184,6 +195,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand SaveAsCommand { get; }
 
         public ObservableCollection<StoredScriptViewModel> StoredScripts => storedScripts;
+
+        public IReadOnlyList<ApiSampleViewModel> ApiSamples => apiSamples;
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

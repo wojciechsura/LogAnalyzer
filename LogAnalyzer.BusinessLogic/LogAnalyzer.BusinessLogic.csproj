@@ -103,6 +103,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dependencies\Configuration.cs" />
+    <Compile Include="Services\ScriptApiSampleRepository.cs" />
+    <Compile Include="ViewModels\ApiSamlpes\ApiSampleViewModel.cs" />
     <Compile Include="ViewModels\ColumnSelectionWindowViewModel.cs" />
     <Compile Include="ViewModels\ConfigurationWindowViewModel.cs" />
     <Compile Include="ViewModels\Configuration\BaseConfigurationViewModel.cs" />
@@ -154,7 +156,9 @@
     <Compile Include="ViewModels\Scripting\LogEntryImpl.cs" />
     <Compile Include="ViewModels\ScriptNameWindowViewModel.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ApiSamples\Sample1.py" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
@@ -236,6 +240,9 @@
       <Project>{39b4d915-c6b6-46c6-93a9-a4ac7763a5be}</Project>
       <Name>RegexLogParser</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ApiSamples\Sample2.py" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

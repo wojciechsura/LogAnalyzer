@@ -83,6 +83,7 @@
     <Compile Include="Interfaces\ILogSourceRepository.cs" />
     <Compile Include="Interfaces\IMessagingService.cs" />
     <Compile Include="Interfaces\IPathProviderService.cs" />
+    <Compile Include="Interfaces\IScriptApiSampleRepository.cs" />
     <Compile Include="Interfaces\ITextParser.cs" />
     <Compile Include="Interfaces\IWinApiService.cs" />
     <Compile Include="Common\ModalDialogResult.cs" />

@@ -47,6 +47,28 @@
                               Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Play16.png" 
                                   Command="{Binding RunCommand}"/>
                     </f:RibbonGroupBox>
+                    <f:RibbonGroupBox Header="API">
+                        <f:DropDownButton Header="API samples"
+                        LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python32.png"
+                        Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python16.png">
+                            <ItemsControl ItemsSource="{Binding ApiSamples}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <f:MenuItem Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python16.png"
+                                                Header="{Binding Name}"
+                                                Command="{Binding ClickCommand}" 
+                                                CommandParameter="{Binding}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </f:DropDownButton>
+
+                    </f:RibbonGroupBox>
                 </f:RibbonTabItem>
             </f:Ribbon.Tabs>
         </f:Ribbon>
