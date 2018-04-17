@@ -133,12 +133,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void HandleEngineProcessingStatusChanged(object sender, StatusChangedEventArgs args)
         {
-            LoadingStatus = args.Status;
+            ProcessingStatus = args.Status;
         }
 
         private void HandleEngineLoadingStatusChanged(object sender, StatusChangedEventArgs args)
         {
-            ProcessingStatus = args.Status;
+            LoadingStatus = args.Status;
         }
 
         private void BuildProcessingProfiles()
