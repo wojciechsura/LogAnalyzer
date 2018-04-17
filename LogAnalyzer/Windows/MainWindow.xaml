@@ -224,7 +224,8 @@
                         <Separator />
                         <f:MenuItem Header="Save new profile" Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Save16.png" 
                                             Command="{Binding SaveProfileCommand}"/>
-                        <f:MenuItem Header="Manage..." Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Gear16.png" />
+                        <f:MenuItem Header="Manage..." Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Gear16.png" 
+                                    Command="{Binding ManageProfilesCommand}"/>
                     </f:DropDownButton>
                     <f:Button Header="Toggle time step"
                               Command="{Binding ToggleProfilingPointCommand}" 
@@ -242,20 +243,6 @@
                               Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Note16.png"
                               SizeDefinition="Middle,Middle,Middle" />
                 </f:RibbonGroupBox>
-                <f:RibbonGroupBox Header="View">
-                    <f:ToggleButton Header="Bottom pane"
-                                    LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/BottomPane32.png"
-                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/BottomPane16.png"
-                                    IsChecked="{Binding BottomPaneVisible}"
-                                    SizeDefinition="Middle,Middle,Middle"/>
-                    <f:ToggleButton Header="Right pane"
-                                    LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/RightPane32.png"
-                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/RightPane16.png"
-                                    IsChecked="{Binding RightPaneVisible}"
-                                    SizeDefinition="Middle,Middle,Middle"/>
-                </f:RibbonGroupBox>
-            </f:RibbonTabItem>
-            <f:RibbonTabItem Header="Scripting">
                 <f:RibbonGroupBox Header="Scripting">
                     <f:Button Header="Open editor"
                               LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/Python32.png"
@@ -282,7 +269,18 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                     </f:DropDownButton>
-
+                </f:RibbonGroupBox>
+                <f:RibbonGroupBox Header="View">
+                    <f:ToggleButton Header="Bottom pane"
+                                    LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/BottomPane32.png"
+                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/BottomPane16.png"
+                                    IsChecked="{Binding BottomPaneVisible}"
+                                    SizeDefinition="Middle,Middle,Middle"/>
+                    <f:ToggleButton Header="Right pane"
+                                    LargeIcon="pack://application:,,,/LogAnalyzer;component/Resources/Images/RightPane32.png"
+                                    Icon="pack://application:,,,/LogAnalyzer;component/Resources/Images/RightPane16.png"
+                                    IsChecked="{Binding RightPaneVisible}"
+                                    SizeDefinition="Middle,Middle,Middle"/>
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>

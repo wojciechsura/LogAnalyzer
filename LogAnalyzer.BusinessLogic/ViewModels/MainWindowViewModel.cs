@@ -714,6 +714,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
+        private void DoManageProfiles()
+        {
+            RightPaneVisible = true;
+            RightPaneSelectedTabIndex = 0;
+        }
+
         private void DoMoveProfileDown()
         {
             ConfigurationBase.SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
@@ -1014,6 +1020,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             MoveScriptUpCommand = new SimpleCommand((obj) => DoMoveScriptUp(), scriptSelectedCondition & (!firstScriptSelectedCondition) & licenseService.LicenseCondition);
             MoveScriptDownCommand = new SimpleCommand((obj) => DoMoveScriptDown(), scriptSelectedCondition & (!lastScriptSelectedCondition) & licenseService.LicenseCondition);
             DeleteScriptCommand = new SimpleCommand((obj) => DoDeleteScript(), scriptSelectedCondition & licenseService.LicenseCondition);
+            ManageProfilesCommand = new SimpleCommand((obj) => DoManageProfiles(), licenseService.LicenseCondition);
 
             LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);
         }
@@ -1117,6 +1124,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand MoveProfileUpCommand { get; }
 
         public ICommand MoveProfileDownCommand { get; }
+
+        public ICommand ManageProfilesCommand { get; }
 
         public ICommand DeleteProfileCommand { get; }
 
