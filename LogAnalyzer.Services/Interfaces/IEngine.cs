@@ -38,7 +38,7 @@ namespace LogAnalyzer.Services.Interfaces
         void NotifySourceReady();
         ObservableRangeCollection<LogRecord> LogRecords { get; }
         ObservableRangeCollection<LogRecord> SearchResults { get; }
-        IReadOnlyList<LogEntry> LogEntries { get; }
+        IList<LogEntry> LogEntries { get; }
         void Stop(Action stopAction);
         List<BaseColumnInfo> GetColumnInfos();
 

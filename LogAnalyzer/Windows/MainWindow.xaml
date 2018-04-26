@@ -413,6 +413,11 @@
                 <ListView Grid.Row="0" x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended" VerticalContentAlignment="Top"
                       ItemContainerStyle="{StaticResource ListViewItemStyle}" SelectedIndex="{Binding SelectedEntryIndex, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
                       SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Copy" Command="{Binding CopyCommand}" InputGestureText="Ctrl+C">

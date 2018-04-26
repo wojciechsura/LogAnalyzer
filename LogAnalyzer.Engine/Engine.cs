@@ -488,7 +488,7 @@ namespace LogAnalyzer.Engine
             }
         }
 
-        public IReadOnlyList<LogEntry> LogEntries => data.ResultLogEntries;
+        public IList<LogEntry> LogEntries => data.ResultLogEntries;
 
         public event StatusChangedDelegate LoadingStatusChanged
         {
