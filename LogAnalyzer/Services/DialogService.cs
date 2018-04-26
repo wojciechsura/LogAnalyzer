@@ -19,6 +19,7 @@ using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
 using LogAnalyzer.Scripting;
 using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
 using LogAnalyzer.Models.Views.ScriptNameWindow;
+using LogAnalyzer.Models.Views.JsonCodeWindow;
 
 namespace LogAnalyzer.Services
 {
@@ -85,6 +86,13 @@ namespace LogAnalyzer.Services
         public ModalDialogResult<NoteResult> EditAnnotations(NoteModel model)
         {
             NoteWindow window = new NoteWindow(model);
+            window.ShowDialog();
+            return window.DataResult;
+        }
+
+        public ModalDialogResult<JsonCodeResult> OpenJsonCodeWindow(JsonCodeModel model)
+        {
+            JsonCodeWindow window = new JsonCodeWindow(model);
             window.ShowDialog();
             return window.DataResult;
         }

@@ -117,6 +117,7 @@
     <Compile Include="ViewModels\Interfaces\IColumnSelectionWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IConfigurationWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IFindWindowAccess.cs" />
+    <Compile Include="ViewModels\Interfaces\IJsonCodeWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IJumpToTimeWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\ILicenseWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\ILogMessageVisualizerWindowAccess.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="ViewModels\Interfaces\IProcessingProfileNameWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IPythonEditorWindowAccess.cs" />
     <Compile Include="ViewModels\Interfaces\IScriptNameWindowAccess.cs" />
+    <Compile Include="ViewModels\JsonCodeWindowViewModel.cs" />
     <Compile Include="ViewModels\JumpToTimeWindowViewModel.cs" />
     <Compile Include="ViewModels\LicenseWindowViewModel.cs" />
     <Compile Include="ViewModels\LogMessageVisualizerWindowViewModel.cs" />

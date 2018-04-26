@@ -154,6 +154,9 @@
     <Compile Include="Windows\HighlightConfigWindow.xaml.cs">
       <DependentUpon>HighlightConfigWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\JsonCodeWindow.xaml.cs">
+      <DependentUpon>JsonCodeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\JumpToTimeWindow.xaml.cs">
       <DependentUpon>JumpToTimeWindow.xaml</DependentUpon>
     </Compile>
@@ -214,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\HighlightConfigWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\JsonCodeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1643,6 +1650,8 @@
     <Content Include="Lib\SimpleXMLRPCServer.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\Images\Import16.png" />
+    <Resource Include="Resources\Images\Import32.png" />
     <Resource Include="Resources\Images\RightPane16.png" />
     <Resource Include="Resources\Images\RightPane32.png" />
     <Resource Include="Resources\Images\Profile16.png" />

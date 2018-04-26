@@ -311,9 +311,19 @@
 
                 <TabControl TabStripPlacement="Bottom" x:Name="tcBottomPane" SelectedIndex="{Binding BottomPaneSelectedTabIndex}">
                     <TabItem Header="Search results">
-                        <ListView x:Name="lvSearchResults" ItemsSource="{Binding SearchResults}" SelectionMode="Single" VerticalContentAlignment="Top"
+                        <ListView x:Name="lvSearchResults" ItemsSource="{Binding SearchResults}" SelectionMode="Extended" VerticalContentAlignment="Top"
                           ItemContainerStyle="{StaticResource ListViewItemStyle}" MouseDoubleClick="SearchResultsDoubleClick"
-                          SelectedItem="{Binding SelectedSearchResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                          SelectedItem="{Binding SelectedSearchResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Copy" Command="{Binding CopySearchResultsCommand}">
+                                        <MenuItem.Icon>
+                                            <Image Width="16" Height="16" Source="/Resources/Images/Copy16.png" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                        </ListView>
                     </TabItem>
                     <TabItem Header="Script log">
                         <DockPanel>

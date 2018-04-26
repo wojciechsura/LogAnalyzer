@@ -7,10 +7,12 @@ using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.BusinessLogic.ViewModels.Open;
 using LogAnalyzer.Configuration;
 using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.Models.Views.JsonCodeWindow;
 using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Wpf.Input;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,6 +26,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 {
     public class OpenWindowViewModel : INotifyPropertyChanged
     {
+        // Private types ------------------------------------------------------
+
+        private class ParserProfileModel
+        {
+            public string Name { get; set; }
+            public string ParserUniqueName { get; set; }
+            public string ParserSettings { get; set; }
+        }
+
         // Private fields -----------------------------------------------------
 
         private readonly IOpenWindowAccess access;
@@ -214,13 +225,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
         }
 
-        private void HandleParserProfilesChanged(ModalDialogResult<LogParserProfileEditorResult> result)
+        private void HandleParserProfilesChanged(Guid newParserGuid)
         {
             BuildLogParserProfileInfos();
             CheckCompatibleParsers();
 
             SelectedLogParserProfile = logParserProfiles
-                .Where(p => p.Guid.Equals(result.Result.Guid))
+                .Where(p => p.Guid.Equals(newParserGuid))
                 .FirstOrDefault();
         }
 
@@ -230,7 +241,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             ModalDialogResult<LogParserProfileEditorResult> result = dialogService.EditLogParserProfile(selectedParserProfile.Guid, sampleLines);
             if (result.DialogResult)
-                HandleParserProfilesChanged(result);
+                HandleParserProfilesChanged(result.Result.Guid);
         }
 
         private void DoNewParserProfile()
@@ -239,7 +250,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             ModalDialogResult<LogParserProfileEditorResult> result = dialogService.NewLogParserProfile(sampleLines);
             if (result.DialogResult)
-                HandleParserProfilesChanged(result);
+                HandleParserProfilesChanged(result.Result.Guid);
         }
 
         private void DoDeleteParserProfile()
@@ -254,6 +265,138 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
                 // No need to re-check compatible parsers here
             }
+        }
+
+        private ParserProfileModel DeserializeParserModel(string code)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<ParserProfileModel>(code);
+            }
+            catch
+            {                
+                return null;
+            }
+        }
+
+        private bool VerifyParserProfileModel(ParserProfileModel model)
+        {
+            var parser = logParserRepository.LogParserProviders.FirstOrDefault(pp => pp.UniqueName == model.ParserUniqueName);
+            if (parser == null)
+            {
+                return false;
+            }
+
+            ILogParserConfiguration configuration;
+            try
+            {
+                configuration = parser.DeserializeConfiguration(model.ParserSettings);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void AddParserProfile(ParserProfileModel parserModel)
+        {
+            configurationService.Configuration.SuspendNotifications();
+
+            var newProfileGuid = Guid.NewGuid();
+
+            try
+            {
+                var newProfile = new LogParserProfile();
+
+                newProfile.Guid.Value = newProfileGuid;
+                newProfile.Name.Value = parserModel.Name;
+                newProfile.ParserUniqueName.Value = parserModel.ParserUniqueName;
+                newProfile.SerializedParserConfiguration.Value = parserModel.ParserSettings;
+
+                configurationService.Configuration.LogParserProfiles.Add(newProfile);
+            }
+            finally
+            {
+                configurationService.Configuration.ResumeNotifications();
+            }
+
+            HandleParserProfilesChanged(newProfileGuid);
+        }
+
+        private void DoImportProfile()
+        {
+            JsonCodeModel model = new JsonCodeModel
+            {
+                Title = "Import parser profile",
+                Hint = "Paste parser code here:",
+                ShowCancel = true
+            };
+
+            var result = dialogService.OpenJsonCodeWindow(model);
+            if (result.DialogResult)
+            {
+                // Deserialize
+
+                ParserProfileModel parserModel = DeserializeParserModel(result.Result.Code);
+
+                if (parserModel == null)
+                {
+                    messagingService.Warn("Invalid exported parser string!");
+                    return;
+                }
+
+                // Verify
+
+                if (!VerifyParserProfileModel(parserModel))
+                {
+                    messagingService.Warn("Invalid exported parser string!");
+                    return;
+                }
+
+                // Add
+
+                AddParserProfile(parserModel);
+
+                messagingService.Inform("Successfully imported parser profile!");
+            }
+        }
+
+        private void DoExportProfile()
+        {
+            // Find selected profile
+
+            var profile = configurationService.Configuration.LogParserProfiles
+                .Single(pp => pp.Guid.Value.Equals(selectedParserProfile.Guid));
+
+            // Create model
+
+            ParserProfileModel parserModel = new ParserProfileModel
+            {
+                Name = profile.Name.Value,
+                ParserUniqueName = profile.ParserUniqueName.Value,
+                ParserSettings = profile.SerializedParserConfiguration.Value
+            };
+
+            // Serialize to JSON
+
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            };
+            var code = JsonConvert.SerializeObject(parserModel, Formatting.None, settings);
+
+            // Display
+
+            JsonCodeModel model = new JsonCodeModel
+            {
+                Code = code,
+                Title = "Export parser profile",
+                Hint = "Copy the following code:",
+                ShowCancel = false
+            };
+            dialogService.OpenJsonCodeWindow(model);
         }
 
         private void DoOk()
@@ -334,6 +477,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             NewParserProfileCommand = new SimpleCommand((obj) => DoNewParserProfile());
             EditParserProfileCommand = new SimpleCommand((obj) => DoEditParserProfile(), parserProfileSelected);
             DeleteParserProfileCommand = new SimpleCommand((obj) => DoDeleteParserProfile(), parserProfileSelected);
+            ExportProfileCommand = new SimpleCommand((obj) => DoExportProfile(), parserProfileSelected);
+            ImportProfileCommand = new SimpleCommand((obj) => DoImportProfile());
             OkCommand = new SimpleCommand((obj) => DoOk());
             CancelCommand = new SimpleCommand((obj) => DoCancel());
 
@@ -413,6 +558,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand NewParserProfileCommand { get; }
         public ICommand EditParserProfileCommand { get; }
         public ICommand DeleteParserProfileCommand { get; }
+        public ICommand ExportProfileCommand { get; }
+        public ICommand ImportProfileCommand { get; }
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 

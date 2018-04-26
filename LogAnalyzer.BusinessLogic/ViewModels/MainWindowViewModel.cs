@@ -324,10 +324,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             RightPaneVisible = false;
         }
 
-        private void DoCopy()
+        private void CopyToClipboard(System.Collections.IList items)
         {
-            System.Collections.IList items = access.GetMainSelectedItems();
-
             if (items.Count == 0)
                 return;
 
@@ -374,6 +372,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
 
             Clipboard.SetText(builder.ToString());
+        }
+
+        private void DoCopy()
+        {
+            System.Collections.IList items = access.GetMainSelectedItems();
+            CopyToClipboard(items);
+        }
+
+        private void DoCopySearchResults()
+        {
+            System.Collections.IList items = access.GetSearchSelectedItems();
+            CopyToClipboard(items);
         }
 
         private void DoJumpToTime()
@@ -1021,6 +1031,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             MoveScriptDownCommand = new SimpleCommand((obj) => DoMoveScriptDown(), scriptSelectedCondition & (!lastScriptSelectedCondition) & licenseService.LicenseCondition);
             DeleteScriptCommand = new SimpleCommand((obj) => DoDeleteScript(), scriptSelectedCondition & licenseService.LicenseCondition);
             ManageProfilesCommand = new SimpleCommand((obj) => DoManageProfiles(), licenseService.LicenseCondition);
+            CopySearchResultsCommand = new SimpleCommand((obj) => DoCopySearchResults(), generalEnginePresentCondition);
 
             LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);
         }
@@ -1134,6 +1145,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public ICommand MoveScriptDownCommand { get; }
 
         public ICommand DeleteScriptCommand { get; }
+
+        public ICommand CopySearchResultsCommand { get; }
 
         public ObservableRangeCollection<LogRecord> LogEntries { get; private set; }
 

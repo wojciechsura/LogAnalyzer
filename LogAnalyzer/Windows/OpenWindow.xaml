@@ -7,7 +7,7 @@
         xmlns:i="clr-namespace:LogAnalyzer.Infrastructure"
         xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
         mc:Ignorable="d"
-        Title="Open log" SizeToContent="Height" Width="400" ResizeMode="NoResize"
+        Title="Open log" SizeToContent="Height" Width="500" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         WindowStyle="SingleBorderWindow">
     <Window.Resources>
@@ -43,6 +43,8 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
                     <ComboBox Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="4" 
@@ -69,6 +71,13 @@
                     <Button Width="24" Height="24" Grid.Column="3" Margin="4" Command="{Binding DeleteParserProfileCommand}">
                         <Image Width="16" Height="16" Source="/Resources/Images/Delete16.png" />
                     </Button>
+                    <Button Width="24" Height="24" Grid.Column="4" Margin="4" Command="{Binding ExportProfileCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Export16.png" />
+                    </Button>
+                    <Button Width="24" Height="24" Grid.Column="5" Margin="4" Command="{Binding ImportProfileCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Import16.png" />
+                    </Button>
+
                 </Grid>
             </StackPanel>
         </GroupBox>

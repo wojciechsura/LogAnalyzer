@@ -49,6 +49,7 @@
     <Compile Include="ApiSamples\ApiSampleModel.cs" />
     <Compile Include="Constants\File.cs" />
     <Compile Include="DialogResults\ColumnSelectionResult.cs" />
+    <Compile Include="DialogResults\JsonCodeResult.cs" />
     <Compile Include="DialogResults\JumpToTimeResult.cs" />
     <Compile Include="DialogResults\LogParserProfileEditorResult.cs" />
     <Compile Include="DialogResults\NoteResult.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="Views\FilterConfigWindow\FilterConfigModel.cs" />
     <Compile Include="Views\FindWindow\FindModel.cs" />
     <Compile Include="Views\HighlightConfigWindow\HighlightConfigModel.cs" />
+    <Compile Include="Views\JsonCodeWindow\JsonCodeModel.cs" />
     <Compile Include="Views\JumpToTime\JumpToTimeModel.cs" />
     <Compile Include="Views\LogMessageVisualizerWindow\LogMessageVisualizerModel.cs" />
     <Compile Include="Views\NoteWindow\NoteModel.cs" />

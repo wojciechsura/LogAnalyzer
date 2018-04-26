@@ -23,6 +23,7 @@ using System.Reflection;
 using System.Windows.Markup;
 using System.Xml;
 using System.IO;
+using System.Collections;
 
 namespace LogAnalyzer.Windows
 {
@@ -199,6 +200,16 @@ namespace LogAnalyzer.Windows
         {
             if (viewModel.SearchBoxVisible)
                 FocusQuickSearchBox();
+        }
+
+        public IList GetSearchSelectedItems()
+        {
+            if (lvSearchResults.SelectedItems != null)
+                return lvSearchResults.SelectedItems;
+            else if (lvSearchResults.SelectedItem != null)
+                return new List<object> { lvSearchResults.SelectedItem };
+            else
+                return new List<object>();
         }
     }
 }
