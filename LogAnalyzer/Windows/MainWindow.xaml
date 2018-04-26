@@ -31,9 +31,9 @@
                     <ControlTemplate TargetType="ListViewItem">
                         <Border x:Name="Border" Padding="2" SnapsToDevicePixels="true" Background="{Binding Highlight.Background, Converter={StaticResource ColorToBrushConverter}}">
                             <StackPanel Orientation="Vertical">
-                                
+
                                 <!-- Row -->
-                                
+
                                 <GridViewRowPresenter VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 
                                 <!-- Note -->
@@ -122,7 +122,7 @@
         <KeyBinding Modifiers="Ctrl" Key="D8" Command="{Binding GotoBookmarkCommand}" CommandParameter="8" />
         <KeyBinding Modifiers="Ctrl" Key="D9" Command="{Binding GotoBookmarkCommand}" CommandParameter="9" />
         <KeyBinding Modifiers="Ctrl" Key="D0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0" />
-    </f:RibbonWindow.InputBindings>       
+    </f:RibbonWindow.InputBindings>
     <DockPanel>
         <f:Ribbon DockPanel.Dock="Top">
             <f:Ribbon.Menu>
@@ -284,7 +284,7 @@
                 </f:RibbonGroupBox>
             </f:RibbonTabItem>
         </f:Ribbon>
-        
+
         <DockPanel>
             <StatusBar DockPanel.Dock="Bottom">
                 <StatusBarItem MinWidth="150" HorizontalAlignment="Left">
@@ -313,7 +313,8 @@
                     <TabItem Header="Search results">
                         <ListView x:Name="lvSearchResults" ItemsSource="{Binding SearchResults}" SelectionMode="Extended" VerticalContentAlignment="Top"
                           ItemContainerStyle="{StaticResource ListViewItemStyle}" MouseDoubleClick="SearchResultsDoubleClick"
-                          SelectedItem="{Binding SelectedSearchResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                          SelectedItem="{Binding SelectedSearchResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                  VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
                             <ListView.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Copy" Command="{Binding CopySearchResultsCommand}">
@@ -412,77 +413,78 @@
 
                 <ListView Grid.Row="0" x:Name="lvMain" ItemsSource="{Binding LogEntries}" SelectionMode="Extended" VerticalContentAlignment="Top"
                       ItemContainerStyle="{StaticResource ListViewItemStyle}" SelectedIndex="{Binding SelectedEntryIndex, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
-                      SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                      SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Copy" Command="{Binding CopyCommand}" InputGestureText="Ctrl+C">
-                            <MenuItem.Icon>
-                                <Image Width="16" Height="16" Source="/Resources/Images/Copy16.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem Header="Set bookmark">
-                            <MenuItem.Icon>
-                                <Image Width="16" Height="16" Source="/Resources/Images/Bookmark16.png" />
-                            </MenuItem.Icon>
-                            <MenuItem Header="Bookmark 1" Command="{Binding SetBookmarkCommand}" CommandParameter="1" InputGestureText="Ctrl+Shift+1"/>
-                            <MenuItem Header="Bookmark 2" Command="{Binding SetBookmarkCommand}" CommandParameter="2" InputGestureText="Ctrl+Shift+2"/>
-                            <MenuItem Header="Bookmark 3" Command="{Binding SetBookmarkCommand}" CommandParameter="3" InputGestureText="Ctrl+Shift+3"/>
-                            <MenuItem Header="Bookmark 4" Command="{Binding SetBookmarkCommand}" CommandParameter="4" InputGestureText="Ctrl+Shift+4"/>
-                            <MenuItem Header="Bookmark 5" Command="{Binding SetBookmarkCommand}" CommandParameter="5" InputGestureText="Ctrl+Shift+5"/>
-                            <MenuItem Header="Bookmark 6" Command="{Binding SetBookmarkCommand}" CommandParameter="6" InputGestureText="Ctrl+Shift+6"/>
-                            <MenuItem Header="Bookmark 7" Command="{Binding SetBookmarkCommand}" CommandParameter="7" InputGestureText="Ctrl+Shift+7"/>
-                            <MenuItem Header="Bookmark 8" Command="{Binding SetBookmarkCommand}" CommandParameter="8" InputGestureText="Ctrl+Shift+8"/>
-                            <MenuItem Header="Bookmark 9" Command="{Binding SetBookmarkCommand}" CommandParameter="9" InputGestureText="Ctrl+Shift+9"/>
-                            <MenuItem Header="Bookmark 0" Command="{Binding SetBookmarkCommand}" CommandParameter="0" InputGestureText="Ctrl+Shift+0"/>
-                        </MenuItem>
-                        <MenuItem Header="Go to bookmark">
-                            <MenuItem.Icon>
-                                <Image Width="16" Height="16" Source="/Resources/Images/Bookmark16.png" />
-                            </MenuItem.Icon>
-                            <MenuItem Header="Bookmark 1" Command="{Binding GotoBookmarkCommand}" CommandParameter="1" InputGestureText="Ctrl+1"/>
-                            <MenuItem Header="Bookmark 2" Command="{Binding GotoBookmarkCommand}" CommandParameter="2" InputGestureText="Ctrl+2"/>
-                            <MenuItem Header="Bookmark 3" Command="{Binding GotoBookmarkCommand}" CommandParameter="3" InputGestureText="Ctrl+3"/>
-                            <MenuItem Header="Bookmark 4" Command="{Binding GotoBookmarkCommand}" CommandParameter="4" InputGestureText="Ctrl+4"/>
-                            <MenuItem Header="Bookmark 5" Command="{Binding GotoBookmarkCommand}" CommandParameter="5" InputGestureText="Ctrl+5"/>
-                            <MenuItem Header="Bookmark 6" Command="{Binding GotoBookmarkCommand}" CommandParameter="6" InputGestureText="Ctrl+6"/>
-                            <MenuItem Header="Bookmark 7" Command="{Binding GotoBookmarkCommand}" CommandParameter="7" InputGestureText="Ctrl+7"/>
-                            <MenuItem Header="Bookmark 8" Command="{Binding GotoBookmarkCommand}" CommandParameter="8" InputGestureText="Ctrl+8"/>
-                            <MenuItem Header="Bookmark 9" Command="{Binding GotoBookmarkCommand}" CommandParameter="9" InputGestureText="Ctrl+9"/>
-                            <MenuItem Header="Bookmark 0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0" InputGestureText="Ctrl+0"/>
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem Header="Add highlighting rule..." Command="{Binding AddHighlightingRuleCommand}">
-                            <MenuItem.Icon>
-                                <Image Width="16" Height="16" Source="/Resources/Images/Highlight16.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Add filtering rule..." Command="{Binding AddFilteringRuleCommand}">
-                            <MenuItem.Icon>
-                                <Image Width="16" Height="16" Source="/Resources/Images/Filter16.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem Header="Toggle time step" Command="{Binding ToggleProfilingPointCommand}" InputGestureText="Ctrl+T">
-                            <MenuItem.Icon>
-                                <Image Width="16" Height="16" Source="/Resources/Images/Stopwatch16.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Annotate" Command="{Binding AnnotateCommand}" InputGestureText="Ctrl+N">
-                            <MenuItem.Icon>
-                                <Image Width="16" Height="16" Source="/Resources/Images/Note16.png" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <Separator />
-                        <MenuItem Header="Visualize message" Command="{Binding VisualizeMessageCommand}" />
-                    </ContextMenu>
-                </ListView.ContextMenu>
-            </ListView>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Copy" Command="{Binding CopyCommand}" InputGestureText="Ctrl+C">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="/Resources/Images/Copy16.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator />
+                            <MenuItem Header="Set bookmark">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="/Resources/Images/Bookmark16.png" />
+                                </MenuItem.Icon>
+                                <MenuItem Header="Bookmark 1" Command="{Binding SetBookmarkCommand}" CommandParameter="1" InputGestureText="Ctrl+Shift+1"/>
+                                <MenuItem Header="Bookmark 2" Command="{Binding SetBookmarkCommand}" CommandParameter="2" InputGestureText="Ctrl+Shift+2"/>
+                                <MenuItem Header="Bookmark 3" Command="{Binding SetBookmarkCommand}" CommandParameter="3" InputGestureText="Ctrl+Shift+3"/>
+                                <MenuItem Header="Bookmark 4" Command="{Binding SetBookmarkCommand}" CommandParameter="4" InputGestureText="Ctrl+Shift+4"/>
+                                <MenuItem Header="Bookmark 5" Command="{Binding SetBookmarkCommand}" CommandParameter="5" InputGestureText="Ctrl+Shift+5"/>
+                                <MenuItem Header="Bookmark 6" Command="{Binding SetBookmarkCommand}" CommandParameter="6" InputGestureText="Ctrl+Shift+6"/>
+                                <MenuItem Header="Bookmark 7" Command="{Binding SetBookmarkCommand}" CommandParameter="7" InputGestureText="Ctrl+Shift+7"/>
+                                <MenuItem Header="Bookmark 8" Command="{Binding SetBookmarkCommand}" CommandParameter="8" InputGestureText="Ctrl+Shift+8"/>
+                                <MenuItem Header="Bookmark 9" Command="{Binding SetBookmarkCommand}" CommandParameter="9" InputGestureText="Ctrl+Shift+9"/>
+                                <MenuItem Header="Bookmark 0" Command="{Binding SetBookmarkCommand}" CommandParameter="0" InputGestureText="Ctrl+Shift+0"/>
+                            </MenuItem>
+                            <MenuItem Header="Go to bookmark">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="/Resources/Images/Bookmark16.png" />
+                                </MenuItem.Icon>
+                                <MenuItem Header="Bookmark 1" Command="{Binding GotoBookmarkCommand}" CommandParameter="1" InputGestureText="Ctrl+1"/>
+                                <MenuItem Header="Bookmark 2" Command="{Binding GotoBookmarkCommand}" CommandParameter="2" InputGestureText="Ctrl+2"/>
+                                <MenuItem Header="Bookmark 3" Command="{Binding GotoBookmarkCommand}" CommandParameter="3" InputGestureText="Ctrl+3"/>
+                                <MenuItem Header="Bookmark 4" Command="{Binding GotoBookmarkCommand}" CommandParameter="4" InputGestureText="Ctrl+4"/>
+                                <MenuItem Header="Bookmark 5" Command="{Binding GotoBookmarkCommand}" CommandParameter="5" InputGestureText="Ctrl+5"/>
+                                <MenuItem Header="Bookmark 6" Command="{Binding GotoBookmarkCommand}" CommandParameter="6" InputGestureText="Ctrl+6"/>
+                                <MenuItem Header="Bookmark 7" Command="{Binding GotoBookmarkCommand}" CommandParameter="7" InputGestureText="Ctrl+7"/>
+                                <MenuItem Header="Bookmark 8" Command="{Binding GotoBookmarkCommand}" CommandParameter="8" InputGestureText="Ctrl+8"/>
+                                <MenuItem Header="Bookmark 9" Command="{Binding GotoBookmarkCommand}" CommandParameter="9" InputGestureText="Ctrl+9"/>
+                                <MenuItem Header="Bookmark 0" Command="{Binding GotoBookmarkCommand}" CommandParameter="0" InputGestureText="Ctrl+0"/>
+                            </MenuItem>
+                            <Separator />
+                            <MenuItem Header="Add highlighting rule..." Command="{Binding AddHighlightingRuleCommand}">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="/Resources/Images/Highlight16.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Add filtering rule..." Command="{Binding AddFilteringRuleCommand}">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="/Resources/Images/Filter16.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator />
+                            <MenuItem Header="Toggle time step" Command="{Binding ToggleProfilingPointCommand}" InputGestureText="Ctrl+T">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="/Resources/Images/Stopwatch16.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Annotate" Command="{Binding AnnotateCommand}" InputGestureText="Ctrl+N">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16" Source="/Resources/Images/Note16.png" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator />
+                            <MenuItem Header="Visualize message" Command="{Binding VisualizeMessageCommand}" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                </ListView>
 
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Static SystemColors.ControlBrush}"
                             Visibility="{Binding SearchBoxVisible, Converter={StaticResource BoolToVisibilityConverter}}">
