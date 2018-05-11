@@ -9,5 +9,6 @@ namespace LogAnalyzer.API.LogSource
     public interface ILogSource : IDisposable
     {
         string GetLine();
+        string GetTitle();
     }
 }

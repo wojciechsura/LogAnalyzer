@@ -134,5 +134,13 @@ namespace FilesLogSource
 
             return line;
         }
+
+        public string GetTitle()
+        {
+            if (files.Count == 1)
+                return files[1];
+            else
+                return $"{files[1]} + {files.Count - 1} more files.";
+        }
     }
 }

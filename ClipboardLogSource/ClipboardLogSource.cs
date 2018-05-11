@@ -32,5 +32,10 @@ namespace ClipboardLogSource
         {
             return reader.ReadLine();
         }
+
+        public string GetTitle()
+        {
+            return "From clipboard";
+        }
     }
 }

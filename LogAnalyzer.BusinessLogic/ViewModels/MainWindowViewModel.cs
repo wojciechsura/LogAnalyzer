@@ -48,6 +48,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 {
     public class MainWindowViewModel : INotifyPropertyChanged, IScriptingHost, IEventListener<ProcessingProfileListChanged>, IEventListener<StoredScriptListChanged>
     {
+        // Private constants --------------------------------------------------
+
+        private const string WINDOW_TITLE = "Spooksoft LogAnalyzer";
+
+        // Private types ------------------------------------------------------
+
         private class CloseData
         {
             public bool HandlingClosing { get; set; } = false;
@@ -111,6 +117,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private bool searchCaseSensitive;
         private bool searchWholeWords;
         private bool searchRegex;
+
+        private string title = WINDOW_TITLE;
 
         private TextDocument scriptLogDocument;
 
@@ -179,6 +187,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             // Build log source
             ILogSourceProvider logSourceProvider = logSourceRepository.LogSourceProviders.Single(p => p.UniqueName == result.LogSourceProviderName);
             ILogSource source = logSourceProvider.CreateLogSource(result.LogSourceConfiguration, parser);
+
+            Title = WINDOW_TITLE + " - " + source.GetTitle();
 
             engine = engineFactory.CreateEngine(source, parser);
 
@@ -1367,5 +1377,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         }
 
         public ObservableCollection<StoredScriptViewModel> StoredScripts => storedScripts;
+
+        public string Title
+        {
+            get => title;
+            set
+            {
+                title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
     }
 }

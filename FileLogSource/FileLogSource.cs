@@ -35,5 +35,10 @@ namespace FileLogSource
         {
             return streamReader.ReadLine();
         }
+
+        public string GetTitle()
+        {
+            return configuration.Filename;
+        }
     }
 }
