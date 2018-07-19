@@ -11,6 +11,7 @@ using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using System.Windows.Input;
 using LogAnalyzer.Wpf.Input;
 using LogAnalyzer.Services.Interfaces;
+using LogAnalyzer.Common.Tools;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -18,13 +19,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
     {
         // Private fields -----------------------------------------------------
 
-        private string year;
-        private string month;
-        private string day;
-        private string hour;
-        private string minute;
-        private string second;
-        private string fraction;
+        private string date;
 
         private ModalDialogResult<JumpToTimeResult> result;
         private readonly IJumpToTimeWindowAccess access;
@@ -34,24 +29,16 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoOk()
         {
-            try
-            {
-                DateTime dateresult = new DateTime(int.Parse(year), 
-                    int.Parse(month), 
-                    int.Parse(day), 
-                    int.Parse(hour), 
-                    int.Parse(minute), 
-                    int.Parse(second), 
-                    int.Parse(fraction));
-
-                result.DialogResult = true;
-                result.Result = new JumpToTimeResult { ResultDate = dateresult};
-                access.Close(true);
-            }
-            catch
+            // TODO validate
+            if (!DateConverter.Validate(date))
             {
                 messagingService.Warn("Invalid date!");
+                return;
             }
+
+            result.DialogResult = true;
+            result.Result = new JumpToTimeResult { ResultDate = DateConverter.ConvertToDate(date) };
+            access.Close(true);
         }
 
         private void DoCancel()
@@ -71,16 +58,11 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public JumpToTimeWindowViewModel(IJumpToTimeWindowAccess access, JumpToTimeModel model, IMessagingService messagingService)
         {
             this.access = access;
-            this.messagingService = messagingService;
-            fraction = model.DefaultDate.Millisecond.ToString("000");
-            second = model.DefaultDate.Second.ToString("00");
-            minute = model.DefaultDate.Minute.ToString("00");
-            hour = model.DefaultDate.Hour.ToString("00");
-            day = model.DefaultDate.Day.ToString("00");
-            month = model.DefaultDate.Month.ToString("00");
-            year = model.DefaultDate.Year.ToString("0000");
+            this.messagingService = messagingService;            
 
             result = new ModalDialogResult<JumpToTimeResult>();
+            date = model.DefaultDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+            OnPropertyChanged(nameof(Date));
 
             OkCommand = new SimpleCommand((obj) => DoOk());
             CancelCommand = new SimpleCommand((obj) => DoCancel());
@@ -90,47 +72,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Hour
+        public string Date
         {
-            get { return hour; }
-            set { hour = value; OnPropertyChanged(nameof(Hour)); }
+            get => date;
+            set => date = value;
         }
-
-        public string Minute
-        {
-            get { return minute; }
-            set { minute = value; OnPropertyChanged(nameof(Minute)); }
-        }
-
-        public string Second
-        {
-            get { return second; }
-            set { second = value; OnPropertyChanged(nameof(Second)); }
-        }
-
-        public string Year
-        {
-            get { return year; }
-            set { year = value; OnPropertyChanged(nameof(Year)); }
-        }
-
-        public string Month
-        {
-            get { return month; }
-            set { month = value; OnPropertyChanged(nameof(Month)); }
-        }
-
-        public string Day
-        {
-            get { return day; }
-            set { day = value; OnPropertyChanged(nameof(Day)); }
-        }
-
-        public string Fraction
-        {
-            get { return fraction; }
-            set { fraction = value; OnPropertyChanged(nameof(Fraction)); }
-        }
+        
 
         public ICommand OkCommand { get; private set; }
         public ICommand CancelCommand { get; private set; }

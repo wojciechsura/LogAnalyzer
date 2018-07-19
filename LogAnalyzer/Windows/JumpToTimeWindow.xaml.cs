@@ -27,45 +27,6 @@ namespace LogAnalyzer.Windows
     {
         private JumpToTimeWindowViewModel viewModel;
 
-        private void JumpToNextTextbox(TextBox current, int desiredLength, TextBox next)
-        {
-            if (current.Text.Length == desiredLength)
-            {
-                next.Focus();
-                next.SelectAll();
-            }
-        }
-
-        private void tbYear_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            JumpToNextTextbox(tbYear, 4, tbMonth);
-        }
-
-        private void tbMonth_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            JumpToNextTextbox(tbMonth, 2, tbDay);
-        }
-
-        private void tbDay_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            JumpToNextTextbox(tbDay, 2, tbHour);
-        }
-
-        private void tbHour_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            JumpToNextTextbox(tbHour, 2, tbMinute);
-        }
-
-        private void tbMinute_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            JumpToNextTextbox(tbMinute, 2, tbSecond);
-        }
-
-        private void tbSecond_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            JumpToNextTextbox(tbSecond, 2, tbFraction);
-        }
-
         public JumpToTimeWindow(Models.Views.JumpToTime.JumpToTimeModel model)
         {
             InitializeComponent();

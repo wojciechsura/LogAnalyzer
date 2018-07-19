@@ -61,6 +61,13 @@
     <Compile Include="Models\TableData.cs" />
     <Compile Include="Models\TableDataRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationRules\DateConverterValidationRule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogAnalyzer.Common\LogAnalyzer.Common.csproj">
+      <Project>{815B5AF9-BAC8-43FD-88D5-D50A51BC09DE}</Project>
+      <Name>LogAnalyzer.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
