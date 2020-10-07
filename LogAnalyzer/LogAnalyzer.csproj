@@ -160,9 +160,6 @@
     <Compile Include="Windows\JumpToTimeWindow.xaml.cs">
       <DependentUpon>JumpToTimeWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\LicenseWindow.xaml.cs">
-      <DependentUpon>LicenseWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\LogMessageVisualizerWindow.xaml.cs">
       <DependentUpon>LogMessageVisualizerWindow.xaml</DependentUpon>
     </Compile>
@@ -225,10 +222,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\JumpToTimeWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\LicenseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

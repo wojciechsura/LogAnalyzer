@@ -25,7 +25,6 @@ namespace LogAnalyzer.BusinessLogic.Dependencies
             LogAnalyzer.Engine.Dependencies.Configuration.Configure(container);
             LogAnalyzer.TextParser.Dependencies.Configuration.Configure(container);
             LogAnalyzer.Export.Dependencies.Configuration.Configure(container);
-            LogAnalyzer.Licensing.Dependencies.Configuration.Configure(container);
 
             container.RegisterType<MainWindowViewModel>();
 

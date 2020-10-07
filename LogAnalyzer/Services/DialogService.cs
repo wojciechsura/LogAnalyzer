@@ -117,12 +117,6 @@ namespace LogAnalyzer.Services
             pythonEditorWindow.Show();
         }
 
-        public void OpenLicesneWindow()
-        {
-            LicenseWindow window = new LicenseWindow();
-            window.ShowDialog();
-        }
-
         public ModalDialogResult<ProcessingProfileNameResult> ChooseProfileName(ProcessingProfileNameModel model)
         {
             ProcessingProfileNameWindow window = new ProcessingProfileNameWindow(model);

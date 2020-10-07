@@ -86,7 +86,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private readonly IMessagingService messagingService;
         private readonly IWinApiService winApiService;
         private readonly IExportService exportService;
-        private readonly ILicenseService licenseService;
         private readonly IEventBusService eventBusService;
 
         private IEngine engine;
@@ -677,11 +676,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             dialogService.OpenPythonEditor();
         }
 
-        private void DoOpenLicense()
-        {
-            dialogService.OpenLicesneWindow();
-        }
-
         private void DoSaveProfile()
         {
             ProcessingProfileNameModel model = new ProcessingProfileNameModel { Name = "New profile" };
@@ -957,7 +951,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             IMessagingService messagingService,
             IWinApiService winApiService,
             IExportService exportService,
-            ILicenseService licenseService,
             IEventBusService eventBusService)
         {
             this.access = access;
@@ -970,7 +963,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.messagingService = messagingService;
             this.winApiService = winApiService;
             this.exportService = exportService;
-            this.licenseService = licenseService;
             this.eventBusService = eventBusService;
 
             this.eventBusService.Register<ProcessingProfileListChanged>(this);
@@ -988,7 +980,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             firstScriptSelectedCondition = new Wpf.Input.Condition(false);
             lastScriptSelectedCondition = new Wpf.Input.Condition(false);
             scriptSelectedCondition = new Wpf.Input.Condition(false);
-            scriptRunCondition = generalEnginePresentCondition & licenseService.LicenseCondition;
+            scriptRunCondition = generalEnginePresentCondition;
 
             loadingStatusText = "Loading...";
             processingStatusText = "Processing...";
@@ -998,12 +990,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             scriptLogDocument = new TextDocument();
 
             processingProfiles = new ObservableCollection<ProcessingProfileViewModel>();
-            processingProfileClickCommand = new SimpleCommand((obj) => DoChooseProcessingProfile(obj), generalEnginePresentCondition & licenseService.LicenseCondition);
+            processingProfileClickCommand = new SimpleCommand((obj) => DoChooseProcessingProfile(obj), generalEnginePresentCondition);
 
             BuildProcessingProfiles();
 
             storedScripts = new ObservableCollection<StoredScriptViewModel>();
-            storedScriptClickCommand = new SimpleCommand((obj) => DoRunScript(obj), generalEnginePresentCondition & licenseService.LicenseCondition);
+            storedScriptClickCommand = new SimpleCommand((obj) => DoRunScript(obj), generalEnginePresentCondition);
 
             BuildStoredScripts();
 
@@ -1031,16 +1023,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
             OpenFromClipboardCommand = new SimpleCommand((obj) => DoOpenFromClipboard());
             ConfigurationCommand = new SimpleCommand((obj) => DoOpenConfiguration());
-            OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor(), licenseService.LicenseCondition);
-            LicenseCommand = new SimpleCommand((obj) => DoOpenLicense());
-            SaveProfileCommand = new SimpleCommand((obj) => DoSaveProfile(), generalEnginePresentCondition & licenseService.LicenseCondition);
-            MoveProfileUpCommand = new SimpleCommand((obj) => DoMoveProfileUp(), profileSelectedCondition & (!firstProfileSelectedCondition) & licenseService.LicenseCondition);
-            MoveProfileDownCommand = new SimpleCommand((obj) => DoMoveProfileDown(), profileSelectedCondition & (!lastProfileSelectedCondition) & licenseService.LicenseCondition);
-            DeleteProfileCommand = new SimpleCommand((obj) => DoDeleteProfile(), profileSelectedCondition & licenseService.LicenseCondition);
-            MoveScriptUpCommand = new SimpleCommand((obj) => DoMoveScriptUp(), scriptSelectedCondition & (!firstScriptSelectedCondition) & licenseService.LicenseCondition);
-            MoveScriptDownCommand = new SimpleCommand((obj) => DoMoveScriptDown(), scriptSelectedCondition & (!lastScriptSelectedCondition) & licenseService.LicenseCondition);
-            DeleteScriptCommand = new SimpleCommand((obj) => DoDeleteScript(), scriptSelectedCondition & licenseService.LicenseCondition);
-            ManageProfilesCommand = new SimpleCommand((obj) => DoManageProfiles(), licenseService.LicenseCondition);
+            OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor());
+            SaveProfileCommand = new SimpleCommand((obj) => DoSaveProfile(), generalEnginePresentCondition);
+            MoveProfileUpCommand = new SimpleCommand((obj) => DoMoveProfileUp(), profileSelectedCondition & (!firstProfileSelectedCondition));
+            MoveProfileDownCommand = new SimpleCommand((obj) => DoMoveProfileDown(), profileSelectedCondition & (!lastProfileSelectedCondition));
+            DeleteProfileCommand = new SimpleCommand((obj) => DoDeleteProfile(), profileSelectedCondition);
+            MoveScriptUpCommand = new SimpleCommand((obj) => DoMoveScriptUp(), scriptSelectedCondition & (!firstScriptSelectedCondition));
+            MoveScriptDownCommand = new SimpleCommand((obj) => DoMoveScriptDown(), scriptSelectedCondition & (!lastScriptSelectedCondition));
+            DeleteScriptCommand = new SimpleCommand((obj) => DoDeleteScript(), scriptSelectedCondition);
+            ManageProfilesCommand = new SimpleCommand((obj) => DoManageProfiles());
             CopySearchResultsCommand = new SimpleCommand((obj) => DoCopySearchResults(), generalEnginePresentCondition);
 
             LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);

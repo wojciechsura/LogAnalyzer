@@ -127,7 +127,6 @@
     <Compile Include="ViewModels\Interfaces\IScriptNameWindowAccess.cs" />
     <Compile Include="ViewModels\JsonCodeWindowViewModel.cs" />
     <Compile Include="ViewModels\JumpToTimeWindowViewModel.cs" />
-    <Compile Include="ViewModels\LicenseWindowViewModel.cs" />
     <Compile Include="ViewModels\LogMessageVisualizerWindowViewModel.cs" />
     <Compile Include="ViewModels\Main\ProcessingProfileViewModel.cs" />
     <Compile Include="ViewModels\Main\StoredScriptViewModel.cs" />
@@ -205,10 +204,6 @@
     <ProjectReference Include="..\LogAnalyzer.Export\LogAnalyzer.Export.csproj">
       <Project>{aed134b5-4766-4880-b984-80cd324cc6d4}</Project>
       <Name>LogAnalyzer.Export</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LogAnalyzer.Licensing\LogAnalyzer.Licensing.csproj">
-      <Project>{1c1792b5-d2e4-45cd-a9ca-5a25c4809eae}</Project>
-      <Name>LogAnalyzer.Licensing</Name>
     </ProjectReference>
     <ProjectReference Include="..\LogAnalyzer.Mapper\LogAnalyzer.Mapper.csproj">
       <Project>{677955a9-5cd0-491b-8ebc-70f0597c1427}</Project>
