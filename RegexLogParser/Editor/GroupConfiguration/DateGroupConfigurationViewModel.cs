@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Conditions;
 using RegexLogParser.Configuration;
 using Unity;
+using Spooksoft.VisualStateManager.Commands;
 
 namespace RegexLogParser.Editor.GroupConfiguration
 {
@@ -29,7 +30,7 @@ namespace RegexLogParser.Editor.GroupConfiguration
 
         public DateGroupConfigurationViewModel()
         {
-            DateFormatHelpCommand = new SimpleCommand((obj) => DoOpenFormatHelp());
+            DateFormatHelpCommand = new AppCommand((obj) => DoOpenFormatHelp());
         }
 
         public override BaseGroupDefinition GetGroupDefinition()

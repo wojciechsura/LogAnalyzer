@@ -2,7 +2,8 @@
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.Models.Views.JsonCodeWindow;
 using LogAnalyzer.Services.Common;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -48,8 +49,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             this.access = access;
 
-            OkCommand = new SimpleCommand((obj) => DoOk());
-            CancelCommand = new SimpleCommand((obj) => DoCancel());
+            OkCommand = new AppCommand((obj) => DoOk());
+            CancelCommand = new AppCommand((obj) => DoCancel());
 
             code = model.Code;
             Title = model.Title;
@@ -74,8 +75,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         public string Title { get; }
         public string Hint { get; }
         public bool ShowCancel { get; }
-        public SimpleCommand OkCommand { get; }
-        public SimpleCommand CancelCommand { get; }
+        public AppCommand OkCommand { get; }
+        public AppCommand CancelCommand { get; }
 
         public ModalDialogResult<JsonCodeResult> Result { get; }
 

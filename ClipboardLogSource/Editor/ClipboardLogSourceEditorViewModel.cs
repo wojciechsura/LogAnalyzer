@@ -1,7 +1,7 @@
 ﻿using LogAnalyzer.API.LogSource;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

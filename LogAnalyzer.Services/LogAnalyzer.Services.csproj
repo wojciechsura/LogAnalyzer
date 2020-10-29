@@ -78,7 +78,6 @@
     <Compile Include="Interfaces\IEventBusService.cs" />
     <Compile Include="Interfaces\IEventListener.cs" />
     <Compile Include="Interfaces\IExportService.cs" />
-    <Compile Include="Interfaces\ILicenseService.cs" />
     <Compile Include="Interfaces\ILogParserRepository.cs" />
     <Compile Include="Interfaces\ILogSourceRepository.cs" />
     <Compile Include="Interfaces\IMessagingService.cs" />

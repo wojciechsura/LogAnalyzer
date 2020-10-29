@@ -8,7 +8,8 @@ using LogAnalyzer.Models.Types;
 using LogAnalyzer.Models.Views.FilterConfigWindow;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -174,12 +175,12 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             firstRuleSelectedCondition = new Condition(false);
             lastRuleSelectedCondition = new Condition(false);
 
-            AddRuleCommand = new SimpleCommand((obj) => DoAddRule());
-            RemoveRuleCommand = new SimpleCommand((obj) => DoRemoveRule(), ruleSelectedCondition);
-            MoveRuleUpCommand = new SimpleCommand((obj) => DoMoveRuleUp(), !firstRuleSelectedCondition & ruleSelectedCondition);
-            MoveRuleDownCommand = new SimpleCommand((obj) => DoMoveRuleDown(), !lastRuleSelectedCondition & ruleSelectedCondition);
-            OkCommand = new SimpleCommand((obj) => DoOk());
-            CancelCommand = new SimpleCommand((obj) => DoCancel());
+            AddRuleCommand = new AppCommand((obj) => DoAddRule());
+            RemoveRuleCommand = new AppCommand((obj) => DoRemoveRule(), ruleSelectedCondition);
+            MoveRuleUpCommand = new AppCommand((obj) => DoMoveRuleUp(), !firstRuleSelectedCondition & ruleSelectedCondition);
+            MoveRuleDownCommand = new AppCommand((obj) => DoMoveRuleDown(), !lastRuleSelectedCondition & ruleSelectedCondition);
+            OkCommand = new AppCommand((obj) => DoOk());
+            CancelCommand = new AppCommand((obj) => DoCancel());
 
             Rules = new ObservableCollection<FilteringRuleEditorViewModel>();
 

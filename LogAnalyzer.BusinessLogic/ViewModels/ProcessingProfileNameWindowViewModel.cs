@@ -3,7 +3,8 @@ using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -43,8 +44,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.access = access;
             this.messagingService = messagingService;
 
-            OkCommand = new SimpleCommand((obj) => DoOk());
-            CancelCommand = new SimpleCommand((obj) => DoCancel());
+            OkCommand = new AppCommand((obj) => DoOk());
+            CancelCommand = new AppCommand((obj) => DoCancel());
 
             note = model.Name;
 

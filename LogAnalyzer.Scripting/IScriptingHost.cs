@@ -1,4 +1,4 @@
-﻿using LogAnalyzer.Wpf.Input;
+﻿using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

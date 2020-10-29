@@ -11,7 +11,7 @@ using LogAnalyzer.Models.Views.JsonCodeWindow;
 using LogAnalyzer.Models.Views.OpenWindow;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Conditions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -21,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Spooksoft.VisualStateManager.Commands;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -474,13 +475,13 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             // Commands
 
-            NewParserProfileCommand = new SimpleCommand((obj) => DoNewParserProfile());
-            EditParserProfileCommand = new SimpleCommand((obj) => DoEditParserProfile(), parserProfileSelected);
-            DeleteParserProfileCommand = new SimpleCommand((obj) => DoDeleteParserProfile(), parserProfileSelected);
-            ExportProfileCommand = new SimpleCommand((obj) => DoExportProfile(), parserProfileSelected);
-            ImportProfileCommand = new SimpleCommand((obj) => DoImportProfile());
-            OkCommand = new SimpleCommand((obj) => DoOk());
-            CancelCommand = new SimpleCommand((obj) => DoCancel());
+            NewParserProfileCommand = new AppCommand((obj) => DoNewParserProfile());
+            EditParserProfileCommand = new AppCommand((obj) => DoEditParserProfile(), parserProfileSelected);
+            DeleteParserProfileCommand = new AppCommand((obj) => DoDeleteParserProfile(), parserProfileSelected);
+            ExportProfileCommand = new AppCommand((obj) => DoExportProfile(), parserProfileSelected);
+            ImportProfileCommand = new AppCommand((obj) => DoImportProfile());
+            OkCommand = new AppCommand((obj) => DoOk());
+            CancelCommand = new AppCommand((obj) => DoCancel());
 
             // Result
 

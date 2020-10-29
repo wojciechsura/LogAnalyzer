@@ -11,9 +11,10 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using LogAnalyzer.API.LogParser;
 using System.Windows.Input;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Conditions;
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.API.Types;
+using Spooksoft.VisualStateManager.Commands;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -163,8 +164,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             if (SelectedLogParserViewModel == null)
                 SelectedLogParserViewModel = logParserEditorViewModels.First();
 
-            OkCommand = new SimpleCommand((obj) => DoOk());
-            CancelCommand = new SimpleCommand((obj) => DoCancel());
+            OkCommand = new AppCommand((obj) => DoOk());
+            CancelCommand = new AppCommand((obj) => DoCancel());
         }
 
         private LogParserProfile GetEditedProfile(Guid editedProfileGuid)

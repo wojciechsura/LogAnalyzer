@@ -9,9 +9,10 @@ using LogAnalyzer.Services.Common;
 using LogAnalyzer.Models.Views.JumpToTime;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using System.Windows.Input;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Conditions;
 using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.Common.Tools;
+using Spooksoft.VisualStateManager.Commands;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -64,8 +65,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             date = model.DefaultDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
             OnPropertyChanged(nameof(Date));
 
-            OkCommand = new SimpleCommand((obj) => DoOk());
-            CancelCommand = new SimpleCommand((obj) => DoCancel());
+            OkCommand = new AppCommand((obj) => DoOk());
+            CancelCommand = new AppCommand((obj) => DoCancel());
         }
 
         // Public properties --------------------------------------------------

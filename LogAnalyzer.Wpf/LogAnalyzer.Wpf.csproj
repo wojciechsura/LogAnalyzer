@@ -51,13 +51,6 @@
     <Compile Include="Converters\NullToBooleanConverter.cs" />
     <Compile Include="Converters\TransparentColorConverter.cs" />
     <Compile Include="Helpers\DataGridHelper.cs" />
-    <Compile Include="Input\BaseCondition.cs" />
-    <Compile Include="Input\CompositeCondition.cs" />
-    <Compile Include="Input\Condition.cs" />
-    <Compile Include="Input\NegateCondition.cs" />
-    <Compile Include="Input\SimpleCommand.cs" />
-    <Compile Include="Input\SwitchCondition.cs" />
-    <Compile Include="Input\ValueChangedEventArgs.cs" />
     <Compile Include="Models\TableData.cs" />
     <Compile Include="Models\TableDataRow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

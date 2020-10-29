@@ -1,7 +1,8 @@
 ﻿using LogAnalyzer.API.LogSource;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -107,10 +108,10 @@ namespace FilesLogSource.Editor
             firstFileSelectedCondition = new Condition(false);
             lastFileSelectedCondition = new Condition(false);
 
-            AddFilesCommand = new SimpleCommand((obj) => DoAddFiles());
-            RemoveFileCommand = new SimpleCommand((obj) => DoRemoveFile(), fileSelectedCondition);
-            MoveFileUpCommand = new SimpleCommand((obj) => DoMoveFileUp(), fileSelectedCondition & !firstFileSelectedCondition);
-            MoveFileDownCommand = new SimpleCommand((obj) => DoMoveFileDown(), fileSelectedCondition & !lastFileSelectedCondition);
+            AddFilesCommand = new AppCommand((obj) => DoAddFiles());
+            RemoveFileCommand = new AppCommand((obj) => DoRemoveFile(), fileSelectedCondition);
+            MoveFileUpCommand = new AppCommand((obj) => DoMoveFileUp(), fileSelectedCondition & !firstFileSelectedCondition);
+            MoveFileDownCommand = new AppCommand((obj) => DoMoveFileDown(), fileSelectedCondition & !lastFileSelectedCondition);
         }
 
         public ILogSourceConfiguration BuildConfiguration()

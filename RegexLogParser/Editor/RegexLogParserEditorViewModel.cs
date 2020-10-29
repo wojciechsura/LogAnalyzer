@@ -2,7 +2,7 @@
 using LogAnalyzer.API.Models;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Conditions;
 using LogAnalyzer.Wpf.Models;
 using RegexLogParser.Configuration;
 using RegexLogParser.Editor.GroupConfiguration;
@@ -15,6 +15,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Spooksoft.VisualStateManager.Commands;
 
 namespace RegexLogParser.Editor
 {
@@ -233,11 +234,11 @@ namespace RegexLogParser.Editor
             firstItemSelectedCondition = new Condition(false);
             lastItemSelectedCondition = new Condition(false);
 
-            AddGroupDefinitionCommand = new SimpleCommand((obj) => DoAddGroupDefinition());
-            RemoveGroupDefinitionCommand = new SimpleCommand((obj) => DoRemoveGroupDefinition(), itemSelectedCondition);
-            MoveLeftCommand = new SimpleCommand((obj) => DoMoveLeft(), !firstItemSelectedCondition & itemSelectedCondition);
-            MoveRightCommand = new SimpleCommand((obj) => DoMoveRight(), !lastItemSelectedCondition & itemSelectedCondition);
-            TestParserCommand = new SimpleCommand((obj) => DoTestParser());
+            AddGroupDefinitionCommand = new AppCommand((obj) => DoAddGroupDefinition());
+            RemoveGroupDefinitionCommand = new AppCommand((obj) => DoRemoveGroupDefinition(), itemSelectedCondition);
+            MoveLeftCommand = new AppCommand((obj) => DoMoveLeft(), !firstItemSelectedCondition & itemSelectedCondition);
+            MoveRightCommand = new AppCommand((obj) => DoMoveRight(), !lastItemSelectedCondition & itemSelectedCondition);
+            TestParserCommand = new AppCommand((obj) => DoTestParser());
         }
 
         public ILogParserConfiguration GetConfiguration()

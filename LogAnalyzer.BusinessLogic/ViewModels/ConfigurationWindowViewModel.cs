@@ -2,7 +2,8 @@
 using LogAnalyzer.BusinessLogic.ViewModels.Configuration;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -66,8 +67,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.messagingService = messagingService;
             this.configurationService = configurationService;
 
-            OkCommand = new SimpleCommand((obj) => DoOk());
-            CancelCommand = new SimpleCommand((obj) => DoCancel());
+            OkCommand = new AppCommand((obj) => DoOk());
+            CancelCommand = new AppCommand((obj) => DoCancel());
 
             pages = new List<BaseConfigurationViewModel>
             {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using LogAnalyzer.Dependencies;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Conditions;
 using LogAnalyzer.Services.Interfaces;
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
@@ -43,6 +43,7 @@ using LogAnalyzer.BusinessLogic.ViewModels.Main;
 using LogAnalyzer.BusinessLogic.ViewModels.Scripting;
 using LogAnalyzer.Models.Events;
 using ConfigurationBase;
+using Spooksoft.VisualStateManager.Commands;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -90,18 +91,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private IEngine engine;
 
-        private readonly Wpf.Input.Condition engineStoppingCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition engineStoppingCondition;
         private readonly BaseCondition generalCommandCondition;
-        private readonly Wpf.Input.Condition enginePresentCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition enginePresentCondition;
         private readonly BaseCondition generalEnginePresentCondition;
-        private readonly Wpf.Input.Condition itemSelectedCondition;
-        private readonly Wpf.Input.Condition searchStringExists;
-        private readonly Wpf.Input.Condition profileSelectedCondition;
-        private readonly Wpf.Input.Condition firstProfileSelectedCondition;
-        private readonly Wpf.Input.Condition lastProfileSelectedCondition;
-        private readonly Wpf.Input.Condition scriptSelectedCondition;
-        private readonly Wpf.Input.Condition firstScriptSelectedCondition;
-        private readonly Wpf.Input.Condition lastScriptSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition itemSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition searchStringExists;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition profileSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition firstProfileSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition lastProfileSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition scriptSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition firstScriptSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.Condition lastScriptSelectedCondition;
         private readonly BaseCondition scriptRunCondition;
 
         private bool bottomPaneVisible;
@@ -968,18 +969,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.eventBusService.Register<ProcessingProfileListChanged>(this);
             this.eventBusService.Register<StoredScriptListChanged>(this);
 
-            engineStoppingCondition = new Wpf.Input.Condition(false);
+            engineStoppingCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
             generalCommandCondition = !engineStoppingCondition;
-            enginePresentCondition = new Wpf.Input.Condition(false);
+            enginePresentCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
             generalEnginePresentCondition = enginePresentCondition & !engineStoppingCondition;
-            itemSelectedCondition = new Wpf.Input.Condition(false);
-            searchStringExists = new Wpf.Input.Condition(false);
-            firstProfileSelectedCondition = new Wpf.Input.Condition(false);
-            lastProfileSelectedCondition = new Wpf.Input.Condition(false);
-            profileSelectedCondition = new Wpf.Input.Condition(false);
-            firstScriptSelectedCondition = new Wpf.Input.Condition(false);
-            lastScriptSelectedCondition = new Wpf.Input.Condition(false);
-            scriptSelectedCondition = new Wpf.Input.Condition(false);
+            itemSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            searchStringExists = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            firstProfileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            lastProfileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            profileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            firstScriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            lastScriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            scriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
             scriptRunCondition = generalEnginePresentCondition;
 
             loadingStatusText = "Loading...";
@@ -990,49 +991,49 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             scriptLogDocument = new TextDocument();
 
             processingProfiles = new ObservableCollection<ProcessingProfileViewModel>();
-            processingProfileClickCommand = new SimpleCommand((obj) => DoChooseProcessingProfile(obj), generalEnginePresentCondition);
+            processingProfileClickCommand = new AppCommand((obj) => DoChooseProcessingProfile(obj), generalEnginePresentCondition);
 
             BuildProcessingProfiles();
 
             storedScripts = new ObservableCollection<StoredScriptViewModel>();
-            storedScriptClickCommand = new SimpleCommand((obj) => DoRunScript(obj), generalEnginePresentCondition);
+            storedScriptClickCommand = new AppCommand((obj) => DoRunScript(obj), generalEnginePresentCondition);
 
             BuildStoredScripts();
 
-            OpenCommand = new SimpleCommand((obj) => DoOpen(), generalCommandCondition);
-            HighlightConfigCommand = new SimpleCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
-            FilterConfigCommand = new SimpleCommand((obj) => DoFilterConfig(), generalEnginePresentCondition);
-            SearchCommand = new SimpleCommand((obj) => DoSearch(), generalEnginePresentCondition);
-            CloseBottomPaneCommand = new SimpleCommand((obj) => DoCloseBootomPane());
-            CloseRightPaneCommand = new SimpleCommand((obj) => DoCloseRightPane());
-            CopyCommand = new SimpleCommand((obj) => DoCopy(), generalEnginePresentCondition);
-            JumpToTimeCommand = new SimpleCommand((obj) => DoJumpToTime(), generalEnginePresentCondition);
-            SetBookmarkCommand = new SimpleCommand((obj) => DoSetBookmark((string)obj), generalEnginePresentCondition & itemSelectedCondition);
-            GotoBookmarkCommand = new SimpleCommand((obj) => DoGotoBookmark((string)obj), generalEnginePresentCondition);
-            AddHighlightingRuleCommand = new SimpleCommand((obj) => DoAddHighlightingRule(), generalEnginePresentCondition & itemSelectedCondition);
-            AddFilteringRuleCommand = new SimpleCommand((obj) => DoAddFilteringRule(), generalEnginePresentCondition & itemSelectedCondition);
-            ToggleProfilingPointCommand = new SimpleCommand((obj) => DoToggleProfilingPointCommand(), generalEnginePresentCondition & itemSelectedCondition);
-            ClearProfilingPointsCommand = new SimpleCommand((obj) => DoClearProfilingPointsCommand(), generalEnginePresentCondition);
-            AnnotateCommand = new SimpleCommand((obj) => DoAnnotate(), generalEnginePresentCondition & itemSelectedCondition);
-            VisualizeMessageCommand = new SimpleCommand((obj) => DoVisualizeMessage(), generalEnginePresentCondition & itemSelectedCondition);
-            ExportToHtmlCommand = new SimpleCommand((obj) => DoExportToHtml(), generalEnginePresentCondition);
-            ExportToStyledHtmlCommand = new SimpleCommand((obj) => DoExportToStyledHtml(), generalEnginePresentCondition);
-            QuickSearchUpCommand = new SimpleCommand((obj) => DoQuickSearchUp(), generalEnginePresentCondition & searchStringExists);
-            QuickSearchDownCommand = new SimpleCommand((obj) => DoQuickSearchDown(), generalEnginePresentCondition & searchStringExists);
-            CloseQuickSearchCommand = new SimpleCommand((obj) => DoCloseQuickSearch());
-            ShowQuickSearchCommand = new SimpleCommand((obj) => DoShowQuickSearch());
-            OpenFromClipboardCommand = new SimpleCommand((obj) => DoOpenFromClipboard());
-            ConfigurationCommand = new SimpleCommand((obj) => DoOpenConfiguration());
-            OpenPythonEditorCommand = new SimpleCommand((obj) => DoOpenPythonEditor());
-            SaveProfileCommand = new SimpleCommand((obj) => DoSaveProfile(), generalEnginePresentCondition);
-            MoveProfileUpCommand = new SimpleCommand((obj) => DoMoveProfileUp(), profileSelectedCondition & (!firstProfileSelectedCondition));
-            MoveProfileDownCommand = new SimpleCommand((obj) => DoMoveProfileDown(), profileSelectedCondition & (!lastProfileSelectedCondition));
-            DeleteProfileCommand = new SimpleCommand((obj) => DoDeleteProfile(), profileSelectedCondition);
-            MoveScriptUpCommand = new SimpleCommand((obj) => DoMoveScriptUp(), scriptSelectedCondition & (!firstScriptSelectedCondition));
-            MoveScriptDownCommand = new SimpleCommand((obj) => DoMoveScriptDown(), scriptSelectedCondition & (!lastScriptSelectedCondition));
-            DeleteScriptCommand = new SimpleCommand((obj) => DoDeleteScript(), scriptSelectedCondition);
-            ManageProfilesCommand = new SimpleCommand((obj) => DoManageProfiles());
-            CopySearchResultsCommand = new SimpleCommand((obj) => DoCopySearchResults(), generalEnginePresentCondition);
+            OpenCommand = new AppCommand((obj) => DoOpen(), generalCommandCondition);
+            HighlightConfigCommand = new AppCommand((obj) => DoHighlightConfig(), generalEnginePresentCondition);
+            FilterConfigCommand = new AppCommand((obj) => DoFilterConfig(), generalEnginePresentCondition);
+            SearchCommand = new AppCommand((obj) => DoSearch(), generalEnginePresentCondition);
+            CloseBottomPaneCommand = new AppCommand((obj) => DoCloseBootomPane());
+            CloseRightPaneCommand = new AppCommand((obj) => DoCloseRightPane());
+            CopyCommand = new AppCommand((obj) => DoCopy(), generalEnginePresentCondition);
+            JumpToTimeCommand = new AppCommand((obj) => DoJumpToTime(), generalEnginePresentCondition);
+            SetBookmarkCommand = new AppCommand((obj) => DoSetBookmark((string)obj), generalEnginePresentCondition & itemSelectedCondition);
+            GotoBookmarkCommand = new AppCommand((obj) => DoGotoBookmark((string)obj), generalEnginePresentCondition);
+            AddHighlightingRuleCommand = new AppCommand((obj) => DoAddHighlightingRule(), generalEnginePresentCondition & itemSelectedCondition);
+            AddFilteringRuleCommand = new AppCommand((obj) => DoAddFilteringRule(), generalEnginePresentCondition & itemSelectedCondition);
+            ToggleProfilingPointCommand = new AppCommand((obj) => DoToggleProfilingPointCommand(), generalEnginePresentCondition & itemSelectedCondition);
+            ClearProfilingPointsCommand = new AppCommand((obj) => DoClearProfilingPointsCommand(), generalEnginePresentCondition);
+            AnnotateCommand = new AppCommand((obj) => DoAnnotate(), generalEnginePresentCondition & itemSelectedCondition);
+            VisualizeMessageCommand = new AppCommand((obj) => DoVisualizeMessage(), generalEnginePresentCondition & itemSelectedCondition);
+            ExportToHtmlCommand = new AppCommand((obj) => DoExportToHtml(), generalEnginePresentCondition);
+            ExportToStyledHtmlCommand = new AppCommand((obj) => DoExportToStyledHtml(), generalEnginePresentCondition);
+            QuickSearchUpCommand = new AppCommand((obj) => DoQuickSearchUp(), generalEnginePresentCondition & searchStringExists);
+            QuickSearchDownCommand = new AppCommand((obj) => DoQuickSearchDown(), generalEnginePresentCondition & searchStringExists);
+            CloseQuickSearchCommand = new AppCommand((obj) => DoCloseQuickSearch());
+            ShowQuickSearchCommand = new AppCommand((obj) => DoShowQuickSearch());
+            OpenFromClipboardCommand = new AppCommand((obj) => DoOpenFromClipboard());
+            ConfigurationCommand = new AppCommand((obj) => DoOpenConfiguration());
+            OpenPythonEditorCommand = new AppCommand((obj) => DoOpenPythonEditor());
+            SaveProfileCommand = new AppCommand((obj) => DoSaveProfile(), generalEnginePresentCondition);
+            MoveProfileUpCommand = new AppCommand((obj) => DoMoveProfileUp(), profileSelectedCondition & (!firstProfileSelectedCondition));
+            MoveProfileDownCommand = new AppCommand((obj) => DoMoveProfileDown(), profileSelectedCondition & (!lastProfileSelectedCondition));
+            DeleteProfileCommand = new AppCommand((obj) => DoDeleteProfile(), profileSelectedCondition);
+            MoveScriptUpCommand = new AppCommand((obj) => DoMoveScriptUp(), scriptSelectedCondition & (!firstScriptSelectedCondition));
+            MoveScriptDownCommand = new AppCommand((obj) => DoMoveScriptDown(), scriptSelectedCondition & (!lastScriptSelectedCondition));
+            DeleteScriptCommand = new AppCommand((obj) => DoDeleteScript(), scriptSelectedCondition);
+            ManageProfilesCommand = new AppCommand((obj) => DoManageProfiles());
+            CopySearchResultsCommand = new AppCommand((obj) => DoCopySearchResults(), generalEnginePresentCondition);
 
             LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);
         }

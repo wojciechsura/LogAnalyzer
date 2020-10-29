@@ -1,7 +1,8 @@
 ﻿using LogAnalyzer.API.LogSource;
 using LogAnalyzer.API.Types;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -79,7 +80,7 @@ namespace FileLogSource.Editor
             this.Provider = provider;
             this.winApiService = winApiService;
 
-            OpenFileCommand = new SimpleCommand((obj) => DoOpenFile());
+            OpenFileCommand = new AppCommand((obj) => DoOpenFile());
         }
 
         public void LoadConfiguration(ILogSourceConfiguration configuration)

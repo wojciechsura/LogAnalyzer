@@ -7,7 +7,8 @@ using LogAnalyzer.Models.Types;
 using LogAnalyzer.Models.Views.FindWindow;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,8 +55,8 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         {
             result = new ModalDialogResult<SearchConfig>();
 
-            FindAllCommand = new SimpleCommand((obj) => DoFindAll());
-            CancelCommand = new SimpleCommand((obj) => DoCancel());
+            FindAllCommand = new AppCommand((obj) => DoFindAll());
+            CancelCommand = new AppCommand((obj) => DoCancel());
             this.access = access;
             this.messagingService = messagingService;
 

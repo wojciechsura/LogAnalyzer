@@ -8,7 +8,8 @@ using LogAnalyzer.Models.Events;
 using LogAnalyzer.Models.Views.ScriptNameWindow;
 using LogAnalyzer.Scripting;
 using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.Wpf.Input;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -204,15 +205,15 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.storedScripts = new ObservableCollection<StoredScriptViewModel>();
             this.apiSamples = new ObservableCollection<ApiSampleViewModel>();
 
-            this.storedScriptClickCommand = new SimpleCommand((obj) => DoOpenScript(obj));
-            this.apiSampleClickCommand = new SimpleCommand((obj) => DoInsertApiSample(obj));
+            this.storedScriptClickCommand = new AppCommand((obj) => DoOpenScript(obj));
+            this.apiSampleClickCommand = new AppCommand((obj) => DoInsertApiSample(obj));
 
             BuildStoredScripts();
             BuildApiSamples();
             
-            this.RunCommand = new SimpleCommand((obj) => DoRun(), scriptingHost.CanRunCondition);
-            this.SaveCommand = new SimpleCommand((obj) => DoSave());
-            this.SaveAsCommand = new SimpleCommand((obj) => DoSaveAs());
+            this.RunCommand = new AppCommand((obj) => DoRun(), scriptingHost.CanRunCondition);
+            this.SaveCommand = new AppCommand((obj) => DoSave());
+            this.SaveAsCommand = new AppCommand((obj) => DoSaveAs());
         }
 
         // Public properties --------------------------------------------------
