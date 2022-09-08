@@ -1659,7 +1659,9 @@
     <Resource Include="Resources\Images\Profile32.png" />
     <Resource Include="Resources\Images\Save16.png" />
     <Resource Include="Resources\Images\Save32.png" />
-    <Resource Include="Lib\site-packages\README.txt" />
+    <Content Include="Lib\site-packages\README.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lib\site.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
