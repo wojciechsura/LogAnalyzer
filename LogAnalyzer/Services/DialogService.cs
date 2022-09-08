@@ -109,10 +109,10 @@ namespace LogAnalyzer.Services
             window.ShowDialog();
         }
 
-        public void OpenPythonEditor()
+        public void OpenPythonEditor(IScriptingHost scriptingHost)
         {
             if (pythonEditorWindow == null)
-                pythonEditorWindow = new PythonEditorWindow();
+                pythonEditorWindow = new PythonEditorWindow(scriptingHost);
 
             pythonEditorWindow.Show();
         }

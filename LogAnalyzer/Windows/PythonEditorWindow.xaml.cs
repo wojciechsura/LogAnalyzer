@@ -1,4 +1,5 @@
-﻿using Fluent;
+﻿using Autofac;
+using Fluent;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using LogAnalyzer.BusinessLogic.ViewModels;
@@ -19,8 +20,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
-using Unity;
-using Unity.Resolution;
 
 namespace LogAnalyzer.Windows
 {
@@ -31,7 +30,7 @@ namespace LogAnalyzer.Windows
     {
         private readonly PythonEditorWindowViewModel viewModel;
 
-        public PythonEditorWindow()
+        public PythonEditorWindow(IScriptingHost scriptingHost)
         {
             InitializeComponent();
 
@@ -45,7 +44,8 @@ namespace LogAnalyzer.Windows
 
             editor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("Python");
 
-            viewModel = LogAnalyzer.Dependencies.Container.Instance.Resolve<PythonEditorWindowViewModel>(new ParameterOverride("access", this));
+            viewModel = LogAnalyzer.Dependencies.Container.Instance.Resolve<PythonEditorWindowViewModel>(new NamedParameter("access", this),
+                new NamedParameter("scriptingHost", scriptingHost));
             DataContext = viewModel;
         }
 

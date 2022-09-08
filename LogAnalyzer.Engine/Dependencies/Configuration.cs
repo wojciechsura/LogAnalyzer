@@ -1,11 +1,10 @@
-﻿using LogAnalyzer.Services.Interfaces;
+﻿using Autofac;
+using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity;
-using Unity.Lifetime;
 
 namespace LogAnalyzer.Engine.Dependencies
 {
@@ -13,12 +12,12 @@ namespace LogAnalyzer.Engine.Dependencies
     {
         private static bool isConfigured = false;
 
-        public static void Configure(IUnityContainer container)
+        public static void Configure(ContainerBuilder builder)
         {
             if (isConfigured)
                 return;
 
-            container.RegisterType<IEngineFactory, EngineFactory>(new ContainerControlledLifetimeManager());
+            builder.RegisterType<EngineFactory>().As<IEngineFactory>().SingleInstance();
 
             isConfigured = true;
         }

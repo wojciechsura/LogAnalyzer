@@ -42,9 +42,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
         private ObservableCollection<FilterActionInfo> availableDefaultActions;
         private FilterActionInfo selectedDefaultAction;
         private List<string> availableCustomColumns;
-        private readonly Condition ruleSelectedCondition;
-        private readonly Condition firstRuleSelectedCondition;
-        private readonly Condition lastRuleSelectedCondition;
+        private readonly SimpleCondition ruleSelectedCondition;
+        private readonly SimpleCondition firstRuleSelectedCondition;
+        private readonly SimpleCondition lastRuleSelectedCondition;
         private readonly IFilterConfigWindowAccess access;
 
         private void DoMoveRuleDown()
@@ -171,9 +171,9 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             }
             selectedDefaultAction = availableDefaultActions.Single(a => a.Action == FilterAction.Include);
                 
-            ruleSelectedCondition = new Condition(false);
-            firstRuleSelectedCondition = new Condition(false);
-            lastRuleSelectedCondition = new Condition(false);
+            ruleSelectedCondition = new SimpleCondition(false);
+            firstRuleSelectedCondition = new SimpleCondition(false);
+            lastRuleSelectedCondition = new SimpleCondition(false);
 
             AddRuleCommand = new AppCommand((obj) => DoAddRule());
             RemoveRuleCommand = new AppCommand((obj) => DoRemoveRule(), ruleSelectedCondition);

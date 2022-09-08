@@ -17,6 +17,7 @@ using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
 using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
 using LogAnalyzer.Models.Views.ScriptNameWindow;
 using LogAnalyzer.Models.Views.JsonCodeWindow;
+using LogAnalyzer.Scripting;
 
 namespace LogAnalyzer.Services.Interfaces
 {
@@ -34,7 +35,7 @@ namespace LogAnalyzer.Services.Interfaces
         ModalDialogResult<JsonCodeResult> OpenJsonCodeWindow(JsonCodeModel model);
         void VisualizeMessage(LogMessageVisualizerModel model);
         void OpenConfiguration();
-        void OpenPythonEditor();
+        void OpenPythonEditor(IScriptingHost scriptingHost);
         ModalDialogResult<ProcessingProfileNameResult> ChooseProfileName(ProcessingProfileNameModel model);
         ModalDialogResult<ScriptNameResult> ChooseScriptName(ScriptNameModel model);
     }

@@ -1,7 +1,6 @@
 ﻿using Fluent;
 using LogAnalyzer.BusinessLogic.ViewModels;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
-using Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Unity.Resolution;
 using LogAnalyzer.API.Models;
 using LogAnalyzer.Common.Tools;
 using System.Reflection;
@@ -24,6 +22,7 @@ using System.Windows.Markup;
 using System.Xml;
 using System.IO;
 using System.Collections;
+using Autofac;
 
 namespace LogAnalyzer.Windows
 {
@@ -38,7 +37,7 @@ namespace LogAnalyzer.Windows
         {
             InitializeComponent();
 
-            viewModel = Dependencies.Container.Instance.Resolve<MainWindowViewModel>(new ParameterOverride("access", this));
+            viewModel = Dependencies.Container.Instance.Resolve<MainWindowViewModel>(new NamedParameter("access", this));
             DataContext = viewModel;
         }
 

@@ -1,11 +1,10 @@
-﻿using LogAnalyzer.Services.Interfaces;
+﻿using Autofac;
+using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity.Lifetime;
-using Unity;
 
 namespace LogAnalyzer.TextParser.Dependencies
 {
@@ -13,12 +12,12 @@ namespace LogAnalyzer.TextParser.Dependencies
     {
         private static bool isConfigured = false;
 
-        public static void Configure(IUnityContainer container)
+        public static void Configure(ContainerBuilder builder)
         {
             if (isConfigured)
                 return;
 
-            container.RegisterType<ITextParser, TextParser>(new ContainerControlledLifetimeManager());            
+            builder.RegisterType<TextParser>().As<ITextParser>().SingleInstance();
 
             isConfigured = true;
         }

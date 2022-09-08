@@ -1,4 +1,5 @@
-﻿using ClipboardLogSource.Editor;
+﻿using Autofac;
+using ClipboardLogSource.Editor;
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
 using System;
@@ -6,8 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity;
-using Unity.Resolution;
 
 namespace ClipboardLogSource
 {
@@ -15,7 +14,7 @@ namespace ClipboardLogSource
     {
         public ILogSourceEditorViewModel CreateEditorViewModel()
         {
-            return LogAnalyzer.Dependencies.Container.Instance.Resolve<ClipboardLogSourceEditorViewModel>(new ParameterOverride("provider", this));
+            return LogAnalyzer.Dependencies.Container.Instance.Resolve<ClipboardLogSourceEditorViewModel>(new NamedParameter("provider", this));
         }
 
         public ILogSource CreateLogSource(ILogSourceConfiguration configuration, ILogParser parser)

@@ -38,9 +38,9 @@ namespace FilesLogSource.Editor
         private int selectedFileIndex;
         private bool autoSort;
 
-        private Condition fileSelectedCondition;
-        private Condition firstFileSelectedCondition;
-        private Condition lastFileSelectedCondition;
+        private SimpleCondition fileSelectedCondition;
+        private SimpleCondition firstFileSelectedCondition;
+        private SimpleCondition lastFileSelectedCondition;
 
         // Private methods ----------------------------------------------------
 
@@ -104,9 +104,9 @@ namespace FilesLogSource.Editor
             selectedFile = null;
             autoSort = true;
 
-            fileSelectedCondition = new Condition(false);
-            firstFileSelectedCondition = new Condition(false);
-            lastFileSelectedCondition = new Condition(false);
+            fileSelectedCondition = new SimpleCondition(false);
+            firstFileSelectedCondition = new SimpleCondition(false);
+            lastFileSelectedCondition = new SimpleCondition(false);
 
             AddFilesCommand = new AppCommand((obj) => DoAddFiles());
             RemoveFileCommand = new AppCommand((obj) => DoRemoveFile(), fileSelectedCondition);

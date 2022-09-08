@@ -6,9 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FilesLogSource.Common;
-using Unity;
-using Unity.Resolution;
 using FilesLogSource.Editor;
+using Autofac;
 
 namespace FilesLogSource
 {
@@ -18,7 +17,7 @@ namespace FilesLogSource
 
         public ILogSourceEditorViewModel CreateEditorViewModel()
         {
-            return LogAnalyzer.Dependencies.Container.Instance.Resolve<FilesLogSourceEditorViewModel>(new ParameterOverride("provider", this));
+            return LogAnalyzer.Dependencies.Container.Instance.Resolve<FilesLogSourceEditorViewModel>(new NamedParameter("provider", this));
         }
 
         public ILogSourceConfiguration CreateFromClipboard()

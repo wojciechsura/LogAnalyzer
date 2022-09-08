@@ -51,7 +51,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private readonly ObservableCollection<LogParserProfileInfo> logParserProfiles;
         private LogParserProfileInfo selectedParserProfile;
-        private Condition parserProfileSelected;
+        private SimpleCondition parserProfileSelected;
 
         private readonly ObservableCollection<ProcessingProfileViewModel> processingProfiles;
         private ProcessingProfileViewModel selectedProcessingProfile;
@@ -471,7 +471,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
             // Conditions
 
-            parserProfileSelected = new Condition(false);
+            parserProfileSelected = new SimpleCondition(false);
 
             // Commands
 

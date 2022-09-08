@@ -15,11 +15,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Unity;
-using Unity.Resolution;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.Models.Views.OpenWindow;
+using Autofac;
 
 namespace LogAnalyzer.Windows
 {
@@ -34,7 +33,7 @@ namespace LogAnalyzer.Windows
         {
             InitializeComponent();
 
-            this.viewModel = Dependencies.Container.Instance.Resolve<OpenWindowViewModel>(new ParameterOverride("access", this), new ParameterOverride("model", model));
+            this.viewModel = Dependencies.Container.Instance.Resolve<OpenWindowViewModel>(new NamedParameter("access", this), new NamedParameter("model", model));
             DataContext = viewModel;
         }
 

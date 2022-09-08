@@ -1,13 +1,11 @@
-﻿using LogAnalyzer.Export.Services;
+﻿using Autofac;
+using LogAnalyzer.Export.Services;
 using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity;
-using Unity.Lifetime;
-using Unity.Resolution;
 
 namespace LogAnalyzer.Export.Dependencies
 {
@@ -15,12 +13,12 @@ namespace LogAnalyzer.Export.Dependencies
     {
         private static bool isConfigured = false;
 
-        public static void Configure(IUnityContainer container)
+        public static void Configure(ContainerBuilder builder)
         {
             if (isConfigured)
                 return;
 
-            container.RegisterType<IExportService, ExportService>(new ContainerControlledLifetimeManager());
+            builder.RegisterType<ExportService>().As<IExportService>().SingleInstance();
 
             isConfigured = true;
         }

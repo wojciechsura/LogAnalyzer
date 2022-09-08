@@ -1,4 +1,5 @@
-﻿using LogAnalyzer.API.Types;
+﻿using Autofac;
+using LogAnalyzer.API.Types;
 using LogAnalyzer.BusinessLogic.ViewModels.Configuration;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Services.Interfaces;
@@ -11,7 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Unity;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {

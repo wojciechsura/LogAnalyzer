@@ -1,4 +1,5 @@
-﻿using LogAnalyzer.BusinessLogic.ViewModels;
+﻿using Autofac;
+using LogAnalyzer.BusinessLogic.ViewModels;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.Services.Common;
@@ -15,8 +16,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Unity;
-using Unity.Resolution;
 
 namespace LogAnalyzer.Windows
 {
@@ -31,7 +30,7 @@ namespace LogAnalyzer.Windows
         {
             InitializeComponent();
 
-            viewModel = Dependencies.Container.Instance.Resolve<JumpToTimeWindowViewModel>(new ParameterOverride("access", this), new ParameterOverride("model", model));
+            viewModel = Dependencies.Container.Instance.Resolve<JumpToTimeWindowViewModel>(new NamedParameter("access", this), new NamedParameter("model", model));
             DataContext = viewModel;
         }
 

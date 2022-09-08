@@ -1,4 +1,5 @@
-﻿using FileLogSource.Editor;
+﻿using Autofac;
+using FileLogSource.Editor;
 using LogAnalyzer.API.LogParser;
 using LogAnalyzer.API.LogSource;
 using System;
@@ -6,8 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity;
-using Unity.Resolution;
 
 namespace FileLogSource
 {
@@ -15,7 +14,7 @@ namespace FileLogSource
     {
         public ILogSourceEditorViewModel CreateEditorViewModel()
         {
-            return LogAnalyzer.Dependencies.Container.Instance.Resolve<FileLogSourceEditorViewModel>(new ParameterOverride("provider", this));
+            return LogAnalyzer.Dependencies.Container.Instance.Resolve<FileLogSourceEditorViewModel>(new NamedParameter("provider", this));
         }
 
         public ILogSource CreateLogSource(ILogSourceConfiguration configuration, ILogParser parser)

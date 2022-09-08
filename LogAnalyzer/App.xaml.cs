@@ -16,7 +16,7 @@ namespace LogAnalyzer
     {
         public App()
         {
-            Configuration.Configure(Container.Instance);
+            Container.Configure(Configuration.Configure);
         }
     }
 }

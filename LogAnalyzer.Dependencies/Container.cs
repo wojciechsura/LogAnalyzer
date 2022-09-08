@@ -3,20 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity;
+using Autofac;
 
 namespace LogAnalyzer.Dependencies
 {
     public static class Container
     {
-        private static Lazy<UnityContainer> container = new Lazy<UnityContainer>(() => new UnityContainer());
+        private static IContainer container;
 
-        public static IUnityContainer Instance
+        public static void Configure(Action<ContainerBuilder> buildAction)
         {
-            get
-            {
-                return container.Value;
-            }
+            if (container != null)
+                throw new InvalidOperationException("Container can be built only once!");
+
+            var builder = new ContainerBuilder();
+            
+            buildAction(builder);
+
+            builder.RegisterSource(new Autofac.Features.ResolveAnything.AnyConcreteTypeNotAlreadyRegisteredSource());
+
+            container = builder.Build();
         }
+
+        public static IContainer Instance => container;
     }
 }

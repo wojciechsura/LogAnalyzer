@@ -8,8 +8,8 @@ using LogAnalyzer.API.Types;
 using LogAnalyzer.Services.Interfaces;
 using Spooksoft.VisualStateManager.Conditions;
 using RegexLogParser.Configuration;
-using Unity;
 using Spooksoft.VisualStateManager.Commands;
+using Autofac;
 
 namespace RegexLogParser.Editor.GroupConfiguration
 {

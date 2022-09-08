@@ -11,13 +11,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Autofac;
 using LogAnalyzer.BusinessLogic.ViewModels;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.Models.Engine;
 using LogAnalyzer.Models.Views.HighlightConfigWindow;
 using LogAnalyzer.Services.Common;
-using Unity;
-using Unity.Resolution;
 
 namespace LogAnalyzer.Windows
 {
@@ -32,7 +31,7 @@ namespace LogAnalyzer.Windows
         {
             InitializeComponent();
 
-            viewModel = Dependencies.Container.Instance.Resolve<HighlightConfigWindowViewModel>(new ParameterOverride("access", this), new ParameterOverride("model", model));
+            viewModel = Dependencies.Container.Instance.Resolve<HighlightConfigWindowViewModel>(new NamedParameter("access", this), new NamedParameter("model", model));
             DataContext = viewModel;
         }
 

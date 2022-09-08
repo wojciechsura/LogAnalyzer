@@ -1,11 +1,10 @@
-﻿using LogAnalyzer.Services.Interfaces;
+﻿using Autofac;
+using LogAnalyzer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity;
-using Unity.Lifetime;
 
 namespace LogAnalyzer.Services.Dependencies
 {
@@ -13,17 +12,17 @@ namespace LogAnalyzer.Services.Dependencies
     {
         private static bool isConfigured = false;
 
-        public static void Configure(IUnityContainer container)
+        public static void Configure(ContainerBuilder builder)
         {
             if (isConfigured)
                 return;
 
             // Configure
 
-            container.RegisterType<IWinApiService, WinApiService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IConfigurationService, ConfigurationService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IPathProviderService, PathProviderService>(new ContainerControlledLifetimeManager());
-            container.RegisterType<IEventBusService, EventBusService>(new ContainerControlledLifetimeManager());
+            builder.RegisterType<WinApiService>().As<IWinApiService>().SingleInstance();
+            builder.RegisterType<ConfigurationService>().As<IConfigurationService>().SingleInstance();
+            builder.RegisterType<PathProviderService>().As<IPathProviderService>().SingleInstance();
+            builder.RegisterType<EventBusService>().As<IEventBusService>().SingleInstance();
 
             isConfigured = true;
         }

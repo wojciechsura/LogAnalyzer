@@ -35,9 +35,9 @@ namespace RegexLogParser.Editor
         private int selectedGroupDefinitionIndex;
         private readonly ObservableCollection<GroupDefinitionViewModel> groupDefinitions;
 
-        private readonly Condition itemSelectedCondition;
-        private readonly Condition firstItemSelectedCondition;
-        private readonly Condition lastItemSelectedCondition;
+        private readonly SimpleCondition itemSelectedCondition;
+        private readonly SimpleCondition firstItemSelectedCondition;
+        private readonly SimpleCondition lastItemSelectedCondition;
 
         private TableData resultData;
         private string sampleData;
@@ -230,9 +230,9 @@ namespace RegexLogParser.Editor
 
             groupDefinitions = new ObservableCollection<GroupDefinitionViewModel>();
 
-            itemSelectedCondition = new Condition(false);
-            firstItemSelectedCondition = new Condition(false);
-            lastItemSelectedCondition = new Condition(false);
+            itemSelectedCondition = new SimpleCondition(false);
+            firstItemSelectedCondition = new SimpleCondition(false);
+            lastItemSelectedCondition = new SimpleCondition(false);
 
             AddGroupDefinitionCommand = new AppCommand((obj) => DoAddGroupDefinition());
             RemoveGroupDefinitionCommand = new AppCommand((obj) => DoRemoveGroupDefinition(), itemSelectedCondition);

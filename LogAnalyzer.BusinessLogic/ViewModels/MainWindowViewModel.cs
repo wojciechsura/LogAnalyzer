@@ -1,49 +1,48 @@
-﻿using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
-using System;
+﻿using ConfigurationBase;
+using ICSharpCode.AvalonEdit.Document;
+using IronPython.Hosting;
+using LogAnalyzer.API.LogParser;
+using LogAnalyzer.API.LogSource;
+using LogAnalyzer.API.Models;
+using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
+using LogAnalyzer.BusinessLogic.ViewModels.Main;
+using LogAnalyzer.BusinessLogic.ViewModels.Scripting;
+using LogAnalyzer.Configuration;
+using LogAnalyzer.Dependencies;
+using LogAnalyzer.Models.DialogResults;
+using LogAnalyzer.Models.Engine.PredicateDescriptions;
+using LogAnalyzer.Models.Engine;
+using LogAnalyzer.Models.Events;
+using LogAnalyzer.Models.Types;
+using LogAnalyzer.Models.Views.ColumnSelectionWindow;
+using LogAnalyzer.Models.Views.FilterConfigWindow;
+using LogAnalyzer.Models.Views.FindWindow;
+using LogAnalyzer.Models.Views.HighlightConfigWindow;
+using LogAnalyzer.Models.Views.JumpToTime;
+using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
+using LogAnalyzer.Models.Views.NoteWindow;
+using LogAnalyzer.Models.Views.OpenWindow;
+using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
+using LogAnalyzer.Scripting.ScriptAPI;
+using LogAnalyzer.Scripting;
+using LogAnalyzer.Services.Interfaces;
+using LogAnalyzer.Types;
+using Microsoft.Scripting.Hosting;
+using Microsoft.Scripting;
+using Newtonsoft.Json;
+using Spooksoft.VisualStateManager.Commands;
+using Spooksoft.VisualStateManager.Conditions;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using LogAnalyzer.Dependencies;
-using Spooksoft.VisualStateManager.Conditions;
-using LogAnalyzer.Services.Interfaces;
-using LogAnalyzer.API.LogParser;
-using LogAnalyzer.API.LogSource;
-using LogAnalyzer.Configuration;
-using LogAnalyzer.Types;
-using System.ComponentModel;
-using LogAnalyzer.Models.DialogResults;
-using LogAnalyzer.API.Models;
-using LogAnalyzer.Models.Views.HighlightConfigWindow;
-using LogAnalyzer.Models.Views.FilterConfigWindow;
-using LogAnalyzer.Models.Views.FindWindow;
 using System.Windows;
-using LogAnalyzer.Models.Views.OpenWindow;
-using LogAnalyzer.Models.Views.JumpToTime;
-using LogAnalyzer.Models.Views.ColumnSelectionWindow;
-using LogAnalyzer.Models.Engine;
-using LogAnalyzer.Models.Engine.PredicateDescriptions;
-using LogAnalyzer.Models.Types;
-using LogAnalyzer.Models.Views.NoteWindow;
-using LogAnalyzer.Models.Views.LogMessageVisualizerWindow;
-using ICSharpCode.AvalonEdit.Document;
-using LogAnalyzer.Scripting;
-using LogAnalyzer.Scripting.ScriptAPI;
-using IronPython.Hosting;
-using System.Reflection;
-using System.IO;
-using Microsoft.Scripting.Hosting;
-using Microsoft.Scripting;
-using Unity;
-using LogAnalyzer.Models.Views.ProcessingProfileNameWindow;
-using Newtonsoft.Json;
-using System.Collections.ObjectModel;
-using LogAnalyzer.BusinessLogic.ViewModels.Main;
-using LogAnalyzer.BusinessLogic.ViewModels.Scripting;
-using LogAnalyzer.Models.Events;
-using ConfigurationBase;
-using Spooksoft.VisualStateManager.Commands;
+using System;
 
 namespace LogAnalyzer.BusinessLogic.ViewModels
 {
@@ -91,18 +90,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private IEngine engine;
 
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition engineStoppingCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition engineStoppingCondition;
         private readonly BaseCondition generalCommandCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition enginePresentCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition enginePresentCondition;
         private readonly BaseCondition generalEnginePresentCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition itemSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition searchStringExists;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition profileSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition firstProfileSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition lastProfileSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition scriptSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition firstScriptSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.Condition lastScriptSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition itemSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition searchStringExists;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition profileSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition firstProfileSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition lastProfileSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition scriptSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition firstScriptSelectedCondition;
+        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition lastScriptSelectedCondition;
         private readonly BaseCondition scriptRunCondition;
 
         private bool bottomPaneVisible;
@@ -674,7 +673,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoOpenPythonEditor()
         {
-            dialogService.OpenPythonEditor();
+            dialogService.OpenPythonEditor(this);
         }
 
         private void DoSaveProfile()
@@ -969,18 +968,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.eventBusService.Register<ProcessingProfileListChanged>(this);
             this.eventBusService.Register<StoredScriptListChanged>(this);
 
-            engineStoppingCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            engineStoppingCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
             generalCommandCondition = !engineStoppingCondition;
-            enginePresentCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            enginePresentCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
             generalEnginePresentCondition = enginePresentCondition & !engineStoppingCondition;
-            itemSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
-            searchStringExists = new Spooksoft.VisualStateManager.Conditions.Condition(false);
-            firstProfileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
-            lastProfileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
-            profileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
-            firstScriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
-            lastScriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
-            scriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.Condition(false);
+            itemSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            searchStringExists = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            firstProfileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            lastProfileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            profileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            firstScriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            lastScriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            scriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
             scriptRunCondition = generalEnginePresentCondition;
 
             loadingStatusText = "Loading...";
@@ -1034,8 +1033,6 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             DeleteScriptCommand = new AppCommand((obj) => DoDeleteScript(), scriptSelectedCondition);
             ManageProfilesCommand = new AppCommand((obj) => DoManageProfiles());
             CopySearchResultsCommand = new AppCommand((obj) => DoCopySearchResults(), generalEnginePresentCondition);
-
-            LogAnalyzer.Dependencies.Container.Instance.RegisterInstance<IScriptingHost>(this);
         }
 
         public bool HandleClosing()

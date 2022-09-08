@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LogAnalyzer.Scripting</RootNamespace>
     <AssemblyName>LogAnalyzer.Scripting</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Spooksoft.VisualStateManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Spooksoft.VisualStateManager.1.0.1\lib\net461\Spooksoft.VisualStateManager.dll</HintPath>
+    <Reference Include="Spooksoft.VisualStateManager, Version=1.0.8.1, Culture=neutral, PublicKeyToken=c726a4605d926245, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spooksoft.VisualStateManager.1.0.8.2\lib\net48\Spooksoft.VisualStateManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

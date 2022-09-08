@@ -14,10 +14,9 @@ using System.Windows.Shapes;
 using LogAnalyzer.Models.DialogResults;
 using LogAnalyzer.Services.Common;
 using LogAnalyzer.Models.Views.ColumnSelectionWindow;
-using Unity;
-using Unity.Resolution;
 using LogAnalyzer.BusinessLogic.ViewModels.Interfaces;
 using LogAnalyzer.BusinessLogic.ViewModels;
+using Autofac;
 
 namespace LogAnalyzer.Windows
 {
@@ -32,7 +31,7 @@ namespace LogAnalyzer.Windows
         {
             InitializeComponent();
 
-            viewModel = Dependencies.Container.Instance.Resolve<ColumnSelectionWindowViewModel>(new ParameterOverride("access", this), new ParameterOverride("model", model));
+            viewModel = Dependencies.Container.Instance.Resolve<ColumnSelectionWindowViewModel>(new NamedParameter("access", this), new NamedParameter("model", model));
             DataContext = viewModel;
         }
 
