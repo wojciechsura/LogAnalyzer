@@ -90,18 +90,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private IEngine engine;
 
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition engineStoppingCondition;
+        private readonly SimpleCondition engineStoppingCondition;
         private readonly BaseCondition generalCommandCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition enginePresentCondition;
+        private readonly SimpleCondition enginePresentCondition;
         private readonly BaseCondition generalEnginePresentCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition itemSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition searchStringExists;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition profileSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition firstProfileSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition lastProfileSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition scriptSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition firstScriptSelectedCondition;
-        private readonly Spooksoft.VisualStateManager.Conditions.SimpleCondition lastScriptSelectedCondition;
+        private readonly SimpleCondition itemSelectedCondition;
+        private readonly SimpleCondition searchStringExists;
+        private readonly SimpleCondition profileSelectedCondition;
+        private readonly SimpleCondition firstProfileSelectedCondition;
+        private readonly SimpleCondition lastProfileSelectedCondition;
+        private readonly SimpleCondition scriptSelectedCondition;
+        private readonly SimpleCondition firstScriptSelectedCondition;
+        private readonly SimpleCondition lastScriptSelectedCondition;
         private readonly BaseCondition scriptRunCondition;
 
         private bool bottomPaneVisible;
@@ -719,7 +719,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             if (messagingService.Ask("Are you sure you want to delete selected processing profile?"))
             {
                 int index = 0;
-                ConfigurationBase.SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
+                SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
                 index = FindSelectedProfile();
 
                 profiles.RemoveAt(index);
@@ -736,7 +736,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoMoveProfileDown()
         {
-            ConfigurationBase.SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
+            SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
 
             int index = FindSelectedProfile();
             if (index == profiles.Count - 1)
@@ -749,7 +749,7 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
 
         private void DoMoveProfileUp()
         {
-            ConfigurationBase.SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
+            SimpleCollection<ProcessingProfile> profiles = configurationService.Configuration.ProcessingProfiles;
 
             int index = FindSelectedProfile();
             if (index == 0)
@@ -968,18 +968,18 @@ namespace LogAnalyzer.BusinessLogic.ViewModels
             this.eventBusService.Register<ProcessingProfileListChanged>(this);
             this.eventBusService.Register<StoredScriptListChanged>(this);
 
-            engineStoppingCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            engineStoppingCondition = new SimpleCondition(false);
             generalCommandCondition = !engineStoppingCondition;
-            enginePresentCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            enginePresentCondition = new SimpleCondition(false);
             generalEnginePresentCondition = enginePresentCondition & !engineStoppingCondition;
-            itemSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
-            searchStringExists = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
-            firstProfileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
-            lastProfileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
-            profileSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
-            firstScriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
-            lastScriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
-            scriptSelectedCondition = new Spooksoft.VisualStateManager.Conditions.SimpleCondition(false);
+            itemSelectedCondition = new SimpleCondition(false);
+            searchStringExists = new SimpleCondition(false);
+            firstProfileSelectedCondition = new SimpleCondition(false);
+            lastProfileSelectedCondition = new SimpleCondition(false);
+            profileSelectedCondition = new SimpleCondition(false);
+            firstScriptSelectedCondition = new SimpleCondition(false);
+            lastScriptSelectedCondition = new SimpleCondition(false);
+            scriptSelectedCondition = new SimpleCondition(false);
             scriptRunCondition = generalEnginePresentCondition;
 
             loadingStatusText = "Loading...";

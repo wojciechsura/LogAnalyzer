@@ -1,3 +1,8 @@
+Version 1.1
+09.09.2022
+* Switched to .NET Framework 4.8
+* Application now properly displays in higher DPIs than 96
+
 Version 1.0
 16.10.2020
 First public official release
