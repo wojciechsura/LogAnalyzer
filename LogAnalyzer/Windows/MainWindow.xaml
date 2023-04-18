@@ -13,8 +13,8 @@
                 mc:Ignorable="d"
                 Title="{Binding Title}" Height="600" Width="1000"
                 WindowStartupLocation="CenterScreen"
-                Closing="HandleWindowClosing"
-                Icon="/Resources/Images/LogAnalyzer.ico"
+                Loaded="HandleWindowLoaded"
+                Closing="HandleWindowClosing"                
                 AllowDrop="True" DragDrop.Drop="RibbonWindow_Drop" DragDrop.DragOver="RibbonWindow_DragOver">
     <f:RibbonWindow.Resources>
         <c:ColorToBrushConverter x:Key="ColorToBrushConverter" />

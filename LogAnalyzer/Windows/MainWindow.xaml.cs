@@ -210,5 +210,11 @@ namespace LogAnalyzer.Windows
             else
                 return new List<object>();
         }
+
+        private void HandleWindowLoaded(object sender, RoutedEventArgs e)
+        {
+            Uri iconUri = new Uri("pack://application:,,,/Resources/Images/LogAnalyzer.ico", UriKind.RelativeOrAbsolute); 
+            this.Icon = BitmapFrame.Create(iconUri, BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.OnLoad);
+        }
     }
 }
