@@ -1,3 +1,7 @@
+Version 1.2
+04.05.2023
+* Unified application icon with other Spooksoft applications
+
 Version 1.1
 09.09.2022
 * Switched to .NET Framework 4.8
