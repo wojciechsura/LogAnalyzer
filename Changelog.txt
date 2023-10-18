@@ -1,3 +1,7 @@
+Version 1.3
+18.10.2023
+* Added Database Source and Database Parser
+
 Version 1.2
 04.05.2023
 * Unified application icon with other Spooksoft applications

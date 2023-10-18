@@ -1,4 +1,5 @@
 ﻿using ClipboardLogSource;
+using DatabaseLogSource;
 using FileLogSource;
 using FilesLogSource;
 using LogAnalyzer.API.LogSource;
@@ -22,6 +23,7 @@ namespace LogAnalyzer.BusinessLogic.Services
             {
                 new FileLogSourceProvider(),
                 new FilesLogSourceProvider(),
+                new DatabaseLogSourceProvider(),
                 new ClipboardLogSourceProvider()
             };
 

@@ -52,6 +52,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Changelog.txt = Changelog.txt
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLogSource", "DatabaseLogSource\DatabaseLogSource.csproj", "{A1DD71D9-BBC8-46C4-940A-53236008CD9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseLogParser", "DatabaseLogParser\DatabaseLogParser.csproj", "{043327D7-15FE-47D8-AD44-DE5C585A7768}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -138,6 +142,12 @@ Global
 		{B32F876F-B77E-4849-96C6-BF28A755708E}.Debug|x64.Build.0 = Debug|x64
 		{B32F876F-B77E-4849-96C6-BF28A755708E}.Release|x64.ActiveCfg = Release|x64
 		{B32F876F-B77E-4849-96C6-BF28A755708E}.Release|x64.Build.0 = Release|x64
+		{A1DD71D9-BBC8-46C4-940A-53236008CD9A}.Debug|x64.ActiveCfg = Debug|x64
+		{A1DD71D9-BBC8-46C4-940A-53236008CD9A}.Debug|x64.Build.0 = Debug|x64
+		{A1DD71D9-BBC8-46C4-940A-53236008CD9A}.Release|x64.ActiveCfg = Release|x64
+		{043327D7-15FE-47D8-AD44-DE5C585A7768}.Debug|x64.ActiveCfg = Debug|x64
+		{043327D7-15FE-47D8-AD44-DE5C585A7768}.Debug|x64.Build.0 = Debug|x64
+		{043327D7-15FE-47D8-AD44-DE5C585A7768}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -148,6 +158,8 @@ Global
 		{39B4D915-C6B6-46C6-93A9-A4AC7763A5BE} = {51820161-F76F-4C86-9A98-F81A97CAD616}
 		{FD4113DD-4CEC-48C4-B15B-290D57F88804} = {F34EB931-8299-4882-BCF9-05F05183926E}
 		{711560D2-F2E0-4F9A-A3C9-A571D0BFA53E} = {F34EB931-8299-4882-BCF9-05F05183926E}
+		{A1DD71D9-BBC8-46C4-940A-53236008CD9A} = {F34EB931-8299-4882-BCF9-05F05183926E}
+		{043327D7-15FE-47D8-AD44-DE5C585A7768} = {51820161-F76F-4C86-9A98-F81A97CAD616}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C8A01F61-35D1-4F28-9DDC-4593A57402D7}

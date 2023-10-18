@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"             
+                    xmlns:local="clr-namespace:DatabaseLogSource.Editor" 
+                    xmlns:p="clr-namespace:Spooksoft.Wpf.Controls.Panels;assembly=Spooksoft.Wpf.Controls">
+    <DataTemplate x:Key="DatabaseLogEditorDataTemplate">
+        <p:EditorPanel>
+            <Label Margin="0,4,4,0">Connection string</Label>
+            <TextBox Margin="0,4,0,0" Text="{Binding ConnectionString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Label Margin="0,4,4,0">Query</Label>
+            <TextBox Margin="0,4,0,0" FontFamily="Consolas" Text="{Binding Query, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" Height="100"
+                     AcceptsReturn="True" AcceptsTab="True" />
+        </p:EditorPanel>
+    </DataTemplate>
+</ResourceDictionary>

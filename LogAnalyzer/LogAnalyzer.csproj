@@ -15,25 +15,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>LogAnalyzer.ico</ApplicationIcon>
   </PropertyGroup>
@@ -99,6 +80,9 @@
     </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Spooksoft.Wpf.Controls, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Spooksoft.Wpf.Controls.1.0.6\lib\net48\Spooksoft.Wpf.Controls.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -366,6 +350,18 @@
     <Resource Include="Resources\Images\Open32.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClipboardLogSource\ClipboardLogSource.csproj">
+      <Project>{711560d2-f2e0-4f9a-a3c9-a571d0bfa53e}</Project>
+      <Name>ClipboardLogSource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatabaseLogParser\DatabaseLogParser.csproj">
+      <Project>{043327d7-15fe-47d8-ad44-de5c585a7768}</Project>
+      <Name>DatabaseLogParser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatabaseLogSource\DatabaseLogSource.csproj">
+      <Project>{a1dd71d9-bbc8-46c4-940a-53236008cd9a}</Project>
+      <Name>DatabaseLogSource</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FileLogSource\FileLogSource.csproj">
       <Project>{f26a204c-101f-4c8e-864f-3331bf0af48f}</Project>
       <Name>FileLogSource</Name>

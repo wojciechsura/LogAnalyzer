@@ -1,0 +1,149 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                    xmlns:fc="clr-namespace:DatabaseLogParser.Editor.FieldConfiguration"
+                    xmlns:c="clr-namespace:LogAnalyzer.Wpf.Converters;assembly=LogAnalyzer.Wpf"
+                    xmlns:local="clr-namespace:DatabaseLogParser.Editor" 
+                    xmlns:p="clr-namespace:Spooksoft.Wpf.Controls.Panels;assembly=Spooksoft.Wpf.Controls">
+    <DataTemplate x:Key="DatabaseLogEditorTemplate">
+        <DataTemplate.Resources>
+            <c:HideIfNullConverter x:Key="HideIfNullConverter" />
+        </DataTemplate.Resources>
+        <GroupBox Header="Database log parser" Margin="4" Padding="4">
+            <StackPanel Orientation="Vertical">
+                <Label>Log entry fields</Label>
+                <StackPanel Orientation="Horizontal" Margin="4">
+                    <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding AddFieldDefinitionCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Plus16.png" />
+                    </Button>
+                    <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding RemoveFieldDefinitionCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Minus16.png" />
+                    </Button>
+                    <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveLeftCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Left16.png" />
+                    </Button>
+                    <Button Width="24" Height="24" Margin="0,0,4,0" Command="{Binding MoveRightCommand}">
+                        <Image Width="16" Height="16" Source="/Resources/Images/Right16.png" />
+                    </Button>
+                </StackPanel>
+                <ListBox Height="60" Padding="4" Margin="4"
+                             MaxWidth="600"
+                            ItemsSource="{Binding FieldDefinitions}"
+                            SelectedItem="{Binding SelectedFieldDefinition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedIndex="{Binding SelectedFieldDefinitionIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" IsItemsHost="True" />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <Label Content="{Binding DisplayName}" />
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label>Field settings</Label>
+                <ContentControl MinHeight="100" Content="{Binding SelectedFieldDefinition}"
+                                    Visibility="{Binding SelectedFieldDefinition, Converter={StaticResource HideIfNullConverter}}">
+                    <ContentControl.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical" Grid.IsSharedSizeScope="True">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Label Grid.Column="0">Column type</Label>
+                                    <ComboBox Grid.Column="1"
+                                                  Width="150"
+                                                  Margin="0,4"
+                                                  HorizontalAlignment="Left"
+                                                  ItemsSource="{Binding AvailableFields}"
+                                                  DisplayMemberPath="DisplayName"
+                                                  SelectedItem="{Binding SelectedFieldType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </Grid>
+                                <ContentControl Content="{Binding FieldConfiguration}">
+                                    <ContentControl.Resources>
+                                        <DataTemplate DataType="{x:Type fc:DateFieldConfigurationViewModel}">
+                                            <Grid HorizontalAlignment="Stretch">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0" Margin="0,4,4,0">Field</Label>
+                                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,4,0,0" Text="{Binding Field, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <Label Grid.Row="1" Grid.Column="0" Margin="0,4,4,0">Input date format</Label>
+                                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,4,4,0" Text="{Binding Format, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Button Width="24" Height="24" Grid.Row="1" Grid.Column="2" Command="{Binding DateFormatHelpCommand}" VerticalAlignment="Center">
+                                                    <Image Source="/Resources/Images/Help16.png" Width="16" Height="16" />
+                                                </Button>
+                                            </Grid>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type fc:CustomFieldConfigurationViewModel}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0" Margin="0,4,4,0">Field</Label>
+                                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,4,0,0" Text="{Binding Field, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                                <Label Grid.Row="1" Grid.Column="0" Margin="0,4,4,0">Custom field name</Label>
+                                                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,4,0,0" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                                            </Grid>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type fc:SeverityFieldConfigurationViewModel}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0" Margin="0,4,4,0">Field</Label>
+                                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,4,0,0" Text="{Binding Field, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                        <DataTemplate DataType="{x:Type fc:MessageFieldConfigurationViewModel}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                                    <ColumnDefinition Width="1*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Label Grid.Row="0" Grid.Column="0" Margin="0,4,4,0">Field</Label>
+                                                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,4,0,0" Text="{Binding Field, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+                                </ContentControl>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ContentControl.ContentTemplate>
+                </ContentControl>
+
+            </StackPanel>
+        </GroupBox>
+    </DataTemplate>
+</ResourceDictionary>

@@ -27,6 +27,7 @@
                                 <ResourceDictionary Source="pack://application:,,,/FileLogSource;component/Editor/FileLogSourceEditorTemplate.xaml" />
                                 <ResourceDictionary Source="pack://application:,,,/FilesLogSource;component/Editor/FilesLogSourceEditorTemplate.xaml" />
                                 <ResourceDictionary Source="pack://application:,,,/ClipboardLogSource;component/Editor/ClipboardLogSourceEditorTemplate.xaml" />
+                                <ResourceDictionary Source="pack://application:,,,/DatabaseLogSource;component/Editor/DatabaseLogSourceEditorTemplate.xaml" />
                             </ResourceDictionary.MergedDictionaries>
                         </ResourceDictionary>
                     </ContentControl.Resources>
