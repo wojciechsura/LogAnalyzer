@@ -128,26 +128,27 @@ namespace DatabaseLogParser
             {
                 var fieldDefinition = configuration.FieldDefinitions[i];
 
-                var field = entries.FirstOrDefault(e => e.Column == fieldDefinition.Field);
-                if (field == null)
-                    continue;
+                var field = entries.FirstOrDefault(e => e.Column == fieldDefinition.Field)
 
                 if (fieldDefinition is DateFieldDefinition dateField)
                 {
-                    if (!DateTime.TryParseExact(field.Value, dateField.Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
+                    if (field == null || !DateTime.TryParseExact(field.Value, dateField.Format, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
                         date = DateTime.MinValue;
                 }
                 else if (fieldDefinition is CustomFieldDefinition customField)
                 {
-                    customFields.Add(field.Value);
+                    if (field != null)
+                        customFields.Add(field.Value);
+                    else
+                        customFields.Add(string.Empty);
                 }
                 else if (fieldDefinition is MessageFieldDefinition)
                 {
-                    message = field.Value;
+                    message = field?.Value ?? string.Empty;
                 }
                 else if (fieldDefinition is SeverityFieldDefinition)
                 {
-                    severity = field.Value;
+                    severity = field?.Value ?? string.Empty;
                 }
             }
 
